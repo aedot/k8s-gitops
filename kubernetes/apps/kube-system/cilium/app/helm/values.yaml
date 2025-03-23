@@ -1,9 +1,10 @@
 ---
 autoDirectNodeRoutes: true
 bpf:
-  masquerade: true
-  # Ref: https://github.com/siderolabs/talos/issues/10002
-  hostLegacyRouting: true
+  datapathMode: netkit
+  masquerade: false
+  preallocateMaps: true
+  tproxy: true
 cni:
   # Required for pairing with Multus CNI
   exclusive: false
@@ -16,7 +17,16 @@ cgroup:
 endpointRoutes:
   enabled: true
 envoy:
-  enabled: false
+  rollOutPods: true
+  connectTimeoutSeconds: 15
+  debug:
+    admin:
+      enabled: true
+gatewayAPI:
+  enabled: true
+  enableAlpn: true
+  xffNumTrustedHops: 1
+  externalTrafficPolicy: Cluster
 dashboards:
   enabled: true
 hubble:
