@@ -8,3 +8,5 @@ resources:
   # - ./pushsecret.yaml
   - ./redirect.yaml
   - ./servicemonitor.yaml
+  - https://github.com/kubernetes-sigs/gateway-api/releases/download/v0.5.1/gateway-api-crds.yaml
+

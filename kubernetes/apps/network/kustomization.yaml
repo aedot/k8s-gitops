@@ -10,4 +10,4 @@ resources:
   - ./external-dns/ks.yaml
   - ./cloudflared/ks.yaml
   - ./echo-server/ks.yaml
-  - ./envoy-gateway/ks.yaml
+  # - ./envoy-gateway/ks.yaml

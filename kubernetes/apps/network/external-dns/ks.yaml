@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/network/external/cloudflare-dns
+  path: ./kubernetes/apps/network/external-dns/cloudflare
   postBuild:
     substituteFrom:
       - name: cluster-secrets
@@ -36,7 +36,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/network/external/unifi-dns
+  path: ./kubernetes/apps/network/external-dns/unifi
   postBuild:
     substituteFrom:
       - name: cluster-secrets
