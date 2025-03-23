@@ -1,0 +1,118 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
+---
+clusterName: k8s-gitops
+
+talosVersion: "${talosVersion}"
+kubernetesVersion: "${kubernetesVersion}"
+
+endpoint: https://10.0.10.10:6443
+additionalApiServerCertSans: &sans
+  - "127.0.0.1"
+  - "10.0.10.10"
+additionalMachineCertSans: *sans
+
+clusterPodNets: ["10.42.0.0/16"]
+clusterSvcNets: ["10.43.0.0/16"]
+
+# Disable built-in CNI to use Cilium
+cniConfig:
+  name: none
+
+nodes:
+  - hostname: "yemoja"
+    ipAddress: "10.0.10.11"
+    installDisk: "/dev/nvme0n1"
+    machineSpec:
+      secureboot: false
+    talosImageURL: factory.talos.dev/installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
+    controlPlane: true
+    networkInterfaces:
+      - interface: bond0
+        bond:
+          mode: active-backup
+          deviceSelectors:
+            - hardwareAddr: "d8:9e:f3:75:90:54"
+              driver: e1000e
+        dhcp: true
+        vlans:
+          - &vlan101
+            vlanId: 101
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
+        vip:
+          ip: "10.0.10.10"
+  - hostname: "oshun"
+    ipAddress: "10.0.10.12"
+    installDisk: "/dev/nvme0n1"
+    machineSpec:
+      secureboot: false
+    talosImageURL: factory.talos.dev/installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
+    controlPlane: true
+    networkInterfaces:
+      - interface: bond0
+        bond:
+          mode: active-backup
+          deviceSelectors:
+            - hardwareAddr: "18:66:da:4c:31:ee"
+              driver: e1000e
+        dhcp: true
+        vlans:
+          - *vlan101
+        vip:
+          ip: "10.0.10.10"
+  - hostname: "yemolu"
+    ipAddress: "10.0.10.13"
+    installDisk: "/dev/nvme0n1"
+    machineSpec:
+      secureboot: false
+    talosImageURL: factory.talos.dev/installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
+    controlPlane: true
+    networkInterfaces:
+      - interface: bond0
+        bond:
+          mode: active-backup
+          deviceSelectors:
+              - hardwareAddr: "d8:9e:f3:75:85:e7"
+                driver: e1000e
+        dhcp: true
+        vlans:
+          - *vlan101
+        vip:
+          ip: "10.0.10.10"
+
+# Global patches
+patches:
+  - "@./patches/global/machine-files.yaml"
+  - "@./patches/global/machine-kubelet.yaml"
+  - "@./patches/global/machine-network.yaml"
+  - "@./patches/global/machine-sysctls.yaml"
+  - "@./patches/global/machine-time.yaml"
+
+# Controller patches
+controlPlane:
+  patches:
+    - "@./patches/controller/admission-controller-patch.yaml"
+    - "@./patches/controller/cluster.yaml"
+
+  schematic:
+    customization:
+      extraKernelArgs:
+        - apparmor=0 # Less security, more speed
+        - init_on_alloc=0 # Less security, more speed
+        - init_on_free=0 # Less security, more speed
+        - intel_iommu=on # PCI Passthrough
+        - iommu=pt # PCI Passthrough
+        - mitigations=off # Less security, more speed
+        - security=none # Less security, more speed
+        - net.ifnames=1 # Enable predictable NIC naming
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/gasket-driver
+          - siderolabs/i915
+          - siderolabs/intel-ucode
+          - siderolabs/iscsi-tools
+          - siderolabs/mei
+          - siderolabs/thunderbolt
+          - siderolabs/util-linux-tools
