@@ -17,10 +17,6 @@ endpointRoutes:
   enabled: true
 envoy:
   enabled: false
-gatewayAPI:
-  enabled: true
-  enableAlpn: true
-  xffNumTrustedHops: 1
 dashboards:
   enabled: true
 hubble:
