@@ -1,25 +1,21 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app internal-ingress-nginx
+  name: &app envoy
   namespace: &namespace network
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: cert-manager-tls
-      namespace: cert-manager
-  interval: 1h
-  path: ./kubernetes/apps/network/internal/ingress-nginx
+  interval: 30m
+  path: ./kubernetes/apps/network/envoy-gateway/app
   postBuild:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
   prune: true
-  retryInterval: 2m
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -27,25 +23,28 @@ spec:
   targetNamespace: *namespace
   timeout: 5m
   wait: false
+
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app k8s-gateway
+  name: &app envoy-gateway
   namespace: &namespace network
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  interval: 1h
-  path: ./kubernetes/apps/network/internal/k8s-gateway
+  dependsOn:
+    - name: envoy
+      namespace: *namespace
+  interval: 30m
+  path: ./kubernetes/apps/network/envoy-gateway/gateway
   postBuild:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
   prune: true
-  retryInterval: 2m
+  retryInterval: 1m
   sourceRef:
     kind: GitRepository
     name: flux-system

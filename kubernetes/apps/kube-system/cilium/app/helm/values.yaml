@@ -4,6 +4,9 @@ bpf:
   masquerade: true
   # Ref: https://github.com/siderolabs/talos/issues/10002
   hostLegacyRouting: true
+cluster:
+  id: 1
+  name: main
 cni:
   # Required for pairing with Multus CNI
   exclusive: false
@@ -12,10 +15,12 @@ cgroup:
     enabled: false
   hostRoot: /sys/fs/cgroup
 # NOTE: devices might need to be set if you have more than one active NIC on your hosts
-# devices: eno+ eth+
+devices: bond+
 endpointRoutes:
   enabled: true
 envoy:
+  enabled: false
+gatewayAPI:
   enabled: false
 dashboards:
   enabled: true
@@ -72,3 +77,6 @@ securityContext:
       - SYS_RESOURCE
 socketLB:
   hostNamespaceOnly: true
+tls:
+  secretsNamespace:
+    create: false
