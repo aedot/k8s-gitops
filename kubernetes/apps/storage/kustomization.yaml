@@ -6,5 +6,5 @@ namespace: storage
 components:
   - ../../components/common
   - ../../components/repos/app-template
-resources:
-  - ./longhorn/ks.yaml
+resources: []
+  # - ./longhorn/ks.yaml
