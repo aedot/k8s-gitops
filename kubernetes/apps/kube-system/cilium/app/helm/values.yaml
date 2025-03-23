@@ -16,12 +16,15 @@ cgroup:
   hostRoot: /sys/fs/cgroup
 # NOTE: devices might need to be set if you have more than one active NIC on your hosts
 devices: bond+
+enableIPv4BIGTCP: true
 endpointRoutes:
   enabled: true
 envoy:
-  enabled: false
+  rollOutPods: true
 gatewayAPI:
-  enabled: false
+  enabled: true
+  enableAlpn: true
+  xffNumTrustedHops: 1
 dashboards:
   enabled: true
 hubble:
@@ -75,8 +78,3 @@ securityContext:
       - NET_ADMIN
       - SYS_ADMIN
       - SYS_RESOURCE
-socketLB:
-  hostNamespaceOnly: true
-tls:
-  secretsNamespace:
-    create: false
