@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cloudnative-pg
+  name: &app dragonfly-operator
   namespace: &namespace dbms
 spec:
   targetNamespace: *namespace
@@ -11,11 +11,7 @@ spec:
       app.kubernetes.io/name: *app
   interval: 30m
   timeout: 5m
-  path: "./kubernetes/apps/database/cloudnative-pg/app"
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
+  path: "./kubernetes/apps/database/dragonfly/app"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -26,7 +22,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app-cluster postgres-cluster
+  name: &app-cluster dragon-cluster
   namespace: &namespace dbms
 spec:
   targetNamespace: *namespace
@@ -35,21 +31,17 @@ spec:
       app.kubernetes.io/name: *app-cluster
   interval: 30m
   timeout: 5m
-  path: "./kubernetes/apps/database/cloudnative-pg/clusters"
+  path: "./kubernetes/apps/database/dragonfly/cluster"
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  wait: true
+  wait: false
   dependsOn:
-    - name: cloudnative-pg
+    - name: dragonfly-operator
       namespace: *namespace
-    - name: longhorn
-      namespace: longhorn-system
   postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
     substitute:
       APP: *app-cluster
+
