@@ -73,7 +73,7 @@ spec:
         serviceName: *app
         enabled: true
         endpoints:
-          - port: api
+          - port: s3
             scheme: http
             path: /minio/v2/metrics/cluster
             interval: 1m
@@ -88,25 +88,12 @@ spec:
                 service:
                   identifier: main
                   port: http
-      s3:
-        enabled: true
-        className: internal
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
-          nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
-          nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
-          nginx.ingress.kubernetes.io/proxy-body-size: 1024m
-          nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
-          nginx.ingress.kubernetes.io/configuration-snippet: |
-            chunked_transfer_encoding off;
-        hosts:
           - host: s3.${SECRET_DOMAIN}
             paths:
               - path: /
-                pathType: Prefix
                 service:
                   identifier: main
-                  port: api
+                  port: s3
     persistence:
       config:
         type: nfs
