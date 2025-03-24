@@ -25,6 +25,9 @@ spec:
   chartRef:
     kind: OCIRepository
     name: intel-device-plugins-gpu
+  dependsOn:
+    - name: intel-device-plugin-operator
+      namespace: kube-system
   install:
     remediation:
       retries: 3
@@ -33,7 +36,9 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  uninstall:
+    keepHistory: false
   values:
-    name: i915
-    nodeFeatureRule: false
+    name: intel-gpu-plugin
     sharedDevNum: 3
+    nodeFeatureRule: false

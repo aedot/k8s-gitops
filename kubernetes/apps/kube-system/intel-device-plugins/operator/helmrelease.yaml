@@ -35,7 +35,8 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  uninstall:
+    keepHistory: false
   values:
-    manager:
-      devices:
-        gpu: true
+    controllerExtraArgs: |
+      - --devices=gpu
