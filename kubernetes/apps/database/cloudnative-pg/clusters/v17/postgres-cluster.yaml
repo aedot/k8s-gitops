@@ -8,8 +8,11 @@ spec:
   instances: 3
   primaryUpdateStrategy: unsupervised
   storage:
-    size: 50Gi
-    storageClass: longhorn
+    volume:
+      size: 50Gi
+    persistentVolumeClaim:
+      claimName: postgres17
+      storageClassName: longhorn
   enableSuperuserAccess: true
   superuserSecret:
     name: postgres
