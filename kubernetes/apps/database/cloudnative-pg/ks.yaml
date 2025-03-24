@@ -45,8 +45,6 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: *namespace
-    - name: longhorn
-      namespace: longhorn-system
   postBuild:
     substituteFrom:
       - name: cluster-secrets
