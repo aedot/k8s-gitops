@@ -40,7 +40,7 @@ spec:
   dependsOn:
     - name: kube-prometheus-stack
       namespace: *namespace
-  path: ./kubernetes/main/apps/observability/kube-prometheus-stack/addons
+  path: ./kubernetes/apps/observability/kube-prometheus-stack/addons
   prune: true
   sourceRef:
     kind: GitRepository
