@@ -12,7 +12,7 @@ spec:
   interval: 30m
   path: ./kubernetes/apps/self-hosted/docmost/app
   components:
-    - ../../../../flux/components/volume
+    - ../../../../components/volume
   dependsOn:
     - name: postgres-cluster
       namespace: dbms
