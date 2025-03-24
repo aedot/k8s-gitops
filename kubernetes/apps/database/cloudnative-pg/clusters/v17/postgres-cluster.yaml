@@ -1,0 +1,53 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres17
+spec:
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.4-6
+  instances: 3
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 50Gi
+    storageClass: longhorn
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: postgres
+  postgresql:
+    parameters:
+      max_connections: "300"
+      shared_buffers: 256MB
+  monitoring:
+    enablePodMonitor: true
+
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore: &barmanObjectStore
+      data:
+        compression: bzip2
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      destinationPath: s3://postgres/
+      endpointURL: http://minio.storage.svc.cluster.local:9000
+      # Note: serverName version needs to be incremented
+      # when recovering from an existing cnpg cluster
+      serverName: &currentCluster postgres17-007
+      s3Credentials:
+        accessKeyId:
+          name: postgres-secret
+          key: AWS_ACCESS_KEY_ID
+        secretAccessKey:
+          name: postgres-secret
+          key: AWS_SECRET_ACCESS_KEY
+  # Note: previousCluster needs to be set to the name of the previous
+  # cluster when recovering from an existing cnpg cluster
+  bootstrap:
+    recovery:
+      source: &previousCluster postgres17-006
+  # Note: externalClusters is needed when recovering from an existing cnpg cluster
+  externalClusters:
+    - name: *previousCluster
+      barmanObjectStore:
+        <<: *barmanObjectStore
+        serverName: *previousCluster

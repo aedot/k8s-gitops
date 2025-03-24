@@ -2,9 +2,8 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: dbms
+components:
+  - ../../components/common
 resources:
-  - ./external-dns.yaml
-  - ./ingress-nginx.yaml
-  - ./longhorn.yaml
-  - ./bjw-s.yaml
-  - ./cloudnative-pg.yaml
+  - ./cloudnative-pg/ks.yaml

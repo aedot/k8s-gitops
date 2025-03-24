@@ -1,0 +1,48 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app cloudnative-pg
+  namespace: &namespace dbms
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  interval: 30m
+  timeout: 5m
+  path: "./kubernetes/apps/database/cloudnative-pg/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app-cluster postgres-cluster
+  namespace: &namespace dbms
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app-cluster
+  interval: 30m
+  timeout: 5m
+  path: "./kubernetes/apps/database/cloudnative-pg/clusters"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: *namespace
+    - name: longhorn
+      namespace: longhorn-system
+  postBuild:
+    substitute:
+      APP: *app-cluster
