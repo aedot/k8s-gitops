@@ -72,7 +72,7 @@ spec:
 
     service:
       app:
-        controller: scrypted
+        controller: *app
         ports:
           http:
             port: 11080
@@ -84,11 +84,11 @@ spec:
 
     ingress:
       app:
-        className: "internal"
+        className: internal
         annotations:
           external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
         hosts:
-          - host: scrypted.${SECRET_DOMAIN}
+          - host: "scrypted.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
