@@ -7,6 +7,4 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
-  - ./external/ks.yaml
-  - ./internal/ks.yaml
-  - ./multus/ks.yaml
+  - ./grafana/ks.yaml
