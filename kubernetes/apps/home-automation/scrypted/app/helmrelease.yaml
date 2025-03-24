@@ -85,15 +85,13 @@ spec:
     ingress:
       app:
         className: internal
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
         hosts:
-          - host: "scrypted.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+            - host: scrypted.${SECRET_DOMAIN}
+              paths:
+                - path: /
+                  service:
+                    identifier: app
+                    port: http
 
     persistence:
       config:
