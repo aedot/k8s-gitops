@@ -8,3 +8,6 @@ components:
   - ../../components/repos/app-template
 resources:
   - ./grafana/ks.yaml
+  - ./alertmanager/ks.yaml
+  - ./karma/ks.yaml
+  - ./kube-prometheus-stack/ks.yaml

@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: &name emqx
+spec:
+  staticConfigs:
+    - targets:
+        - emqx-dashboard.dbms.svc.cluster.local:18083
+  metricsPath: /api/v5/prometheus/stats
+  relabelings:
+    - action: replace
+      targetLabel: job
+      replacement: *name
