@@ -17,7 +17,7 @@ spec:
     - ../../../../components/volume
   dependsOn:
   - name: longhorn
-    namespace: storage
+    namespace: longhorn-system
   prune: true
   sourceRef:
     kind: GitRepository
