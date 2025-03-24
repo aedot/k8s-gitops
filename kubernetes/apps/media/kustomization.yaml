@@ -6,5 +6,5 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
-  - ./overseer/ks.yaml
+  - ./overseerr/ks.yaml
   - ./wizarr/ks.yaml
