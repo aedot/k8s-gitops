@@ -6,5 +6,6 @@ namespace: home-automation
 components:
   - ../../components/common
   - ../../components/repos/app-template
+  - ../../components/volume
 resources:
   - ./scrypted/ks.yaml

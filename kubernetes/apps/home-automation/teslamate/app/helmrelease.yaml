@@ -8,7 +8,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: app-template
-    namespace: flux-system
   interval: 30m
   install:
     remediation:
@@ -24,7 +23,6 @@ spec:
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
-
         pod:
           enableServiceLinks: false
           securityContext:
@@ -33,7 +31,6 @@ spec:
             runAsNonRoot: true
             fsGroup: 568
             fsGroupChangePolicy: OnRootMismatch
-
         initContainers:
           init-db:
             image:
@@ -47,38 +44,28 @@ spec:
             image:
               repository: teslamate/teslamate
               tag: "1.32.0"
-
             envFrom: *envFrom
-
             env:
               TZ: ${TZ}
               DISABLE_MQTT: "false"
               MQTT_HOST: "emqx-listeners.dbms.svc.cluster.local"
               DATABASE_NAME: "teslamate"
               DATABASE_HOST: "postgres17-rw.dbms.svc.cluster.local"
-
             resources:
               requests:
                 memory: 250Mi
                 cpu: 50m
               limits:
                 memory: 500Mi
-
     service:
       app:
         controller: teslamate
         ports:
           http:
             port: 4000
-
     ingress:
       app:
         className: internal
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/icon: teslamate.png
-          gethomepage.dev/name: TeslaMate
-          gethomepage.dev/group: Home
         hosts:
           - host: &host teslamate.${SECRET_DOMAIN}
             paths:

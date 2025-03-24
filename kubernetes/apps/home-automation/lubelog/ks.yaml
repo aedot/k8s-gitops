@@ -4,15 +4,15 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app lubelog
-  namespace: &namespace home
+  namespace: &namespace home-automation
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 30m
-  path: ./kubernetes/apps/home/lubelog/app
+  path: ./kubernetes/apps/home-automation/lubelog/app
   components:
-    - ../../../../flux/components/volume
+    - ../../../../components/volume
   dependsOn:
     - name: postgres-cluster
       namespace: dbms
@@ -27,6 +27,9 @@ spec:
   timeout: 5m
   wait: false
   postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
     substitute:
       APP: *app
       CAPACITY: 5Gi
