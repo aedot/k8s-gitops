@@ -6,3 +6,4 @@ resources:
   - ./external-dns.yaml
   - ./ingress-nginx.yaml
   - ./longhorn.yaml
+  - ./bjw-s.yaml
