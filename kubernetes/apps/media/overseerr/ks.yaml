@@ -14,8 +14,6 @@ spec:
   components:
     - ../../../../components/volume
   dependsOn:
-    - name: overseerr
-      namespace: *namespace
     - name: longhorn
       namespace: longhorn-system
   prune: true
