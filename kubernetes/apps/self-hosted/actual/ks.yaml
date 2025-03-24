@@ -25,6 +25,9 @@ spec:
   timeout: 5m
   wait: false
   postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
     substitute:
       APP: *app
       CAPACITY: 5Gi
@@ -55,6 +58,9 @@ spec:
   timeout: 5m
   wait: false
   postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
     substitute:
       APP: *app
       CAPACITY: 5Gi
