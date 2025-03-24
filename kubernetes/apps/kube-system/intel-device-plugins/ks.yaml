@@ -15,7 +15,7 @@ spec:
       name: *app
       namespace: *namespace
   interval: 1h
-  path: ./kubernetes/apps/kube-system/intel-device-plugin/app
+  path: ./kubernetes/apps/kube-system/intel-device-plugins/app
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -49,7 +49,7 @@ spec:
       failed: status.desiredNumberScheduled != status.numberReady
       current: status.desiredNumberScheduled == status.numberReady
   interval: 1h
-  path: ./kubernetes/apps/kube-system/intel-device-plugin/gpu
+  path: ./kubernetes/apps/kube-system/intel-device-plugins/gpu
   prune: true
   retryInterval: 2m
   sourceRef:

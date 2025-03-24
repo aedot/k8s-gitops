@@ -12,7 +12,7 @@ spec:
   interval: 30m
   path: ./kubernetes/apps/home-automation/scrypted/app
   components:
-    - ../../../../components/common/volume
+    - ../../../../components/volume
   dependsOn:
     - name: multus-networks
       namespace: network
