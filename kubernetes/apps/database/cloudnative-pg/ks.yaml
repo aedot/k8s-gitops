@@ -42,9 +42,9 @@ spec:
     name: flux-system
     namespace: flux-system
   wait: true
-  dependsOn:
-    - name: cloudnative-pg
-      namespace: *namespace
+  # dependsOn:
+  #   - name: cloudnative-pg
+  #     namespace: *namespace
   postBuild:
     substituteFrom:
       - name: cluster-secrets
