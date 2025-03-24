@@ -9,3 +9,4 @@ resources:
   - ./bjw-s.yaml
   - ./cloudnative-pg.yaml
   - ./emqx.yaml
+  - ./grafana.yaml
