@@ -18,7 +18,7 @@ spec:
       retries: 3
   values:
     controllers:
-      minio:
+      main:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -27,13 +27,16 @@ spec:
               repository: quay.io/minio/minio
               tag: RELEASE.2025-03-12T18-04-18Z@sha256:46b3009bf7041eefbd90bd0d2b38c6ddc24d20a35d609551a1802c558c1c958f
             env:
+              TZ: ${TZ}
               MINIO_API_CORS_ALLOW_ORIGIN: https://minio.${SECRET_DOMAIN},https://s3.${SECRET_DOMAIN}
               MINIO_BROWSER_REDIRECT_URL: https://minio.${SECRET_DOMAIN}
               MINIO_PROMETHEUS_JOB_ID: minio
-              MINIO_PROMETHEUS_URL: https://prometheus.${SECRET_DOMAIN}
+              MINIO_PROMETHEUS_URL: http://kube-prometheus-stack-prometheus.observability:9090
               MINIO_PROMETHEUS_AUTH_TYPE: public
               #MINIO_SERVER_URL: https://s3.${SECRET_DOMAIN}
+              MINIO_AUTH_TYPE: public
               MINIO_UPDATE: "off"
+              MINIO_API_REQUESTS_MAX: "1600"
             envFrom:
               - secretRef:
                   name: minio-secret
@@ -51,59 +54,55 @@ spec:
                   timeoutSeconds: 10
                   failureThreshold: 6
               readiness: *probes
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-            resources:
-              requests:
-                cpu: 100m
-              limits:
-                memory: 2Gi
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [10000]
-        seccompProfile: { type: RuntimeDefault }
     service:
-      app:
-        controller: *app
+      main:
+        controller: main
         ports:
           http:
             port: 9001
           s3:
             port: 9000
     serviceMonitor:
-      app:
+      main:
         serviceName: *app
+        enabled: true
         endpoints:
-          - port: s3
+          - port: api
             scheme: http
             path: /minio/v2/metrics/cluster
             interval: 1m
             scrapeTimeout: 10s
     ingress:
-      app:
+      main:
         className: internal
         annotations:
           external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
         hosts:
-          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          - host: "minio.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: main
                   port: http
+      s3:
+        enabled: true
+        className: internal
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
+          nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+          nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
+          nginx.ingress.kubernetes.io/proxy-body-size: 1024m
+          nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            chunked_transfer_encoding off;
+        hosts:
           - host: s3.${SECRET_DOMAIN}
             paths:
               - path: /
+                pathType: Prefix
                 service:
-                  identifier: app
-                  port: s3
+                  identifier: main
+                  port: api
     persistence:
       config:
         type: nfs
@@ -111,3 +110,9 @@ spec:
         path: /mnt/user/k8s/minio
         globalMounts:
           - path: /data
+    resources:
+      requests:
+        memory: 750Mi
+        cpu: 400m
+      limits:
+        memory: 2Gi
