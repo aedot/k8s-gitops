@@ -10,5 +10,8 @@ resources:
   - ./docmost/ks.yaml
   - ./gramps/ks.yaml
   - ./hoarder/ks.yaml
-  
+  - ./lubelogger/ks.yaml
+  - ./teslamate/ks.yaml
+  - ./it-tools/ks.yaml
+
 

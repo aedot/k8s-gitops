@@ -3,21 +3,19 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app scrypted
-  namespace: &namespace home-automation
+  name: &app teslamate
+  namespace: &namespace self-hosted
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 30m
-  path: ./kubernetes/apps/home-automation/scrypted/app
-  components:
-    - ../../../../components/volume
+  path: ./kubernetes/apps/self-hosted/teslamate/app
   dependsOn:
-    - name: multus-networks
-      namespace: network
-    - name: longhorn
-      namespace: longhorn-system
+    - name: postgres-cluster
+      namespace: dbms
+    - name: emqx-cluster
+      namespace: dbms
   prune: true
   sourceRef:
     kind: GitRepository
@@ -32,4 +30,3 @@ spec:
         kind: Secret
     substitute:
       APP: *app
-      CAPACITY: 5Gi

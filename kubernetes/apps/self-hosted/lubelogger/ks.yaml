@@ -3,19 +3,21 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app teslamate
-  namespace: &namespace home-automation
+  name: &app lubelogger
+  namespace: &namespace self-hosted
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 30m
-  path: ./kubernetes/apps/home-automation/teslamate/app
+  path: ./kubernetes/apps/self-hosted/lubelogger/app
+  components:
+    - ../../../../components/volume
   dependsOn:
     - name: postgres-cluster
       namespace: dbms
-    - name: emqx-cluster
-      namespace: dbms
+    - name: longhorn
+      namespace: storage
   prune: true
   sourceRef:
     kind: GitRepository
@@ -30,3 +32,4 @@ spec:
         kind: Secret
     substitute:
       APP: *app
+      CAPACITY: 5Gi
