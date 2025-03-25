@@ -17,7 +17,7 @@ spec:
     - name: postgres-cluster
       namespace: dbms
     - name: longhorn
-      namespace: storage
+      namespace: longhorn-system
   prune: true
   sourceRef:
     kind: GitRepository
