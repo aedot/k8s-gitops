@@ -11,7 +11,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: postgres-cluster
-      namespace: database
+      namespace: dbms
   interval: 1h
   path: ./kubernetes/apps/observability/gatus/app
   postBuild:
