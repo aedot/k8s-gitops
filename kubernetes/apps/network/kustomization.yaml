@@ -7,7 +7,10 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
-  - ./external/ks.yaml
-  - ./internal/ks.yaml
+  - ./cloudflared/ks.yaml
+  - ./echo-server/ks.yaml
+  - ./external-dns/ks.yaml
+  - ./ingress-nginx/ks.yaml
+  - ./k8s-gateway/ks.yaml
   - ./multus/ks.yaml
-  - ./echo/ks.yaml
+

@@ -1,7 +1,7 @@
 ## TODO: FIX READme
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/aedot/agemo-ops/main/docs/assets/logo.png" align="center" width="144px" height="144px"/>
+  <img src="https://raw.githubusercontent.com/aedot/k8s-gitops/main/docs/assets/logo.png" align="center" width="144px" height="144px"/>
   <h3> My home operations repository </h3>
   <i>managed with Flux, Renovate and GitHub Actions</i> 🤖
 </div>
