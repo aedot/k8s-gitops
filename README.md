@@ -1,4 +1,5 @@
 ## TODO: FIX READme
+
 <div align="center">
   <img src="https://raw.githubusercontent.com/aedot/agemo-ops/main/docs/assets/logo.png" align="center" width="144px" height="144px"/>
   <h3> My home operations repository </h3>
@@ -9,7 +10,7 @@
 
 <div>
 
-[![Talos](https://img.shields.io/badge/1.9.3-orange?style=for-the-badge&logo=talos&logoColor=white)](https://talos.dev  "Talos OS")
+[![Talos](https://img.shields.io/badge/1.9.5-orange?style=for-the-badge&logo=talos&logoColor=white)](https://talos.dev  "Talos OS")
 [![Kubernetes](https://img.shields.io/badge/1.32-blue?style=for-the-badge&logo=kubernetes&logoColor=white)](https://kubernetes.io)
 [![Flux](https://img.shields.io/badge/2.4.0-blue?style=for-the-badge&logo=flux&logoColor=white)](https://fluxcd.io)
 
@@ -27,7 +28,6 @@ This Git repository contains the following directories under [Kubernetes](./kube
 ```sh
 📁 kubernetes
 ├── 📁 apps            # applications
-├── 📁 bootstrap       # bootstrap procedures
 ├── 📁 flux            # core flux configuration
 ├── 📁 components      # re-useable components
 └── 📁 ...             # other clusters
