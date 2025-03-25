@@ -21,7 +21,9 @@ spec:
       namespace: network
   values:
     controllers:
-      echo:
+      echo-server:
+        annotations:
+          reloader.stakater.com/auto: "true"
         strategy: RollingUpdate
         containers:
           app:
@@ -69,7 +71,7 @@ spec:
             port: *port
     serviceMonitor:
       app:
-        serviceName: echo
+        serviceName: *app
         endpoints:
           - port: http
             scheme: http
