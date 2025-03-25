@@ -19,6 +19,8 @@ spec:
   wait: false
   interval: 30m
   timeout: 5m
+  components:
+    - ../../../../components/gatus/external
   dependsOn:
     - name: lldap
       namespace: *namespace
@@ -28,3 +30,4 @@ spec:
         kind: Secret
     substitute:
       APP: *app
+      GATUS_SUBDOMAIN: auth

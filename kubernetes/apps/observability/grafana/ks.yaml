@@ -9,12 +9,16 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/gatus/guarded
   dependsOn:
     - name: cert-manager-tls
       namespace: cert-manager
   interval: 1h
   path: ./kubernetes/apps/observability/grafana/app
   postBuild:
+    substitute:
+      APP: *app
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
