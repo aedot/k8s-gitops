@@ -13,6 +13,7 @@ spec:
   path: ./kubernetes/apps/media/wizarr/app
   components:
     - ../../../../components/volume
+    - ../../../../components/gatus/external
   dependsOn:
     - name: overseerr
       namespace: *namespace
@@ -33,4 +34,5 @@ spec:
     substitute:
       APP: *app
       CAPACITY: 5Gi
+      GATUS_SUBDOMAIN: onboard
 
