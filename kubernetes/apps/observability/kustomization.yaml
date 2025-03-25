@@ -11,3 +11,4 @@ resources:
   - ./alertmanager/ks.yaml
   - ./karma/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
+  - teslamate/ks.yaml
