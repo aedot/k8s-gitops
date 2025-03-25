@@ -3,26 +3,24 @@
   "extends": [
     "config:recommended",
     "docker:enableMajor",
-    "replacements:k8s-registry-move",
+    "helpers:pinGitHubActionDigests",
     ":automergeBranch",
     ":disableRateLimiting",
     ":dependencyDashboard",
     ":semanticCommits",
-    ":skipStatusChecks",
-    ":timezone(America/Los_Angeles)",
-    "github>aedot/k8s-ops//.github/renovate/allowedVersions.json5",
+    // "github>aedot/k8s-ops//.github/renovate/allowedVersions.json5",
     "github>aedot/k8s-ops//.github/renovate/autoMerge.json5",
-    "github>aedot/k8s-ops//.github/renovate/clusters.json5",
-    "github>aedot/k8s-ops//.github/renovate/commitMessage.json5",
+    // "github>aedot/k8s-ops//.github/renovate/clusters.json5",
+    // "github>aedot/k8s-ops//.github/renovate/commitMessage.json5",
     "github>aedot/k8s-ops//.github/renovate/customManagers.json5",
     "github>aedot/k8s-ops//.github/renovate/groups.json5",
     "github>aedot/k8s-ops//.github/renovate/labels.json5",
-    "github>aedot/k8s-ops//.github/renovate/packageRules.json5",
+    // "github>aedot/k8s-ops//.github/renovate/packageRules.json5",
     "github>aedot/k8s-ops//.github/renovate/semanticCommits.json5"
   ],
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": ["prEditedNotification", "prIgnoreNotification"],
-  "ignorePaths": ["**/*.sops.*", "**/.archive/**", "**/resources/**"],
+  "ignorePaths": ["**/*.sops.*", "**/resources/**"],
   "flux": {
     "fileMatch": [
       "(^|/)kubernetes/.+\\.ya?ml$"
@@ -35,7 +33,6 @@
   },
   "kubernetes": {
     "fileMatch": [
-      "(^|/)\\.taskfiles/.+\\.ya?ml$",
       "(^|/)kubernetes/.+\\.ya?ml$"
     ]
   }
