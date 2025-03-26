@@ -10,8 +10,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../components/gatus/guarded
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
@@ -30,7 +28,6 @@ spec:
         kind: Secret
     substitute:
       APP: *app
-      GATUS_SUBDOMAIN: prometheus
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
