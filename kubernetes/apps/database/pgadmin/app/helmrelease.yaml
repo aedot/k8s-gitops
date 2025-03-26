@@ -77,7 +77,7 @@ spec:
         enabled: true
         className: internal
         hosts:
-          - host: &host pgadmin.${SECRET_DOMAIN}
+          - host: &host pg.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:

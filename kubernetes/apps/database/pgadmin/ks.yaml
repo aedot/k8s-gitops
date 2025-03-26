@@ -10,6 +10,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 30m
+  components:
+    - ../../../../components/gatus/guarded
   path: ./kubernetes/apps/database/pgadmin/app
   prune: true
   sourceRef:
@@ -25,3 +27,5 @@ spec:
         kind: Secret
     substitute:
       APP: *app
+      GATUS_SUBDOMAIN: pg
+
