@@ -10,6 +10,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: external-secrets-stores
+      namespace: external-secrets
   interval: 30m
   timeout: 5m
   path: "./kubernetes/apps/database/emqx/app"
@@ -36,6 +39,7 @@ spec:
   targetNamespace: *namespace
   dependsOn:
     - name: emqx
+      namespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
