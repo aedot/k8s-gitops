@@ -12,10 +12,6 @@ spec:
   interval: 30m
   timeout: 5m
   path: "./kubernetes/apps/database/cloudnative-pg/app"
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
   prune: true
   sourceRef:
     kind: GitRepository
@@ -45,9 +41,41 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: *namespace
+    - name: external-secrets-stores
+      namespace: external-secrets
   postBuild:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
     substitute:
       APP: *app-cluster
+---
+kind: Kustomization
+metadata:
+  name: &app pgadmin
+  namespace: &namespace dbms
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  interval: 30m
+  path: ./kubernetes/apps/database/cloudnative-pg/pgadmin
+  prune: true
+  dependsOn:
+    - name: postgres-cluster
+      namespace: *namespace
+    - name: external-secrets-stores
+      namespace: external-secrets
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
+    substitute:
+      APP: *app
