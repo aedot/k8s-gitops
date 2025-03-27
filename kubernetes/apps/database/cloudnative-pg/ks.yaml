@@ -22,13 +22,13 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app-cluster postgres-cluster
+  name: &app postgres-cluster
   namespace: &namespace dbms
 spec:
   targetNamespace: *namespace
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app-cluster
+      app.kubernetes.io/name: *app
   interval: 30m
   timeout: 5m
   path: "./kubernetes/apps/database/cloudnative-pg/clusters"
@@ -48,31 +48,32 @@ spec:
       - name: cluster-secrets
         kind: Secret
     substitute:
-      APP: *app-cluster
+      APP: *app
 ---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app pgadmin
   namespace: &namespace dbms
 spec:
+  targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 30m
-  path: ./kubernetes/apps/database/cloudnative-pg/pgadmin
+  timeout: 5m
+  path: "./kubernetes/apps/database/cloudnative-pg/pgadmin"
   prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
   dependsOn:
     - name: postgres-cluster
       namespace: *namespace
     - name: external-secrets-stores
       namespace: external-secrets
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  targetNamespace: *namespace
-  timeout: 5m
-  wait: false
   postBuild:
     substituteFrom:
       - name: cluster-secrets
@@ -80,29 +81,30 @@ spec:
     substitute:
       APP: *app
 ---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app cloudnative-pg-pgdump
   namespace: &namespace dbms
 spec:
+  targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 30m
-  path: ./kubernetes/apps/database/cloudnative-pg/pgdump
+  timeout: 5m
+  path: "./kubernetes/apps/database/cloudnative-pg/pgdump"
   prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
   dependsOn:
     - name: postgres-cluster
       namespace: *namespace
     - name: external-secrets-stores
       namespace: external-secrets
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  targetNamespace: *namespace
-  timeout: 5m
-  wait: false
   postBuild:
     substituteFrom:
       - name: cluster-secrets
