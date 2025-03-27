@@ -20,6 +20,8 @@ spec:
       namespace: dbms
     - name: postgres-cluster
       namespace: dbms
+    - name: external-secrets-stores
+      namespace: external-secrets
   prune: true
   sourceRef:
     kind: GitRepository
