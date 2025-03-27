@@ -8,5 +8,4 @@ components:
 resources:
   - ./lldap/ks.yaml
   - ./authelia/ks.yaml
-  - ./external-secrets/ks.yaml
 
