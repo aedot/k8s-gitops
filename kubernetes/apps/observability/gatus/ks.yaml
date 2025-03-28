@@ -12,6 +12,8 @@ spec:
   dependsOn:
     - name: postgres-cluster
       namespace: dbms
+    - name: external-secrets
+      namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/observability/gatus/app
   postBuild:
