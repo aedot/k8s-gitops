@@ -10,7 +10,7 @@ data:
     endpoints:
       - name: postgres
         group: guarded
-        url: tcp://postgres17-rw.storage.svc.cluster.local:5432
+        url: tcp://postgres17-rw.dbms.svc.cluster.local:5432
         interval: 1m
         ui:
           hide-url: true
