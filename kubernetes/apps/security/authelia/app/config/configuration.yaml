@@ -1,4 +1,7 @@
 ---
+log:
+  level: info
+
 authentication_backend:
   ldap:
     address: ldap://lldap.security.svc.cluster.local:5389
@@ -17,13 +20,20 @@ authentication_backend:
       display_name: displayName
       mail: mail
       group_name: cn
+  password_reset:
+    disable: true
+  refresh_interval: 1m
+
+  regulation:
+    max_retries: 3
+    find_time: 1h
+    ban_time: 1d
 
 session:
   name: authelia-home-ops
-  same_site: lax
-  inactivity: 5m
-  expiration: 1h
-  remember_me: 1M
+  inactivity: 3d
+  expiration: 7d
+  remember_me: 6M
   cookies:
     - name: authelia_session
       domain: ${SECRET_DOMAIN}
@@ -31,14 +41,32 @@ session:
       default_redirection_url: https://${SECRET_DOMAIN}
   redis:
     host: dragonfly.dbms.svc.cluster.local
-    port: 6379
-    database_index: 2
+
+access_control:
+  default_policy: two_factor
+  networks:
+    - name: internal
+      networks:
+        - 10.0.0.0/8
+        - 172.16.0.0/12
+        - 192.168.0.0/16
+  rules: []
 
 notifier:
   disable_startup_check: false
   smtp:
     subject: '[Authelia] {title}'
+    username: '{{ env "AUTHELIA_NOTIFIER_SMTP_USERNAME" }}'
+    password: '{{ env "AUTHELIA_NOTIFIER_SMTP_PASSWORD" }}'
+    sender: '{{ env "AUTHELIA_NOTIFIER_SMTP_SENDER" }}'
+    startup_check_address: '{{ env "AUTHELIA_NOTIFIER_SMTP_STARTUP_CHECK_ADDRESS" }}'
+    identifier: 'localhost'
     disable_require_tls: true
+    disable_html_emails: false
+
+identity_validation:
+  reset_password:
+    jwt_secret: '{{ env "JWT_SECRET" }}'
 
 default_2fa_method:
   totp
@@ -46,41 +74,22 @@ default_2fa_method:
 duo_api:
   disable: true
 
-access_control:
-  ## Default policy can either be 'bypass', 'one_factor', 'two_factor' or 'deny'. It is the policy applied to any
-  ## resource if there is no policy to be applied to the user.
-  default_policy: two_factor
-  networks:
-    - name: private
-      networks: [10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16]
-    - name: vpn
-      networks: [10.10.0.0/16]
-  rules:
-    # bypass Authelia WAN + LAN
-    - domain:
-        - auth.${SECRET_DOMAIN}
-      policy: bypass
-    # One factor auth for LAN
-    - domain:
-        - "*.${SECRET_DOMAIN}"
-      policy: one_factor
-      subject: [group:admins, group:users]
-      networks:
-        - private
-
 identity_providers:
   oidc:
-    jwks:
-      - key: |
-          {{ secret "/config/secret/OIDC_JWKS_KEY" | mindent 10 "|" | msquote }}
     cors:
-      endpoints: [authorization, token, revocation, introspection]
+      endpoints:
+        - authorization
+        - token
+        - revocation
+        - introspection
       allowed_origins_from_client_redirect_uris: true
-
+    jwks:
+      - key_id: default
+        key: {{ env "JWKS_KEY" | mindent 10 "|" | msquote }}
     clients:
       - client_name: Grafana
         client_id: Grafana
-        client_secret: {{ secret "/config/secret/GRAFANA_OAUTH_CLIENT_SECRET" }}
+        client_secret: '{{ env "GRAFANA_OAUTH_CLIENT_SECRET" }}'
         public: false
         authorization_policy: two_factor
         require_pkce: true
@@ -92,7 +101,7 @@ identity_providers:
 
       - client_name: pgAdmin
         client_id: pgadmin
-        client_secret: {{ secret "/config/secret/PGADMIN_OAUTH_CLIENT_SECRET" }}
+        client_secret: {{ env "PGADMIN_OAUTH_CLIENT_SECRET" }}
         public: false
         authorization_policy: two_factor
         scopes: [openid, profile, email]
@@ -102,7 +111,7 @@ identity_providers:
 
       - client_name: hoarder
         client_id: Hoarder
-        client_secret: {{ secret "/config/secret/HOARDER_OAUTH_CLIENT_SECRET" }}
+        client_secret: {{ env "HOARDER_OAUTH_CLIENT_SECRET" }}
         public: false
         authorization_policy: one_factor
         scopes: [openid, profile, email]
@@ -112,7 +121,7 @@ identity_providers:
 
       - client_name: lubelog
         client_id: Lubelog
-        client_secret: {{ secret "/config/secret/LUBELOG_OAUTH_CLIENT_SECRET" }}
+        client_secret: {{ env "LUBELOG_OAUTH_CLIENT_SECRET" }}
         public: false
         authorization_policy: one_factor
         require_pkce: true
@@ -124,7 +133,7 @@ identity_providers:
 
       - client_id: mealie
         client_name: Mealie
-        client_secret: {{ secret "/config/secret/MEALIE_OAUTH_CLIENT_SECRET" }}
+        client_secret: {{ env "MEALIE_OAUTH_CLIENT_SECRET" }}
         public: false
         authorization_policy: two_factor
         require_pkce: true

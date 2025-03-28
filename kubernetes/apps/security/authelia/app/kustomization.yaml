@@ -1,15 +1,15 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/kustomization.json
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./externalsecret.yaml
   - ./helmrelease.yaml
+  - ./externalsecret.yaml
 configMapGenerator:
   - name: authelia-configmap
     files:
-      - ./config/configuration.yaml
+      - configuration.yaml=./config/configuration.yaml
 generatorOptions:
   disableNameSuffixHash: true
-  # annotations:
-  #   kustomize.toolkit.fluxcd.io/substitute: disabled
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled

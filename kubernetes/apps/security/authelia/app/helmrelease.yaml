@@ -19,6 +19,7 @@ spec:
       retries: 3
   dependsOn:
     - name: lldap
+      namespace: security
   values:
     defaultPodOptions:
       enableServiceLinks: false
@@ -31,7 +32,6 @@ spec:
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
-          secret.reloader.stakater.com/reload: authelia-secret
         initContainers:
           init-db:
             image:
@@ -46,7 +46,6 @@ spec:
               repository: ghcr.io/authelia/authelia
               tag: 4.39.1@sha256:e325963609cc928861ffe8130c09111862df88dd8fcafbcd2c47e5ff0a4ae268
             env:
-              AUTHELIA_LOG_LEVEL: debug
               AUTHELIA_SERVER_DISABLE_HEALTHCHECK: "true"
               AUTHELIA_SERVER_ADDRESS: tcp://0.0.0.0:8888
               AUTHELIA_TELEMETRY_METRICS_ADDRESS: tcp://0.0.0.0:8080
@@ -101,6 +100,11 @@ spec:
         className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            add_header Cache-Control "no-store";
+            add_header Pragma "no-cache";
+            add_header X-Frame-Options "SAMEORIGIN";
+            add_header X-XSS-Protection "1; mode=block";
         hosts:
           - host: &host auth.${SECRET_DOMAIN}
             paths:
@@ -120,15 +124,3 @@ spec:
           - path: /config/configuration.yaml
             subPath: configuration.yaml
             readOnly: true
-      secret-keys:
-        enabled: true
-        type: secret
-        name: authelia-secret
-        globalMounts:
-          - path: /config/secret
-      # secret-files:
-      #   enabled: true
-      #   type: secret
-      #   name: authelia-secret-files
-      #   globalMounts:
-      #     - path: /config/oidc-secret
