@@ -5,12 +5,12 @@ namespace: self-hosted
 components:
   - ../../components/common
   - ../../components/repos/app-template
-resources:
-  - ./actual/ks.yaml
-  - ./docmost/ks.yaml
-  - ./gramps/ks.yaml
+resources: []
+  # - ./actual/ks.yaml
+  # - ./docmost/ks.yaml
+  # - ./gramps/ks.yaml
   # - ./hoarder/ks.yaml
-  - ./lubelogger/ks.yaml
-  - ./it-tools/ks.yaml
+  # - ./lubelogger/ks.yaml
+  # - ./it-tools/ks.yaml
 
 
