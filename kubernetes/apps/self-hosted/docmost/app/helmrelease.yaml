@@ -29,7 +29,7 @@ spec:
               tag: 17@sha256:a9f405688344a8a6f718e2c344438342ad21540986aeb5ab5fa781831eb2c597
             envFrom: &envFrom
               - secretRef:
-                  name: *app
+                  name: docmost-secret
         containers:
           app:
             image:
