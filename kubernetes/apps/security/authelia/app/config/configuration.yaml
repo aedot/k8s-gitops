@@ -36,9 +36,9 @@ session:
   remember_me: 6M
   cookies:
     - name: authelia_session
-      domain: ${SECRET_DOMAIN}
-      authelia_url: https://auth.${SECRET_DOMAIN}
-      default_redirection_url: https://${SECRET_DOMAIN}
+      domain: {{ env "SECRET_DOMAIN" }}
+      authelia_url: https://auth.{{ env "SECRET_DOMAIN" }}
+      default_redirection_url: https://{{ env "SECRET_DOMAIN" }}
   redis:
     host: dragonfly.dbms.svc.cluster.local
 
