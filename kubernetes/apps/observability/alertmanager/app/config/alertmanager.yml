@@ -5,7 +5,7 @@ receivers:
     pushover_configs:
       - html: true
         token_file: /etc/secrets/pushover_api_token
-        user_key_file: /etc/secrets/pushover_api_userkey
+        user_key_file: /etc/secrets/pushover_api_user_key
         send_resolved: true
         priority: |-
           {{ if eq .Status "firing" }}1{{ else }}0{{ end }}
