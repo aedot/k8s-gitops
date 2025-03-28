@@ -79,7 +79,7 @@ identity_providers:
     clients:
       - client_name: Grafana
         client_id: Grafana
-        client_secret: {{ secret "/config/secret/GRAFANA_OAUTH_CLIENT_SECRET_DIGEST" }}
+        client_secret: {{ secret "/config/secret/GRAFANA_OAUTH_CLIENT_SECRET" }}
         public: false
         authorization_policy: two_factor
         require_pkce: true
@@ -91,7 +91,7 @@ identity_providers:
 
       - client_name: pgAdmin
         client_id: pgadmin
-        client_secret: {{ secret "/config/secret/PGADMIN_OAUTH_CLIENT_SECRET_DIGEST" }}
+        client_secret: {{ secret "/config/secret/PGADMIN_OAUTH_CLIENT_SECRET" }}
         public: false
         authorization_policy: two_factor
         scopes: [openid, profile, email]
@@ -101,7 +101,7 @@ identity_providers:
 
       - client_name: hoarder
         client_id: Hoarder
-        client_secret: {{ secret "/config/secret/HOARDER_OAUTH_CLIENT_SECRET_DIGEST" }}
+        client_secret: {{ secret "/config/secret/HOARDER_OAUTH_CLIENT_SECRET" }}
         public: false
         authorization_policy: one_factor
         scopes: [openid, profile, email]
@@ -111,7 +111,7 @@ identity_providers:
 
       - client_name: lubelog
         client_id: Lubelog
-        client_secret: {{ secret "/config/secret/LUBELOG_OAUTH_CLIENT_SECRET_DIGEST" }}
+        client_secret: {{ secret "/config/secret/LUBELOG_OAUTH_CLIENT_SECRET" }}
         public: false
         authorization_policy: one_factor
         require_pkce: true
@@ -123,7 +123,7 @@ identity_providers:
 
       - client_id: mealie
         client_name: Mealie
-        client_secret: {{ secret "/config/secret/MEALIE_OAUTH_CLIENT_SECRET_DIGEST" }}
+        client_secret: {{ secret "/config/secret/MEALIE_OAUTH_CLIENT_SECRET" }}
         public: false
         authorization_policy: two_factor
         require_pkce: true
