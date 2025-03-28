@@ -24,10 +24,10 @@ authentication_backend:
     disable: true
   refresh_interval: 1m
 
-  regulation:
-    max_retries: 3
-    find_time: 1h
-    ban_time: 1d
+regulation:
+  max_retries: 3
+  find_time: 1h
+  ban_time: 1d
 
 session:
   name: authelia-home-ops
