@@ -13,3 +13,5 @@ resources:
   - ./kube-prometheus-stack/ks.yaml
   - ./teslamate/ks.yaml
   - ./gatus/ks.yaml
+  - ./loki/ks.yaml
+  - ./promtail/ks.yaml
