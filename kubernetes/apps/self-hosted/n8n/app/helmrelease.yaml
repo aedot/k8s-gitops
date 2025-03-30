@@ -1,0 +1,86 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: n8n
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  dependsOn:
+    - name: longhorn
+      namespace: longhorn-system
+  values:
+    controllers:
+      n8n:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+              image:
+                repository: ghcr.io/home-operations/postgres-init
+                tag: 17@sha256:a9f405688344a8a6f718e2c344438342ad21540986aeb5ab5fa781831eb2c597
+              envFrom: &envFrom
+                - secretRef:
+                    name: n8n-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/n8n-io/n8n
+              tag: 1.85.4
+            env:
+              GENERIC_TIMEZONE: America/Los_Angeles
+              N8N_PORT: &port 80
+              N8N_HOST: &host "n8n.${SECRET_DOMAIN}"
+              WEBHOOK_URL: "https://n8n.${SECRET_DOMAIN}"
+              N8N_LOG_LEVEL: verbose
+              N8N_LOG_OUTPUT: console, file
+              N8N_PERSONALIZATION_ENABLED: false
+              N8N_VERSION_NOTIFICATIONS_ENABLED: true
+              N8N_DIAGONISTICS_ENABLED: true
+              N8N_HIRING_BANNER_ENABLED: false
+              N8N_USER_MANAGEMENT_DISABLED: true
+              N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: false
+              # Public API
+              N8N_PUBLIC_API_DISABLED: true
+              N8N_PUBLIC_API_SWAGGERUI_DISABLED: true
+              NODE_FUNCTION_ALLOW_BUILTIN: "*"
+              N8N_METRICS: true
+              NODE_FUNCTION_ALLOW_EXTERNAL: databricks/sql
+              DB_TYPE: postgresdb
+              DB_POSTGRESDB_PORT: 5432
+              N8N_USER_FOLDER: /home/n8n/app
+            envFrom: *envFrom
+
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: "OnRootMismatch"
+    service:
+      app:
+        controller: n8n
+        ports:
+          http:
+            port: *port
+    persistence:
+      data:
+        existingClaim: n8n
+        advancedMounts:
+          n8n:
+            app:
+              - path: /home/node/.n8n
+    ingress:
+      app:
+        className: internal
+        hosts:
+          - host: *host
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
