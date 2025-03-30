@@ -111,17 +111,6 @@ identity_providers:
         userinfo_signed_response_alg: none
         token_endpoint_auth_method: client_secret_basic
 
-      - client_name: hoarder
-        client_id: Hoarder
-        client_secret: {{ env "HOARDER_OAUTH_CLIENT_SECRET" }}
-        public: false
-        authorization_policy: one_factor
-        scopes: [openid, profile, email]
-        redirect_uris:
-          - https://hoarder.{{ env "SECRET_DOMAIN" }}/api/auth/callback/custom
-        userinfo_signed_response_alg: none
-        grant_types: authorization_code
-
       - client_name: lubelog
         client_id: Lubelog
         client_secret: {{ env "LUBELOG_OAUTH_CLIENT_SECRET" }}
