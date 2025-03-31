@@ -76,7 +76,7 @@ spec:
             port: *port
     persistence:
       data:
-        existingClaim: n8n
+        existingClaim: *app
         advancedMounts:
           n8n:
             app:
