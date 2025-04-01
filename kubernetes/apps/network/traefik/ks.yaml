@@ -72,8 +72,6 @@ spec:
   dependsOn:
     - name: traefik-crds
       namespace: *namespace
-    - name: cilium-resources
-      namespace: kube-system
   path: ./kubernetes/apps/network/traefik/internal
   components:
     - ../../../../components/gatus/internal
