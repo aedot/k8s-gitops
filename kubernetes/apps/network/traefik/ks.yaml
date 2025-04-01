@@ -134,8 +134,6 @@ spec:
   dependsOn:
     - name: traefik-external
       namespace: *namespace
-    - name: error-pages
-      namespace: *namespace
   interval: 30m
   path: ./kubernetes/apps/network/traefik/middlewares
   prune: true
