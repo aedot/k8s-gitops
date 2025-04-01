@@ -147,6 +147,7 @@ spec:
           protocol: HTTPS
           certificateRefs:
             - name: ${SECRET_DOMAIN/./-}-production-tls
+              namespace: cert-manager
           mode: Terminate
     gatewayClass:
       enabled: true
