@@ -1,0 +1,154 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app traefik-crds
+  namespace: &namespace network
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  interval: 30m
+  path: ./kubernetes/apps/network/traefik/crds
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  timeout: 5m
+  wait: false
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app traefik-external
+  namespace: &namespace network
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  interval: 30m
+  dependsOn:
+    - name: traefik-crds
+      namespace: *namespace
+    - name: cilium-resources
+      namespace: kube-system
+  path: ./kubernetes/apps/network/traefik/external
+  components:
+    - ../../../../components/gatus/guarded
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  timeout: 5m
+  wait: false
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
+    substitute:
+      APP: *app
+      GATUS_PATH: "/dashboard/"
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app traefik-internal
+  namespace: &namespace network
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  interval: 30m
+  dependsOn:
+    - name: traefik-crds
+      namespace: *namespace
+    - name: cilium-resources
+      namespace: kube-system
+  path: ./kubernetes/apps/network/traefik/internal
+  components:
+    - ../../../../components/gatus/internal
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  timeout: 5m
+  wait: false
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
+    substitute:
+      APP: *app
+      GATUS_PATH: "/dashboard/"
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app traefik-addons
+  namespace: &namespace network
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: traefik-external
+      namespace: *namespace
+  interval: 30m
+  path: ./kubernetes/apps/network/traefik/addons
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  timeout: 5m
+  wait: false
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app traefik-middlewares
+  namespace: &namespace network
+spec:
+  targetNamespace: *namespace
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: traefik-external
+      namespace: *namespace
+    - name: error-pages
+      namespace: *namespace
+  interval: 30m
+  path: ./kubernetes/apps/network/traefik/middlewares
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  timeout: 5m
+  wait: false
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
+

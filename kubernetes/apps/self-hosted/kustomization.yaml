@@ -11,6 +11,6 @@ resources:
   - ./gramps/ks.yaml
   - ./lubelogger/ks.yaml
   - ./it-tools/ks.yaml
-  # - ./n8n/ks.yaml
+  - ./n8n/ks.yaml
 
 
