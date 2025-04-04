@@ -59,7 +59,6 @@ spec:
               NODE_FUNCTION_ALLOW_EXTERNAL: databricks/sql
               DB_TYPE: postgresdb
               DB_POSTGRESDB_PORT: 5432
-              N8N_USER_FOLDER: /home/n8n/app
             envFrom: *envFrom
 
         pod:
