@@ -3,24 +3,18 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app open-webui
+  name: &app searxng
   namespace: &namespace self-hosted
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 30m
-  path: ./kubernetes/apps/self-hosted/open-webui/app
-  components:
-    - ../../../../components/volume
+  path: ./kubernetes/apps/self-hosted/searxng/app
+  prune: true
   dependsOn:
-    - name: longhorn
-      namespace: longhorn-system
     - name: external-secrets-stores
       namespace: external-secrets
-    - name: postgres-cluster
-      namespace: dbms
-  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -34,4 +28,3 @@ spec:
         kind: Secret
     substitute:
       APP: *app
-      CAPACITY: 5Gi
