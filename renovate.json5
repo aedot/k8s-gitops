@@ -70,6 +70,33 @@
       ignoreTests: true,
     },
     {
+      "description": ["Auto-merge minor and patch for docker with exemption for pre-1.0.0 release"],
+      matchManagers: ["docker", "helm", "github-releases"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true,
+      "automergeType": "branch",
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      minimumReleaseAge: "3 days"
+    },
+    {
+      "description": ["Auto-merge minor and patch for helm with exemption for pre-1.0.0 release"],
+      matchManagers: ["helm"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true,
+      "automergeType": "branch",
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      minimumReleaseAge: "3 days"
+    },
+    {
+      "description": ["Auto-merge minor and patch for github-releases with exemption for pre-1.0.0 release"],
+      matchManagers: ["github-releases"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true,
+      "automergeType": "branch",
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      minimumReleaseAge: "3 days"
+    },
+    {
       matchUpdateTypes: ["major"],
       semanticCommitType: "feat",
       commitMessagePrefix: "{{semanticCommitType}}({{semanticCommitScope}})!:",
