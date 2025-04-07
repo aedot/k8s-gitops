@@ -12,5 +12,6 @@ resources:
   - ./lubelogger/ks.yaml
   - ./it-tools/ks.yaml
   - ./n8n/ks.yaml
+  - ./open-webui/ks.yaml
 
 

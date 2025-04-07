@@ -11,3 +11,4 @@ resources:
   - ./emqx.yaml
   - ./grafana.yaml
   - ./traefik.yaml
+  - ./open-webui.yaml
