@@ -97,7 +97,7 @@ spec:
     persistence:
       config:
         type: nfs
-        server: shango.internal
+        server: shango.${SECRET_DOMAIN}
         path: /mnt/user/k8s/minio
         globalMounts:
           - path: /data

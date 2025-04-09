@@ -110,7 +110,7 @@ spec:
           - path: /.npm
       recs:
         type: nfs
-        server: shango.internal
+        server: shango.${SECRET_DOMAIN}
         path: /mnt/user/k8s/scrypted
         globalMounts:
           - path: /recs
