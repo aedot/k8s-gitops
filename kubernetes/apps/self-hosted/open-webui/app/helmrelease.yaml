@@ -40,7 +40,7 @@ spec:
               tag: v0.6.2
             env:
               - name: OLLAMA_BASE_URL
-                value: http://shango.${SECRET_DOMAIN}:11434
+                value: http://shango.internal:11434
               - name: RAG_WEB_SEARCH_ENGINE
                 value: searxng
               - name: SEARXNG_QUERY_URL
