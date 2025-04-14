@@ -18,6 +18,13 @@ spec:
     name: flux-system
     namespace: flux-system
   wait: true
+  dependsOn:
+    - name: external-secrets-stores
+      namespace: external-secrets
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -41,8 +48,6 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: *namespace
-    - name: external-secrets-stores
-      namespace: external-secrets
   postBuild:
     substituteFrom:
       - name: cluster-secrets
