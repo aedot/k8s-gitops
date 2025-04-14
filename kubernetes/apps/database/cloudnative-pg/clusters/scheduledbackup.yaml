@@ -6,7 +6,7 @@ metadata:
   name: postgres-backup
 spec:
   schedule: "@daily"
-  # immediate: true
+  immediate: true
   backupOwnerReference: self
   cluster:
     name: postgres17
