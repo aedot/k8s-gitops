@@ -8,7 +8,7 @@ spec:
   instances: 3
   primaryUpdateStrategy: unsupervised
   storage:
-    size: 50Gi
+    size: 20Gi
     storageClass: longhorn
   enableSuperuserAccess: true
   superuserSecret:
@@ -32,7 +32,7 @@ spec:
       endpointURL: https://c04ec44babd84f729574b781430d8417.r2.cloudflarestorage.com
       # Note: serverName version needs to be incremented
       # when recovering from an existing cnpg cluster
-      serverName: postgres-v17
+      serverName: postgres-v17-1
       s3Credentials:
           accessKeyId:
             name: cloudnative-pg-secret
@@ -40,14 +40,14 @@ spec:
           secretAccessKey:
             name: cloudnative-pg-secret
             key: AWS_SECRET_ACCESS_KEY
-  # # Note: previousCluster needs to be set to the name of the previous
-  # # cluster when recovering from an existing cnpg cluster
-  # bootstrap:
-  #   recovery:
-  #     source: &previousCluster postgres-v17
-  # # Note: externalClusters is needed when recovering from an existing cnpg cluster
-  # externalClusters:
-  #   - name: *previousCluster
-  #     barmanObjectStore:
-  #       <<: *barmanObjectStore
-  #       serverName: *previousCluster
+  # Note: previousCluster needs to be set to the name of the previous
+  # cluster when recovering from an existing cnpg cluster
+  bootstrap:
+    recovery:
+      source: &previousCluster postgres-v17
+  # Note: externalClusters is needed when recovering from an existing cnpg cluster
+  externalClusters:
+    - name: *previousCluster
+      barmanObjectStore:
+        <<: *barmanObjectStore
+        serverName: *previousCluster
