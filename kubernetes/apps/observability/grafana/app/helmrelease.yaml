@@ -10,7 +10,7 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 8.11.4
+    tag: 8.12.0
   url: oci://ghcr.io/grafana/helm-charts/grafana
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
@@ -31,26 +31,14 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  dependsOn:
-    - name: authelia
-      namespace: security
   values:
-    extraInitContainers:
-      - name: 01-init-db
-        image: ghcr.io/home-operations/postgres-init:17.4@sha256:a9f405688344a8a6f718e2c344438342ad21540986aeb5ab5fa781831eb2c597
-        imagePullPolicy: IfNotPresent
-        envFrom:
-          - secretRef:
-              name: grafana-secret
     deploymentStrategy:
       type: Recreate
     env:
-      GF_NEWS_NEWS_FEED_ENABLED: false
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
       GF_EXPLORE_ENABLED: true
       GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
       GF_SECURITY_ANGULAR_SUPPORT_ENABLED: true
-      GF_SECURITY_COOKIE_SAMESITE: grafana
       GF_SERVER_ROOT_URL: https://grafana.${SECRET_DOMAIN}
     envFromSecrets:
       - name: grafana-secret
@@ -118,7 +106,7 @@ spec:
           - name: TeslaMate
             type: postgres
             access: proxy
-            url: postgres17-ro.database.svc.cluster.local:5432
+            url: postgres-ro.database.svc.cluster.local:5432
             database: teslamate
             user: tessy
             secureJsonData:
@@ -227,18 +215,6 @@ spec:
           gnetId: 19105
           revision: 7
           datasource: Prometheus
-        smart:
-          # renovate: depName="Dashboard for smartctl_exporter"
-          gnetId: 20204
-          revision: 1
-          datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
-        unpackerr:
-          # renovate: depName="Unpackerr"
-          gnetId: 18817
-          revision: 1
-          datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
         volsync:
           # renovate: depName="VolSync Dashboard"
           gnetId: 21356
@@ -246,11 +222,6 @@ spec:
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
             - { name: VAR_REPLICATIONDESTNAME, value: .*-dst }
-        zfs:
-          # renovate: depName="ZFS"
-          gnetId: 7845
-          revision: 4
-          datasource: Prometheus
       teslamate:
         battery-health:
           url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/battery-health.json
