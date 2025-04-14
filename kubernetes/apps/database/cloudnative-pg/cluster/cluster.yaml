@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
@@ -29,7 +30,7 @@ spec:
         compression: bzip2
         maxParallel: 8
       destinationPath: s3://barman-h7q8h5w/
-      endpointURL: https://c04ec44babd84f729574b781430d8417.r2.cloudflarestorage.com
+      endpointURL: https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
       # Note: serverName version needs to be incremented
       # when recovering from an existing cnpg cluster
       serverName: postgres-v17
