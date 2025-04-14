@@ -10,8 +10,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: cert-manager-tls
-      namespace: cert-manager
+    - name: external-secrets-stores
+      namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/observability/grafana/app
   postBuild:
