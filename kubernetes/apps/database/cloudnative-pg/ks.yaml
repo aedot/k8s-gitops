@@ -38,7 +38,7 @@ spec:
       app.kubernetes.io/name: *app
   interval: 30m
   timeout: 5m
-  path: "./kubernetes/apps/database/cloudnative-pg/clusters"
+  path: "./kubernetes/apps/database/cloudnative-pg/cluster"
   prune: true
   sourceRef:
     kind: GitRepository
