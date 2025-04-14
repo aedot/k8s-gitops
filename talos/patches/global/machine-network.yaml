@@ -2,4 +2,6 @@ machine:
   network:
     disableSearchDomain: true
     nameservers:
+      - 10.0.10.3
+      - 10.0.10.4
       - 10.0.10.1
