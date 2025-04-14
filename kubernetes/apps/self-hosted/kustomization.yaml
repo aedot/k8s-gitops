@@ -8,11 +8,11 @@ components:
 resources:
   - ./actual/ks.yaml
   - ./docmost/ks.yaml
-  # - ./gramps/ks.yaml
-  # - ./lubelogger/ks.yaml
+  - ./gramps/ks.yaml
+  - ./lubelogger/ks.yaml
   - ./it-tools/ks.yaml
-  # - ./n8n/ks.yaml
+  - ./n8n/ks.yaml
   - ./searxng/ks.yaml
-  # - ./open-webui/ks.yaml
+  - ./open-webui/ks.yaml
 
 
