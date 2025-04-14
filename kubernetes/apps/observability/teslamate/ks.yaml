@@ -14,8 +14,8 @@ spec:
   dependsOn:
     - name: postgres-cluster
       namespace: dbms
-    - name: emqx-cluster
-      namespace: dbms
+    # - name: emqx-cluster
+    #   namespace: dbms
   prune: true
   sourceRef:
     kind: GitRepository
