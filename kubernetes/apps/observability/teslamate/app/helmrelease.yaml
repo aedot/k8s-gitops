@@ -47,10 +47,10 @@ spec:
             envFrom: *envFrom
             env:
               TZ: ${TZ}
-              DISABLE_MQTT: "false"
-              MQTT_HOST: "emqx-listeners.dbms.svc.cluster.local"
+              DISABLE_MQTT: "true"
+              # MQTT_HOST: "emqx-listeners.dbms.svc.cluster.local"
               DATABASE_NAME: "teslamate"
-              DATABASE_HOST: "postgres17-rw.dbms.svc.cluster.local"
+              DATABASE_HOST: "postgres-rw.dbms.svc.cluster.local"
             resources:
               requests:
                 memory: 250Mi
