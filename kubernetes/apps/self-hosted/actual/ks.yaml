@@ -45,7 +45,7 @@ spec:
   interval: 30m
   path: ./kubernetes/apps/self-hosted/actual/fa
   components:
-    - ../../../../components/volume
+    - ../../../../components/volsync
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
@@ -63,4 +63,4 @@ spec:
         kind: Secret
     substitute:
       APP: *app
-      CAPACITY: 5Gi
+      VOLSYNC_CAPACITY: 5Gi
