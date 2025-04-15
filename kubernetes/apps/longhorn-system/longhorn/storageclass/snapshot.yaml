@@ -34,9 +34,5 @@ kind: VolumeSnapshotClass
 apiVersion: snapshot.storage.k8s.io/v1
 metadata:
   name: longhorn-snapclass
-annotations:
-    snapshot.storage.kubernetes.io/is-default-class: "true"
-parameters:
-  type: snap  # a CSI snapshot maps to a Longhorn snapshot
 driver: driver.longhorn.io
 deletionPolicy: Delete
