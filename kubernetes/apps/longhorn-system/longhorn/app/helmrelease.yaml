@@ -23,23 +23,25 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    csi:
+      attacherReplicaCount: &replicas 1
+      provisionerReplicaCount: *replicas
+      resizerReplicaCount: *replicas
+      snapshotterReplicaCount: *replicas
     persistence:
-      defaultDataLocality: best-effort
+      defaultClassReplicaCount: 1
     defaultSettings:
       createDefaultDiskLabeledNodes: true
-      defaultDataLocality: best-effort
-      defaultLonghornStaticStorageClass: longhorn
-      defaultReplicaCount: 3
-      guaranteedEngineManagerCPU: 20
-      guaranteedReplicaManagerCPU: 20
-      nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
-      orphanAutoDeletion: true
+      defaultDataLocality: true
       replicaAutoBalance: true
       storageMinimalAvailablePercentage: 1
       storageReservedPercentageForDefaultDisk: 10
+      defaultLonghornStaticStorageClass: longhorn
+      nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
       concurrentAutomaticEngineUpgradePerNodeLimit: 3
+      orphanAutoDeletion: true
     longhornUI:
-      replicas: 1
+      replicas: *replicas
     ingress:
       enabled: true
       ingressClassName: internal
