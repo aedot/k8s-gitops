@@ -4,21 +4,6 @@ kind: StorageClass
 reclaimPolicy: Delete
 provisioner: driver.longhorn.io
 parameters:
-  # we set this to 2 replica for less copies of the cache, which can be blown away safely.
-  dataLocality: disabled
-  numberOfReplicas: "1"
-  replicaAutoBalance: best-effort
-  staleReplicaTimeout: "30"
-allowVolumeExpansion: true
-volumeBindingMode: WaitForFirstConsumer
-metadata:
-  name: longhorn-cache
----
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-reclaimPolicy: Delete
-provisioner: driver.longhorn.io
-parameters:
   # used for volsync to copy from.
   # we set this to 1 replica for faster restores from the snapclass
   dataLocality: disabled
@@ -30,11 +15,17 @@ volumeBindingMode: WaitForFirstConsumer
 metadata:
   name: longhorn-snapshot
 ---
-kind: VolumeSnapshotClass
-apiVersion: snapshot.storage.k8s.io/v1
-metadata:
-  name: longhorn-snapclass
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+reclaimPolicy: Delete
+provisioner: driver.longhorn.io
 parameters:
-  type: snap  # a CSI snapshot maps to a Longhorn snapshot
-driver: driver.longhorn.io
-deletionPolicy: Delete
+  # we set this to 2 replica for less copies of the cache, which can be blown away safely.
+  dataLocality: disabled
+  numberOfReplicas: "1"
+  replicaAutoBalance: best-effort
+  staleReplicaTimeout: "30"
+allowVolumeExpansion: true
+volumeBindingMode: WaitForFirstConsumer
+metadata:
+  name: longhorn-cache
