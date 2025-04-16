@@ -26,9 +26,9 @@ spec:
           app:
             image:
               repository: ghcr.io/sct/overseerr
-              tag: develop@sha256:94c0a376d07ce969a5f14cb17dd68395d6cd17895ec2eaf048dc1bcd052305bf
+              tag: 1.34.0@sha256:4f38f58d68555004d3f487a4c5cbe2823e6a0942d946a25a2d9391d8492240a4
             env:
-              TZ: ${TZ}
+              TZ: America/Los_Angeles
               LOG_LEVEL: "info"
               PORT: &port 80
             probes:
