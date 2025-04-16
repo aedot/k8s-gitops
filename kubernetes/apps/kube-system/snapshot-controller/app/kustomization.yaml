@@ -1,8 +1,8 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources: []
-# - ./helmrelease.yaml
+resources: 
+- ./helmrelease.yaml
 # # snapshot CRDS
 # - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.2.0/client/config/crd/snapshot.storage.k8s.io_volumesnapshotclasses.yaml
 # - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.2.0/client/config/crd/snapshot.storage.k8s.io_volumesnapshotcontents.yaml
