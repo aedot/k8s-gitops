@@ -6,12 +6,12 @@ namespace: observability
 components:
   - ../../components/common
   - ../../components/repos/app-template
-resources: []
+resources:
   # - ./grafana/ks.yaml
   # - ./alertmanager/ks.yaml
   # - ./karma/ks.yaml
   # - ./kube-prometheus-stack/ks.yaml
-  # - ./teslamate/ks.yaml
+  - ./teslamate/ks.yaml
   # - ./gatus/ks.yaml
   # - ./loki/ks.yaml
   # - ./promtail/ks.yaml
