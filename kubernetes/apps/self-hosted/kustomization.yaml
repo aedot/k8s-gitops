@@ -5,8 +5,8 @@ namespace: self-hosted
 components:
   - ../../components/common
   - ../../components/repos/app-template
-resources:
-  - ./actual/ks.yaml
+resources: []
+  # - ./actual/ks.yaml
   # - ./docmost/ks.yaml
   # - ./gramps/ks.yaml
   # - ./lubelogger/ks.yaml
