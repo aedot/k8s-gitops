@@ -5,6 +5,6 @@ namespace: security
 components:
   - ../../components/common
   - ../../components/repos/app-template
-resources:
-  - ./lldap/ks.yaml
-  - ./authelia/ks.yaml
+resources:  []
+  # - ./lldap/ks.yaml
+  # - ./authelia/ks.yaml
