@@ -37,7 +37,7 @@ spec:
           app:
             image:
               repository: ghcr.io/n8n-io/n8n
-              tag: 1.88.0
+              tag: 1.89.2
             env:
               GENERIC_TIMEZONE: America/Los_Angeles
               N8N_PORT: &port 80
