@@ -12,12 +12,14 @@ spec:
   interval: 30m
   path: ./kubernetes/apps/media/scrypted/app
   components:
-    - ../../../../components/volume
+    - ../../../../components/volsync
   dependsOn:
     - name: multus-networks
       namespace: network
     - name: longhorn
       namespace: longhorn-system
+    - name: volsync
+      namespace: volsync-system
   prune: true
   sourceRef:
     kind: GitRepository
@@ -32,4 +34,4 @@ spec:
         kind: Secret
     substitute:
       APP: *app
-      CAPACITY: 5Gi
+      VOLSYNC_CAPACITY: 5Gi
