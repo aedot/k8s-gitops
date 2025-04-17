@@ -95,7 +95,7 @@ spec:
                 replacement: apc
                 sourceLabels:
                   - apc
-                targetLabel: eaton
+                targetLabel: apc
               - action: labeldrop
                 regex: (pod)
             params:

@@ -66,7 +66,10 @@ spec:
   staticConfigs:
     - targets: ["nut-exporter.observability.svc.cluster.local:9199"]
       labels:
-        ups: "eaton, apc"
+        ups: "eaton"
+    - targets: ["nut-exporter.observability.svc.cluster.local:9199"]
+      labels:
+        ups: "apc"
   metricsPath: /metrics
   relabelings:
     - action: replace
