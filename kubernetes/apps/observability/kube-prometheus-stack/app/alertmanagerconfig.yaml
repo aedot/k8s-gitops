@@ -68,7 +68,7 @@ spec:
             {{ .CommonLabels.alertname }}
           ttl: 3600s
           token:
-            name: *secret
+            name: &secret alertmanager-secret
             key: ALERTMANAGER_PUSHOVER_APP_TOKEN
           userKey:
             name: *secret
