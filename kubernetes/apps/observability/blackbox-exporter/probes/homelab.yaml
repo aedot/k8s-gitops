@@ -12,3 +12,6 @@ spec:
       static:
         - unifi.internal
         - shango.internal
+        - olokun.internal
+        - orunmila.internal
+        - oduduwa.internal
