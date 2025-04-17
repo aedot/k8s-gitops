@@ -16,3 +16,4 @@ resources:
   # - ./loki/ks.yaml
   # - ./promtail/ks.yaml
   - ./unpoller/ks.yaml
+  - ./nut-exporter/ks.yaml
