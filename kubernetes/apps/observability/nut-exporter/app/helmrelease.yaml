@@ -80,3 +80,28 @@ spec:
               matchLabels:
                 app.kubernetes.io/instance: nut-exporter
                 app.kubernetes.io/name: nut-exporter
+          - interval: 30s
+            path: /ups_metrics
+            port: metrics
+            scheme: http
+            scrapeTimeout: 30s
+            metricRelabelings:
+              - action: replace
+                replacement: apc
+                sourceLabels:
+                  - instance
+                targetLabel: instance
+              - action: replace
+                replacement: apc
+                sourceLabels:
+                  - apc
+                targetLabel: eaton
+              - action: labeldrop
+                regex: (pod)
+            params:
+              server: [oduduwa.internal]
+              ups: [apc]
+            selector:
+              matchLabels:
+                app.kubernetes.io/instance: nut-exporter
+                app.kubernetes.io/name: nut-exporter
