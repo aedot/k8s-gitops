@@ -16,6 +16,8 @@ spec:
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
+    - name: volsync
+      namespace: volsync-system
     - name: dragon-cluster
       namespace: dbms
     - name: postgres-cluster
@@ -36,4 +38,4 @@ spec:
         kind: Secret
     substitute:
       APP: *app
-      CAPACITY: 5Gi
+      VOLSYNC_CAPACITY: 5Gi

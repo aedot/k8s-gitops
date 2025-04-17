@@ -12,12 +12,14 @@ spec:
   interval: 30m
   path: ./kubernetes/apps/self-hosted/lubelogger/app
   components:
-    - ../../../../components/volume
+    - ../../../../components/volsync
   dependsOn:
     - name: postgres-cluster
       namespace: dbms
     - name: longhorn
       namespace: longhorn-system
+    - name: volsync
+      namespace: volsync-system
     - name: external-secrets-stores
       namespace: external-secrets
   prune: true
@@ -34,4 +36,4 @@ spec:
         kind: Secret
     substitute:
       APP: *app
-      CAPACITY: 5Gi
+      VOLSYNC_CAPACITY: 5Gi
