@@ -62,19 +62,20 @@ spec:
             scrapeTimeout: 30s
             metricRelabelings:
               - action: replace
-                replacement: server
+                replacement: eaton
                 sourceLabels:
                   - instance
                 targetLabel: instance
               - action: replace
-                replacement: server
+                replacement: eaton
                 sourceLabels:
-                  - server
-                targetLabel: server
+                  - eaton
+                targetLabel: eaton
               - action: labeldrop
                 regex: (pod)
             params:
               server: [oduduwa.internal]
+              ups: [eaton]
             selector:
               matchLabels:
                 app.kubernetes.io/instance: nut-exporter
