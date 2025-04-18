@@ -18,7 +18,7 @@ spec:
       namespace: longhorn-system
     - name: volsync
       namespace: volsync-system
-    - name: external-secrets-stores
+    - name: akeyless-stores
       namespace: external-secrets
     - name: postgres-cluster
       namespace: dbms

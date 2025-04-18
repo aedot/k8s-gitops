@@ -22,7 +22,7 @@ spec:
       namespace: dbms
     - name: postgres-cluster
       namespace: dbms
-    - name: external-secrets-stores
+    - name: akeyless-stores
       namespace: external-secrets
   prune: true
   sourceRef:

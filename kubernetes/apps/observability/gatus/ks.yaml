@@ -12,7 +12,7 @@ spec:
   dependsOn:
     - name: postgres-cluster
       namespace: dbms
-    - name: external-secrets
+    - name: akeyless-stores
       namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/observability/gatus/app

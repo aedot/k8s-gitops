@@ -13,7 +13,7 @@ spec:
   path: ./kubernetes/apps/self-hosted/searxng/app
   prune: true
   dependsOn:
-    - name: external-secrets-stores
+    - name: akeyless-stores
       namespace: external-secrets
   sourceRef:
     kind: GitRepository

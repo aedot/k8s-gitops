@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: external-secrets-stores
+    - name: akeyless-stores
       namespace: external-secrets
   interval: 30m
   timeout: 5m

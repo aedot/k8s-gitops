@@ -19,7 +19,7 @@ spec:
     namespace: flux-system
   wait: true
   dependsOn:
-    - name: external-secrets-stores
+    - name: akeyless-stores
       namespace: external-secrets
   postBuild:
     substituteFrom:
@@ -77,7 +77,7 @@ spec:
   dependsOn:
     - name: postgres-cluster
       namespace: *namespace
-    - name: external-secrets-stores
+    - name: akeyless-stores
       namespace: external-secrets
   postBuild:
     substituteFrom:
@@ -108,7 +108,7 @@ spec:
   dependsOn:
     - name: postgres-cluster
       namespace: *namespace
-    - name: external-secrets-stores
+    - name: akeyless-stores
       namespace: external-secrets
   postBuild:
     substituteFrom:

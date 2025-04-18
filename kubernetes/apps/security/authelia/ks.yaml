@@ -24,6 +24,8 @@ spec:
   dependsOn:
     - name: lldap
       namespace: *namespace
+    - name: akeyless-stores
+      namespace: external-secrets
   postBuild:
     substituteFrom:
       - name: cluster-secrets
