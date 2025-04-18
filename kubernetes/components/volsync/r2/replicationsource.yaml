@@ -22,5 +22,4 @@ spec:
       runAsGroup: ${VOLSYNC_PGID:=568}
       fsGroup: ${VOLSYNC_PGID:=568}
     retain:
-      hourly: 24
       daily: 7
