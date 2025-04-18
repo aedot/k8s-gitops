@@ -55,6 +55,7 @@ spec:
         enabled: true
         serviceName: *app
         endpoints:
+        ## TODO fix ups metrics combination
           - interval: 30s
             path: /ups_metrics
             port: metrics

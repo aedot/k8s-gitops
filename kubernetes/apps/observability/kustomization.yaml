@@ -17,3 +17,4 @@ resources:
   # - ./promtail/ks.yaml
   - ./unpoller/ks.yaml
   - ./nut-exporter/ks.yaml
+  - ./smartctl-exporter/ks.yaml
