@@ -209,7 +209,11 @@ spec:
           url: https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/master/examples/grafana-dashboard.json
           datasource: Prometheus
         nut-exporter:
-          url: https://raw.githubusercontent.com/DRuggeri/nut_exporter/refs/heads/master/dashboard/dashboard.json
+          # url: https://raw.githubusercontent.com/DRuggeri/nut_exporter/refs/heads/master/dashboard/dashboard.json
+          # datasource: Prometheus
+          # renovate: depName="Yet Another Prometheus NUT Exporter"
+          gnetId: 15406
+          revision: 2
           datasource: Prometheus
         prometheus:
           # renovate: depName="Prometheus"
