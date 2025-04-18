@@ -14,6 +14,8 @@ spec:
   dependsOn:
     - name: postgres-cluster
       namespace: dbms
+    - name: akeyless-stores
+      namespace: external-secrets
     # - name: emqx-cluster
     #   namespace: dbms
   prune: true
