@@ -60,6 +60,19 @@ spec:
             port: metrics
             scheme: http
             scrapeTimeout: 30s
+            metricRelabelings:
+              - action: replace
+                replacement: eaton
+                sourceLabels:
+                  - instance
+                targetLabel: instance
+              - action: replace
+                replacement: eaton
+                sourceLabels:
+                  - eaton
+                targetLabel: eaton
+              - action: labeldrop
+                regex: (pod)
             params:
               server: [oduduwa.internal]
               ups: [eaton]
@@ -72,6 +85,19 @@ spec:
             port: metrics
             scheme: http
             scrapeTimeout: 30s
+            metricRelabelings:
+              - action: replace
+                replacement: apc
+                sourceLabels:
+                  - instance
+                targetLabel: instance
+              - action: replace
+                replacement: apc
+                sourceLabels:
+                  - apc
+                targetLabel: apc
+              - action: labeldrop
+                regex: (pod)
             params:
               server: [oduduwa.internal]
               ups: [apc]
