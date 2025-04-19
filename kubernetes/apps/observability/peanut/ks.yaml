@@ -2,14 +2,14 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app grafana
+  name: &app peanut
   namespace: &namespace observability
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/observability/grafana/app
+  path: ./kubernetes/apps/observability/peanut/app
   postBuild:
     substituteFrom:
       - name: cluster-secrets
