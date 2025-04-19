@@ -10,9 +10,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: alertmanager
-      namespace: *namespace
   interval: 30m
   path: ./kubernetes/apps/observability/karma/app
   prune: true
