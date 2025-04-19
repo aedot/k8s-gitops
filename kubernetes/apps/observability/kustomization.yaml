@@ -9,10 +9,10 @@ components:
 resources:
   - ./grafana/ks.yaml
   - ./blackbox-exporter/ks.yaml
-  # - ./karma/ks.yaml
+  - ./karma/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./teslamate/ks.yaml
-  # - ./gatus/ks.yaml
+  - ./gatus/ks.yaml
   - ./loki/ks.yaml
   - ./promtail/ks.yaml
   - ./unpoller/ks.yaml
