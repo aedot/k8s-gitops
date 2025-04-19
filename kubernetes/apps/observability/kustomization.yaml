@@ -18,4 +18,3 @@ resources:
   - ./unpoller/ks.yaml
   - ./nut-exporter/ks.yaml
   - ./smartctl-exporter/ks.yaml
-  - ./peanut/ks.yaml
