@@ -138,7 +138,7 @@ spec:
             - { name: DS_PROMETHEUS, value: Prometheus }
         dragonfly:
           # renovate: datasource=github-releases depName=dragonflydb/dragonfly
-          url: https://raw.githubusercontent.com/dragonflydb/dragonfly/v1.28.1/tools/local/monitoring/grafana/provisioning/dashboards/dragonfly.json
+          url: https://raw.githubusercontent.com/dragonflydb/dragonfly/v1.28.2/tools/local/monitoring/grafana/provisioning/dashboards/dragonfly.json
           datasource: Prometheus
         emqx:
           # renovate: depName="EMQX"
