@@ -1,0 +1,4 @@
+---
+NUT_SERVERS:
+  - HOST: oduduwa.internal
+    PORT: 3493
