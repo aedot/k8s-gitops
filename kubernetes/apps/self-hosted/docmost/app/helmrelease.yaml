@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: docmost/docmost
-              tag: 0.10.2
+              tag: 0.20.3
             env:
               TZ: "${TZ}"
               APP_URL: https://docmost.${SECRET_DOMAIN}
