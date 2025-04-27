@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/bakito/adguardhome-sync
-              tag: v0.7.3@sha256:04be56e8610ae312938fa8e345cd9bcf6aec5c98c13553514ccfd0b243243a88
+              tag: v0.7.5@sha256:0e22b318e17864c48c0abb865fd9794d66b9471952988aba920e9f107538bd4f
             env:
               LOG_LEVEL: "info"
               ORIGIN_URL: "http://orunmila.internal"
