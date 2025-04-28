@@ -20,6 +20,8 @@ spec:
   values:
     controllers:
       wallos:
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -53,7 +55,7 @@ spec:
       app:
         className: internal
         hosts:
-          - host: &host wallos.${SECRET_DOMAIN}
+          - host: &host "wallos.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
