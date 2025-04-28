@@ -1,0 +1,74 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app wallos
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  interval: 30m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      wallos:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/ellite/wallos
+              tag: 3.0.0@sha256:9399d7ba5ebddd23acb3b9beb5ad1daad97cd6e7e46d1653fc0859111f52d436
+            env:
+              TZ: America/Los_Angeles
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+            resources:
+              requests:
+                cpu: 10m
+                memory: 100Mi
+              limits:
+                memory: 256Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: false
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 0
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        controller: wallos
+        ports:
+          http:
+            port: 80
+    ingress:
+      app:
+        className: internal
+        hosts:
+          - host: &host fa-actual.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+                - *host
+    persistence:
+      data:
+        existingClaim: *app
+        advancedMounts:
+          wallos:
+            app:
+              - subPath: "db"
+                path: "/var/www/html/db"
+              - subPath: "logos"
+                path: "/var/www/html/images/uploads/logos"
