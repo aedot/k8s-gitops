@@ -1,168 +1,33 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
     "config:recommended",
     "docker:enableMajor",
     "helpers:pinGitHubActionDigests",
+    "github>aedot/k8s-gitops//.renovate/allowedVersions.json5",
+    "github>aedot/k8s-gitops//.renovate/autoMerge.json5",
+    "github>aedot/k8s-gitops//.renovate/customManagers.json5",
+    "github>aedot/k8s-gitops//.renovate/grafanaDashboards.json5",
+    "github>aedot/k8s-gitops//.renovate/groups.json5",
+    "github>aedot/k8s-gitops//.renovate/labels.json5",
+    "github>aedot/k8s-gitops//.renovate/semanticCommits.json5",
     ":automergeBranch",
     ":dependencyDashboard",
     ":disableRateLimiting",
-    ":semanticCommits"
+    ":gitSignOff",
+    ":semanticCommits",
+    ":timezone(America/Los_Angeles)",
   ],
-  "dependencyDashboard": true,
-  "dependencyDashboardTitle": "Renovate Dashboard 🤖",
-
-  "schedule": "at 4am",
-  "timezone": "America/Los_Angeles",
-
-  "suppressNotifications": [
-    "prEditedNotification",
-    "prIgnoreNotification"
-  ],
-
-  "ignorePaths": ["**/*.sops.*"],
-
-  "flux": {
-    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"]
+  dependencyDashboardTitle: "Renovate Dashboard 🤖",
+  suppressNotifications: ["prEditedNotification", "prIgnoreNotification"],
+  ignorePaths: ["**/resources/**"],
+  flux: {
+    fileMatch: ["(^|/)kubernetes/.+\\.ya?ml$"],
   },
   "helm-values": {
-    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"]
+    fileMatch: ["(^|/)kubernetes/.+\\.ya?ml$"],
   },
-  "helmfile": {
-    "fileMatch": ["(^|/)helmfile\\.ya?ml(?:\\.j2)?$"]
+  kubernetes: {
+    fileMatch: ["(^|/)kubernetes/.+\\.ya?ml$"],
   },
-  "kubernetes": {
-    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"]
-  },
-  "kustomize": {
-    "fileMatch": ["(^|/)kustomization\\.ya?ml(?:\\.j2)?$"]
-  },
-
-  "packageRules": [
-    {
-      "description": "CoreDNS Group",
-      "groupName": "CoreDNS",
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["/coredns/"],
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group"
-      }
-    },
-    {
-      "description": "Flux Operator Group",
-      "groupName": "Flux Operator",
-      "matchPackageNames": ["/flux-operator/", "/flux-instance/"],
-      "matchDatasources": ["docker"],
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group"
-      }
-    },
-    {
-      "description": "Spegel Group",
-      "groupName": "Spegel",
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["/spegel/"],
-      "group": {
-        "commitMessageTopic": "{{{groupName}}} group"
-      }
-    },
-
-    // Auto-merge rules for GitHub Actions
-    {
-      "description": "Auto-merge GitHub Actions",
-      "matchDatasources": ["github-actions"],
-      "automerge": true,
-      "automergeType": "branch",
-      "matchUpdateTypes": ["minor", "patch", "digest"],
-      "minimumReleaseAge": "3 days",
-      "ignoreTests": true
-    },
-
-    // Auto-merge Docker and Helm (no minimum release age)
-    {
-      "description": "Auto-merge Docker and Helm updates",
-      "matchDatasources": ["docker", "helm"],
-      "matchUpdateTypes": ["minor", "patch", "digest"],
-      "automerge": true,
-      "automergeType": "branch"
-    },
-
-    // Catch all rule
-    {
-      "description": "Auto-merge all other minor/patch updates",
-      "matchUpdateTypes": ["minor", "patch", "digest"],
-      "automerge": true,
-      "automergeType": "branch"
-    },
-
-    // Semantic commit & labels
-    {
-      "matchUpdateTypes": ["major"],
-      "semanticCommitType": "feat",
-      "commitMessagePrefix": "{{semanticCommitType}}({{semanticCommitScope}})!:",
-      "commitMessageExtra": "( {{currentVersion}} → {{newVersion}} )",
-      "labels": ["type/major"]
-    },
-    {
-      "matchUpdateTypes": ["minor"],
-      "semanticCommitType": "feat",
-      "commitMessageExtra": "( {{currentVersion}} → {{newVersion}} )",
-      "labels": ["type/minor"]
-    },
-    {
-      "matchUpdateTypes": ["patch"],
-      "semanticCommitType": "fix",
-      "commitMessageExtra": "( {{currentVersion}} → {{newVersion}} )",
-      "labels": ["type/patch"]
-    },
-    {
-      "matchUpdateTypes": ["digest"],
-      "semanticCommitType": "chore",
-      "commitMessageExtra": "( {{currentDigestShort}} → {{newDigestShort}} )"
-    },
-
-    // Scopes by datasource
-    {
-      "matchDatasources": ["docker"],
-      "semanticCommitScope": "container",
-      "commitMessageTopic": "image {{depName}}",
-      "addLabels": ["renovate/container"]
-    },
-    {
-      "matchDatasources": ["helm"],
-      "semanticCommitScope": "helm",
-      "commitMessageTopic": "chart {{depName}}",
-      "addLabels": ["renovate/helm"]
-    },
-    {
-      "matchDatasources": ["github-actions"],
-      "semanticCommitType": "ci",
-      "semanticCommitScope": "github-action",
-      "commitMessageTopic": "action {{depName}}",
-      "addLabels": ["renovate/github-action"]
-    },
-    {
-      "matchDatasources": ["github-releases"],
-      "semanticCommitScope": "github-release",
-      "commitMessageTopic": "release {{depName}}",
-      "addLabels": ["renovate/github-release"]
-    }
-  ],
-
-  "customManagers": [
-    {
-      "description": "Process annotated dependencies",
-      "customType": "regex",
-      "fileMatch": [
-        "(^|/).+\\.env(?:\\.j2)?$",
-        "(^|/).+\\.sh(?:\\.j2)?$",
-        "(^|/).+\\.ya?ml(?:\\.j2)?$"
-      ],
-      "matchStrings": [
-        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( repository=(?<registryUrl>\\S+))?\\n.+(:\\s|=)(&\\S+\\s)?(?<currentValue>\\S+)",
-        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\n.+/(?<currentValue>(v|\\d)[^/]+)"
-      ],
-      "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}"
-    }
-  ]
 }
