@@ -14,7 +14,7 @@
 
   // Temporarily remove schedule for testing — re-enable later
   // "schedule": ["at 4am"],
-  // "timezone": ["America/Los_Angeles]
+  // "timezone": ["America/Los_Angeles"]
 
   "suppressNotifications": [
     "prEditedNotification",
@@ -71,7 +71,7 @@
     // Auto-merge rules for GitHub Actions
     {
       "description": "Auto-merge GitHub Actions",
-      "matchManagers": ["github-actions"],
+      "matchDatasources": ["github-actions"],
       "automerge": true,
       "automergeType": "branch",
       "matchUpdateTypes": ["minor", "patch", "digest"],
@@ -82,7 +82,7 @@
     // Auto-merge Docker and Helm (no minimum release age)
     {
       "description": "Auto-merge Docker and Helm updates",
-      "matchManagers": ["docker", "helm"],
+      "matchDatasources": ["docker", "helm"],
       "matchUpdateTypes": ["minor", "patch", "digest"],
       "automerge": true,
       "automergeType": "branch"
@@ -136,7 +136,7 @@
       "addLabels": ["renovate/helm"]
     },
     {
-      "matchManagers": ["github-actions"],
+      "matchDatasources": ["github-actions"],
       "semanticCommitType": "ci",
       "semanticCommitScope": "github-action",
       "commitMessageTopic": "action {{depName}}",
