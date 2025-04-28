@@ -12,9 +12,8 @@
   "dependencyDashboard": true,
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
 
-  // Temporarily remove schedule for testing — re-enable later
-  // "schedule": ["at 4am"],
-  // "timezone": ["America/Los_Angeles"]
+  "schedule": "at 4am",
+  "timezone": "America/Los_Angeles",
 
   "suppressNotifications": [
     "prEditedNotification",
