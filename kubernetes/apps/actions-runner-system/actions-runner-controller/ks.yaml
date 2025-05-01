@@ -8,7 +8,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  interval: 1h
+  interval: 30m
   path: ./kubernetes/apps/actions-runner-system/actions-runner-controller/app
   prune: true
   retryInterval: 2m
@@ -36,7 +36,7 @@ spec:
       namespace: external-secrets
     - name: longhorn
       namespace: longhorn-system
-  interval: 1h
+  interval: 30m
   path: ./kubernetes/apps/actions-runner-system/actions-runner-controller/runners
   prune: true
   retryInterval: 2m
