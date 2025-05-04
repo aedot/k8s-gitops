@@ -14,5 +14,6 @@ resources:
   - ./n8n/ks.yaml
   - ./searxng/ks.yaml
   - ./open-webui/ks.yaml
+  - ./lubelogger/ks.yaml
 
 
