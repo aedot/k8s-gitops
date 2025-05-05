@@ -1,25 +1,29 @@
 ---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: cloudnative-pg
+spec:
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 0.23.2
+  url: oci://ghcr.io/cloudnative-pg/charts/cloudnative-pg
+  verify:
+    provider: cosign
+---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: cloudnative-pg
 spec:
-  interval: 15m
-  chart:
-    spec:
-      chart: cloudnative-pg
-      version: 0.23.2
-      sourceRef:
-        kind: HelmRepository
-        name: cloudnative-pg
-        namespace: flux-system
-      interval: 15m
-  dependsOn:
-    - name: longhorn
-      namespace: longhorn-system
-  maxHistory: 2
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: cloudnative-pg
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -27,8 +31,6 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
     crds:
       create: true

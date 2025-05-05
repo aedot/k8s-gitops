@@ -36,7 +36,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  interval: 30m
+  interval: 1h
   timeout: 5m
   path: "./kubernetes/apps/database/cloudnative-pg/cluster"
   prune: true
@@ -48,11 +48,20 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: *namespace
+    - name: longhorn
+      namespace: longhorn-system
+  healthCheckExprs:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
+      current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
   postBuild:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
     substitute:
+      # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql
+      POSTGRESQL_VERSION: 17.4-bookworm
       APP: *app
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
