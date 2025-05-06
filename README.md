@@ -3,7 +3,7 @@
 
   ### k8s-gitops repo <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f680/512.gif" alt="🚀" width="16" height="16">
 
-_... automated via [Flux](https://github.com/fluxcd/flux2), [Renovate](https://github.com/renovatebot/renovate), and [GitHub Actions](https://github.com/features/actions)_ <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f916/512.gif" alt="🤖" width="16" height="16">
+_... managed with [Flux](https://github.com/fluxcd/flux2), [Renovate](https://github.com/renovatebot/renovate), and [GitHub Actions](https://github.com/features/actions)_ <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f916/512.gif" alt="🤖" width="16" height="16">
 
 </div>
 
@@ -23,6 +23,7 @@ There is a template at [onedr0p/cluster-template](https://github.com/onedr0p/clu
 
 ### Core Components
 
+- [actions-runner-controller](https://github.com/actions/actions-runner-controller): Self-hosted Github runners.
 - [cert-manager](https://github.com/cert-manager/cert-manager): Creates SSL certificates for services in my cluster.
 - [cilium](https://github.com/cilium/cilium): eBPF-based networking for my workloads.
 - [cloudflared](https://github.com/cloudflare/cloudflared): Enables Cloudflare secure access to my routes.
@@ -45,6 +46,12 @@ The way Flux works for me here is it will recursively search the [kubernetes/app
 
 This Git repository contains the following directories under [kubernetes](./kubernetes).
 
+```sh
+📁 kubernetes      # Kubernetes cluster defined as code
+├─📁 apps          # Apps deployed into my cluster grouped by namespace (see below)
+├─📁 components    # Re-usable kustomize components
+└─📁 flux          # Flux system configuration
+```
 
 ### Networking
 
@@ -55,52 +62,6 @@ This Git repository contains the following directories under [kubernetes](./kube
 In my cluster there are two instances of [ExternalDNS](https://github.com/kubernetes-sigs/external-dns) running. One for syncing private DNS records to my `UDM Pro Max` using [ExternalDNS webhook provider for UniFi](https://github.com/kashalls/external-dns-unifi-webhook), while another instance syncs public DNS to `Cloudflare`. This setup is managed by creating routes with two specific gatways: `internal` for private DNS and `external` for public DNS. The `external-dns` instances then syncs the DNS records to their respective platforms accordingly.
 
 ---
-
-```sh
-📁 kubernetes      # Kubernetes cluster defined as code
-├─📁 apps          # Apps deployed into my cluster grouped by namespace (see below)
-├─📁 components    # Re-usable kustomize components
-└─📁 flux          # Flux system configuration
-```
-
-## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f6a7/512.gif" alt="🌱" width="20" height="20"> Talos and Kubernetes Maintenance
-
-### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f386/512.gif" alt="🌱" width="20" height="20">  Reset
-
-There might be a situation where you want to destroy your Kubernetes cluster. The following command will reset your nodes back to maintenance mode, append `--force` to completely format your the Talos installation. Either way the nodes should reboot after the command has sucessfully ran.
-
-```sh
-task talos:reset # --force
-```
-
-### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" alt="🌱" width="20" height="20">  Updating Talos and Kubernetes versions
-
-> [!IMPORTANT]
-> Ensure you have updated `talconfig.yaml` and any patches with your updated configuration. In some cases you **not only need to apply the configuration but also upgrade talos** to apply new configuration.
-
-```sh
-# (Re)generate the Talos config
-task talos:generate-config
-# Apply the config to the node
-task talos:apply-node IP=? MODE=?
-# e.g. task talos:apply-node IP=10.10.10.10 MODE=auto
-```
-
-> [!IMPORTANT]
-> Ensure the `talosVersion` and `kubernetesVersion` in `talconfig.yaml` are up-to-date with the version you wish to upgrade to.
-
-```sh
-# Upgrade node to a newer Talos version
-task talos:upgrade-node IP=?
-# e.g. task talos:upgrade-node IP=10.10.10.10
-```
-
-```sh
-# Upgrade cluster to a newer Kubernetes version
-task talos:upgrade-k8s
-# e.g. task talos:upgrade-k8s
-```
- ---
 
 ### <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f91d/512.gif" alt="🌱" width="20" height="20">  Gratitude and Thanks
 
