@@ -18,27 +18,16 @@
     ':semanticCommits',
     ':timezone(America/Los_Angeles)',
   ],
-  dependencyDashboardTitle: 'Renovate Dashboard 🤖',
-  suppressNotifications: [
-    'prEditedNotification',
-    'prIgnoreNotification',
-  ],
-  ignorePaths: [
-    '**/resources/**',
-  ],
+  dependencyDashboardTitle: "Renovate Dashboard 🤖",
+  suppressNotifications: ["prEditedNotification", "prIgnoreNotification"],
+  ignorePaths: ["**/resources/**"],
   flux: {
-    managerFilePatterns: [
-      '/(^|/)kubernetes/.+\\.ya?ml$/',
-    ],
+    fileMatch: ["(^|/)kubernetes/.+\\.ya?ml$"],
   },
-  'helm-values': {
-    managerFilePatterns: [
-      '/(^|/)kubernetes/.+\\.ya?ml$/',
-    ],
+  "helm-values": {
+    fileMatch: ["(^|/)kubernetes/.+\\.ya?ml$"],
   },
   kubernetes: {
-    managerFilePatterns: [
-      '/(^|/)kubernetes/.+\\.ya?ml$/',
-    ],
+    fileMatch: ["(^|/)kubernetes/.+\\.ya?ml$"],
   },
 }
