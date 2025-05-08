@@ -1,7 +1,7 @@
 ---
-# area/bootstrap:
-#   - changed-files:
-#       - any-glob-to-any-file: bootstrap/**/*
+area/bootstrap:
+  - changed-files:
+      - any-glob-to-any-file: bootstrap/**/*
 area/docs:
   - changed-files:
       - any-glob-to-any-file:
@@ -28,6 +28,3 @@ area/taskfile:
       - any-glob-to-any-file:
           - ".taskfiles/**/*"
           - "Taskfile.yaml"
-area/templates:
-  - changed-files:
-      - any-glob-to-any-file: templates/**/*
