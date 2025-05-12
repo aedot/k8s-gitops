@@ -11,5 +11,5 @@ resources:
   - ./gramps/ks.yaml
   - ./wallos/ks.yaml
   - ./it-tools/ks.yaml
-  # - ./n8n/ks.yaml
   - ./searxng/ks.yaml
+  - ./lubelog/ks.yaml
