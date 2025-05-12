@@ -61,7 +61,7 @@ spec:
         kind: Secret
     substitute:
       # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql
-      POSTGRESQL_VERSION: 17.4-bookworm
+      POSTGRESQL_VERSION: 17.5-bookworm
       APP: *app
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
