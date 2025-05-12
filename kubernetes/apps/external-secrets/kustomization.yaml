@@ -6,5 +6,6 @@ namespace: external-secrets
 components:
   - ../../components/common
   - ../../components/repos/app-template
-resources: 
-  - ./ks.yaml
+resources:
+  - ./external-secrets/ks.yaml
+  - ./akeyless/ks.yaml
