@@ -44,7 +44,8 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: ${SECRET_DOMAIN/./-}-root-tls
+            name: ${SECRET_DOMAIN/./-}-production-tls
+            namespace: cert-manager
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
@@ -78,7 +79,8 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: ${SECRET_DOMAIN/./-}-tls
+            name: ${SECRET_DOMAIN/./-}-production-tls
+            namespace: cert-manager
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
@@ -112,4 +114,5 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: ${SECRET_DOMAIN/./-}-tls
+            name: ${SECRET_DOMAIN/./-}-production-tls
+            namespace: cert-manager
