@@ -14,6 +14,6 @@ resources:
   - ./k8s-gateway/ks.yaml
   - ./multus/ks.yaml
   - ./adguardhome-sync/ks.yaml
-  # - ./envoy-gateway/ks.yaml
+  - ./envoy-gateway/ks.yaml
   - ./gateway-api-crds/ks.yaml
 
