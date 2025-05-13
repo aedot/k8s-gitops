@@ -1,93 +1,93 @@
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
 metadata:
   name: traefik-external
 spec:
-  interval: 5m
-  chart:
-    spec:
-      chart: traefik
-      version: 35.2.0
-      sourceRef:
-        kind: HelmRepository
-        name: traefik
-        namespace: flux-system
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 35.2.0
+  url: oci://ghcr.io/traefik/helm/traefik
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app traefik-external
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: traefik-external
   values:
     deployment:
-      kind: DaemonSet
+      kind: Deployment
+      replicas: 3
     service:
       enabled: true
       type: LoadBalancer
-      loadBalancerIPs:
-        - 10.0.10.26
       annotations:
-        io.cilium/lb-ipam-ips: 10.0.10.26
-      externalTrafficPolicy: Cluster
-      ipFamilies:
-        - "IPv4"
+        external-dns.alpha.kubernetes.io/hostname: "external.${SECRET_DOMAIN}"
+        lbipam.cilium.io/ips: 10.0.10.51
+      spec:
+        externalTrafficPolicy: Cluster
+    env:
+      - name: TZ
+        value: "America/Los_Angeles"
     logs:
       general:
-        format: json
-        level: WARN
+        level: INFO
       access:
         enabled: true
-        format: json
     ingressClass:
-      enabled: false
-    globalArguments:
-      - "--api.insecure=true"
-      - "--serverstransport.insecureskipverify=true"
-    additionalArguments:
-      - "--providers.kubernetesgateway.labelselector=app.kubernetes.io/instance=traefik-external-network"
-    providers:
-      kubernetesCRD:
-        enabled: true
-        allowCrossNamespace: true
-      kubernetesIngress:
+      enabled: true
+      isDefaultClass: false
+      name: traefik-external
+    ingressRoute:
+      dashboard:
         enabled: false
-      kubernetesGateway:
-        enabled: true
-        experimentalChannel: false
-        statusAddress:
-          ip: 10.0.10.26
+    globalArguments:
+      - "--serversTransport.insecureSkipVerify=true"
+      - "--global.sendanonymoususage=false"
+    additionalArguments:
+      - "--entrypoints.web.transport.respondingTimeouts.readTimeout=0"
+      - "--entrypoints.websecure.transport.respondingTimeouts.readTimeout=0"
     ports:
+      traefik:
+        expose:
+          default: false
+      web:
+        redirections:
+          entryPoint:
+            to: websecure
+            scheme: https
+            permanent: true
       websecure:
-        middlewares:
-          - network-errors@kubernetescrd
-          - network-ratelimit@kubernetescrd
-          - network-blockuseragent@kubernetescrd
         tls:
           enabled: true
           options: default
-        http3:
-          enabled: true
         forwardedHeaders:
           trustedIPs:
-            - 192.168.1.0/24
-            - 173.245.48.0/20
+            - 10.0.0.0/8
+            - 172.16.0.0/12
+            - 192.168.0.0/16
             - 103.21.244.0/22
             - 103.22.200.0/22
             - 103.31.4.0/22
-            - 141.101.64.0/18
-            - 108.162.192.0/18
-            - 190.93.240.0/20
-            - 188.114.96.0/20
-            - 197.234.240.0/22
-            - 198.41.128.0/17
-            - 162.158.0.0/15
             - 104.16.0.0/13
             - 104.24.0.0/14
-            - 172.64.0.0/13
+            - 108.162.192.0/18
             - 131.0.72.0/22
+            - 141.101.64.0/18
+            - 162.158.0.0/15
+            - 172.64.0.0/13
+            - 173.245.48.0/20
+            - 188.114.96.0/20
+            - 190.93.240.0/20
+            - 197.234.240.0/22
+            - 198.41.128.0/17
             - 2400:cb00::/32
             - 2606:4700::/32
             - 2803:f800::/32
@@ -97,22 +97,24 @@ spec:
             - 2c0f:f248::/32
         proxyProtocol:
           trustedIPs:
-            - 192.168.1.0/24
-            - 173.245.48.0/20
+            - 10.0.0.0/8
+            - 172.16.0.0/12
+            - 192.168.0.0/16
             - 103.21.244.0/22
             - 103.22.200.0/22
             - 103.31.4.0/22
-            - 141.101.64.0/18
-            - 108.162.192.0/18
-            - 190.93.240.0/20
-            - 188.114.96.0/20
-            - 197.234.240.0/22
-            - 198.41.128.0/17
-            - 162.158.0.0/15
             - 104.16.0.0/13
             - 104.24.0.0/14
-            - 172.64.0.0/13
+            - 108.162.192.0/18
             - 131.0.72.0/22
+            - 141.101.64.0/18
+            - 162.158.0.0/15
+            - 172.64.0.0/13
+            - 173.245.48.0/20
+            - 188.114.96.0/20
+            - 190.93.240.0/20
+            - 197.234.240.0/22
+            - 198.41.128.0/17
             - 2400:cb00::/32
             - 2606:4700::/32
             - 2803:f800::/32
@@ -120,41 +122,41 @@ spec:
             - 2405:8100::/32
             - 2a06:98c0::/29
             - 2c0f:f248::/32
+        http3:
+          enabled: true
+      metrics:
+        expose:
+          default: false
     metrics:
       prometheus:
-        serviceMonitor:
+        entryPoint: metrics
+        service:
           enabled: true
-    experimental:
-      plugins:
-        traefik-plugin-blockuseragent:
-          moduleName: "github.com/agence-gaya/traefik-plugin-blockuseragent"
-          version: "v0.1.7"
-    gateway:
-      enabled: true
-      name: external
-      annotations:
-        # https://kubernetes-sigs.github.io/external-dns/v0.14.2/sources/gateway/#targets
-        external-dns.alpha.kubernetes.io/target: ${SECRET_DOMAIN}
-      listeners:
-        web:
-          port: 8000
-          # doesn't support None for now...
-          # https://gateway-api.sigs.k8s.io/reference/spec/#fromnamespaces
-          namespacePolicy: All
-        websecure:
-          port: 8443
-          namespacePolicy: All
-          protocol: HTTPS
-          certificateRefs:
-            - name: ${SECRET_DOMAIN/./-}-production-tls
-              namespace: cert-manager
-          mode: Terminate
-    gatewayClass:
-      enabled: true
-      name: external
+    pilot:
+      enabled: false
+    providers:
+      kubernetesCRD:
+        enabled: true
+        ingressClass: traefik-external
+        allowCrossNamespace: true
+        allowExternalNameServices: true
+      kubernetesIngress:
+        enabled: true
+        ingressClass: traefik-external
+        allowExternalNameServices: true
+        publishedService:
+          enabled: true
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: traefik
+            app.kubernetes.io/instance: traefik-external-network
     resources:
       requests:
-        cpu: 15m
-        memory: 110M
+        cpu: 100m
+        memory: 768Mi
       limits:
-        memory: 642M
+        memory: 768Mi

@@ -1,30 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app traefik-crds
-  namespace: &namespace network
-spec:
-  targetNamespace: *namespace
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  interval: 30m
-  path: ./kubernetes/apps/network/traefik/crds
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  timeout: 5m
-  wait: false
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
----
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -37,11 +11,11 @@ spec:
       app.kubernetes.io/name: *app
   interval: 30m
   dependsOn:
-    - name: traefik-crds
-      namespace: *namespace
+    - name: cert-manager-tls
+      namespace: cert-manager
   path: ./kubernetes/apps/network/traefik/external
-  components:
-    - ../../../../components/gatus/guarded
+  # components:
+  #   - ../../../../components/gatus/guarded
   prune: true
   sourceRef:
     kind: GitRepository
@@ -57,7 +31,6 @@ spec:
       APP: *app
       GATUS_PATH: "/dashboard/"
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -70,11 +43,11 @@ spec:
       app.kubernetes.io/name: *app
   interval: 30m
   dependsOn:
-    - name: traefik-crds
-      namespace: *namespace
+    - name: cert-manager-tls
+      namespace: cert-manager
   path: ./kubernetes/apps/network/traefik/internal
-  components:
-    - ../../../../components/gatus/internal
+  # components:
+  #   - ../../../../components/gatus/internal
   prune: true
   sourceRef:
     kind: GitRepository
@@ -104,6 +77,8 @@ spec:
   dependsOn:
     - name: traefik-external
       namespace: *namespace
+    - name: traefik-internal
+      namespace: *namespace
   interval: 30m
   path: ./kubernetes/apps/network/traefik/addons
   prune: true
@@ -117,62 +92,3 @@ spec:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app traefik-certificates
-  namespace: &namespace network
-spec:
-  targetNamespace: network
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: traefik-external
-      namespace: *namespace
-    - name: cert-manager
-      namespace: cert-manager
-  interval: 30m
-  path: ./kubernetes/apps/network/traefik/certificates
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  timeout: 5m
-  wait: false
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
----
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app traefik-middlewares
-  namespace: &namespace network
-spec:
-  targetNamespace: *namespace
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: traefik-external
-      namespace: *namespace
-  interval: 30m
-  path: ./kubernetes/apps/network/traefik/middlewares
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  timeout: 5m
-  wait: false
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
-

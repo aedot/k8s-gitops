@@ -51,18 +51,6 @@ spec:
         ports:
           http:
             port: &port 80
-    route:
-      app:
-        hostnames:
-          - '{{ .Release.Name }}.${SECRET_DOMAIN}'
-        parentRefs:
-          - name: internal
-            namespace: network
-            sectionName: https
-        rules:
-          - backendRefs:
-              - name: *app
-                port: *port
     # ingress:
     #   app:
     #     className: internal
@@ -76,6 +64,24 @@ spec:
     #     tls:
     #       - hosts:
     #             - *host
+    ingress:
+      app:
+        className: traefik-internal
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          traefik.ingress.kubernetes.io/router.middlewares: "networking-traefik-middleware-chain-no-auth@kubernetescrd"
+        hosts:
+          - host: &host "wallos.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+            secretName: "${SECRET_DOMAIN/./-}-production-tls"
     persistence:
       data:
         existingClaim: *app

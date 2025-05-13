@@ -16,4 +16,5 @@ resources:
   - ./adguardhome-sync/ks.yaml
   # - ./envoy-gateway/ks.yaml
   # - ./gateway-api-crds/ks.yaml
+  - ./traefik/ks.yaml
 
