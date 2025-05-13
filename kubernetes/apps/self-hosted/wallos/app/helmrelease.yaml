@@ -50,20 +50,32 @@ spec:
         controller: wallos
         ports:
           http:
-            port: 80
-    ingress:
+            port: &port 80
+    route:
       app:
-        className: internal
-        hosts:
-          - host: &host "wallos.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-                - *host
+        hostnames:
+          - '{{ .Release.Name }}.${SECRET_DOMAIN}'
+        parentRefs:
+          - name: internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+    # ingress:
+    #   app:
+    #     className: internal
+    #     hosts:
+    #       - host: &host "wallos.${SECRET_DOMAIN}"
+    #         paths:
+    #           - path: /
+    #             service:
+    #               identifier: app
+    #               port: http
+    #     tls:
+    #       - hosts:
+    #             - *host
     persistence:
       data:
         existingClaim: *app

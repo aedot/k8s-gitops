@@ -70,7 +70,14 @@ spec:
       - --ignore-ingress-tls-spec
     triggerLoopOnEvent: true
     policy: sync
-    sources: ["ingress", "service"]
+    sources:
+      - gateway-httproute
+      - gateway-grpcroute
+      - gateway-tlsroute
+      - gateway-tcproute
+      - gateway-udproute
+      - service
+    # sources: ["ingress", "service"]
     txtOwnerId: agemo
     txtPrefix: k8s.agemo.
     domainFilters: ["${SECRET_DOMAIN}"]
