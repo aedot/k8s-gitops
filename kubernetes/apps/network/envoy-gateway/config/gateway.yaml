@@ -14,6 +14,41 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
+  name: internal-root
+  labels:
+    type: internal
+spec:
+  gatewayClassName: envoy
+  infrastructure:
+    annotations:
+      lbipam.cilium.io/ips: 10.0.10.51
+  listeners:
+    # sharing certs between root and wildcard domains,
+    # and sharing gateway's between root and wildcard domains
+    # causes improper http/2.0 connection coalescing, which causes random 404's
+    # so we need to explicitly use both a different cert and gateway to prevent it
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: '${SECRET_DOMAIN}'
+      allowedRoutes:
+        namespaces:
+          from: Same
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: '${SECRET_DOMAIN}'
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: ${SECRET_DOMAIN/./-}-root-tls
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
   name: internal
   labels:
     type: internal
@@ -24,7 +59,7 @@ spec:
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
-      # lbipam.cilium.io/ips: 10.0.10.21
+      lbipam.cilium.io/ips: 10.0.10.52
   listeners:
     - name: http
       protocol: HTTP
@@ -43,7 +78,7 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: ${SECRET_DOMAIN/./-}-production-tls
+            name: ${SECRET_DOMAIN/./-}-tls
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
@@ -58,7 +93,7 @@ spec:
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
-      # lbipam.cilium.io/ips: 10.0.10.22
+      lbipam.cilium.io/ips: 10.0.10.53
   listeners:
     - name: http
       protocol: HTTP
@@ -77,38 +112,4 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: ${SECRET_DOMAIN/./-}-production-tls
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: Gateway
-metadata:
-  name: external-root
-  labels:
-    type: external
-  annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname external.${SECRET_DOMAIN}
-spec:
-  gatewayClassName: envoy
-  infrastructure:
-    annotations:
-      external-dns.alpha.kubernetes.io/hostname: *hostname
-      # lbipam.cilium.io/ips: 10.0.10.22
-  listeners:
-    - name: http-root
-      protocol: HTTP
-      port: 80
-      hostname: '${SECRET_DOMAIN}'
-      allowedRoutes:
-        namespaces:
-          from: Same
-    - name: https-root
-      protocol: HTTPS
-      port: 443
-      hostname: '${SECRET_DOMAIN}'
-      allowedRoutes:
-        namespaces:
-          from: All
-      tls:
-        certificateRefs:
-          - kind: Secret
-            name: ${SECRET_DOMAIN/./-}-production-tls
+            name: ${SECRET_DOMAIN/./-}-tls
