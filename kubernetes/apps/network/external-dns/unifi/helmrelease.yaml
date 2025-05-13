@@ -70,8 +70,8 @@ spec:
       - --ignore-ingress-tls-spec
     triggerLoopOnEvent: true
     policy: sync
-    # sources: ["ingress", "service"]
-    sources: ["ingress", "service", "traefik-proxy"]
+    sources: ["ingress", "service"]
+    # sources: ["ingress", "service", "traefik-proxy"]
     txtOwnerId: agemo
     txtPrefix: k8s.agemo.
     domainFilters: ["${SECRET_DOMAIN}"]
