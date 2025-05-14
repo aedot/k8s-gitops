@@ -51,19 +51,17 @@ spec:
         ports:
           http:
             port: &port 80
-    ingress:
+    route:
       app:
-        className: internal
-        hosts:
-          - host: &host "wallos.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-                - *host
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       data:
         existingClaim: *app

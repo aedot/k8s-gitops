@@ -22,17 +22,14 @@ spec:
       it-tools:
         replicas: 1
         strategy: RollingUpdate
-
         annotations:
           reloader.stakater.com/auto: "true"
-
         pod:
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
             fsGroup: 1000
             fsGroupChangePolicy: "OnRootMismatch"
-
         containers:
           app:
             image:
@@ -50,30 +47,23 @@ spec:
                 drop:
                   - ALL
               readOnlyRootFilesystem: true
-
     service:
       app:
         controller: it-tools
         ports:
           http:
-            port: 8080
-
-    ingress:
+            port: &port 8080
+    route:
       app:
-        className: external
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
-        hosts:
-          - host: &host it-tools.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
-
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       tmp:
         type: emptyDir

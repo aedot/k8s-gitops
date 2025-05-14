@@ -24,7 +24,7 @@ spec:
           app:
             image:
               repository: ghcr.io/actualbudget/actual-server
-              tag: 25.5.0
+              tag: 25.5.0@sha256:3b486fbc0db02839917f65ed277aa509980f710b6e96dde966f5219983978179
             env:
               GENERIC_TIMEZONE: America/Los_Angeles
             probes:
@@ -43,35 +43,29 @@ spec:
                 memory: 128M
               limits:
                 memory: 512M
-
         pod:
           securityContext:
             runAsUser: 2000
             runAsGroup: 2000
             fsGroup: 2000
             fsGroupChangePolicy: OnRootMismatch
-
     service:
       app:
         controller: actual
         ports:
           http:
-            port: 5006
-
-    ingress:
+            port: &port 5006
+    route:
       app:
-        className: internal
-        hosts:
-          - host: &host aa-actual.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
-
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       data:
         existingClaim: *app
