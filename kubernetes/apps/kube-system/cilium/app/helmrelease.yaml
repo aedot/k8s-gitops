@@ -23,14 +23,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: cilium
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
   valuesFrom:
     - kind: ConfigMap
       name: cilium-values
@@ -59,5 +51,3 @@ spec:
       ui:
         enabled: true
         rollOutPods: true
-    operator:
-      tolerations: []
