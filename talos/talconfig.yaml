@@ -34,13 +34,13 @@ nodes:
             - hardwareAddr: "d8:9e:f3:75:90:54"
               driver: e1000e
         dhcp: true
-        # vlans:
-        #   - &vlan101
-        #     vlanId: 101
-        #     mtu: 1500
-        #     dhcp: true
-        #     dhcpOptions:
-        #       routeMetric: 4096
+        vlans:
+          - &vlan101
+            vlanId: 101
+            mtu: 1500
+            dhcp: true
+            dhcpOptions:
+              routeMetric: 4096
         vip:
           ip: "10.0.10.10"
   - hostname: "oshun"
@@ -58,8 +58,8 @@ nodes:
             - hardwareAddr: "18:66:da:4c:31:ee"
               driver: e1000e
         dhcp: true
-        # vlans:
-        #   - *vlan101
+        vlans:
+          - *vlan101
         vip:
           ip: "10.0.10.10"
   - hostname: "yemolu"
@@ -77,8 +77,8 @@ nodes:
               - hardwareAddr: "d8:9e:f3:75:85:e7"
                 driver: e1000e
         dhcp: true
-        # vlans:
-        #   - *vlan101
+        vlans:
+          - *vlan101
         vip:
           ip: "10.0.10.10"
 
