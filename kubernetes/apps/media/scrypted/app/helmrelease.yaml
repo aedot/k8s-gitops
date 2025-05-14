@@ -108,9 +108,9 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /.npm
-      recs:
-        type: nfs
-        server: shango.internal
-        path: /mnt/user/k8s/scrypted
-        globalMounts:
-          - path: /recs
+      # recs:
+      #   type: nfs
+      #   server: shango.internal
+      #   path: /mnt/user/k8s/scrypted
+      #   globalMounts:
+      #     - path: /recs

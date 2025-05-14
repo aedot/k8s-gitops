@@ -5,10 +5,10 @@ clusterName: k8s-gitops
 talosVersion: "${talosVersion}"
 kubernetesVersion: "${kubernetesVersion}"
 
-endpoint: https://10.0.10.10:6443
+endpoint: https://10.0.20.10:6443
 additionalApiServerCertSans: &sans
   - "127.0.0.1"
-  - "10.0.10.10"
+  - "10.0.20.10"
 additionalMachineCertSans: *sans
 
 clusterPodNets: ["10.42.0.0/16"]
@@ -20,11 +20,11 @@ cniConfig:
 
 nodes:
   - hostname: "yemoja"
-    ipAddress: "10.0.10.11"
+    ipAddress: "10.0.20.11"
     installDisk: "/dev/nvme0n1"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
+    talosImageURL: &ImageURL factory.talos.dev/installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
     controlPlane: true
     networkInterfaces:
       - interface: bond0
@@ -42,13 +42,13 @@ nodes:
             dhcpOptions:
               routeMetric: 4096
         vip:
-          ip: "10.0.10.10"
+          ip: "10.0.20.10"
   - hostname: "oshun"
-    ipAddress: "10.0.10.12"
+    ipAddress: "10.0.20.12"
     installDisk: "/dev/nvme0n1"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
+    talosImageURL: *ImageURL
     controlPlane: true
     networkInterfaces:
       - interface: bond0
@@ -61,13 +61,13 @@ nodes:
         vlans:
           - *vlan101
         vip:
-          ip: "10.0.10.10"
+          ip: "10.0.20.10"
   - hostname: "yemolu"
-    ipAddress: "10.0.10.13"
+    ipAddress: "10.0.20.13"
     installDisk: "/dev/nvme0n1"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
+    talosImageURL: *ImageURL
     controlPlane: true
     networkInterfaces:
       - interface: bond0
@@ -80,7 +80,7 @@ nodes:
         vlans:
           - *vlan101
         vip:
-          ip: "10.0.10.10"
+          ip: "10.0.20.10"
 
 # Global patches
 patches:
