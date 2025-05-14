@@ -55,19 +55,18 @@ spec:
         runAsNonRoot: true
         runAsUser: 568
         runAsGroup: 568
-    ingress:
+    route:
       app:
-        className: internal
-        hosts:
-          - host: &host karma.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames:
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     service:
       app:
         controller: *app

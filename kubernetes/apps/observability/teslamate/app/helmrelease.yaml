@@ -1,5 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -46,9 +45,8 @@ spec:
               tag: "2.0.0"
             envFrom: *envFrom
             env:
-              TZ: ${TZ}
+              TZ: America/Los_Angeles
               DISABLE_MQTT: "true"
-              # MQTT_HOST: "emqx-listeners.dbms.svc.cluster.local"
               DATABASE_NAME: "teslamate"
               DATABASE_HOST: "postgres-rw.dbms.svc.cluster.local"
             resources:
@@ -62,17 +60,15 @@ spec:
         controller: teslamate
         ports:
           http:
-            port: 4000
-    ingress:
+            port: &port 4000
+    route:
       app:
-        className: internal
-        hosts:
-          - host: &host teslamate.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
