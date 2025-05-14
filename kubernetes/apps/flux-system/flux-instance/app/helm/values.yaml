@@ -12,6 +12,7 @@ instance:
     - notification-controller
   sync:
     kind: GitRepository
-    url: "https://github.com/aedot/k8s-gitops.git"
+    url: "ssh://git@github.com/aedot/k8s-gitops.git"
+    pullSecret: github-deploy-key
     ref: "refs/heads/main"
     path: kubernetes/flux/cluster
