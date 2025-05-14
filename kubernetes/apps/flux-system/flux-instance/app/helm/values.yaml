@@ -14,10 +14,19 @@ instance:
     kind: GitRepository
     url: https://github.com/aedot/k8s-gitops
     ref: refs/heads/main
-    path: kubernetes/flux/cluster
+    path: ./kubernetes/flux/cluster
     interval: 1h
   kustomize:
     patches:
+      - patch: |
+          - op: add
+            path: /spec/decryption
+            value:
+              provider: sops
+              secretRef:
+                name: sops-age
+        target:
+          kind: Kustomization
       # Increase the number of workers and limits
       # Ref: https://fluxcd.io/flux/installation/configuration/vertical-scaling/#increase-the-number-of-workers-and-limits
       - patch: |

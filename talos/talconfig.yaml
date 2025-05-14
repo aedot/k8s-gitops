@@ -5,7 +5,7 @@ clusterName: k8s-gitops
 talosVersion: "${talosVersion}"
 kubernetesVersion: "${kubernetesVersion}"
 
-endpoint: https://10.0.20.10:6443
+endpoint: https://10.0.10.10:6443
 additionalApiServerCertSans: &sans
   - "127.0.0.1"
   - "10.0.10.10"
