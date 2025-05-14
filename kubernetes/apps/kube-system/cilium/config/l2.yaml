@@ -7,7 +7,7 @@ spec:
   loadBalancerIPs: true
   # NOTE: interfaces might need to be set if you have more than one active NIC on your hosts
   interfaces:
-    - bond0.10
+    - bond0
   #   - ^eno[0-9]+
   #   - ^eth[0-9]+
   nodeSelector:
