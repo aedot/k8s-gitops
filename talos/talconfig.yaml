@@ -8,7 +8,7 @@ kubernetesVersion: "${kubernetesVersion}"
 endpoint: https://10.0.20.10:6443
 additionalApiServerCertSans: &sans
   - "127.0.0.1"
-  - "10.0.20.10"
+  - "10.0.10.10"
 additionalMachineCertSans: *sans
 
 clusterPodNets: ["10.42.0.0/16"]
@@ -20,7 +20,7 @@ cniConfig:
 
 nodes:
   - hostname: "yemoja"
-    ipAddress: "10.0.20.11"
+    ipAddress: "10.0.10.11"
     installDisk: "/dev/nvme0n1"
     machineSpec:
       secureboot: false
@@ -42,9 +42,9 @@ nodes:
         #     dhcpOptions:
         #       routeMetric: 4096
         vip:
-          ip: "10.0.20.10"
+          ip: "10.0.10.10"
   - hostname: "oshun"
-    ipAddress: "10.0.20.12"
+    ipAddress: "10.0.10.12"
     installDisk: "/dev/nvme0n1"
     machineSpec:
       secureboot: false
@@ -61,9 +61,9 @@ nodes:
         # vlans:
         #   - *vlan101
         vip:
-          ip: "10.0.20.10"
+          ip: "10.0.10.10"
   - hostname: "yemolu"
-    ipAddress: "10.0.20.13"
+    ipAddress: "10.0.10.13"
     installDisk: "/dev/nvme0n1"
     machineSpec:
       secureboot: false
@@ -80,7 +80,7 @@ nodes:
         # vlans:
         #   - *vlan101
         vip:
-          ip: "10.0.20.10"
+          ip: "10.0.10.10"
 
 # Global patches
 patches:
