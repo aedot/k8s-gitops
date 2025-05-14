@@ -36,13 +36,8 @@ spec:
       replicaAutoBalance: true
       storageMinimalAvailablePercentage: 1
       storageReservedPercentageForDefaultDisk: 10
-    longhornUI:
-      replicas: 1
     ingress:
-      enabled: true
-      ingressClassName: internal
-      host: longhorn.${SECRET_DOMAIN}
-      tls: true
+      enabled: false
     metrics:
       serviceMonitor:
         enabled: true
