@@ -26,7 +26,7 @@ spec:
     controller:
       service:
         annotations:
-          lbipam.cilium.io/ips: "10.0.10.21"
+          lbipam.cilium.io/ips: "10.0.20.21"
         externalTrafficPolicy: Cluster
       ingressClassResource:
         name: internal
