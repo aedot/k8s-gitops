@@ -64,7 +64,6 @@ spec:
         tls:
           - hosts:
                 - *host
-            secretName: "cert-manager/${SECRET_DOMAIN/./-}-production-tls"
     persistence:
       data:
         existingClaim: *app
