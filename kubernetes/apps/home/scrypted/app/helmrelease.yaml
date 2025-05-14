@@ -17,9 +17,6 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  dependsOn:
-    - name: longhorn
-      namespace: longhorn-system
   values:
     controllers:
       scrypted:
@@ -46,27 +43,23 @@ spec:
 
         containers:
           app:
+            env:
+              SCRYPTED_INSECURE_PORT: &port 80
             image:
-              repository: ghcr.io/bjw-s-labs/scrypted
-              tag: 0.139.0@sha256:3dc62108e502fdff3c55cf80ba9986a1337ed9a28a059546e6325008ca3efb41
-            probes:
-              liveness:
-                enabled: false
-              readiness:
-                enabled: false
-              startup:
-                enabled: false
-                spec:
-                  failureThreshold: 30
-                  periodSeconds: 5
+              repository: ghcr.io/koush/scrypted
+              tag: v0.123.58-jammy-full@sha256:d84d2a8cc897e3ddd0635aecb681900f551e3f5bf702200df4b92e4014bc22b3
+            command: ["npm"]
+            args:
+              - "--prefix"
+              - "/server"
+              - "exec"
+              - "scrypted-serve"
             resources:
-              requests:
-                gpu.intel.com/i915: 1
-                cpu: 136m
-                memory: 1024Mi
               limits:
                 gpu.intel.com/i915: 1
-                memory: 8192Mi
+                memory: 8Gi
+              requests:
+                cpu: 100m
             securityContext:
               privileged: true
 
@@ -75,23 +68,23 @@ spec:
         controller: *app
         ports:
           http:
-            port: 11080
+            port: *port
             primary: true
-          rebroadcast1:
+          rebroadcast:
             port: 34135
-          rebroadcast2:
-            port: 34136
 
-    ingress:
+    route:
       app:
-        className: internal
-        hosts:
-            - host: scrypted.${SECRET_DOMAIN}
-              paths:
-                - path: /
-                  service:
-                    identifier: app
-                    port: http
+        hostnames:
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
 
     persistence:
       config:
@@ -108,9 +101,9 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /.npm
-      # recs:
-      #   type: nfs
-      #   server: shango.internal
-      #   path: /mnt/user/k8s/scrypted
-      #   globalMounts:
-      #     - path: /recs
+      recs:
+        type: nfs
+        server: shango.internal
+        path: /mnt/user/k8s/scrypted
+        globalMounts:
+          - path: /recs
