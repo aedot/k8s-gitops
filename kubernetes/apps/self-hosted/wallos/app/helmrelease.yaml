@@ -51,26 +51,9 @@ spec:
         ports:
           http:
             port: &port 80
-    # ingress:
-    #   app:
-    #     className: internal
-    #     hosts:
-    #       - host: &host "wallos.${SECRET_DOMAIN}"
-    #         paths:
-    #           - path: /
-    #             service:
-    #               identifier: app
-    #               port: http
-    #     tls:
-    #       - hosts:
-    #             - *host
     ingress:
       app:
-        className: traefik-internal
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
-          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          traefik.ingress.kubernetes.io/router.middlewares: "network-traefik-middleware-chain-no-auth@kubernetescrd"
+        className: internal
         hosts:
           - host: &host "wallos.${SECRET_DOMAIN}"
             paths:
@@ -80,7 +63,8 @@ spec:
                   port: http
         tls:
           - hosts:
-              - *host
+                - *host
+            secretName: "cert-manager/${SECRET_DOMAIN/./-}-production-tls"
     persistence:
       data:
         existingClaim: *app

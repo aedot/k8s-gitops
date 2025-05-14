@@ -1,5 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1beta2.json
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
@@ -15,7 +14,6 @@ spec:
   verify:
     provider: cosign
 ---
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -71,7 +69,6 @@ spec:
     triggerLoopOnEvent: true
     policy: sync
     sources: ["ingress", "service"]
-    # sources: ["ingress", "service", "traefik-proxy"]
     txtOwnerId: agemo
     txtPrefix: k8s.agemo.
     domainFilters: ["${SECRET_DOMAIN}"]
