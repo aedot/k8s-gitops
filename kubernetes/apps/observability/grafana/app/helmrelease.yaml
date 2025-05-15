@@ -138,11 +138,6 @@ spec:
           # renovate: datasource=github-releases depName=dragonflydb/dragonfly
           url: https://raw.githubusercontent.com/dragonflydb/dragonfly/v1.30.1/tools/local/monitoring/grafana/provisioning/dashboards/dragonfly.json
           datasource: Prometheus
-        emqx:
-          # renovate: depName="EMQX"
-          gnetId: 17446
-          revision: 2
-          datasource: [{ name: DS_PROMETHEUS, value: Prometheus }]
         external-dns:
           # renovate: depName="External-dns"
           gnetId: 15038
@@ -192,12 +187,6 @@ spec:
           # renovate: depName="K8s / Storage / Volumes / Cluster"
           gnetId: 11454
           revision: 14
-        nginx:
-          url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
-          datasource: Prometheus
-        nginx-request-handling-performance:
-          url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
-          datasource: Prometheus
         node-exporter-full:
           # renovate: depName="Node Exporter Full"
           gnetId: 1860
