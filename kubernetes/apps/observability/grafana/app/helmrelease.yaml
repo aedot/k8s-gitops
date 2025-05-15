@@ -187,6 +187,11 @@ spec:
           # renovate: depName="K8s / Storage / Volumes / Cluster"
           gnetId: 11454
           revision: 14
+        longhorn:
+          # renovate: depName="Longhorn"
+          gnetId: 16888
+          revision: 9
+          datasource: Prometheus
         node-exporter-full:
           # renovate: depName="Node Exporter Full"
           gnetId: 1860
