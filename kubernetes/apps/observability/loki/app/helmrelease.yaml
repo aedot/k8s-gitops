@@ -51,6 +51,8 @@ spec:
         chunk_encoding: snappy
       limits_config:
         retention_period: 14d
+        ingestion_rate_mb: 4
+        ingestion_burst_size_mb: 8
       storage:
         type: filesystem
       schemaConfig:
