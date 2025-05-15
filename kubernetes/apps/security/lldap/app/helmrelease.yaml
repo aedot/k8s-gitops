@@ -47,7 +47,7 @@ spec:
               repository: ghcr.io/lldap/lldap
               tag: v0.6.1
             env:
-              TZ: ${TIMEZONE}
+              TZ: America/Los_Angeles
               LLDAP_HTTP_PORT: &port 8080
               LLDAP_HTTP_URL: https://lldap.${SECRET_DOMAIN}
               LLDAP_LDAP_PORT: &ldapPort 5389
@@ -68,20 +68,17 @@ spec:
           ldap:
             enabled: true
             port: *ldapPort
-    ingress:
+    route:
       app:
-        enabled: true
-        className: internal
-        hosts:
-          - host: &host "lldap.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       data:
         type: emptyDir
