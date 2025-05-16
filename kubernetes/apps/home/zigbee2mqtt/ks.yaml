@@ -16,7 +16,7 @@ spec:
     - ../../../../components/volsync
   dependsOn:
     - name: longhorn
-      namespace: storage
+      namespace: longhorn-system
     - name: emqx-cluster
       namespace: *home
     - name: volsync
