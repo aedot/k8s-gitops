@@ -21,6 +21,7 @@ on:
         type: choice
         default: debug
         options:
+          - error
           - debug
           - info
         required: true
