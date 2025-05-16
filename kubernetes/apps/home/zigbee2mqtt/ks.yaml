@@ -5,20 +5,16 @@ metadata:
   name: &app zigbee2mqtt
   namespace: &namespace home
 spec:
-  targetNamespace: *namespace
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 30m
-  timeout: 5m
   path: ./kubernetes/apps/home/zigbee2mqtt/app
   components:
     - ../../../../components/volsync
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
-    - name: emqx-cluster
-      namespace: *home
     - name: volsync
       namespace: volsync-system
     - name: akeyless-stores
@@ -28,6 +24,8 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
   wait: false
   postBuild:
     substituteFrom:
