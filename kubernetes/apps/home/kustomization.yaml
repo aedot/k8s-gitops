@@ -6,4 +6,7 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
+  - ./emqx/ks.yaml
   - ./scrypted/ks.yaml
+  - ./zigbee2mqtt/ks.yaml
+
