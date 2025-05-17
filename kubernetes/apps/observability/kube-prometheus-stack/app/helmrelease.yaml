@@ -71,7 +71,7 @@ spec:
           hostnames: ["prometheus.${SECRET_DOMAIN}"]
           parentRefs:
             - name: internal
-              namespace: network
+              namespace: kube-system
               sectionName: https
       prometheusSpec:
         ruleSelectorNilUsesHelmValues: false
