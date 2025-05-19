@@ -1,5 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -15,7 +14,7 @@ spec:
       name: *app
       namespace: *namespace
   interval: 1h
-  path: ./kubernetes/apps/kube-system/intel-device-plugins/operator
+  path: ./kubernetes/apps/kube-system/intel-device-plugins/app
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -25,7 +24,6 @@ spec:
   targetNamespace: *namespace
   timeout: 5m
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -37,8 +35,6 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: intel-device-plugin-operator
-      namespace: *namespace
-    - name: node-feature-discovery
       namespace: *namespace
   interval: 1h
   path: ./kubernetes/apps/kube-system/intel-device-plugins/gpu
