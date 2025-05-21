@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/wger-project/wger
-              tag: 2.3
+              tag: latest
             envFrom: *envFrom
             env:
               TZ: America/Los_Angeles
