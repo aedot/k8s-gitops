@@ -32,7 +32,7 @@ spec:
         containers:
           app:
             image:
-              repository: gchr.io/wger-project/wger
+              repository: ghcr.io/wger-project/wger
               tag: 2.3
             envFrom: *envFrom
             env:
