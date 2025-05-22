@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: wger/server
-              tag: 2.4-dev@sha256:2e84ada068f5da097063c3449ecc7131c332cc6192e8cdbda4a18f937486a9ac
+              tag: 2.4-dev@sha256:168f5fe0d480e9909546e61edda859a16f52acef88ac6624e6971f487ce3b99d
             envFrom: *envFrom
             env:
               DJANGO_DB_ENGINE: django.db.backends.postgresql
