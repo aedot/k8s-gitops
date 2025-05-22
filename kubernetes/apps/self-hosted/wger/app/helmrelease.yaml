@@ -32,8 +32,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/wger-project/wger
-              tag: latest
+              repository: wger-project/wger
+              tag: 2.3
             envFrom: *envFrom
             env:
               TZ: America/Los_Angeles
