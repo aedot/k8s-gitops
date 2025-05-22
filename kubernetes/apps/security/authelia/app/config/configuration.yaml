@@ -82,6 +82,8 @@ identity_providers:
         - token
         - revocation
         - introspection
+        - pushed-authorization-request
+        - userinfo
       allowed_origins_from_client_redirect_uris: true
     jwks:
       - key_id: default
@@ -111,8 +113,8 @@ identity_providers:
         userinfo_signed_response_alg: none
         token_endpoint_auth_method: client_secret_basic
 
-      - client_name: lubelog
-        client_id: Lubelog
+      - client_name: lubelogger
+        client_id: Lube Logger
         client_secret: {{ env "LUBELOG_OAUTH_CLIENT_SECRET" }}
         public: false
         authorization_policy: one_factor
