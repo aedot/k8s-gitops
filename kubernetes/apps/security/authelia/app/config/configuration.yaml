@@ -43,7 +43,7 @@ session:
     host: dragonfly.dbms.svc.cluster.local
 
 access_control:
-  default_policy: two_factor
+  default_policy: bypass
   networks:
     - name: internal
       networks:
@@ -113,8 +113,8 @@ identity_providers:
         userinfo_signed_response_alg: none
         token_endpoint_auth_method: client_secret_basic
 
-      - client_name: lubelogger
-        client_id: Lube Logger
+      - client_name: lubelog
+        client_id: lubelog
         client_secret: {{ env "LUBELOG_OAUTH_CLIENT_SECRET" }}
         public: false
         authorization_policy: one_factor
