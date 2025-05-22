@@ -43,7 +43,7 @@ session:
     host: dragonfly.dbms.svc.cluster.local
 
 access_control:
-  default_policy: 'bypass'
+  default_policy: 'two_factor'
   networks:
     - name: internal
       networks:
