@@ -32,8 +32,8 @@ spec:
         containers:
           app:
             image:
-              repository: wger-project/wger
-              tag: 2.3
+              repository: wger/server
+              tag: 2.4-dev@sha256:efcea2085b93f122bfb91a6d85b4736965fc18be9cb3dd76bd3e93487f98459d
             envFrom: *envFrom
             env:
               TZ: America/Los_Angeles
