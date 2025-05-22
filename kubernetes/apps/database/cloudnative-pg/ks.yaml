@@ -36,6 +36,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/gatus/guarded
   interval: 1h
   timeout: 5m
   path: "./kubernetes/apps/database/cloudnative-pg/cluster"
