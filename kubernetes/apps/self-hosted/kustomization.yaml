@@ -12,4 +12,3 @@ resources:
   - ./wallos/ks.yaml
   - ./it-tools/ks.yaml
   - ./lubelog/ks.yaml
-  # - ./wger/ks.yaml
