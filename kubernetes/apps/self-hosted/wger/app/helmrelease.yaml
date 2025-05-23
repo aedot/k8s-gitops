@@ -39,15 +39,7 @@ spec:
           collectstatic:
             image: wger/server:2.4-dev@sha256:168f5fe0d480e9909546e61edda859a16f52acef88ac6624e6971f487ce3b99d
             command: ["sh", "-c", "python3 manage.py collectstatic --noinput"]
-            envFrom:
-              - secretRef:
-                  name: wger-secret
-            env:
-              - name: DJANGO_SETTINGS_MODULE
-                value: "settings"
-            volumeMounts:
-              - mountPath: /home/wger/static
-                name: static-files
+            envFrom: *envFrom
 
           django-init:
             image: wger/server:2.4-dev@sha256:168f5fe0d480e9909546e61edda859a16f52acef88ac6624e6971f487ce3b99d
@@ -57,15 +49,7 @@ spec:
                 python3 manage.py makemigrations && \
                 python3 manage.py migrate --noinput && \
                 python3 manage.py collectstatic --noinput
-            envFrom:
-              - secretRef:
-                  name: wger-secret
-            env:
-              - name: DJANGO_SETTINGS_MODULE
-                value: "settings"
-            volumeMounts:
-              - mountPath: /home/wger/static
-                name: static-files
+            envFrom: *envFrom
 
 
         containers:
