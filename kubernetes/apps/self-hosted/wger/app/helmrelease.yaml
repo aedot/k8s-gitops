@@ -87,7 +87,7 @@ spec:
                 cpu: 15m
                 memory: 80M
               limits:
-                memory: 256M
+                memory: 4096M
 
       nginx:
         annotations:
@@ -109,7 +109,7 @@ spec:
               limits:
                 memory: 512Mi
 
-      #TODO: fix celery after static images 
+      #TODO: fix celery after static images
       # celery-worker:
       #   annotations:
       #     reloader.stakater.com/auto: "true"
