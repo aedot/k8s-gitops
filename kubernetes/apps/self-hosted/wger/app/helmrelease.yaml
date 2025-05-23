@@ -48,6 +48,12 @@ spec:
             image:
               repository: wger/server
               tag: 2.4-dev@sha256:168f5fe0d480e9909546e61edda859a16f52acef88ac6624e6971f487ce3b99d
+            command:
+              - "sh"
+              - "-c"
+              - |
+                 python3 manage.py makemigrations && \
+                 python3 manage.py migrate --noinput
             envFrom: *envFrom
             env:
               TZ: America/Los_Angeles
@@ -61,7 +67,7 @@ spec:
               SYNC_EXERCISES_CELERY: True
               SYNC_EXERCISE_IMAGES_CELERY: True
               SYNC_EXERCISE_VIDEOS_CELERY: True
-              USE_CELERY: True
+              USE_CELERY: False
               CELERY_BROKER: &redis "redis://dragonfly.dbms.svc.cluster.local:6379"
               CELERY_BACKEND: *redis
 
@@ -303,35 +309,3 @@ spec:
       #   globalMounts:
       #     - path: /home/wger/beat/
       #       subPath: celery-beat
-
-    jobs:
-      migrate:
-        annotations:
-          "helm.sh/hook": post-install,post-upgrade
-          "helm.sh/hook-delete-policy": hook-succeeded
-        backoffLimit: 3
-        podSpec:
-          restartPolicy: Never
-          containers:
-            - name: migrate
-              image:
-              repository: wger/server
-              tag: 2.4-dev@sha256:168f5fe0d480e9909546e61edda859a16f52acef88ac6624e6971f487ce3b99d
-              command:
-                - sh
-                - -c
-                - |
-                  python3 manage.py makemigrations && \
-                  python3 manage.py migrate --noinput
-              env:
-                - name: DJANGO_SETTINGS_MODULE
-                  value: "settings"
-                - name: SITE_URL
-                  value: "https://fit.${SECRET_DOMAIN}"
-                - name: DJANGO_DB_ENGINE
-                  value: "django.db.backends.postgresql"
-                - name: CELERY_BROKER
-                  value: "redis://dragonfly.dbms.svc.cluster.local:6379"
-                - name: CELERY_BACKEND
-                  value: "redis://dragonfly.dbms.svc.cluster.local:6379"
-              envFrom: *envFrom
