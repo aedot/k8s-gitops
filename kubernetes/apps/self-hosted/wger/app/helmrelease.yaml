@@ -69,16 +69,16 @@ spec:
               AXES_LOCKOUT_PARAMETERS: ip_address
               AXES_IPWARE_PROXY_COUNT: "1"
               AXES_IPWARE_META_PRECEDENCE_ORDER: HTTP_X_FORWARDED_FOR,REMOTE_ADDR
-              DJANGO_DEBUG: False
+              DJANGO_DEBUG: True
               WGER_USE_GUNICORN: True
               EXERCISE_CACHE_TTL: 18000 # in seconds - 5*60*60, 5 hours
               ACCESS_TOKEN_LIFETIME: "10"
               REFRESH_TOKEN_LIFETIME: "24"
 
-              # CSRF_TRUSTED_ORIGINS: "https://{{ .Release.Name }}.${SECRET_DOMAIN}"
-              # X_FORWARDED_PROTO_HEADER_SET: True
-              # MEDIA_URL: https://{{ .Release.Name }}.${SECRET_DOMAIN}/media/
-              # STATIC_URL: https://{{ .Release.Name }}.${SECRET_DOMAIN}/static/
+              CSRF_TRUSTED_ORIGINS: "https://{{ .Release.Name }}.${SECRET_DOMAIN}"
+              X_FORWARDED_PROTO_HEADER_SET: True
+              MEDIA_URL: https://{{ .Release.Name }}.${SECRET_DOMAIN}/media/
+              STATIC_URL: https://{{ .Release.Name }}.${SECRET_DOMAIN}/static/
             resources:
               requests:
                 cpu: 15m
