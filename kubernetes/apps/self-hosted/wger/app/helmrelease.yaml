@@ -45,13 +45,13 @@ spec:
             envFrom:
               - configMapRef:
                   name: wger-env
-            volumeMounts:
-              - name: static
-                mountPath: /home/wger/static
-              - name: media
-                mountPath: /home/wger/media
             ports:
               - containerPort: 8000
+        volumeMounts:
+          - name: static
+            mountPath: /home/wger/static
+          - name: media
+            mountPath: /home/wger/media
 
       wger-nginx:
         annotations:
@@ -84,9 +84,9 @@ spec:
             envFrom:
               - configMapRef:
                   name: wger-env
-            volumeMounts:
-              - name: media
-                mountPath: /home/wger/media
+        volumeMounts:
+          - name: media
+            mountPath: /home/wger/media
 
       celery-beat:
         annotations:
@@ -100,15 +100,16 @@ spec:
             envFrom:
               - configMapRef:
                   name: wger-env
-            volumeMounts:
-              - name: celery-beat
-                mountPath: /home/wger/beat
+        volumeMounts:
+          - name: celery-beat
+            mountPath: /home/wger/beat
 
     service:
       wger-nginx:
-        ports:
-          http:
-            port: &port 80
+        controller: wger-nginx
+      ports:
+        http:
+          port: &port 80
 
     route:
       app:
@@ -127,16 +128,19 @@ spec:
         enabled: true
         type: persistentVolumeClaim
         storageClass: longhorn
+        accessMode: ReadWriteMany
         size: 1Gi
       media:
         enabled: true
         type: persistentVolumeClaim
         storageClass: longhorn
+        accessMode: ReadWriteMany
         size: 1Gi
       celery-beat:
         enabled: true
         type: persistentVolumeClaim
         storageClass: longhorn
+        accessMode: ReadWriteMany
         size: 1Gi
       nginx-config:
         enabled: true
@@ -146,7 +150,7 @@ spec:
     configMaps:
       wger-env:
         enabled: true
-        files:
+        data:
           prod.env: |-
             SECRET_KEY: "{{ env "SECRET_KEY" }}"
             SIGNING_KEY: "{{ env "SIGNING_KEY" }}"
@@ -196,7 +200,7 @@ spec:
             GUNICORN_CMD_ARGS: "--workers 3 --threads 2 --worker-class gthread --proxy-protocol True --timeout 240"
       nginx-config:
         enabled: true
-        files:
+        data:
           default.conf: |-
             upstream wger {
               server web:8000;
