@@ -105,14 +105,9 @@ spec:
               repository: nginx
               tag: stable@sha256:a3ba435a6ca5300c62198ec8b8acbf7e375a384fd9f8d36d6f7c0a8d247839e1
             securityContext:
-              allowPrivilegeEscalation: false
+              allowPrivilegeEscalation: true
               capabilities:
-                drop:
-                  - ALL
-                add:
-                  - CHOWN
-                  - DAC_OVERRIDE
-                  - FOWNER
+                drop: []
             resources:
               requests:
                 cpu: 10m
