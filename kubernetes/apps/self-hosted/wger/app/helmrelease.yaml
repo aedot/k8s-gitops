@@ -98,16 +98,17 @@ spec:
         pod:
           securityContext:
             runAsUser: 101
+            runAsGroup: 101
             fsGroup: 101
+            fsGroupChangePolicy: "OnRootMismatch"
+            allowPrivilegeEscalation: true
+            capabilities:
+              drop: []
         containers:
           app:
             image:
               repository: nginx
               tag: stable@sha256:a3ba435a6ca5300c62198ec8b8acbf7e375a384fd9f8d36d6f7c0a8d247839e1
-            securityContext:
-              allowPrivilegeEscalation: true
-              capabilities:
-                drop: []
             resources:
               requests:
                 cpu: 10m
