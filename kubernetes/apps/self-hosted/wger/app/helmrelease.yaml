@@ -53,18 +53,20 @@ spec:
               SYNC_EXERCISES_CELERY: True
               SYNC_EXERCISE_IMAGES_CELERY: True
               SYNC_EXERCISE_VIDEOS_CELERY: True
-              USE_CELERY: True
+              USE_CELERY: False
               CELERY_BROKER: &redis "redis://dragonfly.dbms.svc.cluster.local:6379"
               CELERY_BACKEND: *redis
               CELERY_FLOWER_PASSWORD: adminadmin
+
               DJANGO_DB_ENGINE: django.db.backends.postgresql
               DJANGO_CACHE_BACKEND: django_redis.cache.RedisCache
               DJANGO_CACHE_LOCATION: "redis://dragonfly.dbms.svc.cluster.local:6379"
               DJANGO_CACHE_TIMEOUT: "1296000"
               DJANGO_CACHE_CLIENT_CLASS: django_redis.client.DefaultClient
-              DJANGO_CLEAR_STATIC_FIRST: "False"
+              DJANGO_CLEAR_STATIC_FIRST: "True"
               DJANGO_DEBUG: True
               DJANGO_PERFORM_MIGRATIONS: "True"
+
               AXES_ENABLED: True
               AXES_FAILURE_LIMIT: "10"
               AXES_COOLOFF_TIME: "30"
@@ -72,6 +74,7 @@ spec:
               AXES_LOCKOUT_PARAMETERS: ip_address
               AXES_IPWARE_PROXY_COUNT: "1"
               AXES_IPWARE_META_PRECEDENCE_ORDER: HTTP_X_FORWARDED_FOR,REMOTE_ADDR
+
               WGER_USE_GUNICORN: True
               EXERCISE_CACHE_TTL: "18000"
               ACCESS_TOKEN_LIFETIME: "10"
@@ -85,6 +88,7 @@ spec:
                 memory: 80M
               limits:
                 memory: 256M
+
       nginx:
         annotations:
           reloader.stakater.com/auto: "true"
@@ -99,12 +103,137 @@ spec:
             image:
               repository: nginx
               tag: stable@sha256:a3ba435a6ca5300c62198ec8b8acbf7e375a384fd9f8d36d6f7c0a8d247839e1
-            # Removed unsupported securityContext fields
             resources:
               requests:
                 cpu: 10m
               limits:
                 memory: 512Mi
+
+      #TODO: fix celery after static images 
+      # celery-worker:
+      #   annotations:
+      #     reloader.stakater.com/auto: "true"
+      #   pod:
+      #     securityContext:
+      #       runAsUser: 0  # run as root to allow temp dir creation
+      #       runAsGroup: 0
+      #       fsGroup: 0
+      #       fsGroupChangePolicy: "OnRootMismatch"
+      #   containers:
+      #     app:
+      #       image:
+      #         repository: wger/server
+      #         tag: 2.4-dev@sha256:168f5fe0d480e9909546e61edda859a16f52acef88ac6624e6971f487ce3b99d
+      #       command:
+      #         - /start-worker
+      #       envFrom: *envFrom
+      #       env:
+      #         TZ: America/Los_Angeles
+      #         SITE_URL: "https://fit.${SECRET_DOMAIN}"
+      #         ALLOW_REGISTRATION: True
+      #         ALLOW_GUEST_USERS: False
+      #         WGER_INSTANCE: https://wger.de
+      #         ALLOW_UPLOAD_VIDEOS: True
+      #         MIN_ACCOUNT_AGE_TO_TRUST: "21"
+      #         SYNC_EXERCISES_ON_STARTUP: True
+      #         SYNC_EXERCISES_CELERY: True
+      #         SYNC_EXERCISE_IMAGES_CELERY: True
+      #         SYNC_EXERCISE_VIDEOS_CELERY: True
+      #         USE_CELERY: True
+      #         CELERY_BROKER: &redis "redis://dragonfly.dbms.svc.cluster.local:6379"
+      #         CELERY_BACKEND: *redis
+      #         CELERY_FLOWER_PASSWORD: adminadmin
+      #         DJANGO_DB_ENGINE: django.db.backends.postgresql
+      #         DJANGO_CACHE_BACKEND: django_redis.cache.RedisCache
+      #         DJANGO_CACHE_LOCATION: "redis://dragonfly.dbms.svc.cluster.local:6379"
+      #         DJANGO_CACHE_TIMEOUT: "1296000"
+      #         DJANGO_CACHE_CLIENT_CLASS: django_redis.client.DefaultClient
+      #         DJANGO_CLEAR_STATIC_FIRST: "False"
+      #         DJANGO_DEBUG: True
+      #         DJANGO_PERFORM_MIGRATIONS: "True"
+      #         AXES_ENABLED: True
+      #         AXES_FAILURE_LIMIT: "10"
+      #         AXES_COOLOFF_TIME: "30"
+      #         AXES_HANDLER: axes.handlers.cache.AxesCacheHandler
+      #         AXES_LOCKOUT_PARAMETERS: ip_address
+      #         AXES_IPWARE_PROXY_COUNT: "1"
+      #         AXES_IPWARE_META_PRECEDENCE_ORDER: HTTP_X_FORWARDED_FOR,REMOTE_ADDR
+      #         WGER_USE_GUNICORN: True
+      #         EXERCISE_CACHE_TTL: "18000"
+      #         ACCESS_TOKEN_LIFETIME: "10"
+      #         REFRESH_TOKEN_LIFETIME: "24"
+      #         USE_RECAPTCHA: "False"
+      #         NUMBER_OF_PROXIES: "1"
+      #         GUNICORN_CMD_ARGS: "--workers 3 --threads 2 --worker-class gthread --proxy-protocol True --timeout 240"
+      #       resources:
+      #         requests:
+      #           cpu: 15m
+      #           memory: 80M
+      #         limits:
+      #           memory: 256M
+
+      # celery-beat:
+      #   annotations:
+      #     reloader.stakater.com/auto: "true"
+      #   pod:
+      #     securityContext:
+      #       runAsUser: 0  # run as root to allow temp dir creation
+      #       runAsGroup: 0
+      #       fsGroup: 0
+      #       fsGroupChangePolicy: "OnRootMismatch"
+      #   containers:
+      #     app:
+      #       image:
+      #         repository: wger/server
+      #         tag: 2.4-dev@sha256:168f5fe0d480e9909546e61edda859a16f52acef88ac6624e6971f487ce3b99d
+      #       command:
+      #         - /start-beat
+      #       envFrom: *envFrom
+      #       env:
+      #         TZ: America/Los_Angeles
+      #         SITE_URL: "https://fit.${SECRET_DOMAIN}"
+      #         ALLOW_REGISTRATION: True
+      #         ALLOW_GUEST_USERS: False
+      #         WGER_INSTANCE: https://wger.de
+      #         ALLOW_UPLOAD_VIDEOS: True
+      #         MIN_ACCOUNT_AGE_TO_TRUST: "21"
+      #         SYNC_EXERCISES_ON_STARTUP: True
+      #         SYNC_EXERCISES_CELERY: True
+      #         SYNC_EXERCISE_IMAGES_CELERY: True
+      #         SYNC_EXERCISE_VIDEOS_CELERY: True
+      #         USE_CELERY: True
+      #         CELERY_BROKER: &redis "redis://dragonfly.dbms.svc.cluster.local:6379"
+      #         CELERY_BACKEND: *redis
+      #         CELERY_FLOWER_PASSWORD: adminadmin
+      #         DJANGO_DB_ENGINE: django.db.backends.postgresql
+      #         DJANGO_CACHE_BACKEND: django_redis.cache.RedisCache
+      #         DJANGO_CACHE_LOCATION: "redis://dragonfly.dbms.svc.cluster.local:6379"
+      #         DJANGO_CACHE_TIMEOUT: "1296000"
+      #         DJANGO_CACHE_CLIENT_CLASS: django_redis.client.DefaultClient
+      #         DJANGO_CLEAR_STATIC_FIRST: "False"
+      #         DJANGO_DEBUG: True
+      #         DJANGO_PERFORM_MIGRATIONS: "True"
+      #         AXES_ENABLED: True
+      #         AXES_FAILURE_LIMIT: "10"
+      #         AXES_COOLOFF_TIME: "30"
+      #         AXES_HANDLER: axes.handlers.cache.AxesCacheHandler
+      #         AXES_LOCKOUT_PARAMETERS: ip_address
+      #         AXES_IPWARE_PROXY_COUNT: "1"
+      #         AXES_IPWARE_META_PRECEDENCE_ORDER: HTTP_X_FORWARDED_FOR,REMOTE_ADDR
+      #         WGER_USE_GUNICORN: True
+      #         EXERCISE_CACHE_TTL: "18000"
+      #         ACCESS_TOKEN_LIFETIME: "10"
+      #         REFRESH_TOKEN_LIFETIME: "24"
+      #         USE_RECAPTCHA: "False"
+      #         NUMBER_OF_PROXIES: "1"
+      #         GUNICORN_CMD_ARGS: "--workers 3 --threads 2 --worker-class gthread --proxy-protocol True --timeout 240"
+      #       resources:
+      #         requests:
+      #           cpu: 15m
+      #           memory: 80M
+      #         limits:
+      #           memory: 256M
+
     service:
       app:
         controller: *app
@@ -125,7 +254,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - name: nginx
                 port: *port
     persistence:
       app:
@@ -135,6 +264,7 @@ spec:
             subPath: static
           - path: /home/wger/media
             subPath: media
+
       nginx:
         enabled: true
         type: configMap
@@ -145,3 +275,19 @@ spec:
             subPath: static
           - path: /wger/media
             subPath: media
+
+      # celery-worker:
+      #   enabled: true
+      #   type: configMap
+      #   name: wger-config
+      #   globalMounts:
+      #     - path: /home/wger/media
+      #       subPath: media
+
+      # celery-beat:
+      #   enabled: true
+      #   type: configMap
+      #   name: wger-config
+      #   globalMounts:
+      #     - path: /home/wger/beat/
+      #       subPath: celery-beat
