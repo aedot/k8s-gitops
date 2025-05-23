@@ -42,16 +42,11 @@ spec:
               tag: 2.4-dev@sha256:168f5fe0d480e9909546e61edda859a16f52acef88ac6624e6971f487ce3b99d
             command: ["sh", "-c", "python3 manage.py collectstatic --noinput"]
             envFrom: *envFrom
-
         containers:
           app:
             image:
               repository: wger/server
               tag: 2.4-dev@sha256:168f5fe0d480e9909546e61edda859a16f52acef88ac6624e6971f487ce3b99d
-            command:
-              - sh
-              - -c
-              - python3 manage.py makemigrations && python3 manage.py migrate --noinput
             envFrom: *envFrom
             env:
               TZ: America/Los_Angeles
