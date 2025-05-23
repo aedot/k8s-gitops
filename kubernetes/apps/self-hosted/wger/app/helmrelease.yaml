@@ -251,7 +251,7 @@ spec:
       #     http:
       #       port: &port "80"
     route:
-      nginx:
+      app:
         hostnames: ["fit.${SECRET_DOMAIN}"]
         parentRefs:
           - name: internal
