@@ -53,39 +53,32 @@ spec:
               SYNC_EXERCISES_CELERY: True
               SYNC_EXERCISE_IMAGES_CELERY: True
               SYNC_EXERCISE_VIDEOS_CELERY: True
-
               USE_CELERY: True
               CELERY_BROKER: &redis "redis://dragonfly.dbms.svc.cluster.local:6379"
               CELERY_BACKEND: *redis
               CELERY_FLOWER_PASSWORD: adminadmin
-
               DJANGO_DB_ENGINE: django.db.backends.postgresql
               DJANGO_CACHE_BACKEND: django_redis.cache.RedisCache
               DJANGO_CACHE_LOCATION: "redis://dragonfly.dbms.svc.cluster.local:6379"
-              DJANGO_CACHE_TIMEOUT: "1296000" # in seconds - 60*60*24*15, 15 Days
+              DJANGO_CACHE_TIMEOUT: "1296000"
               DJANGO_CACHE_CLIENT_CLASS: django_redis.client.DefaultClient
               DJANGO_CLEAR_STATIC_FIRST: "False"
               DJANGO_DEBUG: True
               DJANGO_PERFORM_MIGRATIONS: "True"
-
               AXES_ENABLED: True
               AXES_FAILURE_LIMIT: "10"
-              AXES_COOLOFF_TIME: "30" # in minutes
+              AXES_COOLOFF_TIME: "30"
               AXES_HANDLER: axes.handlers.cache.AxesCacheHandler
               AXES_LOCKOUT_PARAMETERS: ip_address
               AXES_IPWARE_PROXY_COUNT: "1"
               AXES_IPWARE_META_PRECEDENCE_ORDER: HTTP_X_FORWARDED_FOR,REMOTE_ADDR
-
               WGER_USE_GUNICORN: True
-              EXERCISE_CACHE_TTL: "18000" # in seconds - 5*60*60, 5 hours
+              EXERCISE_CACHE_TTL: "18000"
               ACCESS_TOKEN_LIFETIME: "10"
               REFRESH_TOKEN_LIFETIME: "24"
               USE_RECAPTCHA: "False"
-
               NUMBER_OF_PROXIES: "1"
               GUNICORN_CMD_ARGS: "--workers 3 --threads 2 --worker-class gthread --proxy-protocol True --timeout 240"
-
-
             resources:
               requests:
                 cpu: 15m
@@ -97,23 +90,16 @@ spec:
           reloader.stakater.com/auto: "true"
         pod:
           securityContext:
-            runAsNonRoot: false
-            runAsUser: 101
-            runAsGroup: 101
-            fsGroup: 101
+            runAsUser: 0  # run as root to allow temp dir creation
+            runAsGroup: 0
+            fsGroup: 0
             fsGroupChangePolicy: "OnRootMismatch"
         containers:
           app:
             image:
               repository: nginx
               tag: stable@sha256:a3ba435a6ca5300c62198ec8b8acbf7e375a384fd9f8d36d6f7c0a8d247839e1
-            securityContext:
-              allowPrivilegeEscalation: true
-              capabilities:
-                add:
-                  - CHOWN
-                  - DAC_OVERRIDE
-                  - FOWNER
+            # Removed unsupported securityContext fields
             resources:
               requests:
                 cpu: 10m
@@ -149,7 +135,6 @@ spec:
             subPath: static
           - path: /home/wger/media
             subPath: media
-
       nginx:
         enabled: true
         type: configMap
