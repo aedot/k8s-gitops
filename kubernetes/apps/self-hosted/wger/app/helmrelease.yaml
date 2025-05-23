@@ -148,50 +148,50 @@ spec:
         enabled: true
         files:
           prod.env: |-
-            SECRET_KEY: {{ env "SECRET_KEY" }}
-            SIGNING_KEY: {{ env "SIGNING_KEY" }}
-            TZ: America/Los_Angeles
-            WGER_INSTANCE: https://wger.de
-            ALLOW_REGISTRATION: True
-            ALLOW_GUEST_USERS: True
-            ALLOW_UPLOAD_VIDEOS: True
+            SECRET_KEY: "{{ env "SECRET_KEY" }}"
+            SIGNING_KEY: "{{ env "SIGNING_KEY" }}"
+            TZ: "America/Los_Angeles"
+            WGER_INSTANCE: "https://wger.de"
+            ALLOW_REGISTRATION: "True"
+            ALLOW_GUEST_USERS: "True"
+            ALLOW_UPLOAD_VIDEOS: "True"
             MIN_ACCOUNT_AGE_TO_TRUST: "21"
-            SYNC_EXERCISES_CELERY: True
-            SYNC_EXERCISE_IMAGES_CELERY: True
-            SYNC_EXERCISE_VIDEOS_CELERY: True
-            SYNC_INGREDIENTS_CELERY: True
-            DOWNLOAD_INGREDIENTS_FROM: WGER
-            USE_CELERY: True
+            SYNC_EXERCISES_CELERY: "True"
+            SYNC_EXERCISE_IMAGES_CELERY: "True"
+            SYNC_EXERCISE_VIDEOS_CELERY: "True"
+            SYNC_INGREDIENTS_CELERY: "True"
+            DOWNLOAD_INGREDIENTS_FROM: "WGER"
+            USE_CELERY: "True"
             CELERY_BROKER: "redis://dragonfly.dbms.svc.cluster.local:6379"
             CELERY_BACKEND: "redis://dragonfly.dbms.svc.cluster.local:6379"
-            CELERY_FLOWER_PASSWORD: adminadmin
-            DJANGO_DB_ENGINE: django.db.backends.postgresql
-            DJANGO_DB_DATABASE: wger
-            DJANGO_DB_USER: {{ env "INIT_POSTGRES_USER" }}
-            DJANGO_DB_PASSWORD: {{ env "INIT_POSTGRES_PASS" }}
-            DJANGO_DB_HOST: {{ env "INIT_POSTGRES_HOST" }}
+            CELERY_FLOWER_PASSWORD: "adminadmin"
+            DJANGO_DB_ENGINE: "django.db.backends.postgresql"
+            DJANGO_DB_DATABASE: "wger"
+            DJANGO_DB_USER: "{{ env "INIT_POSTGRES_USER" }}"
+            DJANGO_DB_PASSWORD: "{{ env "INIT_POSTGRES_PASS" }}"
+            DJANGO_DB_HOST: "{{ env "INIT_POSTGRES_HOST" }}"
             DJANGO_DB_PORT: "5432"
-            DJANGO_PERFORM_MIGRATIONS: True
-            DJANGO_CACHE_BACKEND: django_redis.cache.RedisCache
+            DJANGO_PERFORM_MIGRATIONS: "True"
+            DJANGO_CACHE_BACKEND: "django_redis.cache.RedisCache"
             DJANGO_CACHE_LOCATION: "redis://dragonfly.dbms.svc.cluster.local:6379"
             DJANGO_CACHE_TIMEOUT: "1296000"
-            DJANGO_CACHE_CLIENT_CLASS: django_redis.client.DefaultClient
-            AXES_ENABLED: True
+            DJANGO_CACHE_CLIENT_CLASS: "django_redis.client.DefaultClient"
+            AXES_ENABLED: "True"
             AXES_FAILURE_LIMIT: "10"
             AXES_COOLOFF_TIME: "30"
-            AXES_HANDLER: axes.handlers.cache.AxesCacheHandler
-            AXES_LOCKOUT_PARAMETERS: ip_address
+            AXES_HANDLER: "axes.handlers.cache.AxesCacheHandler"
+            AXES_LOCKOUT_PARAMETERS: "ip_address"
             AXES_IPWARE_PROXY_COUNT: "1"
-            AXES_IPWARE_META_PRECEDENCE_ORDER: HTTP_X_FORWARDED_FOR,REMOTE_ADDR
-            DJANGO_DEBUG: False
-            WGER_USE_GUNICORN: True
+            AXES_IPWARE_META_PRECEDENCE_ORDER: "HTTP_X_FORWARDED_FOR,REMOTE_ADDR"
+            DJANGO_DEBUG: "False"
+            WGER_USE_GUNICORN: "True"
             EXERCISE_CACHE_TTL: "18000"
             SITE_URL: "https://fit.{{ env "SECRET_DOMAIN" }}"
             ACCESS_TOKEN_LIFETIME: "10"
             REFRESH_TOKEN_LIFETIME: "24"
-            USE_RECAPTCHA: False
-            DJANGO_CLEAR_STATIC_FIRST: False
-            FROM_EMAIL: {{ env "FROM_EMAIL" }}
+            USE_RECAPTCHA: "False"
+            DJANGO_CLEAR_STATIC_FIRST: "False"
+            FROM_EMAIL: "{{ env "FROM_EMAIL" }}"
             NUMBER_OF_PROXIES: "1"
             GUNICORN_CMD_ARGS: "--workers 3 --threads 2 --worker-class gthread --proxy-protocol True --timeout 240"
       nginx-config:
