@@ -8,10 +8,9 @@ resources:
 configMapGenerator:
   - name: nginx-config
     files:
-      - nginx.conf=/etc/nginx/conf.d/default.conf
+      - nginx.conf=nginx.conf
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
 
- 
