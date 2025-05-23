@@ -117,7 +117,7 @@ spec:
           http:
             port: &port "80"
     route:
-      app:
+      nginx:
         hostnames: ["fit.${SECRET_DOMAIN}"]
         parentRefs:
           - name: internal
@@ -141,3 +141,7 @@ spec:
         name: nginx-config
         globalMounts:
           - path: /etc/nginx/conf.d
+          - path: /wger/static
+            subPath: static
+          - path: /wger/media
+            subPath: media
