@@ -97,12 +97,34 @@ spec:
                 memory: 80M
               limits:
                 memory: 256M
+      nginx:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: nginx
+              tag: stable@sha256:a3ba435a6ca5300c62198ec8b8acbf7e375a384fd9f8d36d6f7c0a8d247839e1
+            securityContext:
+              capabilities:
+                drop:
+                  - ALL
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 512Mi
     service:
       app:
         controller: *app
         ports:
           http:
-            port: &port "8000"
+            port: "8000"
+      nginx:
+        controller: nginx
+        ports:
+          http:
+            port: &port "80"
     route:
       app:
         hostnames: ["fit.${SECRET_DOMAIN}"]
@@ -122,3 +144,10 @@ spec:
             subPath: static
           - path: /home/wger/media
             subPath: media
+
+      nginx:
+        enabled: true
+        type: configMap
+        name: nginx-config
+        globalMounts:
+          - path: /etc/nginx/conf.d

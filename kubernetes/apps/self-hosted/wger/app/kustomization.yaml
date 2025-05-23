@@ -4,3 +4,14 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+
+configMapGenerator:
+  - name: nginx-config
+    files:
+      - nginx.conf=/etc/nginx/conf.d/default.conf
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+
+ 
