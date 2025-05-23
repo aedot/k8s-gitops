@@ -75,6 +75,9 @@ spec:
               DJANGO_DEBUG: True
               DJANGO_PERFORM_MIGRATIONS: "True"
 
+              CSRF_TRUSTED_ORIGINS: "https://fit.${SECRET_DOMAIN}"
+              X_FORWARDED_PROTO_HEADER_SET: True
+
               AXES_ENABLED: True
               AXES_FAILURE_LIMIT: "10"
               AXES_COOLOFF_TIME: "30"
