@@ -60,7 +60,7 @@ spec:
               SYNC_EXERCISES_CELERY: True
               SYNC_EXERCISE_IMAGES_CELERY: True
               SYNC_EXERCISE_VIDEOS_CELERY: True
-              USE_CELERY: False
+              USE_CELERY: True
               CELERY_BROKER: &redis "redis://dragonfly.dbms.svc.cluster.local:6379"
               CELERY_BACKEND: *redis
 
