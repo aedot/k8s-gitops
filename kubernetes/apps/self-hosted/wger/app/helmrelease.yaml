@@ -75,10 +75,10 @@ spec:
               ACCESS_TOKEN_LIFETIME: "10"
               REFRESH_TOKEN_LIFETIME: "24"
 
-              CSRF_TRUSTED_ORIGINS: "https://{{ .Release.Name }}.${SECRET_DOMAIN}"
-              X_FORWARDED_PROTO_HEADER_SET: True
-              MEDIA_URL: https://{{ .Release.Name }}.${SECRET_DOMAIN}/media/
-              STATIC_URL: https://{{ .Release.Name }}.${SECRET_DOMAIN}/static/
+              # CSRF_TRUSTED_ORIGINS: "https://{{ .Release.Name }}.${SECRET_DOMAIN}"
+              # X_FORWARDED_PROTO_HEADER_SET: True
+              # MEDIA_URL: https://{{ .Release.Name }}.${SECRET_DOMAIN}/media/
+              # STATIC_URL: https://{{ .Release.Name }}.${SECRET_DOMAIN}/static/
             resources:
               requests:
                 cpu: 15m
