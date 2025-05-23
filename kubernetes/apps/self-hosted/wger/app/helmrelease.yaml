@@ -17,16 +17,18 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+
     controllers:
-      wger:
+      wger-web:
         annotations:
-          reloader.stakater.com/auto: "true"
-        pod:
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-            fsGroup: 1000
-            fsGroupChangePolicy: "OnRootMismatch"
+          reloader.stakater.com/auto: "True"
         initContainers:
           init-db:
             image:
@@ -36,77 +38,190 @@ spec:
               - secretRef:
                   name: wger-secret
         containers:
-          app:
+          wger-web:
             image:
               repository: wger/server
               tag: 2.4-dev@sha256:168f5fe0d480e9909546e61edda859a16f52acef88ac6624e6971f487ce3b99d
-            envFrom: *envFrom
-            env:
-              DJANGO_DB_ENGINE: django.db.backends.postgresql
-              TZ: America/Los_Angeles
-              SITE_URL: "https://{{ .Release.Name }}.${SECRET_DOMAIN}"
-              ALLOW_REGISTRATION: True
-              ALLOW_GUEST_USERS: False
-              WGER_INSTANCE: https://wger.de
-              ALLOW_UPLOAD_VIDEOS: True
-              MIN_ACCOUNT_AGE_TO_TRUST: "21"
-              SYNC_EXERCISES_ON_STARTUP: True
-              SYNC_EXERCISES_CELERY: True
-              SYNC_EXERCISE_IMAGES_CELERY: True
-              SYNC_EXERCISE_VIDEOS_CELERY: True
-              USE_CELERY: True
-              CELERY_BROKER: &redis "redis://dragonfly.dbms.svc.cluster.local:6379"
-              CELERY_BACKEND: *redis
-              CELERY_FLOWER_PASSWORD: adminadmin
-              DJANGO_CACHE_BACKEND: django_redis.cache.RedisCache
-              DJANGO_CACHE_LOCATION: "redis://dragonfly.dbms.svc.cluster.local:6379"
-              DJANGO_CACHE_TIMEOUT: "1296000" # in seconds - 60*60*24*15, 15 Days
-              DJANGO_CACHE_CLIENT_CLASS: django_redis.client.DefaultClient
-              AXES_ENABLED: True
-              AXES_FAILURE_LIMIT: "10"
-              AXES_COOLOFF_TIME: "30" # in minutes
-              AXES_HANDLER: axes.handlers.cache.AxesCacheHandler
-              AXES_LOCKOUT_PARAMETERS: ip_address
-              AXES_IPWARE_PROXY_COUNT: "1"
-              AXES_IPWARE_META_PRECEDENCE_ORDER: HTTP_X_FORWARDED_FOR,REMOTE_ADDR
-              DJANGO_DEBUG: True
-              WGER_USE_GUNICORN: True
-              EXERCISE_CACHE_TTL: 18000 # in seconds - 5*60*60, 5 hours
-              ACCESS_TOKEN_LIFETIME: "10"
-              REFRESH_TOKEN_LIFETIME: "24"
+            envFrom:
+              - configMapRef:
+                  name: wger-env
+            volumeMounts:
+              - name: static
+                mountPath: /home/wger/static
+              - name: media
+                mountPath: /home/wger/media
+            ports:
+              - containerPort: 8000
 
-              CSRF_TRUSTED_ORIGINS: "https://{{ .Release.Name }}.${SECRET_DOMAIN}"
-              X_FORWARDED_PROTO_HEADER_SET: True
-              MEDIA_URL: https://{{ .Release.Name }}.${SECRET_DOMAIN}/media/
-              STATIC_URL: https://{{ .Release.Name }}.${SECRET_DOMAIN}/static/
-            resources:
-              requests:
-                cpu: 15m
-                memory: 80M
-              limits:
-                memory: 256M
+      wger-nginx:
+        annotations:
+          reloader.stakater.com/auto: "True"
+        containers:
+          wger-nginx:
+            image:
+              repository: nginx
+              tag: stable
+            volumeMounts:
+              - name: nginx-config
+                mountPath: /etc/nginx/conf.d/default.conf
+                subPath: default.conf
+              - name: static
+                mountPath: /wger/static
+                readOnly: true
+              - name: media
+                mountPath: /wger/media
+                readOnly: true
+
+      celery-worker:
+        annotations:
+          reloader.stakater.com/auto: "True"
+        containers:
+          celery-worker:
+            image:
+              repository: wger/server
+              tag: 2.4-dev@sha256:168f5fe0d480e9909546e61edda859a16f52acef88ac6624e6971f487ce3b99d
+            command: ["/start-worker"]
+            envFrom:
+              - configMapRef:
+                  name: wger-env
+            volumeMounts:
+              - name: media
+                mountPath: /home/wger/media
+
+      celery-beat:
+        annotations:
+          reloader.stakater.com/auto: "True"
+        containers:
+          celery-beat:
+            image:
+              repository: wger/server
+              tag: 2.4-dev@sha256:168f5fe0d480e9909546e61edda859a16f52acef88ac6624e6971f487ce3b99d
+            command: ["/start-beat"]
+            envFrom:
+              - configMapRef:
+                  name: wger-env
+            volumeMounts:
+              - name: celery-beat
+                mountPath: /home/wger/beat
+
     service:
-      app:
-        controller: *app
+      wger-nginx:
         ports:
           http:
-            port: &port "8000"
+            port: &port 80
+
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        hostnames: ["fit.${SECRET_DOMAIN}"]
         parentRefs:
           - name: internal
             namespace: kube-system
             sectionName: https
         rules:
           - backendRefs:
-              - name: *app
+              - name: wger-nginx
                 port: *port
+
     persistence:
-      app:
-        existingClaim: *app
-        globalMounts:
-          - path: /home/wger/static
-            subPath: static
-          - path: /home/wger/media
-            subPath: media
+      static:
+        enabled: true
+        type: persistentVolumeClaim
+        storageClass: longhorn
+        size: 1Gi
+      media:
+        enabled: true
+        type: persistentVolumeClaim
+        storageClass: longhorn
+        size: 1Gi
+      celery-beat:
+        enabled: true
+        type: persistentVolumeClaim
+        storageClass: longhorn
+        size: 1Gi
+      nginx-config:
+        enabled: true
+        type: configMap
+        name: nginx-config
+
+    configMaps:
+      wger-env:
+        enabled: true
+        files:
+          prod.env: |-
+            SECRET_KEY: {{ env "SECRET_KEY" }}
+            SIGNING_KEY: {{ env "SIGNING_KEY" }}
+            TZ: America/Los_Angeles
+            WGER_INSTANCE: https://wger.de
+            ALLOW_REGISTRATION: True
+            ALLOW_GUEST_USERS: True
+            ALLOW_UPLOAD_VIDEOS: True
+            MIN_ACCOUNT_AGE_TO_TRUST: "21"
+            SYNC_EXERCISES_CELERY: True
+            SYNC_EXERCISE_IMAGES_CELERY: True
+            SYNC_EXERCISE_VIDEOS_CELERY: True
+            SYNC_INGREDIENTS_CELERY: True
+            DOWNLOAD_INGREDIENTS_FROM: WGER
+            USE_CELERY: True
+            CELERY_BROKER: "redis://dragonfly.dbms.svc.cluster.local:6379"
+            CELERY_BACKEND: "redis://dragonfly.dbms.svc.cluster.local:6379"
+            CELERY_FLOWER_PASSWORD: adminadmin
+            DJANGO_DB_ENGINE: django.db.backends.postgresql
+            DJANGO_DB_DATABASE: wger
+            DJANGO_DB_USER: {{ env "INIT_POSTGRES_USER" }}
+            DJANGO_DB_PASSWORD: {{ env "INIT_POSTGRES_PASS" }}
+            DJANGO_DB_HOST: {{ env "INIT_POSTGRES_HOST" }}
+            DJANGO_DB_PORT: "5432"
+            DJANGO_PERFORM_MIGRATIONS: True
+            DJANGO_CACHE_BACKEND: django_redis.cache.RedisCache
+            DJANGO_CACHE_LOCATION: "redis://dragonfly.dbms.svc.cluster.local:6379"
+            DJANGO_CACHE_TIMEOUT: "1296000"
+            DJANGO_CACHE_CLIENT_CLASS: django_redis.client.DefaultClient
+            AXES_ENABLED: True
+            AXES_FAILURE_LIMIT: "10"
+            AXES_COOLOFF_TIME: "30"
+            AXES_HANDLER: axes.handlers.cache.AxesCacheHandler
+            AXES_LOCKOUT_PARAMETERS: ip_address
+            AXES_IPWARE_PROXY_COUNT: "1"
+            AXES_IPWARE_META_PRECEDENCE_ORDER: HTTP_X_FORWARDED_FOR,REMOTE_ADDR
+            DJANGO_DEBUG: False
+            WGER_USE_GUNICORN: True
+            EXERCISE_CACHE_TTL: "18000"
+            SITE_URL: "https://fit.{{ env "SECRET_DOMAIN" }}"
+            ACCESS_TOKEN_LIFETIME: "10"
+            REFRESH_TOKEN_LIFETIME: "24"
+            USE_RECAPTCHA: False
+            DJANGO_CLEAR_STATIC_FIRST: False
+            FROM_EMAIL: {{ env "FROM_EMAIL" }}
+            NUMBER_OF_PROXIES: "1"
+            GUNICORN_CMD_ARGS: "--workers 3 --threads 2 --worker-class gthread --proxy-protocol True --timeout 240"
+      nginx-config:
+        enabled: true
+        files:
+          default.conf: |-
+            upstream wger {
+              server web:8000;
+            }
+
+            server {
+              listen 80;
+
+              location / {
+                proxy_pass http://wger;
+                proxy_set_header Host $host;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+                proxy_set_header X-Forwarded-Host $host:$server_port;
+                proxy_redirect off;
+              }
+
+              location /static/ {
+                alias /wger/static/;
+              }
+
+              location /media/ {
+                alias /wger/media/;
+              }
+
+              # Increase max body size to allow for video uploads
+              client_max_body_size 100M;
+            }
