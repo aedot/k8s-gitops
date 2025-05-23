@@ -100,6 +100,12 @@ spec:
       nginx:
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: 101
+            runAsGroup: 101
+            fsGroup: 101
+            fsGroupChangePolicy: "OnRootMismatch"
         containers:
           app:
             image:
