@@ -52,7 +52,7 @@ spec:
             env:
               TZ: America/Los_Angeles
               SITE_URL: "https://fit.${SECRET_DOMAIN}"
-              ALLOW_REGISTRATION: True
+              ALLOW_REGISTRATION: False
               ALLOW_GUEST_USERS: False
               WGER_INSTANCE: https://wger.de
               ALLOW_UPLOAD_VIDEOS: True
