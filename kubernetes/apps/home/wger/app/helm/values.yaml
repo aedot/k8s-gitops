@@ -91,3 +91,9 @@ ingress:
   url: fit.example.com
   tls: true
   annotations: {}
+
+postgres:
+  enabled: false
+
+redis:
+  enabled: false
