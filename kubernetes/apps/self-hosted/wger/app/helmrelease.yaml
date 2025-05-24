@@ -67,10 +67,10 @@ spec:
               DJANGO_PERFORM_MIGRATIONS: "True"
               DJANGO_COLLECTSTATIC: "True"
 
-              # CSRF_TRUSTED_ORIGINS: "https://fit.${SECRET_DOMAIN}"
-              # X_FORWARDED_PROTO_HEADER_SET: "True"
-              # MEDIA_URL: "https://fit.${SECRET_DOMAIN}/media/"
-              # STATIC_URL: "https://fit.${SECRET_DOMAIN}/static/"
+              CSRF_TRUSTED_ORIGINS: "https://fit.${SECRET_DOMAIN}"
+              X_FORWARDED_PROTO_HEADER_SET: "True"
+              MEDIA_URL: "https://fit.${SECRET_DOMAIN}/media/"
+              STATIC_URL: "https://fit.${SECRET_DOMAIN}/static/"
 
               AXES_ENABLED: "True"
               AXES_FAILURE_LIMIT: "10"
