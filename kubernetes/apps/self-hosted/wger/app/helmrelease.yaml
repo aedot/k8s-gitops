@@ -69,6 +69,8 @@ spec:
 
               CSRF_TRUSTED_ORIGINS: "https://fit.${SECRET_DOMAIN}"
               X_FORWARDED_PROTO_HEADER_SET: True
+              MEDIA_URL: https://fit.${SECRET_DOMAIN}/media/
+              STATIC_URL: https://fit.${SECRET_DOMAIN}/static/
 
               AXES_ENABLED: True
               AXES_FAILURE_LIMIT: "10"
@@ -263,9 +265,9 @@ spec:
       app:
         existingClaim: *app
         globalMounts:
-          - path: /home/wger/static
+          - path: /static
             subPath: static
-          - path: /home/wger/media
+          - path: /media
             subPath: media
 
       # nginx:
