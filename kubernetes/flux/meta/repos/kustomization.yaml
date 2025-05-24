@@ -10,5 +10,4 @@ resources:
   - ./cloudnative-pg.yaml
   - ./emqx.yaml
   - ./grafana.yaml
-  - ./wger.yaml
   - ./open-webui.yaml

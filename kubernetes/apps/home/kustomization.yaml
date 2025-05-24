@@ -9,5 +9,4 @@ resources:
   # - ./emqx/ks.yaml
   - ./scrypted/ks.yaml
   # - ./zigbee2mqtt/ks.yaml
-  - ./wger/ks.yaml
 
