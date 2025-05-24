@@ -273,9 +273,9 @@ spec:
         name: nginx-config
         globalMounts:
           - path: /etc/nginx/conf.d
-          - path: /home/wger/static
+          - path: /wger/static
             subPath: static
-          - path: /home/wger/media
+          - path: /wger/media
             subPath: media
 
       # celery-worker:
