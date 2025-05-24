@@ -65,7 +65,6 @@ spec:
               DJANGO_CLEAR_STATIC_FIRST: "True"
               DJANGO_DEBUG: "True"
               DJANGO_PERFORM_MIGRATIONS: "True"
-              COMPRESS_ENABLED: "True"
 
               CSRF_TRUSTED_ORIGINS: "https://fit.${SECRET_DOMAIN}"
               X_FORWARDED_PROTO_HEADER_SET: True
@@ -263,7 +262,7 @@ spec:
       app:
         existingClaim: *app
         globalMounts:
-          - path: /static
+          - path: /home/wger/static
             subPath: static
           - path: /home/wger/media
             subPath: media
