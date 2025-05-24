@@ -63,7 +63,7 @@ spec:
               DJANGO_CACHE_TIMEOUT: "1296000"
               DJANGO_CACHE_CLIENT_CLASS: django_redis.client.DefaultClient
               DJANGO_CLEAR_STATIC_FIRST: "True"
-              DJANGO_DEBUG: "False"
+              DJANGO_DEBUG: "True"
               DJANGO_PERFORM_MIGRATIONS: "True"
               COMPRESS_ENABLED: "True"
 
