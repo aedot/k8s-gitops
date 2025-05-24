@@ -1,0 +1,93 @@
+---
+# App settings
+app:
+  timezone: "America/Los_Angeles"
+  global:
+    replicas: 1
+  persistence:
+    enabled: true
+    storageClass: longhorn
+    accessModes:
+      - ReadWriteMany
+    sizeMedia: 8Gi
+    sizeStatic: 8Gi
+    sizeCeleryBeat: 1Gi
+    annotations: {}
+    existingClaim:
+      enabled: false
+      media: null
+      static: null
+      code: null
+      celeryBeat: null
+  resources:
+    requests:
+      memory: 512Mi
+      cpu: 100m
+    limits:
+      memory: 1Gi
+      cpu: 500m
+  nginx:
+    enabled: false
+  django:
+    secret:
+      name: wger-secret
+      key:  SECRET_KEY
+    cache:
+      timeout: 1296000
+    existingDatabase:
+      enabled: true
+      engine: postgres
+      host: "postgres-rw.dbms.svc.cluster.local"
+      port: 5432
+      existingSecret:
+        name: wger-secret
+        dbnameKey: DJANGO_DB_DATABASE
+        dbuserKey: DJANGO_DB_USER
+        dbpwKey: DJANGO_DB_PASSWORD
+  jwt:
+    secret:
+      name: wger-secret
+      key: SIGNING_KEY
+  axes:
+    enabled: true
+    lockoutParameters: "ip_address"
+    failureLimit: 10
+    # in minutes
+    cooloffTime: 30
+    # number of reverse proxies involved
+    ipwareProxyCount: 0
+    # order of magnitude from last proxy for the real ip
+    ipwareMetaPrecedenceOrder: "HTTP_X_FORWARDED_FOR,REMOTE_ADDR"
+  mail:
+    enabled: false
+    server: null
+    port: null
+    user: null
+    from_email: null
+  environment:
+    - name: GUNICORN_CMD_ARGS
+      value: "--timeout 240 --workers 2 --worker-class gthread --threads 3 --forwarded-allow-ips * --proxy-protocol True --access-logformat='%(h)s %(l)s %({client-ip}i)s %(l)s %({x-real-ip}i)s %(l)s %({x-forwarded-for}i)s %(l)s %(t)s \"%(r)s\" %(s)s %(b)s \"%(f)s\" \"%(a)s\"' --access-logfile - --error-logfile -"
+
+
+celery:
+  enabled: true
+  annotations: {}
+  replicas: 1
+  replicasWorker: 1
+  securityContext:
+    fsGroup: 1000
+  syncExercises: true
+  syncImages: true
+  syncVideos: true
+  ingredientsFrom: WGER
+
+service:
+  annotations: {}
+  type: ClusterIP
+  port: 8000
+
+ingress:
+  enabled: false
+  url: fit.example.com
+  tls: true
+  annotations: {}
