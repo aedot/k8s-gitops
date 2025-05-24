@@ -36,7 +36,7 @@ app:
       timeout: 1296000
     existingDatabase:
       enabled: true
-      engine: postgres
+      engine: django.db.backends.postgresql
       host: "postgres-rw.dbms.svc.cluster.local"
       port: 5432
       existingSecret:
@@ -70,7 +70,7 @@ app:
 
 
 celery:
-  enabled: true
+  enabled: false
   annotations: {}
   replicas: 1
   replicasWorker: 1
