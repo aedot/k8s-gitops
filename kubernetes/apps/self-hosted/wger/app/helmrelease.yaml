@@ -263,9 +263,9 @@ spec:
       app:
         existingClaim: *app
         globalMounts:
-          - path: /static
+          - path: /home/wger/static
             subPath: static
-          - path: /media
+          - path: /home/wger/media
             subPath: media
 
       # nginx:
