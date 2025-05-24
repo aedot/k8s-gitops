@@ -68,6 +68,8 @@ spec:
 
               CSRF_TRUSTED_ORIGINS: "https://fit.${SECRET_DOMAIN}"
               X_FORWARDED_PROTO_HEADER_SET: "True"
+              MEDIA_URL: "https://fit.${SECRET_DOMAIN}/media/"
+              STATIC_URL: "https://fit.${SECRET_DOMAIN}/static/"
 
               AXES_ENABLED: "True"
               AXES_FAILURE_LIMIT: "10"
@@ -92,25 +94,25 @@ spec:
                 memory: 4096M
 
 #TODO: fix celery after static images
-      nginx:
-        annotations:
-          reloader.stakater.com/auto: "true"
-        pod:
-          securityContext:
-            runAsUser: 0  # run as root to allow temp dir creation
-            runAsGroup: 0
-            fsGroup: 0
-            fsGroupChangePolicy: "OnRootMismatch"
-        containers:
-          app:
-            image:
-              repository: nginx
-              tag: stable@sha256:a3ba435a6ca5300c62198ec8b8acbf7e375a384fd9f8d36d6f7c0a8d247839e1
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 512Mi
+      # nginx:
+      #   annotations:
+      #     reloader.stakater.com/auto: "true"
+      #   pod:
+      #     securityContext:
+      #       runAsUser: 0  # run as root to allow temp dir creation
+      #       runAsGroup: 0
+      #       fsGroup: 0
+      #       fsGroupChangePolicy: "OnRootMismatch"
+      #   containers:
+      #     app:
+      #       image:
+      #         repository: nginx
+      #         tag: stable@sha256:a3ba435a6ca5300c62198ec8b8acbf7e375a384fd9f8d36d6f7c0a8d247839e1
+      #       resources:
+      #         requests:
+      #           cpu: 10m
+      #         limits:
+      #           memory: 512Mi
 
       # celery-worker:
       #   annotations:
@@ -241,12 +243,12 @@ spec:
         controller: *app
         ports:
           http:
-            port: "8000"
-      nginx:
-        controller: nginx
-        ports:
-          http:
-            port: &port "80"
+            port: &port "8000"
+      # nginx:
+      #   controller: nginx
+      #   ports:
+      #     http:
+      #       port: "80"
     route:
       app:
         hostnames: ["fit.${SECRET_DOMAIN}"]
@@ -256,7 +258,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: nginx
+              - name: *app
                 port: *port
     persistence:
       app:
@@ -267,16 +269,16 @@ spec:
           - path: /home/wger/media
             subPath: media
 
-      nginx:
-        enabled: true
-        type: configMap
-        name: nginx-config
-        globalMounts:
-          - path: /etc/nginx/conf.d
-          - path: /home/wger/static
-            subPath: static
-          - path: /home/wger/media
-            subPath: media
+      # nginx:
+      #   enabled: true
+      #   type: configMap
+      #   name: nginx-config
+      #   globalMounts:
+      #     - path: /etc/nginx/conf.d
+      #     - path: /wger/static
+      #       subPath: static
+      #     - path: /wger/media
+      #       subPath: media
 
       # celery-worker:
       #   enabled: true
