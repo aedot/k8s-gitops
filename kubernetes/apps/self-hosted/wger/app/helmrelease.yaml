@@ -44,7 +44,7 @@ spec:
             env:
               TZ: America/Los_Angeles
               SITE_URL: "https://fit.${SECRET_DOMAIN}"
-              ALLOW_REGISTRATION: "False"
+              ALLOW_REGISTRATION: "True"
               ALLOW_GUEST_USERS: "False"
               WGER_INSTANCE: https://wger.de
               ALLOW_UPLOAD_VIDEOS: "True"
@@ -63,7 +63,7 @@ spec:
               DJANGO_CACHE_TIMEOUT: "1296000"
               DJANGO_CACHE_CLIENT_CLASS: django_redis.client.DefaultClient
               DJANGO_CLEAR_STATIC_FIRST: "True"
-              DJANGO_DEBUG: "True"
+              DJANGO_DEBUG: "False"
               DJANGO_PERFORM_MIGRATIONS: "True"
 
               CSRF_TRUSTED_ORIGINS: "https://fit.${SECRET_DOMAIN}"
