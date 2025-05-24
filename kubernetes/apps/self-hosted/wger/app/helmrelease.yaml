@@ -108,7 +108,7 @@ spec:
           app:
             image:
               repository: nginx
-              tag: stable@sha256:a3ba435a6ca5300c62198ec8b8acbf7e375a384fd9f8d36d6f7c0a8d247839e1
+              tag: stable@sha256:eaa7e36decc3421fc04478c586dfea0d931cebe47d5bc0b15d758a32ba51126f
             resources:
               requests:
                 cpu: 10m
