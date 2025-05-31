@@ -21,7 +21,7 @@ spec:
       retries: 3
   values:
     controllers:
-      *app :
+      app:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -70,22 +70,21 @@ spec:
               limits:
                 memory: 2Gi
     service:
-      *app :
+      app:
         controller: *app
         ports:
           http:
             port: &port 9000
     route:
-      *app :
-        hostnames:
-          - ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+      app:
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
         parentRefs:
           - name: internal
             namespace: kube-system
             sectionName: https
         rules:
           - backendRefs:
-              - identifier: *app
+              - name: *app
                 port: *port
     persistence:
       config:
