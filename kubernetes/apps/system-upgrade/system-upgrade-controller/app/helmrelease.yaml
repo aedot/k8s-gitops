@@ -37,16 +37,34 @@ spec:
                 valueFrom:
                   fieldRef:
                     fieldPath: spec.nodeName
+              SYSTEM_UPGRADE_JOB_BACKOFF_LIMIT: "99"
               SYSTEM_UPGRADE_JOB_PRIVILEGED: false
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+        serviceAccount:
+          identifier: system-upgrade-controller
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
+        runAsUser: 1000
+        runAsGroup: 1000
+    rawResources:
+      talosServiceAccount:
+        apiVersion: talos.dev/v1alpha1
+        kind: ServiceAccount
+        spec:
+          spec:
+            roles: ["os:admin"]
+    rbac:
+      bindings:
+        system-upgrade-controller:
+          type: ClusterRoleBinding
+          roleRef:
+            kind: ClusterRole
+            name: cluster-admin
+          subjects:
+            - identifier: system-upgrade-controller
     serviceAccount:
-      name: *app
-      create: true
+      system-upgrade-controller: {}
