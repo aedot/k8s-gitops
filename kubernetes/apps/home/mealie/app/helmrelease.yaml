@@ -1,0 +1,98 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app mealie
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  interval: 30m
+  install:
+    crds: CreateReplace
+    timeout: 2m
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    timeout: 2m
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      mealie:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 17@sha256:e0c87ce7df39d06b93f27cf2cc6a056611f13faaa88cc07ab4dc8bf7a85d0b11
+            envFrom: &envFrom
+              - secretRef:
+                  name: mealie-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/mealie-recipes/mealie
+              tag: v2.8.0@sha256:63aef46d90975d9cf9c0fdb9399fc2fe36acd222e1db6be99c504b9ccdbee967
+            envFrom: *envFrom
+            env:
+              TZ: America/Los_Angeles
+              # Light Mode Config
+              THEME_LIGHT_PRIMARY: "#005AE6"
+              THEME_LIGHT_ACCENT: "#FEBF00"
+              THEME_LIGHT_SECONDARY: "#0DFC9D"
+              THEME_LIGHT_SUCCESS: "#43A047"
+              THEME_LIGHT_INFO: "#1976D2"
+              THEME_LIGHT_WARNING: "#FF6D00"
+              THEME_LIGHT_ERROR: "#EF5350"
+              # Dark Mode Config
+              THEME_DARK_PRIMARY: "#0097A7"
+              THEME_DARK_ACCENT: "#007A99"
+              THEME_DARK_SECONDARY: "#4ba3c7"
+              THEME_DARK_SUCCESS: "#43A047"
+              THEME_DARK_INFO: "#1976D2"
+              THEME_DARK_WARNING: "#FF6D00"
+              THEME_DARK_ERROR: "#EF5350"
+              TOKEN_TIME: 720
+              BASE_URL: https://mealie.${SECRET_DOMAIN}
+              AUTO_BACKUP_ENABLED: "true"
+              DAILY_SCHEDULE_TIME: 05:00
+              ALLOW_SIGNUP: "false"
+              LOG_LEVEL: debug
+
+            resources:
+              requests:
+                cpu: 100m
+                memory: 100Mi
+              limits:
+                memory: 2Gi
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: &port 9000
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+    persistence:
+      config:
+        existingClaim: *app
+        globalMounts:
+          - path: /app/data
+      # Needed for recipe parser
+      tmp:
+        type: emptyDir
+      nonexistent:
+        type: emptyDir
