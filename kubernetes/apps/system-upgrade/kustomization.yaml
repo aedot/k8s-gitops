@@ -6,7 +6,7 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
-  - ./system-upgrade-controller/ks.yaml
+  # - ./system-upgrade-controller/ks.yaml
 configMapGenerator:
   - name: versions
     env: ./versions.env
