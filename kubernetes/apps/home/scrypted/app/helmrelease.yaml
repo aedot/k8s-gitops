@@ -17,9 +17,6 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    defaultPodOptions:
-      nodeSelector:
-        intel.feature.node.kubernetes.io/gpu: "true"
     controllers:
       scrypted:
         annotations:
