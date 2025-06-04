@@ -100,14 +100,17 @@ controlPlane:
   schematic:
     customization:
       extraKernelArgs:
-        - apparmor=0 # Less security, more speed
-        - init_on_alloc=0 # Less security, more speed
-        - init_on_free=0 # Less security, more speed
-        - intel_iommu=on # PCI Passthrough
-        - iommu=pt # PCI Passthrough
-        - mitigations=off # Less security, more speed
-        - security=none # Less security, more speed
-        - net.ifnames=1 # Enable predictable NIC naming
+        - apparmor=0                          # Less security, more speed
+        - init_on_alloc=0                     # Less security, more speed
+        - init_on_free=0                      # Less security, more speed
+        - intel_iommu=on                      # PCI Passthrough
+        - iommu=pt                            # PCI Passthrough
+        - mitigations=off                     # Less security, more speed
+        - security=none                       # Less security, more speed
+        - net.ifnames=1                       # Enable predictable NIC naming
+        - -init_on_alloc                      # Less security, faster puter
+        - -selinux                            # Less security, faster puter
+        - talos.auditd.disabled=1             # Less security, faster puter
       systemExtensions:
         officialExtensions:
           - siderolabs/gasket-driver
