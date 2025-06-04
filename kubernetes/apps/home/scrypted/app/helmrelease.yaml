@@ -42,37 +42,38 @@ spec:
             supplementalGroups:
               - 44
               - 109
-              - 65542 # gladius:external-services
 
         containers:
           app:
+            env:
+              SCRYPTED_INSECURE_PORT: &port 80
             image:
-              repository: ghcr.io/bjw-s-labs/scrypted
-              tag: 0.139.0@sha256:0a376e9166d51e0d0fae47b9234774338809fdbd317db614fdc95cef532f024e
-            probes:
-              liveness:
-                enabled: true
-              readiness:
-                enabled: true
+              repository: ghcr.io/koush/scrypted
+              tag: v0.123.58-jammy-full@sha256:d84d2a8cc897e3ddd0635aecb681900f551e3f5bf702200df4b92e4014bc22b3
+            command: ["npm"]
+            args:
+              - "--prefix"
+              - "/server"
+              - "exec"
+              - "scrypted-serve"
             resources:
+              limits:
+                gpu.intel.com/i915: 1
+                memory: 8Gi
               requests:
                 cpu: 136m
-                memory: 1024Mi
-              limits:
-                gpu.intel.com/i915: 1 #TODO: fix error: "Insufficient gpu.intel.com/i915. preemption"
-                memory: 8192Mi
+            securityContext:
+              privileged: true
 
     service:
       app:
         controller: *app
         ports:
           http:
-            port: &port 80
+            port: *port
             primary: true
-          rebroadcast1:
+          rebroadcast:
             port: 34135
-          rebroadcast2:
-            port: 34136
 
     route:
       app:
@@ -94,15 +95,14 @@ spec:
           scrypted:
             app:
               - path: /server/volume
-      tmpfs:
+      cache:
         type: emptyDir
-        advancedMounts:
-          scrypted:
-            app:
-              - path: /.cache
-                subPath: cache
-              - path: /.npm
-                subPath: npm-cache
+        globalMounts:
+          - path: /.cache
+      cache-npm:
+        type: emptyDir
+        globalMounts:
+          - path: /.npm
       recs:
         type: nfs
         server: shango.internal
