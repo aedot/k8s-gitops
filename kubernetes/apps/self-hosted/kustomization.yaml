@@ -7,9 +7,9 @@ components:
   - ../../components/repos/app-template
 resources:
   - ./actual/ks.yaml
-  # - ./docmost/ks.yaml
-  # - ./gramps/ks.yaml
-  # - ./wallos/ks.yaml
-  # - ./it-tools/ks.yaml
-  # - ./lubelog/ks.yaml
-  # - ./wger/ks.yaml
+  - ./docmost/ks.yaml
+  - ./gramps/ks.yaml
+  - ./wallos/ks.yaml
+  - ./it-tools/ks.yaml
+  - ./lubelog/ks.yaml
+  - ./wger/ks.yaml
