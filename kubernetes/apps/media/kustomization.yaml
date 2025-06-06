@@ -5,6 +5,6 @@ namespace: media
 components:
   - ../../components/common
   - ../../components/repos/app-template
-resources: []
-  # - ./overseerr/ks.yaml
-  # - ./wizarr/ks.yaml
+resources:
+  - ./overseerr/ks.yaml
+  - ./wizarr/ks.yaml
