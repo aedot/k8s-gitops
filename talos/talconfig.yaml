@@ -67,7 +67,7 @@ nodes:
     installDisk: "/dev/nvme0n1"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/metal-installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239bb
+    talosImageURL: factory.talos.dev/metal-installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
     controlPlane: true
     networkInterfaces:
       - interface: bond0
