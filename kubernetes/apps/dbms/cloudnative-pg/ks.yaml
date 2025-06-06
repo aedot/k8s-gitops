@@ -11,7 +11,7 @@ spec:
       app.kubernetes.io/name: *app
   interval: 30m
   timeout: 5m
-  path: "./kubernetes/apps/database/cloudnative-pg/app"
+  path: "./kubernetes/apps/dbms/cloudnative-pg/app"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -40,7 +40,7 @@ spec:
     - ../../../../components/gatus/guarded
   interval: 1h
   timeout: 5m
-  path: "./kubernetes/apps/database/cloudnative-pg/cluster"
+  path: "./kubernetes/apps/dbms/cloudnative-pg/cluster"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -78,7 +78,7 @@ spec:
       app.kubernetes.io/name: *app
   interval: 30m
   timeout: 5m
-  path: "./kubernetes/apps/database/cloudnative-pg/pgadmin"
+  path: "./kubernetes/apps/dbms/cloudnative-pg/pgadmin"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -109,7 +109,7 @@ spec:
       app.kubernetes.io/name: *app
   interval: 30m
   timeout: 5m
-  path: "./kubernetes/apps/database/cloudnative-pg/pgdump"
+  path: "./kubernetes/apps/dbms/cloudnative-pg/pgdump"
   prune: true
   sourceRef:
     kind: GitRepository

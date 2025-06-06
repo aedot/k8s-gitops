@@ -28,7 +28,7 @@ spec:
           app:
             image:
               repository: docker.dragonflydb.io/dragonflydb/operator
-              tag: v1.1.11
+              tag: v1.1.11@sha256:11cef45ec1079b9d97930fc99ecd08ba29d4eca55cdb45887cb0ac40ee4e4d24
             args:
               - "--health-probe-bind-address=:8081"
               - "--metrics-bind-address=127.0.0.1:8080"
@@ -87,10 +87,11 @@ spec:
         ports:
           http:
             port: *port
+          metrics:
+            port: 8080
 
     serviceAccount:
-      create: true
-      name: *app
+      *app : {}
 
     serviceMonitor:
       app:
@@ -101,3 +102,45 @@ spec:
             path: /metrics
             interval: 1m
             scrapeTimeout: 10s
+
+    rbac:
+      roles:
+        *app :
+          type: ClusterRole
+          rules:
+            - apiGroups: ["coordination.k8s.io"]
+              resources: ["leases"]
+              verbs:
+                ["get", "list", "watch", "create", "update", "patch", "delete"]
+            - apiGroups: [""]
+              resources: ["events"]
+              verbs: ["create", "patch"]
+            - apiGroups: [""]
+              resources: ["pods", "services"]
+              verbs:
+                ["create", "delete", "get", "list", "patch", "update", "watch"]
+            - apiGroups: ["apps"]
+              resources: ["statefulsets"]
+              verbs:
+                ["create", "delete", "get", "list", "patch", "update", "watch"]
+            - apiGroups: ["dragonflydb.io"]
+              resources: ["dragonflies"]
+              verbs:
+                ["create", "delete", "get", "list", "patch", "update", "watch"]
+            - apiGroups: ["dragonflydb.io"]
+              resources: ["dragonflies/finalizers"]
+              verbs: ["update"]
+            - apiGroups: ["dragonflydb.io"]
+              resources: ["dragonflies/status"]
+              verbs: ["get", "patch", "update"]
+      bindings:
+        *app :
+          type: ClusterRoleBinding
+          subjects:
+            - kind: ServiceAccount
+              name: *app
+              namespace: storage
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: *app
