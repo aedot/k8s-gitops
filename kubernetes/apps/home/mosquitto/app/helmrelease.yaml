@@ -45,6 +45,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
+        controller: mosquitto
         ports:
           http:
             port: 1883
