@@ -37,8 +37,9 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    replicas: 1
+    replicas: 2
     kind: Deployment
+    deschedulerPolicyAPIVersion: descheduler/v1alpha2
     deschedulerPolicy:
       profiles:
         - name: Default
@@ -49,6 +50,18 @@ spec:
                 evictLocalStoragePods: true
                 evictSystemCriticalPods: true
                 nodeFit: true
+            - name: RemoveFailedPods
+              args:
+                reasons:
+                  - ContainerStatusUnknown
+                  - NodeAffinity
+                  - NodeShutdown
+                  - Terminated
+                  - UnexpectedAdmissionError
+                includingInitContainers: true
+                excludeOwnerKinds:
+                  - Job
+                minPodLifetimeSeconds: 1800
             - name: RemovePodsViolatingInterPodAntiAffinity
             - name: RemovePodsViolatingNodeAffinity
               args:
@@ -66,6 +79,7 @@ spec:
                 - RemovePodsViolatingTopologySpreadConstraint
             deschedule:
               enabled:
+                - RemoveFailedPods
                 - RemovePodsViolatingInterPodAntiAffinity
                 - RemovePodsViolatingNodeAffinity
                 - RemovePodsViolatingNodeTaints
