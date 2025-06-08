@@ -8,6 +8,5 @@ components:
 resources:
   - ./actual/ks.yaml
   # - ./docmost/ks.yaml
-  - ./wallos/ks.yaml
   - ./it-tools/ks.yaml
   - ./lubelog/ks.yaml
