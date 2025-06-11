@@ -9,7 +9,7 @@ spec:
       namespace: kube-system
       sectionName: https
   hostnames:
-    - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+    - "emqx.${SECRET_DOMAIN}"
     - mqtt.${SECRET_DOMAIN}
   rules:
     - matches:
