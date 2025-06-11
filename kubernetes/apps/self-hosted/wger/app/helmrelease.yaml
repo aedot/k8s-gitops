@@ -48,7 +48,7 @@ spec:
               ALLOW_GUEST_USERS: "False"
               WGER_INSTANCE: https://wger.de
               ALLOW_UPLOAD_VIDEOS: "True"
-              MIN_ACCOUNT_AGE_TO_TRUST: "21"
+              MIN_ACCOUNT_AGE_TO_TRUST: "1"     # default is 21 day
               SYNC_EXERCISES_ON_STARTUP: "True"
               SYNC_EXERCISES_CELERY: "True"
               SYNC_EXERCISE_IMAGES_CELERY: "True"
