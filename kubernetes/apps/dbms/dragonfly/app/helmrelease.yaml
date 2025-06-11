@@ -5,14 +5,9 @@ metadata:
   name: &app dragonfly-operator
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: app-template
-      version: 3.7.3
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: app-template
   install:
     remediation:
       retries: 3
@@ -27,16 +22,12 @@ spec:
         containers:
           app:
             image:
-              repository: docker.dragonflydb.io/dragonflydb/operator
+              repository: ghcr.io/dragonflydb/operator
               tag: v1.1.11@sha256:11cef45ec1079b9d97930fc99ecd08ba29d4eca55cdb45887cb0ac40ee4e4d24
             args:
               - "--health-probe-bind-address=:8081"
               - "--metrics-bind-address=127.0.0.1:8080"
-            command: ["/manager"]
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+            command: [/manager]
             probes:
               liveness:
                 enabled: true
@@ -63,12 +54,15 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 128Mi
               limits:
                 memory: 128Mi
         annotations:
           reloader.stakater.com/auto: "true"
         pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            runAsNonRoot: true
           topologySpreadConstraints:
             - maxSkew: 1
               topologyKey: kubernetes.io/hostname
@@ -84,11 +78,9 @@ spec:
             port: *port
           metrics:
             port: 8080
-
     serviceAccount:
       create: true
       name: *app
-
     serviceMonitor:
       app:
         serviceName: *app
