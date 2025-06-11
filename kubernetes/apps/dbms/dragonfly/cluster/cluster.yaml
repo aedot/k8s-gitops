@@ -11,9 +11,9 @@ spec:
       valueFrom:
         resourceFieldRef:
           resource: limits.memory
-          divisor: 2048Mi
+          divisor: 1Mi
   args:
-    - --maxmemory=2048Mi
+    - --maxmemory=$(MAX_MEMORY)Mi
     - --proactor_threads=2
     - --cluster_mode=emulated
     - --lock_on_hashtags # https://github.com/dragonflydb/dragonfly/issues/782
