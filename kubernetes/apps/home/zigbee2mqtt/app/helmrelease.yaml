@@ -46,17 +46,14 @@ spec:
               ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_DISCOVERY_TOPIC: homeassistant
               ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_ENABLED: true
               ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_STATUS_TOPIC: homeassistant/stat
+              ZIGBEE2MQTT_CONFIG_FRONTEND_URL: https://zigbee2mqtt.${SECRET_DOMAIN}
+              ZIGBEE2MQTT_CONFIG_FRONTEND_PORT: &port 80
             envFrom:
               - secretRef:
                   name: zigbee2mqtt-secret
 
             securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop: ["ALL"]
-                add: ["NET_BIND_SERVICE"]
-
+              privileged: true
             probes:
               liveness:
                 enabled: true
@@ -72,21 +69,15 @@ spec:
                 cpu: 50m
               limits:
                 memory: 512Mi
-
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
-
+        pod:
+          nodeSelector:
+            zzh.feature.node.kubernetes.io/zigbee: "true"
     service:
       app:
         controller: *app
         ports:
           http:
-            port: &port 8080
+            port: *port
     route:
       app:
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
