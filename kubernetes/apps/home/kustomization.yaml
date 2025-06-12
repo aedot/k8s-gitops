@@ -6,7 +6,6 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
-  - ./mosquitto/ks.yaml
   - ./scrypted/ks.yaml
   - ./zigbee2mqtt/ks.yaml
   # - ./mealie/ks.yaml
