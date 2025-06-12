@@ -8,6 +8,6 @@ components:
 resources:
   - ./mosquitto/ks.yaml
   - ./scrypted/ks.yaml
-  # - ./zigbee2mqtt/ks.yaml
+  - ./zigbee2mqtt/ks.yaml
   # - ./mealie/ks.yaml
 
