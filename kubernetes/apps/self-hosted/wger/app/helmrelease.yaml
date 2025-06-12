@@ -10,7 +10,7 @@ spec:
   interval: 30m
   install:
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
@@ -39,7 +39,7 @@ spec:
           app:
             image:
               repository: wger/server
-              tag: 2.4-dev@sha256:921d5e33b4774b0331933ac538cfc1562de7610e78c531d4285da64f8558b9a2
+              tag: 2.4-dev@sha256:d1506ba4e8a3d48e62b45a125a89f88cc60a82e6a1576fcdd7557ea9f3b85b9e
             envFrom: *envFrom
             env:
               TZ: "America/Los_Angeles"
@@ -109,7 +109,7 @@ spec:
           app:
             image:
               repository: nginx
-              tag: stable@sha256:1fd589a0033784cbd9d1edca176424803e5a727af13a0ed475d9a7cb857a26db
+              tag: stable@sha256:20555a07052bb7a1a0ed233d5dba2bdafb75e537948fadbc0e1fef151088dcdd
             resources:
               requests:
                 cpu: 10m

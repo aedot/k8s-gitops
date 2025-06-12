@@ -10,7 +10,7 @@ spec:
     name: app-template
   install:
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
@@ -28,17 +28,17 @@ spec:
               tag: v2.15.3@sha256:56069bd90291a7c63e58b594e877c5f868a58f082e20c4c533e4e546ed3b42b3
             env:
               TZ: America/Los_Angeles
-              UP_UNIFI_DEFAULT_ROLE: k8s-gitops
+              UP_UNIFI_DEFAULT_ROLE: k8s
               UP_UNIFI_DEFAULT_URL: https://unifi.internal
               UP_UNIFI_DEFAULT_VERIFY_SSL: false
-              UP_PROMETHEUS_HTTP_LISTEN: 0.0.0.0:80
               UP_INFLUXDB_DISABLE: true
             envFrom:
               - secretRef:
                   name: unpoller-secret
             probes:
-              liveness:
+              liveness: &probes
                 enabled: true
+                custom: true
               readiness:
                 enabled: true
             securityContext:
