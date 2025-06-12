@@ -4,7 +4,6 @@
     'config:recommended',
     'docker:enableMajor',
     'helpers:pinGitHubActionDigests',
-    'github>aedot/k8s-gitops//.renovate/allowedVersions.json5',
     'github>aedot/k8s-gitops//.renovate/autoMerge.json5',
     'github>aedot/k8s-gitops//.renovate/customManagers.json5',
     'github>aedot/k8s-gitops//.renovate/grafanaDashboards.json5',
@@ -14,13 +13,12 @@
     ':automergeBranch',
     ':dependencyDashboard',
     ':disableRateLimiting',
-    ':gitSignOff',
     ':semanticCommits',
     ':timezone(America/Los_Angeles)',
   ],
   dependencyDashboardTitle: 'Renovate Dashboard 🤖',
   suppressNotifications: ["prEditedNotification", "prIgnoreNotification"],
-  ignorePaths: ["**/resources/**"],
+  ignorePaths: ["**/resources/**", "**/*.sops.*"],
   flux: {
     managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"]
   },

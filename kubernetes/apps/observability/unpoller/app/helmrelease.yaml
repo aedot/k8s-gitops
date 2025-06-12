@@ -36,7 +36,7 @@ spec:
               - secretRef:
                   name: unpoller-secret
             probes:
-              liveness: &probes
+              liveness:
                 enabled: true
                 custom: true
               readiness:
