@@ -69,9 +69,6 @@ spec:
                 cpu: 50m
               limits:
                 memory: 512Mi
-        pod:
-          nodeSelector:
-            zzh.feature.node.kubernetes.io/zigbee: "true"
     service:
       app:
         controller: *app
