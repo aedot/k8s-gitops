@@ -27,6 +27,7 @@ spec:
               repository: ghcr.io/koenkk/zigbee2mqtt
               tag: 2.4.0@sha256:dd7479e5416c4b95725333d0a69ff504bcbda9a7a3431e5d5dd1e27c16465cdd
             env:
+              TZ: America/Los_Angeles
               ZIGBEE2MQTT_DATA: /config
               ZIGBEE2MQTT_CONFIG_ADVANCED_LAST_SEEN: "ISO_8601"
               ZIGBEE2MQTT_CONFIG_ADVANCED_LEGACY_API: "false"
@@ -46,24 +47,37 @@ spec:
               ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_DISCOVERY_TOPIC: homeassistant
               ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_ENABLED: true
               ZIGBEE2MQTT_CONFIG_HOMEASSISTANT_STATUS_TOPIC: homeassistant/stat
-              ZIGBEE2MQTT_CONFIG_FRONTEND_URL: https://zigbee2mqtt.${SECRET_DOMAIN}
-              ZIGBEE2MQTT_CONFIG_FRONTEND_PORT: &port 80
+              ZIGBEE2MQTT_CONFIG_FRONTEND_URL: https://zigbee.${SECRET_DOMAIN}
+              ZIGBEE2MQTT_CONFIG_FRONTEND_PORT: &port 8080
             envFrom:
               - secretRef:
                   name: zigbee2mqtt-secret
-
-            securityContext:
-              privileged: true
             probes:
               liveness:
                 enabled: true
               readiness:
                 enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 50m
+                cpu: 10m
               limits:
-                memory: 512Mi
+                memory: 256Mi
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            runAsNonRoot: true
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         controller: *app
@@ -72,7 +86,7 @@ spec:
             port: *port
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}", "z2m.${SECRET_DOMAIN}"]
         parentRefs:
           - name: internal
             namespace: kube-system
