@@ -26,8 +26,8 @@ spec:
             env:
               HOME_ASSISTANT_EXTERNAL_URL: https://hass.${SECRET_DOMAIN}
               HOME_ASSISTANT_PURGE_KEEP_DAYS: 30
-              HOME_ASSISTANT_TRUSTED_PROXIES: 10.42.0.0/16
-              HOME_ASSISTANT_UNIT_SYSTEM: us_customary
+              HASS_HTTP_TRUSTED_PROXY_1: 10.0.0.0/8
+              HASS_HTTP_TRUSTED_PROXY_2: 10.42.0.0/16
               TZ: America/Los_Angeles
             resources:
               requests:
@@ -49,26 +49,37 @@ spec:
           }]
       securityContext:
         runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     persistence:
       config:
         existingClaim: *app
-      tmpfs:
+        globalMounts:
+          - path: /config
+      config-cache:
+        existingClaim: home-assistant-cache
+        globalMounts:
+          - path: /config/.venv
+      config-logs:
         type: emptyDir
-        advancedMounts:
-          home-assistant:
-            app:
-              - path: /config/.venv
-                subPath: .venv
-              - path: /config/logs
-                subPath: logs
-              - path: /config/tts
-                subPath: tts
-              - path: /tmp
-                subPath: tmp
+        globalMounts:
+          - path: /config/logs
+      config-tts:
+        type: emptyDir
+        globalMounts:
+          - path: /config/tts
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: &port 8123
     route:
       app:
         hostnames:
@@ -78,9 +89,8 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
-    service:
-      app:
-        controller: *app
-        ports:
-          http:
-            port: 8123
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
+
