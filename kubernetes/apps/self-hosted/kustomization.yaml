@@ -10,4 +10,4 @@ resources:
   # - ./docmost/ks.yaml
   - ./it-tools/ks.yaml
   - ./lubelog/ks.yaml
-  - ./wger/ks.yaml
+  # - ./wger/ks.yaml
