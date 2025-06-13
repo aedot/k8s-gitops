@@ -18,6 +18,8 @@ spec:
   values:
     controllers:
       home-assistant:
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -26,8 +28,8 @@ spec:
             env:
               HOME_ASSISTANT_EXTERNAL_URL: https://hass.${SECRET_DOMAIN}
               HOME_ASSISTANT_PURGE_KEEP_DAYS: 30
-              HASS_HTTP_TRUSTED_PROXY_1: 10.0.0.0/8
-              HASS_HTTP_TRUSTED_PROXY_2: 10.42.0.0/16
+              HOME_ASSISTANT_HTTP_TRUSTED_PROXY_1: 10.0.0.0/8
+              HOME_ASSISTANT_HTTP_TRUSTED_PROXY_2: 10.42.0.0/16
               TZ: America/Los_Angeles
             resources:
               requests:
