@@ -29,7 +29,7 @@ spec:
             env:
               HOME_ASSISTANT_TRUSTED_PROXY_1: 10.0.0.0/16
               HOME_ASSISTANT_TRUSTED_PROXY_2: 10.42.0.0/16
-              HOME_ASSISTANT_EXTERNAL_URL: https://hass.${SECRET_DOMAIN
+              HOME_ASSISTANT_EXTERNAL_URL: https://hass.${SECRET_DOMAIN}
               TZ: America/Los_Angeles
             envFrom:
               - secretRef:
