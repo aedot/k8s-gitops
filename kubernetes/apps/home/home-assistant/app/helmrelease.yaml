@@ -27,8 +27,9 @@ spec:
               repository: ghcr.io/home-operations/home-assistant
               tag: 2025.6.1@sha256:da48b023e7e8adb5725743d32b75a1f4b300d5952558f4337ea84b91b3a1d5cf
             env:
-              HASS_HTTP_TRUSTED_PROXY_1: 10.0.0.0/8
-              HASS_HTTP_TRUSTED_PROXY_2: 10.42.0.0/16
+              HOME_ASSISTANT_TRUSTED_PROXY_1: 10.0.0.0/16
+              HOME_ASSISTANT_TRUSTED_PROXY_2: 10.42.0.0/16
+              HOME_ASSISTANT_EXTERNAL_URL: https://hass.${SECRET_DOMAIN
               TZ: America/Los_Angeles
             envFrom:
               - secretRef:
