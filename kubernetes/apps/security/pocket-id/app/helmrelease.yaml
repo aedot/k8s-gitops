@@ -18,14 +18,6 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    defaultPodOptions:
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: *app
     controllers:
       pocket-id:
         replicas: 1
@@ -54,7 +46,7 @@ spec:
               UPDATE_CHECK_DISABLED: "true"
               SESSION_DURATION: 1440
               EMAIL_LOGIN_NOTIFICATION_ENABLED: "true"
-
+              UPLOAD_PATH: /data/uploads
             envFrom: *envFrom
             probes:
               liveness: &probes
@@ -64,11 +56,6 @@ spec:
                   httpGet:
                     path: /healthz
                     port: &port 1411
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 2
-              readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -79,12 +66,21 @@ spec:
                 memory: 10Mi
               limits:
                 memory: 256Mi
-        pod:
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-            fsGroup: 1000
-            fsGroupChangePolicy: OnRootMismatch
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [100]
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: *app
     service:
       app:
         controller: *app
@@ -110,4 +106,6 @@ spec:
       data:
         existingClaim: *app
         globalMounts:
-          - path: /app/data
+          - path: /data
+          - path: /app/backend/data
+            subPath: backend
