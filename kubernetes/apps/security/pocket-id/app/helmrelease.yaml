@@ -54,6 +54,7 @@ spec:
               UPDATE_CHECK_DISABLED: "true"
               SESSION_DURATION: 1440
               EMAIL_LOGIN_NOTIFICATION_ENABLED: "true"
+              EMAILS_VERIFIED: "true"
 
             envFrom: *envFrom
             probes:

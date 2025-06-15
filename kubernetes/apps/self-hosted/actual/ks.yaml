@@ -18,6 +18,8 @@ spec:
       namespace: longhorn-system
     - name: volsync
       namespace: volsync-system
+    - name: pocket-id
+      namespace: security
   prune: true
   sourceRef:
     kind: GitRepository
@@ -53,6 +55,8 @@ spec:
       namespace: longhorn-system
     - name: volsync
       namespace: volsync-system
+    - name: pocket-id
+      namespace: security
   prune: true
   sourceRef:
     kind: GitRepository

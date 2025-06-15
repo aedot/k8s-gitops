@@ -90,6 +90,8 @@ spec:
       namespace: *namespace
     - name: akeyless-stores
       namespace: external-secrets
+    - name: pocket-id
+      namespace: security
   postBuild:
     substituteFrom:
       - name: cluster-secrets
