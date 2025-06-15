@@ -46,6 +46,10 @@ spec:
               DAILY_SCHEDULE_TIME: 05:00
               ALLOW_SIGNUP: "false"
               LOG_LEVEL: debug
+              OIDC_AUTH_ENABLED: "true"
+              OIDC_SIGNUP_ENABLED: "true"
+              OIDC_CONFIGURATION_URL: https://id.${SECRET_DOMAIN}/.well-known/openid-configuration
+              OAUTH_PROVIDER_NAME: "Pocket ID"
 
             resources:
               requests:
