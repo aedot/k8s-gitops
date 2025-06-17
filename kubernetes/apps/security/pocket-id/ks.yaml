@@ -26,6 +26,8 @@ spec:
       namespace: dbms
     - name: akeyless-stores
       namespace: external-secrets
+    - name: lldap
+      namespace: security
   postBuild:
     substituteFrom:
       - name: cluster-secrets
