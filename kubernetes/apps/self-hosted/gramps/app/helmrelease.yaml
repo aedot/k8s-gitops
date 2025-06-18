@@ -31,20 +31,26 @@ spec:
                   name: gramps-secret
         containers:
           app:
-            image:
+            image: &image
               repository: ghcr.io/gramps-project/grampsweb
               tag: v25.6.0
-            env:
+            env: &envs
               GRAMPSWEB_TREE: "Gramps Web"  # will create a new tree if not exists
               GRAMPSWEB_CELERY_CONFIG__broker_url: "redis://dragonfly.dbms.svc.cluster.local:6379"
               GRAMPSWEB_CELERY_CONFIG__result_backend: "redis://dragonfly.dbms.svc.cluster.local:6379"
               GRAMPSWEB_RATELIMIT_STORAGE_URI: redis://dragonfly.dbms.svc.cluster.local:6379
             envFrom: *envFrom
-            probes:
-              liveness:
-                enabled: true
-              readiness:
-                enabled: true
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 2Gi
+          worker:
+            image: *image
+            command:
+              ["celery", "-A", "grampsweb", "worker", "--loglevel=INFO"]
+            env: *envs
+            envFrom: *envFrom
             resources:
               requests:
                 cpu: 10m
@@ -68,23 +74,44 @@ spec:
               - name: *app
                 port: *port
     persistence:
-      app:
+      data:
+        type: PersistentVolumeClaim
         existingClaim: *app
+        advancedMounts:
+          gramps:
+            app:
+              - path: /app/users
+                subPath: "app/users"
+              - path: /app/cache
+                subPath: "app/cache"
+              - path: /app/indexdir
+                subPath: "app/indexdir"
+              - path: /app/thumbnail_cache
+                subPath: "app/thumbnail_cache"
+              - path: /app/secret
+                subPath: "app/secret"
+              - path: /app/media
+                subPath: "app/media"
+              - path: /root/.gramps/grampsdb
+                subPath: "root/.gramps/grampsdb"
+            worker:
+              - path: "/app/users"
+                subPath: "app/users"
+              - path: "/app/cache"
+                subPath: "app/cache"
+              - path: "/app/indexdir"
+                subPath: "app/indexdir"
+              - path: "/app/thumbnail_cache"
+                subPath: "app/thumbnail_cache"
+              - path: "/app/secret"
+                subPath: "app/secret"
+              - path: "/root/.gramps/grampsdb"
+                subPath: "root/.gramps/grampsdb"
+              - path: "/app/media"
+                subPath: "app/media"
+
+      tmpfs:
+        type: emptyDir
         globalMounts:
-          - path: /app/users
-            subPath: gramps_users
-          - path: /app/indexdir
-            subPath: gramps_index
-          - path: /app/thumbnail_cache
-            subPath: gramps_thumb_cache
-          - path: /app/cache
-            subPath: gramps_cache
-          - path: /app/secret
-            subPath: gramps_secret
-          - path: /app/media
-            subPath: gramps_media
           - path: /tmp
-            subPath: gramps_tmp
-          - path: /root/.gramps/grampsdb
-            subPath: gramps_db
 
