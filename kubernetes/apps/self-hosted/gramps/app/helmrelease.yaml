@@ -21,6 +21,8 @@ spec:
       gramps:
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          enableServiceLinks: false
         initContainers:
           init-db:
             image:
@@ -75,7 +77,6 @@ spec:
                 port: *port
     persistence:
       data:
-        type: PersistentVolumeClaim
         existingClaim: *app
         advancedMounts:
           gramps:
