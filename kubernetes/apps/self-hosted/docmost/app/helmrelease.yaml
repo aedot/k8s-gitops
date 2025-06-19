@@ -39,7 +39,7 @@ spec:
               APP_URL: https://docmost.${SECRET_DOMAIN}
               MAIL_DRIVER: smtp
               PORT: "3000"
-              # REDIS_URL: "redis://dragonfly.dbms:6379"
+              REDIS_URL: "redis://dragonfly.dbms:6379"
             envFrom: *envFrom
             probes:
               liveness:
