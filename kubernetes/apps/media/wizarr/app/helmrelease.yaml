@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository:  ghcr.io/wizarrrr/wizarr
-              tag: 2025.6.3           #TODO: Update to latest version after testing
+              tag: 2025.6.4           #TODO: Update to latest version after testing
             env:
               TZ: ${TZ}
             resources:
