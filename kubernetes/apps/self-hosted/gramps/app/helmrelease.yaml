@@ -50,7 +50,7 @@ spec:
           worker:
             image: *image
             command:
-              ["celery", "-A", "worker"]
+              ["celery", "-A", "grampsweb", "worker", "--loglevel=INFO"]
             env: *envs
             envFrom: *envFrom
             resources:
