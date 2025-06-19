@@ -50,7 +50,7 @@ spec:
           worker:
             image: *image
             command:
-              ["celery", "-A", "worker", "--loglevel=INFO"]
+              ["celery", "-A", "worker"]
             env: *envs
             envFrom: *envFrom
             resources:
