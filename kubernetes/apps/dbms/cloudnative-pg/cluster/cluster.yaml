@@ -22,7 +22,7 @@ spec:
     enablePodMonitor: true
   resources:
     requests:
-      cpu: 500m
+      cpu: 300m
     limits:
       memory: 4Gi
   backup:

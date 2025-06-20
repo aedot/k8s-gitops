@@ -61,7 +61,7 @@ spec:
                 gpu.intel.com/i915: 1
                 memory: 8Gi
               requests:
-                cpu: 136m
+                cpu: 100m
             securityContext:
               privileged: true
 

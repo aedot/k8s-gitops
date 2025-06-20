@@ -40,7 +40,7 @@ spec:
                 enabled: true
             resources:
               limits:
-                cpu: 400m
+                cpu: 100m
                 memory: 200Mi
     service:
       app:
