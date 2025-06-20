@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/upgrade.cattle.io/plan_v1.json
 apiVersion: upgrade.cattle.io/v1
 kind: Plan
 metadata:
@@ -6,6 +7,7 @@ metadata:
 spec:
   version: ${TALOS_VERSION}
   concurrency: 1
+  postCompleteDelay: 2m
   exclusive: true
   serviceAccountName: system-upgrade-controller
   secrets:
@@ -14,11 +16,11 @@ spec:
       ignoreUpdates: true
   nodeSelector:
     matchExpressions:
-      - key: kubernetes.io/os
-        operator: In
-        values: ["linux"]
+      - key: kubernetes.io/hostname
+        operator: Exists
   upgrade:
     image: ghcr.io/jfroy/tnu:0.4.3
     args:
       - --node=$(SYSTEM_UPGRADE_NODE_NAME)
       - --tag=$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
+      - --powercycle
