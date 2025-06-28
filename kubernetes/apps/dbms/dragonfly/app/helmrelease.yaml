@@ -128,7 +128,7 @@ spec:
           subjects:
             - kind: ServiceAccount
               name: *app
-              namespace: storage
+              namespace: dbms
           roleRef:
             apiGroup: rbac.authorization.k8s.io
             kind: ClusterRole
