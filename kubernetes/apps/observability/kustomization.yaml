@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: observability
+components:
+  - ../../components/common
+  - ../../components/repos/app-template
+resources:
+  - ./grafana/ks.yaml
+  - ./blackbox-exporter/ks.yaml
+  - ./karma/ks.yaml
+  - ./kube-prometheus-stack/ks.yaml
+  - ./teslamate/ks.yaml
+  - ./gatus/ks.yaml
+  - ./loki/ks.yaml
+  - ./promtail/ks.yaml
+  - ./unpoller/ks.yaml
+  - ./nut-exporter/ks.yaml #TODO: Secret management with Akeyless
+  - ./smartctl-exporter/ks.yaml
+  # - ./keda/ks.yaml
+  - ./peanut/ks.yaml

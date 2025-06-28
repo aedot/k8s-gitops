@@ -1,0 +1,86 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app mealie
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  interval: 30m
+  install:
+    crds: CreateReplace
+    timeout: 2m
+    remediation:
+      retries: -1
+  upgrade:
+    crds: CreateReplace
+    timeout: 2m
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      mealie:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 17@sha256:e0c87ce7df39d06b93f27cf2cc6a056611f13faaa88cc07ab4dc8bf7a85d0b11
+            envFrom: &envFrom
+              - secretRef:
+                  name: mealie-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/mealie-recipes/mealie
+              tag: v2.8.0@sha256:63aef46d90975d9cf9c0fdb9399fc2fe36acd222e1db6be99c504b9ccdbee967
+            envFrom: *envFrom
+            env:
+              TZ: America/Los_Angeles
+              BASE_URL: https://mealie.${SECRET_DOMAIN}
+              AUTO_BACKUP_ENABLED: "true"
+              DAILY_SCHEDULE_TIME: 05:00
+              ALLOW_SIGNUP: "false"
+              LOG_LEVEL: debug
+              OIDC_AUTH_ENABLED: "true"
+              OIDC_SIGNUP_ENABLED: "true"
+              OIDC_CONFIGURATION_URL: https://id.${SECRET_DOMAIN}/.well-known/openid-configuration
+              OAUTH_PROVIDER_NAME: "Pocket ID"
+
+            resources:
+              requests:
+                cpu: 30m
+                memory: 100Mi
+              limits:
+                memory: 2Gi
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: &port 9000
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+    persistence:
+      config:
+        existingClaim: *app
+        globalMounts:
+          - path: /app/data
+      # Needed for recipe parser
+      tmp:
+        type: emptyDir
+      nonexistent:
+        type: emptyDir

@@ -1,0 +1,118 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app gramps
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  interval: 30m
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      gramps:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          enableServiceLinks: false
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 17@sha256:e0c87ce7df39d06b93f27cf2cc6a056611f13faaa88cc07ab4dc8bf7a85d0b11
+            envFrom: &envFrom
+              - secretRef:
+                  name: gramps-secret
+        containers:
+          app:
+            image: &image
+              repository: ghcr.io/gramps-project/grampsweb
+              tag: v25.6.0
+            env: &envs
+              GRAMPSWEB_TREE: "Gramps Web"  # will create a new tree if not exists
+              GRAMPSWEB_CELERY_CONFIG__broker_url: "redis://dragonfly.dbms.svc.cluster.local:6379/3"
+              GRAMPSWEB_CELERY_CONFIG__result_backend: "redis://dragonfly.dbms.svc.cluster.local:6379/3"
+              GRAMPSWEB_RATELIMIT_STORAGE_URI: "redis://dragonfly.dbms.svc.cluster.local:6379/4"
+            envFrom: *envFrom
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 2Gi
+          worker:
+            image: *image
+            command:
+              ["celery", "-A", "grampsweb", "worker", "--loglevel=INFO"]
+            env: *envs
+            envFrom: *envFrom
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 2Gi
+    service:
+      app:
+        controller: gramps
+        ports:
+          http:
+            port: &port 5000
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+    persistence:
+      data:
+        existingClaim: *app
+        advancedMounts:
+          gramps:
+            app:
+              - path: /app/users
+                subPath: "app/users"
+              - path: /app/cache
+                subPath: "app/cache"
+              - path: /app/indexdir
+                subPath: "app/indexdir"
+              - path: /app/thumbnail_cache
+                subPath: "app/thumbnail_cache"
+              - path: /app/secret
+                subPath: "app/secret"
+              - path: /app/media
+                subPath: "app/media"
+              - path: /root/.gramps/grampsdb
+                subPath: "root/.gramps/grampsdb"
+            worker:
+              - path: "/app/users"
+                subPath: "app/users"
+              - path: "/app/cache"
+                subPath: "app/cache"
+              - path: "/app/indexdir"
+                subPath: "app/indexdir"
+              - path: "/app/thumbnail_cache"
+                subPath: "app/thumbnail_cache"
+              - path: "/app/secret"
+                subPath: "app/secret"
+              - path: "/root/.gramps/grampsdb"
+                subPath: "root/.gramps/grampsdb"
+              - path: "/app/media"
+                subPath: "app/media"
+
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+

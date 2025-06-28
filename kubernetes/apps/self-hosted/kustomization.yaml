@@ -1,0 +1,14 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: self-hosted
+components:
+  - ../../components/common
+  - ../../components/repos/app-template
+resources:
+  - ./actual/ks.yaml
+  # - ./docmost/ks.yaml
+  - ./it-tools/ks.yaml
+  - ./lubelog/ks.yaml
+  # - ./wger/ks.yaml
+  # - ./gramps/ks.yaml
