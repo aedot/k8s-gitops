@@ -81,44 +81,6 @@ nodes:
           - *vlan101
         vip:
           ip: "10.0.10.10"
-  - hostname: "oya"
-    ipAddress: "10.0.10.14"
-    installDisk: "/dev/sda"
-    machineSpec:
-      secureboot: false
-    talosImageURL: factory.talos.dev/metal-installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
-    controlPlane: true
-    networkInterfaces:
-      - interface: bond0
-        bond:
-          mode: active-backup
-          deviceSelectors:
-              - hardwareAddr: "18:66:da:47:b0:72"
-                driver: e1000e
-        dhcp: true
-        vlans:
-          - *vlan101
-        vip:
-          ip: "10.0.10.10"
-  - hostname: "moremi"
-    ipAddress: "10.0.10.15"
-    installDisk: "/dev/sda"
-    machineSpec:
-      secureboot: false
-    talosImageURL: factory.talos.dev/metal-installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
-    controlPlane: true
-    networkInterfaces:
-      - interface: bond0
-        bond:
-          mode: active-backup
-          deviceSelectors:
-              - hardwareAddr: "14:b3:1f:25:c0:a2"
-                driver: e1000e
-        dhcp: true
-        vlans:
-          - *vlan101
-        vip:
-          ip: "10.0.10.10"
 # Global patches
 patches:
   - "@./patches/global/machine-files.yaml"
