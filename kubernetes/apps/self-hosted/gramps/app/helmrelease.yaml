@@ -23,14 +23,14 @@ spec:
           reloader.stakater.com/auto: "true"
         pod:
           enableServiceLinks: false
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 17@sha256:e0c87ce7df39d06b93f27cf2cc6a056611f13faaa88cc07ab4dc8bf7a85d0b11
-            envFrom: &envFrom
-              - secretRef:
-                  name: gramps-secret
+        # initContainers:
+        #   init-db:
+        #     image:
+        #       repository: ghcr.io/home-operations/postgres-init
+        #       tag: 17@sha256:e0c87ce7df39d06b93f27cf2cc6a056611f13faaa88cc07ab4dc8bf7a85d0b11
+        #     envFrom: &envFrom
+        #       - secretRef:
+        #           name: gramps-secret
         containers:
           gramps:
             image: &image
@@ -41,7 +41,10 @@ spec:
               GRAMPSWEB_CELERY_CONFIG__broker_url: "redis://dragonfly.dbms.svc.cluster.local:6379/3"
               GRAMPSWEB_CELERY_CONFIG__result_backend: "redis://dragonfly.dbms.svc.cluster.local:6379/3"
               GRAMPSWEB_RATELIMIT_STORAGE_URI: "redis://dragonfly.dbms.svc.cluster.local:6379/4"
-            envFrom: *envFrom
+              GRAMPSWEB_USER_DB_URI: sqlite:////app/users/users.sqlite
+            envFrom: &envFrom
+              - secretRef:
+                  name: gramps-secret
             resources:
               requests:
                 cpu: 10m
