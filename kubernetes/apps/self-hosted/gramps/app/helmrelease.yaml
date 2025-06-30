@@ -32,7 +32,7 @@ spec:
               - secretRef:
                   name: gramps-secret
         containers:
-          app:
+          gramps:
             image: &image
               repository: ghcr.io/gramps-project/grampsweb
               tag: v25.6.0
@@ -56,11 +56,11 @@ spec:
             resources:
               requests:
                 cpu: 10m
+                memory: 100Mi
               limits:
-                memory: 2Gi
+                memory: 1024Mi
     service:
       app:
-        controller: gramps
         ports:
           http:
             port: &port 5000
@@ -71,10 +71,7 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
-        rules:
-          - backendRefs:
-              - name: *app
-                port: *port
+
     persistence:
       data:
         existingClaim: *app
