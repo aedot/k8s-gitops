@@ -39,7 +39,7 @@ spec:
           app:
             image:
               repository: wger/server
-              tag: 2.4-dev@sha256:392335db58532ea0f88cbc766cec9705c29efc0be98cd202bc50406e4e1f38d4
+              tag: 2.4-dev@sha256:8adc609647871e206ed4fcbc90d13f69e36c1793dbdc047db9b1961471a764ad
             envFrom: *envFrom
             env:
               TZ: "America/Los_Angeles"
