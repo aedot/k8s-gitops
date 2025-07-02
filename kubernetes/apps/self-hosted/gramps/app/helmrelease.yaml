@@ -35,7 +35,7 @@ spec:
           gramps:
             image: &image
               repository: ghcr.io/gramps-project/grampsweb
-              tag: v25.6.0
+              tag: 25.7.0
             env: &envs
               GRAMPSWEB_TREE: "Gramps Web"  # will create a new tree if not exists
               GRAMPSWEB_CELERY_CONFIG__broker_url: "redis://dragonfly.dbms.svc.cluster.local:6379"
