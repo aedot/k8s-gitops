@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Renovate
 
 on:
@@ -37,7 +38,7 @@ permissions:
   contents: read
 
 jobs:
-  renovate:
+  main:
     name: Renovate
     runs-on: ubuntu-latest
     permissions:
@@ -47,25 +48,25 @@ jobs:
         uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2.0.6
         id: app-token
         with:
-          app-id: ${{ secrets.BOT_APP_ID }}
-          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
 
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
-          token: ${{ steps.app-token.outputs.token }}
+          token: "${{ steps.app-token.outputs.token }}"
 
-      - name: Renovate
-        uses: renovatebot/github-action@13da59cf7cfbd3bfea72ce26752ed22edf747ce9 # v43.0.2
+      - name: Run Renovate
+        uses: renovatebot/github-action@e854b273e774bce1ef8cb05f128b8ce8aee2a887 # v42.0.1
         env:
-          LOG_LEVEL: ${{ inputs.logLevel || 'debug' }}
+          LOG_LEVEL: "${{ inputs.logLevel || 'debug' }}"
           RENOVATE_AUTODISCOVER: true
-          RENOVATE_AUTODISCOVER_FILTER: ${{ github.repository }}
-          RENOVATE_DRY_RUN: ${{ inputs.dryRun }}
+          RENOVATE_AUTODISCOVER_FILTER: "${{ github.repository }}"
+          RENOVATE_DRY_RUN: "${{ inputs.dryRun }}"
           RENOVATE_INTERNAL_CHECKS_FILTER: strict
           RENOVATE_PLATFORM: github
           RENOVATE_PLATFORM_COMMIT: true
         with:
-          token: ${{ steps.app-token.outputs.token }}
-          renovate-version: ${{ inputs.version || 'latest' }}
+          token: "${{ steps.app-token.outputs.token }}"
+          renovate-version: "${{ inputs.version || 'latest' }}"
