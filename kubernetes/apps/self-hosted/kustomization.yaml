@@ -7,8 +7,6 @@ components:
   - ../../components/repos/app-template
 resources:
   - ./actual/ks.yaml
-  # - ./docmost/ks.yaml # Remove due to limit usage
   - ./it-tools/ks.yaml
   - ./lubelog/ks.yaml
-  # - ./wger/ks.yaml # Remove due to image error on homepage
   # - ./gramps/ks.yaml # Remove due to corrupted database
