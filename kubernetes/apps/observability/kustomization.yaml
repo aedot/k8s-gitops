@@ -16,7 +16,7 @@ resources:
   - ./loki/ks.yaml
   - ./promtail/ks.yaml
   - ./unpoller/ks.yaml
-  - ./nut-exporter/ks.yaml #TODO: Secret management with Akeyless
+  # - ./nut-exporter/ks.yaml #TODO: Secret management with Akeyless
   - ./smartctl-exporter/ks.yaml
   # - ./keda/ks.yaml
   - ./peanut/ks.yaml
