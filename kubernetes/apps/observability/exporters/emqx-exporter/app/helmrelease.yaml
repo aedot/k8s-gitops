@@ -38,14 +38,16 @@ spec:
               tag: 0.2.11@sha256:31173023132078a9243527ff1dbaae5facc77b8d3708a3b018634f8ba8862ec9
             args:
               # "emqx-dashboard-service-name" is the service name that creating by operator for exposing 18083 port
-              - --emqx.address=http://emqx-dashboard.dbms.svc.cluster.local:18083
+              - --emqx.nodes=http://emqx-dashboard.dbms.svc.cluster.local:18083
+              - --emqx.auth-username=${api_key}
+              - --emqx.auth-password=${api_secret}
             env:
-              - name: EMQX_USERNAME
+              - name: api_key
                 valueFrom:
                   secretKeyRef:
                     name: emqx-exporter-secret
                     key: EMQX_EXPORTER_API_KEY
-              - name: EMQX_PASSWORD
+              - name: api_secret
                 valueFrom:
                   secretKeyRef:
                     name: emqx-exporter-secret
