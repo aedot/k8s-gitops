@@ -8,7 +8,6 @@ components:
   - ../../components/repos/app-template
 resources:
   - ./grafana/ks.yaml
-  - ./blackbox-exporter/ks.yaml
   - ./karma/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./teslamate/ks.yaml
@@ -16,7 +15,8 @@ resources:
   - ./loki/ks.yaml
   - ./promtail/ks.yaml
   - ./unpoller/ks.yaml
-  - ./nut-exporter/ks.yaml #TODO: Secret management with Akeyless
-  - ./smartctl-exporter/ks.yaml
+  - ./exporters/nut-exporter/ks.yaml
+  - ./exporters/smartctl-exporter/ks.yaml
+  - ./exporters/blackbox-exporter/ks.yaml
   # - ./keda/ks.yaml
   - ./peanut/ks.yaml
