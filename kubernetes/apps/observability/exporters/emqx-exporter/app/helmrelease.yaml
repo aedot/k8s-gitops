@@ -104,6 +104,6 @@ spec:
     persistence:
       config:
         type: secret
-        name: emqx-exporter
+        name: emqx-exporter-secret
         globalMounts:
           - path: /etc/emqx-exporter
