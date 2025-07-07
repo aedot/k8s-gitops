@@ -18,21 +18,21 @@ spec:
       scheme: http
       basicAuth:
         username:
-          name: emqx-auth
-          key: username
+          name: emqx-secret
+          key: EMQX_EXPORTER_API_KEY
         password:
-          name: emqx-auth
-          key: password
+          name: emqx-secret
+          key: EMQX_EXPORTER_API_SECRET
     - port: http
       path: /api/v5/prometheus/auth
       interval: 10s
       scheme: http
       basicAuth:
         username:
-          name: emqx-auth
+          name: emqx-secret
           key: EMQX_EXPORTER_API_KEY
         password:
-          name: emqx-auth
+          name: emqx-secret
           key: EMQX_EXPORTER_API_SECRET
     - port: http
       path: /api/v5/prometheus/data_integration
@@ -40,8 +40,8 @@ spec:
       scheme: http
       basicAuth:
         username:
-          name: emqx-auth
+          name: emqx-secret
           key: EMQX_EXPORTER_API_KEY
         password:
-          name: emqx-auth
+          name: emqx-secret
           key: EMQX_EXPORTER_API_SECRET
