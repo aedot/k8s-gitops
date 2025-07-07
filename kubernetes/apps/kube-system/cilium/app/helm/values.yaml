@@ -27,6 +27,8 @@ gatewayAPI:
   xffNumTrustedHops: 1
 dashboards:
   enabled: true
+  annotations:
+    grafana_folder: Network
 hubble:
   enabled: false
 ipam:
@@ -45,6 +47,8 @@ localRedirectPolicy: true
 operator:
   dashboards:
     enabled: true
+    annotations:
+      grafana_folder: Network
   prometheus:
     enabled: true
     serviceMonitor:
