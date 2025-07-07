@@ -1,0 +1,47 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: emqx
+  labels:
+    release: prometheus  # <-- Must match Prometheus CR's selector
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: emqx
+  namespaceSelector:
+    matchNames:
+      - dbms
+  endpoints:
+    - port: http
+      path: /api/v5/prometheus/stats
+      interval: 10s
+      scheme: http
+      basicAuth:
+        username:
+          name: emqx-auth
+          key: username
+        password:
+          name: emqx-auth
+          key: password
+    - port: http
+      path: /api/v5/prometheus/auth
+      interval: 10s
+      scheme: http
+      basicAuth:
+        username:
+          name: emqx-auth
+          key: EMQX_EXPORTER_API_KEY
+        password:
+          name: emqx-auth
+          key: EMQX_EXPORTER_API_SECRET
+    - port: http
+      path: /api/v5/prometheus/data_integration
+      interval: 10s
+      scheme: http
+      basicAuth:
+        username:
+          name: emqx-auth
+          key: EMQX_EXPORTER_API_KEY
+        password:
+          name: emqx-auth
+          key: EMQX_EXPORTER_API_SECRET
