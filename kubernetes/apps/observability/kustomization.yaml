@@ -18,6 +18,6 @@ resources:
   - ./exporters/nut-exporter/ks.yaml
   - ./exporters/smartctl-exporter/ks.yaml
   - ./exporters/blackbox-exporter/ks.yaml
-  # - ./exporters/emqx-exporter/ks.yaml
+  - ./exporters/emqx-exporter/ks.yaml
   # - ./keda/ks.yaml
   - ./peanut/ks.yaml
