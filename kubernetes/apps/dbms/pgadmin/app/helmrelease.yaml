@@ -96,7 +96,7 @@ spec:
       oauth:
         enabled: true
         type: secret
-        name: pgadmin-secret-auth
+        name: pgadmin-auth-secret
         advancedMounts:
           pgadmin:
             app:
