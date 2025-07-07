@@ -15,9 +15,8 @@ resources:
   - ./loki/ks.yaml
   - ./promtail/ks.yaml
   - ./unpoller/ks.yaml
-  - ./exporters/nut-exporter/ks.yaml
-  - ./exporters/smartctl-exporter/ks.yaml
-  - ./exporters/blackbox-exporter/ks.yaml
-  # - ./exporters/emqx-exporter/ks.yaml
+  - ./nut-exporter/ks.yaml
+  - ./smartctl-exporter/ks.yaml
+  - ./blackbox-exporter/ks.yaml
   # - ./keda/ks.yaml
   - ./peanut/ks.yaml

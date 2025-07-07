@@ -2,19 +2,16 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app emqx-exporter
+  name: &app nut-exporter
   namespace: &namespace observability
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/observability/exporters/emqx-exporter/app
+  path: ./kubernetes/apps/observability/nut-exporter/app
   prune: true
   retryInterval: 2m
-  dependsOn:
-    - name: emqx-cluster
-      namespace: dbms
   sourceRef:
     kind: GitRepository
     name: flux-system

@@ -9,7 +9,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/observability/exporters/blackbox-exporter/app
+  path: ./kubernetes/apps/observability/blackbox-exporter/app
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -33,7 +33,7 @@ spec:
     - name: blackbox-exporter
       namespace: *namespace
   interval: 1h
-  path: ./kubernetes/apps/observability/exporters/blackbox-exporter/probes
+  path: ./kubernetes/apps/observability/blackbox-exporter/probes
   prune: true
   retryInterval: 2m
   sourceRef:
