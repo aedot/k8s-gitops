@@ -3,14 +3,14 @@ apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: emqx
+  labels:
+    app.kubernetes.io/name: emqx
 spec:
-  selector:
-    matchLabels:
-      apps.emqx.io/instance: emqx
-      apps.emqx.io/managed-by: emqx-operator
   podMetricsEndpoints:
-    - port: dashboard
+    - interval: 5s
       path: /api/v5/prometheus/stats
+      # the name of emqx dashboard containerPort
+      port: dashboard
       relabelings:
         - action: replace
           # user-defined cluster name, requires unique
@@ -22,5 +22,14 @@ spec:
           targetLabel: from
         - action: replace
           # fix value, don't modify
-          sourceLabels: ["pod"]
+          sourceLabels: ['pod']
           targetLabel: "instance"
+  selector:
+    matchLabels:
+      # the label is the same as the label of emqx pod
+      apps.emqx.io/instance: emqx
+      apps.emqx.io/managed-by: emqx-operator
+  namespaceSelector:
+    matchNames:
+      # modify the namespace if your EMQX cluster deployed in other namespace
+      - dbms
