@@ -37,6 +37,7 @@ spec:
     env:
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
       GF_EXPLORE_ENABLED: true
+      GF_FEATURE_TOGGLES_ENABLE: publicDashboards
       GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
       GF_SECURITY_ANGULAR_SUPPORT_ENABLED: true
       GF_SERVER_ROOT_URL: https://grafana.${SECRET_DOMAIN}
@@ -52,6 +53,7 @@ spec:
         org_id: 1
         org_name: Main Org.
         org_role: Viewer
+        hide_version:
       news:
         news_feed_enabled: false
     datasources:
@@ -107,15 +109,15 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/default
-          - name: "emqx"
+          - name: data
             orgId: 1
-            folder: "Emqx"
+            folder: Data
             type: file
             disableDeletion: false
             editable: true
             allowUiUpdates: true
             options:
-              path: /var/lib/grafana/dashboards/emqx
+              path: /var/lib/grafana/dashboards/data
           - name: "kubernetes"
             orgId: 1
             folder: "Kubernetes"
@@ -125,95 +127,35 @@ spec:
             allowUiUpdates: true
             options:
               path: /var/lib/grafana/dashboards/kubernetes
-          - name: "teslamate`"
+          - name: network
             orgId: 1
-            folder: "Teslamate"
+            folder: Network
             type: file
             disableDeletion: false
             editable: true
             allowUiUpdates: true
             options:
-              path: /var/lib/grafana/dashboards/teslamate
-          - name: "unifi`"
+              path: /var/lib/grafana/dashboards/network
+          - name: storage
             orgId: 1
-            folder: "Unifi"
+            folder: Storage
             type: file
             disableDeletion: false
             editable: true
             allowUiUpdates: true
             options:
-              path: /var/lib/grafana/dashboards/unifi
+              path: /var/lib/grafana/dashboards/storage
+          - name: system
+            orgId: 1
+            folder: System
+            type: file
+            disableDeletion: false
+            editable: true
+            allowUiUpdates: true
+            options:
+              path: /var/lib/grafana/dashboards/system
     dashboards:
-      default:
-        blackbox-exporter:
-          # renovate: depName="Prometheus Blackbox Exporter"
-          gnetId: 7587
-          revision: 3
-          datasource: Prometheus
-        cert-manager:
-          # renovate: depName="Cert-manager-Kubernetes"
-          gnetId: 20842
-          revision: 3
-          datasource: Prometheus
-        cloudflared:
-          # renovate: depName="Cloudflare Tunnels (cloudflared)"
-          gnetId: 17457
-          revision: 6
-          datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
-        dragonfly:
-          # renovate: datasource=github-releases depName=dragonflydb/dragonfly
-          url: https://raw.githubusercontent.com/dragonflydb/dragonfly/v1.31.0/tools/local/monitoring/grafana/provisioning/dashboards/dragonfly.json
-          datasource: Prometheus
-        external-dns:
-          # renovate: depName="External-dns"
-          gnetId: 15038
-          revision: 3
-          datasource: Prometheus
-        external-secrets:
-          # renovate: depName="External Secrets"
-          gnetId: 21640
-          revision: 4
-          datasource:
-            - name: DS_METRICS
-              value: Prometheus
-        gatus:
-          url: https://raw.githubusercontent.com/TwiN/gatus/master/.examples/docker-compose-grafana-prometheus/grafana/provisioning/dashboards/gatus.json
-          datasource: Prometheus
-
-        longhorn:
-          # renovate: depName="Longhorn"
-          gnetId: 16888
-          revision: 9
-          datasource: Prometheus
-        node-exporter-full:
-          # renovate: depName="Node Exporter Full"
-          gnetId: 1860
-          revision: 41
-          datasource: [{ name: DS_PROMETHEUS, value: Prometheus }]
-        node-feature-discovery:
-          url: https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/master/examples/grafana-dashboard.json
-          datasource: [{ name: DS_PROMETHEUS, value: Prometheus }]
-        nut-exporter:
-          url: https://raw.githubusercontent.com/DRuggeri/nut_exporter/refs/heads/master/dashboard/dashboard.json
-          datasource: Prometheus
-        prometheus:
-          # renovate: depName="Prometheus"
-          gnetId: 19105
-          revision: 7
-          datasource: Prometheus
-        smartctl-exporter:
-          # renovate: depName="SMARTctl Exporter Dashboard"
-          gnetId: 22604
-          revision: 2
-          datasource: [{ name: DS_PROMETHEUS, value: Prometheus }]
-
-        volsync:
-          # renovate: depName="VolSync Dashboard"
-          gnetId: 21356
-          revision: 3
-          datasource: [{ name: DS_PROMETHEUS, value: Prometheus }]
-      emqx:
+      data:
         emqx-authentication:
           url: https://raw.githubusercontent.com/emqx/emqx-exporter/main/grafana-dashboard/template/emqx-5/authentication.json
           datasource: Prometheus
@@ -235,6 +177,70 @@ spec:
         emqx-rule-engine-rate:
           url: https://raw.githubusercontent.com/emqx/emqx-exporter/main/grafana-dashboard/template/emqx-5/rule-engine-rate.json
           datasource: Prometheus
+        external-secrets:
+          # renovate: depName="External Secrets"
+          gnetId: 21640
+          revision: 4
+          datasource:
+            - name: DS_METRICS
+              value: Prometheus
+        tesla-battery-health:
+          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/battery-health.json
+          datasource: TeslaMate
+        tesla-charge-level:
+          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/charge-level.json
+          datasource: TeslaMate
+        tesla-charges:
+          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/charges.json
+          datasource: TeslaMate
+        tesla-charging-stats:
+          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/charging-stats.json
+          datasource: TeslaMate
+        tesla-database-info:
+          url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/database-info.json
+          datasource: TeslaMate
+        tesla-drive-stats:
+          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/drive-stats.json
+          datasource: TeslaMate
+        tesla-drives:
+          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/drives.json
+          datasource: TeslaMate
+        tesla-efficiency:
+          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/efficiency.json
+          datasource: TeslaMate
+        tesla-locations:
+          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/locations.json
+          datasource: TeslaMate
+        tesla-milage:
+          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/mileage.json
+          datasource: TeslaMate
+        tesla-overview:
+          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/overview.json
+          datasource: TeslaMate
+        tesla-projected-range:
+          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/projected-range.json
+          datasource: TeslaMate
+        tesla-states:
+          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/states.json
+          datasource: TeslaMate
+        tesla-statistics:
+          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/statistics.json
+          datasource: TeslaMate
+        tesla-timeline:
+          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/timeline.json
+          datasource: TeslaMate
+        tesla-trip:
+          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/trip.json
+          datasource: TeslaMate
+        tesla-updates:
+          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/updates.json
+          datasource: TeslaMate
+        tesla-vampire-drain:
+          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/vampire-drain.json
+          datasource: TeslaMate
+        tesla-visited:
+          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/visited.json
+          datasource: TeslaMate
       kubernetes:
         kubernetes-api-server:
           # renovate: depName="Kubernetes / System / API Server"
@@ -271,65 +277,28 @@ spec:
           gnetId: 11454
           revision: 14
           datasource: Prometheus
-      teslamate:
-        battery-health:
-          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/battery-health.json
-          datasource: TeslaMate
-        charge-level:
-          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/charge-level.json
-          datasource: TeslaMate
-        charges:
-          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/charges.json
-          datasource: TeslaMate
-        charging-stats:
-          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/charging-stats.json
-          datasource: TeslaMate
-        database-info:
-          url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/database-info.json
-          datasource: TeslaMate
-        drive-stats:
-          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/drive-stats.json
-          datasource: TeslaMate
-        drives:
-          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/drives.json
-          datasource: TeslaMate
-        efficiency:
-          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/efficiency.json
-          datasource: TeslaMate
-        locations:
-          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/locations.json
-          datasource: TeslaMate
-        milage:
-          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/mileage.json
-          datasource: TeslaMate
-        overview:
-          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/overview.json
-          datasource: TeslaMate
-        projected-range:
-          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/projected-range.json
-          datasource: TeslaMate
-        states:
-          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/states.json
-          datasource: TeslaMate
-        statistics:
-          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/statistics.json
-          datasource: TeslaMate
-        timeline:
-          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/timeline.json
-          datasource: TeslaMate
-        trip:
-          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/trip.json
-          datasource: TeslaMate
-        updates:
-          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/updates.json
-          datasource: TeslaMate
-        vampire-drain:
-          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/vampire-drain.json
-          datasource: TeslaMate
-        visited:
-          url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/visited.json
-          datasource: TeslaMate
-      unifi:
+      network:
+        blackbox-exporter:
+          # renovate: depName="Prometheus Blackbox Exporter"
+          gnetId: 7587
+          revision: 3
+          datasource: Prometheus
+        cert-manager:
+          # renovate: depName="Cert-manager-Kubernetes"
+          gnetId: 20842
+          revision: 3
+          datasource: Prometheus
+        cloudflared:
+          # renovate: depName="Cloudflare Tunnels (cloudflared)"
+          gnetId: 17457
+          revision: 6
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
+        external-dns:
+          # renovate: depName="External-dns"
+          gnetId: 15038
+          revision: 3
+          datasource: Prometheus
         unifi-insights:
           # renovate: depName="UniFi-Poller: Client Insights - Prometheus"
           gnetId: 11315
@@ -350,6 +319,38 @@ spec:
           gnetId: 11312
           revision: 9
           datasource: Prometheus
+      storage:
+        longhorn:
+          # renovate: depName="Longhorn"
+          gnetId: 16888
+          revision: 9
+          datasource: Prometheus
+        volsync:
+          # renovate: depName="VolSync Dashboard"
+          gnetId: 21356
+          revision: 3
+          datasource: [{ name: DS_PROMETHEUS, value: Prometheus }]
+      system:
+        node-exporter-full:
+          # renovate: depName="Node Exporter Full"
+          gnetId: 1860
+          revision: 41
+          datasource: [{ name: DS_PROMETHEUS, value: Prometheus }]
+        node-feature-discovery:
+          url: https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/master/examples/grafana-dashboard.json
+          datasource: [{ name: DS_PROMETHEUS, value: Prometheus }]
+        smartctl-exporter:
+          # renovate: depName="SMARTctl Exporter Dashboard"
+          gnetId: 22604
+          revision: 2
+          datasource: [{ name: DS_PROMETHEUS, value: Prometheus }]
+        spegel:
+          # renovate: depName="Spegel"
+          gnetId: 18089
+          revision: 1
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
+
     sidecar:
       image:
         registry: ghcr.io

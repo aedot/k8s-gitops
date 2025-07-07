@@ -30,8 +30,6 @@ spec:
               tag: 3.2.1@sha256:3b452a9f29c50cad2909a9815ff8cf13b1f1079a641492bf7d06063725846e28
             env:
               TZ: America/Los_Angeles
-              NUT_SERVER: oduduwa.internal
-              NUT_PORT: 3493
             args:
               - --nut.vars_enable="battery.charge,battery.runtime,battery.type,device.mfr,device.model,input.voltage,ups.beeper.status,ups.delay.shutdown,ups.load,ups.power.nominal,ups.status,ups.timer.shudown,ups.vendorid"
             probes:

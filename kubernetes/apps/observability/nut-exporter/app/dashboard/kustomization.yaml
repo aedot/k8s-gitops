@@ -2,16 +2,18 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources:
-  - ./externalsecret.yaml
-  - ./rbac.yaml
-  - ./helmrelease.yaml
-  - ./grafana-dashboard.yaml
 configMapGenerator:
-  - name: gatus-configmap
+  - name: nut-exporter-dashboard
     files:
-      - config.yaml=./config/configuration.yaml
+      - nut-exporter.json
+  - name: ups-aggregate-dashboard
+    files:
+      - ups-aggregate.json
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
+    grafana_folder: "System"
+  labels:
+    grafana_dashboard: "true"
+
