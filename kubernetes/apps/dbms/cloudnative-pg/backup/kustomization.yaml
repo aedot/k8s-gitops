@@ -7,7 +7,7 @@ resources:
   - ./helmrelease.yaml
 
 configMapGenerator:
-  - name: cnpg-pgdump-scripts
+  - name: postgres-backup-scripts
     files:
       - list_dbs.sh=./scripts/list_dbs.sh
 generatorOptions:
