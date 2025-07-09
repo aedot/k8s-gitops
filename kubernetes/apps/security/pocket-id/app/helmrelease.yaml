@@ -53,16 +53,6 @@ spec:
               DB_PROVIDER: postgres
               UPDATE_CHECK_DISABLED: "true"
               SESSION_DURATION: 1440
-              EMAIL_LOGIN_NOTIFICATION_ENABLED: "true"
-              EMAILS_VERIFIED: "true"
-              LDAP_ENABLED: "true"
-              LDAP_URL: ldap://lldap.security.svc.cluster.local:5389
-              LDAP_BIND_DN: uid=authy,ou=people,dc=home,dc=arpa
-              LDAP_BASE_DN: dc=home,dc=arpa
-              LDAP_USER_SEARCH_FILTER: (&({username_attribute}={input})(objectClass=person))
-              LDAP_USER_GROUP_SEARCH_FILTER: (member={dn})
-
-
             envFrom: *envFrom
             probes:
               liveness: &probes
@@ -119,3 +109,4 @@ spec:
         existingClaim: *app
         globalMounts:
           - path: /app/data
+            subPath: data
