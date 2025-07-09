@@ -25,8 +25,8 @@ spec:
       server:
         strategy: RollingUpdate
         annotations:
-          secret.reloader.stakater.com/reload: immich-secret
-          configmap.reloader.stakater.com/reload: immich-configmap
+          secret.reloader.stakater.com/reload: &secret immich-secret
+          configmap.reloader.stakater.com/reload: &config immich-configmap
         pod:
           enableServiceLinks: false
           securityContext:
@@ -43,22 +43,24 @@ spec:
               pullPolicy: IfNotPresent
             envFrom:
               - secretRef:
-                  name: immich-secret
+                  name: *secret
         containers:
           main:
             image:
               repository: ghcr.io/immich-app/immich-server
               tag: v1.135.3@sha256:df5bbf4e29eff4688063a005708f8b96f13073200b4a7378f7661568459b31e9
+            env:
+              IMMICH_MEDIA_LOCATION: &mediaLocation "/usr/src/app/upload"
             envFrom:
               - secretRef:
-                  name: immich-secret
+                  name: *secret
               - configMapRef:
-                  name: immich-configmap
+                  name: *config
       machine-learning:
         strategy: RollingUpdate
         annotations:
-          secret.reloader.stakater.com/reload: immich-secret
-          configmap.reloader.stakater.com/reload: immich-configmap
+          secret.reloader.stakater.com/reload: *secret
+          configmap.reloader.stakater.com/reload: *config
         pod:
           enableServiceLinks: false
           securityContext:
@@ -74,9 +76,9 @@ spec:
               tag: v1.135.3@sha256:9f2f61d86af82d04926f9b896c995c502303052905517c5485dd26bf1e42a44e
             envFrom:
               - secretRef:
-                  name: immich-secret
+                  name: *secret
               - configMapRef:
-                  name: immich-configmap
+                  name: *config
             env:
               MPLCONFIGDIR: "/cache/matplotlib"
       redis:
@@ -130,7 +132,7 @@ spec:
         advancedMounts:
           server:
             main:
-              - path: /usr/src/app/upload
+              - path: *mediaLocation
       machine-learning-cache:
         existingClaim: immich-machine-learning-cache
         advancedMounts:
