@@ -24,6 +24,8 @@ spec:
   dependsOn:
     - name: postgres-cluster
       namespace: dbms
+    - name: lldap
+      namespace: *namespace
     - name: akeyless-stores
       namespace: external-secrets
   postBuild:
