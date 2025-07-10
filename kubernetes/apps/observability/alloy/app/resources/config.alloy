@@ -82,7 +82,7 @@ loki.source.kubernetes "pod_logs" {
 loki.process "pod_logs" {
   stage.static_labels {
     values = {
-      cluster = "main"
+      cluster = "main",
     }
   }
 
@@ -105,13 +105,13 @@ loki.source.kubernetes_events "cluster_events" {
 loki.process "cluster_events" {
   stage.static_labels {
     values = {
-      cluster = "main"
+      cluster = "main",
     }
   }
 
   stage.labels {
     values = {
-      kubernetes_cluster_events = "job"
+      kubernetes_cluster_events = "job",
     }
   }
 
