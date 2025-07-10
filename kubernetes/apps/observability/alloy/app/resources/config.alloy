@@ -1,147 +1,138 @@
-// Log Alloy’s own logs
 logging {
-  level    = "warn"                           // Only log warnings and above
-  format   = "json"                           // Format logs as JSON
-  write_to = [loki.write.default.receiver]    // Send Alloy’s logs to Loki
+	level    = "warn"
+	format   = "json"
+	write_to = [loki.write.default.receiver]
 }
 
-// Kubernetes service discovery for Pods
+// discovery.kubernetes allows you to find scrape targets from Kubernetes resources.
+// It watches cluster state and ensures targets are continually synced with what is currently running in your cluster
 discovery.kubernetes "pod" {
-  role = "pod"                                // Discover pods as scrape/log targets
+	role = "pod"
 }
 
-// Kubernetes service discovery for Services
 discovery.kubernetes "service" {
-  role = "service"                            // Discover services (optional, not used here)
+	role = "service"
 }
 
 
-// Relabel discovered Kubernetes pod targets to enrich with useful labels
+// discovery.relabel rewrites the label set of the input targets by applying one or more relabeling rules.
+// If no rules are defined, then the input targets are exported as-is.
 discovery.relabel "pod_logs" {
-  targets = discovery.kubernetes.pod.targets  // Input: discovered pod targets
+  targets = discovery.kubernetes.pod.targets
 
-  // Map Kubernetes metadata into useful log labels
+  // Label creation - "namespace" field from "__meta_kubernetes_namespace"
   rule {
     source_labels = ["__meta_kubernetes_namespace"]
-    action        = "replace"
-    target_label  = "namespace"
+    action = "replace"
+    target_label = "namespace"
   }
 
+  // Label creation - "pod" field from "__meta_kubernetes_pod_node_name"
   rule {
     source_labels = ["__meta_kubernetes_pod_node_name"]
-    action        = "replace"
-    target_label  = "node"
+    action = "replace"
+    target_label = "node"
   }
 
+  // Label creation - "pod" field from "__meta_kubernetes_pod_name"
   rule {
     source_labels = ["__meta_kubernetes_pod_name"]
-    action        = "replace"
-    target_label  = "pod"
+    action = "replace"
+    target_label = "pod"
   }
 
+  // Label creation - "container" field from "__meta_kubernetes_pod_container_name"
   rule {
     source_labels = ["__meta_kubernetes_pod_container_name"]
-    action        = "replace"
-    target_label  = "container"
+    action = "replace"
+    target_label = "container"
   }
 
+  // Label creation -  "app" field from "__meta_kubernetes_pod_label_app_kubernetes_io_name"
   rule {
     source_labels = ["__meta_kubernetes_pod_label_app_kubernetes_io_name"]
-    action        = "replace"
-    target_label  = "app"
+    action = "replace"
+    target_label = "app"
   }
 
+  // Label creation -  "job" field from "__meta_kubernetes_namespace" and "__meta_kubernetes_pod_container_name"
+  // Concatenate values __meta_kubernetes_namespace/__meta_kubernetes_pod_container_name
   rule {
     source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_container_name"]
-    action        = "replace"
-    target_label  = "job"                     // Combine namespace/container into "job" label
-    separator     = "/"
-    replacement   = "$1"
+    action = "replace"
+    target_label = "job"
+    separator = "/"
+    replacement = "$1"
   }
 
+  // Label creation - "container" field from "__meta_kubernetes_pod_uid" and "__meta_kubernetes_pod_container_name"
+  // Concatenate values __meta_kubernetes_pod_uid/__meta_kubernetes_pod_container_name.log
   rule {
     source_labels = ["__meta_kubernetes_pod_uid", "__meta_kubernetes_pod_container_name"]
-    action        = "replace"
-    target_label  = "__path__"                // This defines the container log file path to tail
-    separator     = "/"
-    replacement   = "/var/log/pods/*$1/*.log"
+    action = "replace"
+    target_label = "__path__"
+    separator = "/"
+    replacement = "/var/log/pods/*$1/*.log"
   }
 
+  // Label creation -  "container_runtime" field from "__meta_kubernetes_pod_container_id"
   rule {
     source_labels = ["__meta_kubernetes_pod_container_id"]
-    action        = "replace"
-    target_label  = "container_runtime"
-    regex         = "^(\\S+):\\/\\/.+$"       // Extracts "docker", "containerd", etc.
-    replacement   = "$1"
+    action = "replace"
+    target_label = "container_runtime"
+    regex = "^(\\S+):\\/\\/.+$"
+    replacement = "$1"
   }
 }
 
-// Tail logs from discovered Kubernetes pods
+// loki.source.kubernetes tails logs from Kubernetes containers using the Kubernetes API.
 loki.source.kubernetes "pod_logs" {
-  targets    = discovery.relabel.pod_logs.output  // Take the relabeled pod targets
-  forward_to = [loki.process.pod_logs.receiver]   // Send logs to the pod_logs processor
+  targets    = discovery.relabel.pod_logs.output
+  forward_to = [loki.process.pod_logs.receiver]
 }
 
-// Process pod logs: add labels, filter old logs, route to throttling/batching
+// loki.process receives log entries from other Loki components, applies one or more processing stages,
+// and forwards the results to the list of receivers in the component's arguments.
 loki.process "pod_logs" {
   stage.static_labels {
-    values = {
-      cluster = "main",                     // Add a "cluster=main" label to all logs
-    }
+      values = {
+        cluster = "main",
+      }
   }
 
-  stage.filter {
-    expression = "time() - .timestamp < duration(\"1h\")"
-    // Drop logs older than 1 hour (to prevent 400 errors from Loki)
-  }
-
-  forward_to = [rate_limit.loki_limit.receiver]
-  // Send logs to the rate limiter before sending to Loki
+	forward_to = [loki.write.default.receiver]
 }
 
-// Capture Kubernetes events as log entries
+// loki.source.kubernetes_events tails events from the Kubernetes API and converts them
+// into log lines to forward to other Loki components.
 loki.source.kubernetes_events "cluster_events" {
   job_name   = "integrations/kubernetes/eventhandler"
-  log_format = "logfmt"                          // Format events in logfmt
-  forward_to = [loki.process.cluster_events.receiver]
+  log_format = "logfmt"
+  forward_to = [
+    loki.process.cluster_events.receiver,
+  ]
 }
 
-// Process Kubernetes events: add labels, then route to Loki
+// loki.process receives log entries from other loki components, applies one or more processing stages,
+// and forwards the results to the list of receivers in the component's arguments.
 loki.process "cluster_events" {
+  forward_to = [loki.write.default.receiver]
+
   stage.static_labels {
     values = {
-      cluster = "main",                          // Add cluster label
+      cluster = "main",
     }
   }
 
   stage.labels {
     values = {
-      kubernetes_cluster_events = "job",         // Add a label to tag these as events
+      kubernetes_cluster_events = "job",
     }
   }
-
-  forward_to = [rate_limit.loki_limit.receiver]  // Route events through rate limiter → Loki
 }
 
-// Batch logs to avoid too many small requests to Loki
-batch "loki_batch" {
-  forward_to         = [loki.write.default.receiver]  // After batching, send to Loki
-  timeout            = "1s"                           // Flush batch every 1s
-  batch_size         = 1000                           // Or after 1000 lines
-  flush_on_shutdown  = true                           // Flush all logs before shutdown
-}
-
-// Throttle logs to avoid Loki 429 errors
-rate_limit "loki_limit" {
-  limit      = 3000000                         // Limit to 3 MB/s
-  forward_to = [batch.loki_batch.receiver]       // Send rate-limited logs to the batcher
-}
-
-// Loki output: push logs to the Loki API endpoint
 loki.write "default" {
   endpoint {
     url = "http://loki-headless.observability.svc.cluster.local:3100/loki/api/v1/push"
-    // This is Loki’s write API endpoint (inside the cluster)
   }
 }
-
