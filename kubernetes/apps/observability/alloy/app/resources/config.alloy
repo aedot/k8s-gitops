@@ -133,7 +133,7 @@ batch "loki_batch" {
 
 // Throttle logs to avoid Loki 429 errors
 rate_limit "loki_limit" {
-  limit      = 3_000_000                         // Limit to 3 MB/s
+  limit      = 3000000                         // Limit to 3 MB/s
   forward_to = [batch.loki_batch.receiver]       // Send rate-limited logs to the batcher
 }
 
