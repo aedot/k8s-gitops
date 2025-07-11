@@ -4,6 +4,20 @@ logging {
   write_to = [loki.write.default.receiver]
 }
 
+// Write logs to Loki
+loki.write "default" {
+  endpoint {
+    url = "http://loki-headless.observability.svc.cluster.local:3100/loki/api/v1/push"
+  }
+}
+
+// Batch logs before writing to Loki
+batch "loki_batch" {
+  batch_size = 100
+  timeout    = "5s"
+  forward_to = [loki.write.default.receiver]
+}
+
 // Kubernetes service discovery
 discovery.kubernetes "pod" {
   role = "pod"
@@ -72,27 +86,13 @@ discovery.relabel "pod_logs" {
   }
 }
 
-// Log source: Kubernetes pods
+// Kubernetes pod logs
 loki.source.kubernetes "pod_logs" {
   targets    = discovery.relabel.pod_logs.output
   forward_to = [loki.process.pod_logs.receiver]
 }
 
-// Kubernetes event log source
-loki.source.kubernetes_events "cluster_events" {
-  job_name   = "integrations/kubernetes/eventhandler"
-  log_format = "logfmt"
-  forward_to = [loki.process.cluster_events.receiver]
-}
-
-// Batch logs before writing to Loki
-batch "loki_batch" {
-  batch_size = 100
-  timeout    = "5s"
-  forward_to = [loki.write.default.receiver]
-}
-
-// Filter and process pod logs
+// Filter and enrich pod logs
 loki.process "pod_logs" {
   stage.filter {
     expression = `len(.message) > 0`
@@ -100,14 +100,21 @@ loki.process "pod_logs" {
 
   stage.static_labels {
     values = {
-      cluster = "main",
+      cluster = "main"
     }
   }
 
   forward_to = [batch.loki_batch.receiver]
 }
 
-// Process Kubernetes events
+// Kubernetes event logs
+loki.source.kubernetes_events "cluster_events" {
+  job_name   = "integrations/kubernetes/eventhandler"
+  log_format = "logfmt"
+  forward_to = [loki.process.cluster_events.receiver]
+}
+
+// Filter and enrich Kubernetes events
 loki.process "cluster_events" {
   stage.filter {
     expression = `len(.message) > 0`
@@ -115,22 +122,15 @@ loki.process "cluster_events" {
 
   stage.static_labels {
     values = {
-      cluster = "main",
+      cluster = "main"
     }
   }
 
   stage.labels {
     values = {
-      kubernetes_cluster_events = "job",
+      kubernetes_cluster_events = "job"
     }
   }
 
   forward_to = [batch.loki_batch.receiver]
-}
-
-// Write logs to Loki
-loki.write "default" {
-  endpoint {
-    url = "http://loki-headless.observability.svc.cluster.local:3100/loki/api/v1/push"
-  }
 }
