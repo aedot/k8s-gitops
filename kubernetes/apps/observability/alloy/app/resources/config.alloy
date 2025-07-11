@@ -113,8 +113,8 @@ loki.source.kubernetes_events "cluster_events" {
   ]
   relabel_rules = [
     {
-      source_labels = ["__meta_k8s_event_involved_object_kind"]
-      action        = "drop"
+      source_labels = ["__meta_k8s_event_involved_object_kind"],
+      action        = "drop",
       regex         = ""
     }
   ]
