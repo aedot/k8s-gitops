@@ -53,9 +53,34 @@ spec:
         org_id: 1
         org_name: Main Org.
         org_role: Viewer
-        hide_version:
+      date_formats:
+        use_browser_locale: true
+        full_date: "MMM Do, YYYY hh:mm:ss a"
+      explore:
+        enabled: true
+      grafana_net:
+        url: https://grafana.net
+      log:
+        mode: console
+        filters: rendering:debug
       news:
         news_feed_enabled: false
+      panels:
+        disable_sanitize_html: true
+      paths:
+        data: /var/lib/grafana/data
+        logs: /var/log/grafana
+        plugins: /var/lib/grafana/plugins
+        provisioning: /etc/grafana/provisioning
+      security:
+        allow_embedding: true
+        cookie_samesite: grafana
+      server:
+        root_url: https://grafana.${SECRET_DOMAIN}
+      users:
+        auto_assign_org: true
+        auto_assign_org_id: 1
+
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -75,8 +100,10 @@ spec:
             uid: loki
             access: proxy
             url: http://loki-headless.observability.svc.cluster.local:3100
+            version: 1
+            isDefault: false
             jsonData:
-              maxLines: 250
+              maxLines: 200
           - name: Alertmanager
             type: alertmanager
             uid: alertmanager
@@ -97,6 +124,7 @@ spec:
             jsonData:
               postgresVersion: 1000
               sslmode: disable
+
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
@@ -172,6 +200,7 @@ spec:
             allowUiUpdates: true
             options:
               path: /var/lib/grafana/dashboards/teslamate
+
     dashboards:
       data:
         external-secrets:
@@ -388,8 +417,8 @@ spec:
       datasources:
         enabled: true
         searchNamespace: ALL
+        initDatasources: "true"
         labelValue: ""
-        label: grafana_datasource
     plugins:
       - grafana-clock-panel
       - grafana-piechart-panel
@@ -397,8 +426,12 @@ spec:
       - natel-discrete-panel
       - pr0ps-trackmap-panel
       - vonage-status-panel
+      - natel-plotly-panel
+      - https://github.com/panodata/panodata-map-panel/releases/download/0.16.0/panodata-map-panel-0.16.0.zip;grafana-worldmap-panel-ng
     serviceMonitor:
       enabled: true
+    serviceAccount:
+      autoMount: true
     route:
       main:
         enabled: true
@@ -407,6 +440,14 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
+    imageRenderer:
+      enabled: true
+      replicas: 2
+      networkPolicy:
+        limitIngress: false
+      serviceMonitor:
+        enabled: true
+
     persistence:
       enabled: false
     testFramework:
