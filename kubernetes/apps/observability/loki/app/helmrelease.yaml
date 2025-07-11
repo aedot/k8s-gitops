@@ -51,7 +51,6 @@ spec:
         chunk_encoding: snappy
       limits_config:
         retention_period: 14d
-        max_old_sample_age: 24h
       storage:
         type: filesystem
       schemaConfig:
