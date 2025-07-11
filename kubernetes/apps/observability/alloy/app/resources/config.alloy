@@ -111,6 +111,13 @@ loki.source.kubernetes_events "cluster_events" {
   forward_to = [
     loki.process.cluster_events.receiver,
   ]
+  relabel_rules = [
+    {
+      source_labels = ["__meta_k8s_event_involved_object_kind"]
+      action        = "drop"
+      regex         = ""
+    }
+  ]
 }
 
 // loki.process receives log entries from other loki components, applies one or more processing stages,
