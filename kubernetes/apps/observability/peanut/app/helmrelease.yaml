@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: brandawg93/peanut
-              tag: 5.8.0@sha256:1b18ed528245f1983291a3ae6406a0de31bb9b0baf62d4d4bda56224498a9225
+              tag: 5.9.1@sha256:24ac20999bb31b0da29d70c65484975d75d3ee440881d20ea7664b106fc0116f
             env:
               TZ: America/Los_Angeles
               NUT_HOST: oduduwa.internal
