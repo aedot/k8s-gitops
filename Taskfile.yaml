@@ -20,7 +20,10 @@ env:
 
 includes:
   bootstrap: .taskfiles/bootstrap
+  kubernetes: .taskfiles/kubernetes
   talos: .taskfiles/talos
+  workstation: .taskfiles/workstation
+  volsync: .taskfiles/volsync
 
 tasks:
 
