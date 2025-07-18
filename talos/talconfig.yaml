@@ -5,10 +5,10 @@ clusterName: k8s-gitops
 talosVersion: "${talosVersion}"
 kubernetesVersion: "${kubernetesVersion}"
 
-endpoint: https://10.0.10.10:6443
+endpoint: https://10.0.20.10:6443
 additionalApiServerCertSans: &sans
   - "127.0.0.1"
-  - "10.0.10.10"
+  - "10.0.20.10"
 additionalMachineCertSans: *sans
 
 clusterPodNets: ["10.42.0.0/16"]
@@ -19,20 +19,45 @@ cniConfig:
   name: none
 
 nodes:
-  - hostname: "yemoja"
-    ipAddress: "10.0.10.11"
+  - hostname: "oya"
+    ipAddress: "10.0.20.11"
     installDisk: "/dev/nvme0n1"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/metal-installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
+    talosImageURL: &installImageURL factory.talos.dev/metal-installer/4b7bb658cc4955310379f5389d0ab1f4700637a4620e80f8f5d140dbeddf833a
     controlPlane: true
+    schematic: &schematic
+      customization:
+        extraKernelArgs:
+          - -init_on_alloc                      # Less security, faster puter
+          - -selinux                            # Less security, faster puter
+          - -init_on_free                      # Less security, faster puter
+          - apparmor=0                          # Less security, more speed
+          - init_on_alloc=0                     # Less security, more speed
+          - init_on_free=0                      # Less security, more speed
+          - intel_iommu=on                      # PCI Passthrough
+          - iommu=pt                            # PCI Passthrough
+          - mitigations=off                     # Less security, more speed
+          - security=none                       # Less security, more speed
+          - net.ifnames=1                       # Enable predictable NIC naming
+          - talos.auditd.disabled=1             # Less security, faster puter
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/gasket-driver
+            - siderolabs/i915
+            - siderolabs/intel-ucode
+            - siderolabs/iscsi-tools
+            - siderolabs/mei
+            - siderolabs/nut-client
+            - siderolabs/thunderbolt
+            - siderolabs/util-linux-tools
     networkInterfaces:
       - interface: bond0
         bond:
           mode: active-backup
           deviceSelectors:
-            - hardwareAddr: "d8:9e:f3:75:90:54"
-              driver: e1000e
+            - hardwareAddr: "58:47:ca:7b:e6:e5"
+              driver: enp88s0
         dhcp: true
         vlans:
           - &vlan101
@@ -42,82 +67,195 @@ nodes:
             dhcpOptions:
               routeMetric: 4096
         vip:
-          ip: "10.0.10.10"
-  - hostname: "oshun"
-    ipAddress: "10.0.10.12"
+          ip: "10.0.20.10"
+    extensionServices: &extensionServices
+      - name: nut-client
+        configFiles:
+          - content: Monitor &{upsmonHost} 1 monuser secret slave
+            mountPath: /usr/local/etc/ups/upsmon.conf
+          - content: MODE=netclient
+            mountPath: /usr/local/etc/nut/nut.conf
+
+  - hostname: "aje"
+    ipAddress: "10.0.20.12"
     installDisk: "/dev/nvme0n1"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/metal-installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
+    talosImageURL: *installImageURL
     controlPlane: true
+    schematic: *schematic
     networkInterfaces:
       - interface: bond0
         bond:
           mode: active-backup
           deviceSelectors:
-            - hardwareAddr: "18:66:da:4c:31:ee"
-              driver: e1000e
+            - hardwareAddr: "58:47:ca:7b:e9:49"
+              driver: enp88s0
         dhcp: true
         vlans:
           - *vlan101
         vip:
-          ip: "10.0.10.10"
-  - hostname: "yemolu"
-    ipAddress: "10.0.10.13"
+          ip: "10.0.20.10"
+    extensionServices: *extensionServices
+
+  - hostname: "oba"
+    ipAddress: "10.0.20.13"
     installDisk: "/dev/nvme0n1"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/metal-installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
+    talosImageURL: *installImageURL
     controlPlane: true
+    schematic: *schematic
     networkInterfaces:
       - interface: bond0
         bond:
           mode: active-backup
           deviceSelectors:
-              - hardwareAddr: "d8:9e:f3:75:85:e7"
-                driver: e1000e
+            - hardwareAddr: "58:47:ca:7b:ea:1d"
+              driver: enp88s0
         dhcp: true
         vlans:
           - *vlan101
         vip:
-          ip: "10.0.10.10"
-# Global patches
-patches:
-  - "@./patches/global/machine-files.yaml"
-  - "@./patches/global/machine-kubelet.yaml"
-  - "@./patches/global/machine-network.yaml"
-  - "@./patches/global/machine-sysctls.yaml"
-  - "@./patches/global/machine-time.yaml"
-  - "@./patches/global/machine-features.yaml"
+          ip: "10.0.20.10"
+    extensionServices: *extensionServices
 
 # Controller patches
 controlPlane:
-  patches:
-    - "@./patches/controller/admission-controller-patch.yaml"
-    - "@./patches/controller/cluster.yaml"
+  nodeLabels:
+    topology.kubernetes.io/zone: "us-west-1"
+    topology.kubernetes.io/region: "k8s-gitops"
 
-  schematic:
-    customization:
-      extraKernelArgs:
-        - -init_on_alloc                      # Less security, faster puter
-        - -selinux                            # Less security, faster puter
-        - -init_on_free                      # Less security, faster puter
-        - apparmor=0                          # Less security, more speed
-        - init_on_alloc=0                     # Less security, more speed
-        - init_on_free=0                      # Less security, more speed
-        - intel_iommu=on                      # PCI Passthrough
-        - iommu=pt                            # PCI Passthrough
-        - mitigations=off                     # Less security, more speed
-        - security=none                       # Less security, more speed
-        - net.ifnames=1                       # Enable predictable NIC naming
-        - talos.auditd.disabled=1             # Less security, faster puter
-      systemExtensions:
-        officialExtensions:
-          - siderolabs/gasket-driver
-          - siderolabs/i915
-          - siderolabs/intel-ucode
-          - siderolabs/iscsi-tools
-          - siderolabs/mei
-          - siderolabs/thunderbolt
-          - siderolabs/util-linux-tools
+
+  patches:
+    # Configure containerd
+    - |-
+      machine:
+        files:
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |
+              [plugins]
+                [plugins."io.containerd.grpc.v1.cri"]
+                  enable_unprivileged_ports = true
+                  enable_unprivileged_icmp = true
+              [plugins."io.containerd.grpc.v1.cri".containerd]
+                discard_unpacked_layers = false
+              [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+                discard_unpacked_layers = false
+
+    # Disable search domain and set nameservers
+    - |-
+      machine:
+        network:
+          disableSearchDomain: true
+          nameservers:
+            - 10.0.10.3
+            - 10.0.10.4
+
+    # Enable host DNS
+    - |-
+      machine:
+        features:
+          hostDNS:
+            enabled: true
+            resolveMemberNames: true
+            forwardKubeDNSToHost: false
+
+    # Configure kubelet
+    - |-
+      machine:
+        kubelet:
+          extraConfig:
+            maxPods: 120
+          nodeIP:
+            validSubnets:
+              - 10.0.20.0/24
+
+    # Enable MutatingAdmissionPolicy
+    - |-
+      cluster:
+        apiServer:
+          extraArgs:
+            runtime-config: "admissionregistration.k8s.io/v1beta1=true"
+            feature-gates: "MutatingAdmissionPolicy=true"
+
+    # Configure cluster
+    - |-
+      cluster:
+        allowSchedulingOnControlPlanes: true
+        coreDNS:
+          disabled: true
+        controllerManager:
+          extraArgs:
+            bind-address: 0.0.0.0
+        proxy:
+          disabled: true
+        scheduler:
+          extraArgs:
+            bind-address: 0.0.0.0
+          config:
+            apiVersion: "kubescheduler.config.k8s.io/v1"
+            kind: KubeSchedulerConfiguration
+            profiles:
+              - schedulerName: default-scheduler
+                pluginConfig:
+                  - name: PodTopologySpread
+                    args:
+                      defaultingType: List
+                      defaultConstraints:
+                        - maxSkew: 1
+                          topologyKey: kubernetes.io/hostname
+                          whenUnsatisfiable: ScheduleAnyway
+
+    # Configure etcd
+    - |-
+      cluster:
+        etcd:
+          extraArgs:
+            listen-metrics-urls: http://0.0.0.0:2381
+          advertisedSubnets:
+            - 10.0.20.0/24
+
+    # Configure NFS mount options
+    - |-
+      machine:
+        files:
+          - op: overwrite
+            path: /etc/nfsmount.conf
+            permissions: 0o644
+            content: |-
+              [ NFSMount_Global_Options ]
+              nfsvers=4
+              hard=True
+              noatime=True
+              nconnect=16
+
+    # Configure custom sysctls
+    - |-
+      machine:
+        sysctls:
+          fs.inotify.max_user_instances: 8192    # Watchdog
+          fs.inotify.max_user_watches: 1048576   # Watchdog
+          net.core.rmem_max: 67108864            # Cloudflared / QUIC
+          net.core.wmem_max: 67108864            # Cloudflared / QUIC
+
+    # Disable default API server admission plugins.
+    - |-
+      - op: remove
+        path: /cluster/apiServer/admissionControl
+
+    # Enable K8s Talos API Access
+    - |-
+      machine:
+        features:
+          kubernetesTalosAPIAccess:
+            enabled: true
+            allowedRoles:
+              - os:admin
+            allowedKubernetesNamespaces:
+              - actions-runner-system
+              - system-upgrade
+
+
 

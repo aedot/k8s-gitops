@@ -2,12 +2,18 @@
 _.python.venv = { path = "{{config_root}}/.venv", create = true }
 KUBECONFIG = "{{config_root}}/kubeconfig"
 SOPS_AGE_KEY_FILE = "{{config_root}}/age.key"
+MINIJINJA_CONFIG_FILE = "{{config_root}}/.minijinja.toml"
 TALOSCONFIG = "{{config_root}}/talos/clusterconfig/talosconfig"
+
 BOOTSTRAP_DIR = "{{config_root}}/bootstrap"
 KUBERNETES_DIR = "{{config_root}}/kubernetes"
 ROOT_DIR = "{{config_root}}"
 SCRIPTS_DIR = "{{config_root}}/scripts"
 TALOS_DIR = "{{config_root}}/talos"
+# Included file paths
+_.file = [
+  "{{config_root}}/kubernetes/apps/system-upgrade/versions.env"
+]
 
 [tools]
 "python" = "3.13"
