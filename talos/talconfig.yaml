@@ -6,9 +6,10 @@ talosVersion: "${talosVersion}"
 kubernetesVersion: "${kubernetesVersion}"
 
 endpoint: https://10.0.20.10:6443
+
 additionalApiServerCertSans: &sans
   - "127.0.0.1"
-  - "10.0.20.10"
+  - &talosControlplaneVip "10.0.20.10"
 additionalMachineCertSans: *sans
 
 clusterPodNets: ["10.42.0.0/16"]
@@ -26,39 +27,16 @@ nodes:
       secureboot: false
     talosImageURL: &installImageURL factory.talos.dev/metal-installer/4b7bb658cc4955310379f5389d0ab1f4700637a4620e80f8f5d140dbeddf833a
     controlPlane: true
-    schematic: &schematic
-      customization:
-        extraKernelArgs:
-          - -init_on_alloc                      # Less security, faster puter
-          - -selinux                            # Less security, faster puter
-          - -init_on_free                      # Less security, faster puter
-          - apparmor=0                          # Less security, more speed
-          - init_on_alloc=0                     # Less security, more speed
-          - init_on_free=0                      # Less security, more speed
-          - intel_iommu=on                      # PCI Passthrough
-          - iommu=pt                            # PCI Passthrough
-          - mitigations=off                     # Less security, more speed
-          - security=none                       # Less security, more speed
-          - net.ifnames=1                       # Enable predictable NIC naming
-          - talos.auditd.disabled=1             # Less security, faster puter
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/gasket-driver
-            - siderolabs/i915
-            - siderolabs/intel-ucode
-            - siderolabs/iscsi-tools
-            - siderolabs/mei
-            - siderolabs/nut-client
-            - siderolabs/thunderbolt
-            - siderolabs/util-linux-tools
     networkInterfaces:
       - interface: bond0
         bond:
           mode: active-backup
           deviceSelectors:
-            - hardwareAddr: "58:47:ca:7b:e6:e5"
+            - hardwareAddr: 58:47:ca:7b:e6:e5
               driver: enp88s0
         dhcp: true
+        vip:
+          ip: *talosControlplaneVip
         vlans:
           - &vlan101
             vlanId: 101
@@ -66,15 +44,6 @@ nodes:
             dhcp: true
             dhcpOptions:
               routeMetric: 4096
-        vip:
-          ip: "10.0.20.10"
-    extensionServices: &extensionServices
-      - name: nut-client
-        configFiles:
-          - content: Monitor &{upsmonHost} 1 monuser secret slave
-            mountPath: /usr/local/etc/ups/upsmon.conf
-          - content: MODE=netclient
-            mountPath: /usr/local/etc/nut/nut.conf
 
   - hostname: "aje"
     ipAddress: "10.0.20.12"
@@ -83,20 +52,18 @@ nodes:
       secureboot: false
     talosImageURL: *installImageURL
     controlPlane: true
-    schematic: *schematic
     networkInterfaces:
       - interface: bond0
         bond:
           mode: active-backup
           deviceSelectors:
-            - hardwareAddr: "58:47:ca:7b:e9:49"
+            - hardwareAddr: 58:47:ca:7b:e9:49
               driver: enp88s0
         dhcp: true
+        vip:
+          ip: *talosControlplaneVip
         vlans:
           - *vlan101
-        vip:
-          ip: "10.0.20.10"
-    extensionServices: *extensionServices
 
   - hostname: "oba"
     ipAddress: "10.0.20.13"
@@ -105,20 +72,18 @@ nodes:
       secureboot: false
     talosImageURL: *installImageURL
     controlPlane: true
-    schematic: *schematic
     networkInterfaces:
       - interface: bond0
         bond:
           mode: active-backup
           deviceSelectors:
-            - hardwareAddr: "58:47:ca:7b:ea:1d"
+            - hardwareAddr: 58:47:ca:7b:ea:1d
               driver: enp88s0
         dhcp: true
+        vip:
+          ip: *talosControlplaneVip
         vlans:
           - *vlan101
-        vip:
-          ip: "10.0.20.10"
-    extensionServices: *extensionServices
 
 # Controller patches
 controlPlane:
@@ -126,6 +91,39 @@ controlPlane:
     topology.kubernetes.io/zone: "us-west-1"
     topology.kubernetes.io/region: "k8s-gitops"
 
+  schematic:
+    customization:
+      extraKernelArgs:
+        - -init_on_alloc                      # Less security, faster puter
+        - -selinux                            # Less security, faster puter
+        - -init_on_free                      # Less security, faster puter
+        - apparmor=0                          # Less security, more speed
+        - init_on_alloc=0                     # Less security, more speed
+        - init_on_free=0                      # Less security, more speed
+        - intel_iommu=on                      # PCI Passthrough
+        - iommu=pt                            # PCI Passthrough
+        - mitigations=off                     # Less security, more speed
+        - security=none                       # Less security, more speed
+        - net.ifnames=1                       # Enable predictable NIC naming
+        - talos.auditd.disabled=1             # Less security, faster puter
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/gasket-driver
+          - siderolabs/i915
+          - siderolabs/intel-ucode
+          - siderolabs/iscsi-tools
+          - siderolabs/mei
+          - siderolabs/nut-client
+          - siderolabs/thunderbolt
+          - siderolabs/util-linux-tools
+
+  extensionServices:
+    - name: nut-client
+      configFiles:
+        - content: Monitor &{upsmonHost} 1 monuser secret slave
+          mountPath: /usr/local/etc/ups/upsmon.conf
+        - content: MODE=netclient
+          mountPath: /usr/local/etc/nut/nut.conf
 
   patches:
     # Configure containerd
@@ -161,6 +159,19 @@ controlPlane:
             enabled: true
             resolveMemberNames: true
             forwardKubeDNSToHost: false
+
+    # Mount openebs-hostpath in kubelet
+    - |-
+      machine:
+        kubelet:
+          extraMounts:
+            - destination: /var/mnt/extra
+              type: bind
+              source: /var/mnt/extra
+              options:
+                - rbind
+                - rshared
+                - rw
 
     # Configure kubelet
     - |-
