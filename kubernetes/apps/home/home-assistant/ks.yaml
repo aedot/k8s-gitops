@@ -15,8 +15,8 @@ spec:
     - ../../../../components/volsync
     - ../../../../components/gatus/internal
   dependsOn:
-    - name: multus-networks
-      namespace: network
+    # - name: multus-networks
+    #   namespace: network
     - name: longhorn
       namespace: longhorn-system
     - name: volsync
