@@ -12,7 +12,7 @@ cgroup:
     enabled: false
   hostRoot: /sys/fs/cgroup
 # NOTE: devices might need to be set if you have more than one active NIC on your hosts
-devices: enp88s0
+# devices: enp88s0
 endpointRoutes:
   enabled: true
 envoy:
@@ -22,8 +22,6 @@ envoy:
        enabled: true
 gatewayAPI:
   enabled: true
-  enableAlpn: true
-  xffNumTrustedHops: 1
 dashboards:
   enabled: true
   annotations:
