@@ -53,7 +53,6 @@ nodes:
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "58:47:ca:7b:e6:e5"
-          driver: "enp88s0"
         dhcp: false
         addresses:
           - "10.0.20.11/24"
@@ -75,7 +74,6 @@ nodes:
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "58:47:ca:7b:e9:49"
-          driver: "enp88s0"
         dhcp: false
         addresses:
           - "10.0.20.12/24"
@@ -97,7 +95,6 @@ nodes:
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "58:47:ca:7b:ea:1d"
-          driver: "enp88s0"
         dhcp: false
         addresses:
           - "10.0.20.13/24"
