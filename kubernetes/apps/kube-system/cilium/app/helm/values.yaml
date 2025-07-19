@@ -1,5 +1,5 @@
 ---
-enableEndpointSlices: true
+# enableEndpointSlices: true
 autoDirectNodeRoutes: true
 bpf:
   masquerade: true
@@ -13,7 +13,7 @@ cgroup:
     enabled: false
   hostRoot: /sys/fs/cgroup
 # NOTE: devices might need to be set if you have more than one active NIC on your hosts
-devices: bond+
+# devices: bond+
 endpointRoutes:
   enabled: true
 envoy:
