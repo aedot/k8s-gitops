@@ -1,5 +1,4 @@
 ---
-# enableEndpointSlices: true
 autoDirectNodeRoutes: true
 bpf:
   masquerade: true
