@@ -4,4 +4,3 @@ talosVersion: v1.10.5
 kubernetesVersion: v1.33.3
 # renovate: datasource=github-releases depName=prometheus-operator/prometheus-operator
 prometheusOperatorVersion: v0.84.0
-upsmonHost: server-ups@odudwa.internal
