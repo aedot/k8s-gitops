@@ -6,8 +6,8 @@ namespace: dbms
 components:
   - ../../components/common
   - ../../components/repos/app-template
-resources: []
-  # - ./cloudnative-pg/ks.yaml
+resources:
+  - ./cloudnative-pg/ks.yaml
   # - ./pgadmin/ks.yaml
   # - ./dragonfly/ks.yaml #TODO: fix dragonfly cluster service error (IPAddress: 10.43.128.205 for Service dbms/dragonfly has a wrong reference; cleaning up)
   # - ./emqx/ks.yaml
