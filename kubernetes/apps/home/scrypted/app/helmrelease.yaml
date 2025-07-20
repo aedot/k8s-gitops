@@ -26,7 +26,10 @@ spec:
           reloader.stakater.com/auto: "true"
 
         pod:
-          # annotations:
+          annotations:
+            lbipam.cilium.io/ips: 10.0.20.33
+          labels:
+            io.cilium.lb-ipam-layer2: "true"
           #   k8s.v1.cni.cncf.io/networks: |
           #     [{
           #       "name":"multus-iot",
