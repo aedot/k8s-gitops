@@ -35,7 +35,7 @@ spec:
               VPN_FIREWALL_TYPE: auto
               VPN_PIA_PORT_FORWARD_PERSIST: false
               VPN_PIA_DIP_TOKEN: no
-            envFrom: 
+            envFrom:
               - secretRef:
                   name: qbittorrent-secret
             # probes:
@@ -114,7 +114,3 @@ spec:
         ports:
           http:
             port: *port
-      bittorrent:
-        type: LoadBalancer
-        annotations:
-          lbipam.cilium.io/ips: 10.0.20.34
