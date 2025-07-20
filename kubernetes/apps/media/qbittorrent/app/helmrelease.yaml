@@ -18,13 +18,15 @@ spec:
   values:
     controllers:
       qbittorrent:
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
               repository: ghcr.io/home-operations/qbittorrent
               tag: 5.1.2@sha256:9dd0164cc23e9c937e0af27fd7c3f627d1df30c182cf62ed34d3f129c55dc0e8
             env:
-              QBT_TORRENTING_PORT: &bittorrentPort 50413
+              QBT_TORRENTING_PORT: &torrentPort 50413
               QBT_WEBUI_PORT: &port 8080
               TZ: America/Los_Angeles
             probes:
@@ -32,9 +34,10 @@ spec:
                 enabled: true
                 custom: true
                 spec:
-                  tcpSocket:
+                  httpGet:
+                    path: /api/v2/app/version
                     port: *port
-                  initialDelaySeconds: 10
+                  initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
@@ -60,28 +63,24 @@ spec:
         runAsGroup: 568
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [65536]
-    persistence:
-      config:
-        existingClaim: *app
-      incomplete:
-        type: custom
-        volumeSpec:
-          ephemeral:
-            volumeClaimTemplate:
-              spec:
-                accessModes: [ReadWriteOnce]
-                resources:
-                  requests:
-                    storage: 1Mi # Ignored
-                storageClassName: longhorn
-                volumeMode: Filesystem
-      media:
-        type: nfs
-        server: shango.internal
-        path: /mnt/user/data
-      tmp:
-        type: emptyDir
+        supplementalGroups: [10000]
+        seccompProfile: { type: RuntimeDefault }
+      terminationGracePeriodSeconds: 300
+    service:
+      app:
+        controller: *app
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 10.0.20.35
+        ports:
+          http:
+            primary: true
+            port: *port
+          bittorrent:
+            enabled: true
+            port: *torrentPort
+            protocol: TCP
+
     route:
       app:
         hostnames:
@@ -95,18 +94,15 @@ spec:
           - backendRefs:
               - identifier: app
                 port: *port
-    service:
-      app:
-        forceRename: *app
-        primary: true
-        ports:
-          http:
-            port: *port
-      bittorrent:
-        type: LoadBalancer
-        annotations:
-          lbipam.cilium.io/ips: 10.0.20.35
-        ports:
-          bittorrent-tcp:
-            port: *bittorrentPort
-            protocol: TCP
+    persistence:
+      config:
+        existingClaim: *app
+      media:
+        type: nfs
+        server: shango.internal
+        path: /mnt/user/data
+        globalMounts:
+          - path: /torrents
+            subPath: torrents
+      tmp:
+        type: emptyDir
