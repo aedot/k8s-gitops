@@ -26,10 +26,7 @@ spec:
           reloader.stakater.com/auto: "true"
 
         pod:
-          annotations:
-            lbipam.cilium.io/ips: 10.0.20.33
-          labels:
-            io.cilium.lb-ipam-layer2: "true"
+          # annotations:
           #   k8s.v1.cni.cncf.io/networks: |
           #     [{
           #       "name":"multus-iot",
@@ -71,6 +68,10 @@ spec:
     service:
       app:
         controller: *app
+        type: LoadBalancer
+        LoadBalancerIP: 10.0.20.33
+        annotations:
+          io.cilium/lbipam-layer2: "true"
         ports:
           http:
             port: *port
