@@ -7,6 +7,6 @@ components:
   - ../../components/repos/app-template
 resources:
   # - ./scrypted/ks.yaml
-  - ./zigbee2mqtt/ks.yaml
+  # - ./zigbee2mqtt/ks.yaml
   # - ./home-assistant/ks.yaml
   - ./mealie/ks.yaml
