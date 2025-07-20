@@ -8,3 +8,4 @@ components:
 resources:
   - ./overseerr/ks.yaml
   # - ./immich/ks.yaml
+  - ./sonarr/ks.yaml
