@@ -67,11 +67,12 @@ spec:
               capabilities: { drop: ["ALL"] }
     defaultPodOptions:
       securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [65536]
+        runAsNonRoot: false
+        # runAsUser: 568
+        # runAsGroup: 568
+        # fsGroup: 568
+        # fsGroupChangePolicy: OnRootMismatch
+        # supplementalGroups: [65536]
     persistence:
       config:
         existingClaim: *app
