@@ -21,35 +21,46 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/qbittorrent
+              repository: ghcr.io/hotio/qbittorrent
               tag: 5.1.2@sha256:9dd0164cc23e9c937e0af27fd7c3f627d1df30c182cf62ed34d3f129c55dc0e8
             env:
-              QBT_TORRENTING_PORT: &bittorrentPort 50413
               QBT_WEBUI_PORT: &port 8080
-              TZ: America/Los_Angeles
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /api/v2/app/version
-                    port: *port
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
-              startup:
-                enabled: true
-                spec:
-                  failureThreshold: 30
-                  periodSeconds: 10
+              PRIVOXY_ENABLED: false
+              UNBOUND_ENABLED: false
+              VPN_ENABLED: true
+              VPN_CONF: wg0
+              VPN_PROVIDER: pia
+              VPN_LAN_NETWORK: 10.0.0.0/8
+              VPN_AUTO_PORT_FORWARD: true
+              VPN_FIREWALL_TYPE: auto
+              VPN_PIA_PORT_FORWARD_PERSIST: false
+              VPN_PIA_DIP_TOKEN: no
+            envFrom: 
+              - secretRef:
+                  name: qbittorrent-secret
+            # probes:
+            #   liveness: &probes
+            #     enabled: true
+            #     custom: true
+            #     spec:
+            #       httpGet:
+            #         path: /api/v2/app/version
+            #         port: *port
+            #       initialDelaySeconds: 0
+            #       periodSeconds: 10
+            #       timeoutSeconds: 1
+            #       failureThreshold: 3
+            #   readiness: *probes
+            #   startup:
+            #     enabled: true
+            #     spec:
+            #       failureThreshold: 30
+            #       periodSeconds: 10
             resources:
               requests:
                 cpu: 100m
               limits:
-                memory: 32Gi
+                memory: 8Gi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -81,8 +92,6 @@ spec:
         type: nfs
         server: shango.internal
         path: /mnt/user/data
-        globalMounts:
-          - path: /torrents
       tmp:
         type: emptyDir
     route:
@@ -109,7 +118,3 @@ spec:
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: 10.0.20.34
-        ports:
-          bittorrent-tcp:
-            port: *bittorrentPort
-            protocol: TCP
