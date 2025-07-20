@@ -65,6 +65,12 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { add: ["NET_ADMIN"] }
+        pod:
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
     persistence:
       config:
         existingClaim: *app
