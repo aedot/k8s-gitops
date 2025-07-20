@@ -84,10 +84,10 @@ spec:
         globalMounts:
           - path: /torrents
 
-      wireguard-config:
-        type: secret
-        name: qbittorrent-wireguard-config
-        defaultMode: 0400
-        globalMounts:
-          - path: /config/wireguard/wg0.conf
-            subPath: wg0.conf
+      # wireguard-config:
+      #   type: secret
+      #   name: qbittorrent-wireguard-config
+      #   defaultMode: 0400
+      #   globalMounts:
+      #     - path: /config/wireguard/wg0.conf
+      #       subPath: wg0.conf
