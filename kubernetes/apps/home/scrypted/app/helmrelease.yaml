@@ -26,14 +26,14 @@ spec:
           reloader.stakater.com/auto: "true"
 
         pod:
-          # annotations:
-          #   k8s.v1.cni.cncf.io/networks: |
-          #     [{
-          #       "name":"multus-iot",
-          #       "namespace": "network",
-          #       "ips": ["10.0.101.14/24"],
-          #       "mac": "64:16:7f:38:60:01"
-          #     }]
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"multus-iot",
+                "namespace": "network",
+                "ips": ["10.0.101.14/24"],
+                "mac": "64:16:7f:38:60:01"
+              }]
           securityContext:
             runAsUser: 2000
             runAsGroup: 2000
@@ -68,11 +68,6 @@ spec:
     service:
       app:
         controller: *app
-        type: LoadBalancer
-        externalIPs:
-          - 10.0.20.33
-        annotations:
-          io.cilium/lbipam-layer2: "true"
         ports:
           http:
             port: *port

@@ -43,14 +43,14 @@ spec:
               limits:
                 memory: 2Gi
     defaultPodOptions:
-      # annotations:
-      #   k8s.v1.cni.cncf.io/networks: |
-      #     [{
-      #       "name": "multus-iot",
-      #       "namespace": "network",
-      #       "ips": ["10.0.101.13/24"],
-      #       "mac": "64:16:7f:38:60:02"
-      #     }]
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [{
+            "name": "multus-iot",
+            "namespace": "network",
+            "ips": ["10.0.101.13/24"],
+            "mac": "64:16:7f:38:60:02"
+          }]
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
