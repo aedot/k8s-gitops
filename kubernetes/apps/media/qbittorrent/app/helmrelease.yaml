@@ -63,7 +63,7 @@ spec:
                 memory: 8Gi
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
+              readOnlyRootFilesystem: false
               capabilities: { add: ["NET_ADMIN"] }
         pod:
           securityContext:
