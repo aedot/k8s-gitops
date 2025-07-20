@@ -1,9 +1,14 @@
 ---
 autoDirectNodeRoutes: true
 bpf:
+  datapathMode: netkit
   masquerade: true
+  preallocatedMaps: true
   # Ref: https://github.com/siderolabs/talos/issues/10002
   hostLegacyRouting: true
+cluster:
+  id: 1
+  name: k8s-gitops
 cni:
   # Required for pairing with Multus CNI
   exclusive: false
@@ -12,7 +17,7 @@ cgroup:
     enabled: false
   hostRoot: /sys/fs/cgroup
 # NOTE: devices might need to be set if you have more than one active NIC on your hosts
-# devices: enp88s0
+devices: enp+
 endpointRoutes:
   enabled: true
 envoy:
