@@ -39,7 +39,7 @@ spec:
               ZIGBEE2MQTT_CONFIG_MQTT_SERVER: "mqtt://emqx-listeners.dbms.svc.cluster.local:1883"
               ZIGBEE2MQTT_CONFIG_MQTT_INCLUDE_DEVICE_INFORMATION: "true"
               ZIGBEE2MQTT_CONFIG_EXPERIMENTAL_NEW_API: "true"
-              ZIGBEE2MQTT_CONFIG_SERIAL_PORT: "tcp://10.0.101.12:6638"
+              ZIGBEE2MQTT_CONFIG_SERIAL_PORT: "tcp://obatala.internal:6638"
               ZIGBEE2MQTT_CONFIG_SERIAL_BAUDRATE: "115200"
               ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: "zstack"
               ZIGBEE2MQTT_CONFIG_SERIAL_RTSCTS: "false"
