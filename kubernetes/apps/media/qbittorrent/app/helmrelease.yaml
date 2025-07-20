@@ -21,23 +21,12 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/hotio/qbittorrent
-              tag: release-5.1.2
+              repository: ghcr.io/home-operations/qbittorrent
+              tag: 5.1.2@sha256:9dd0164cc23e9c937e0af27fd7c3f627d1df30c182cf62ed34d3f129c55dc0e8
             env:
+              QBT_TORRENTING_PORT: &bittorrentPort 50413
               QBT_WEBUI_PORT: &port 8080
-              PRIVOXY_ENABLED: false
-              UNBOUND_ENABLED: false
-              VPN_ENABLED: true
-              VPN_CONF: wg0
-              VPN_PROVIDER: pia
-              VPN_LAN_NETWORK: 10.0.0.0/8
-              VPN_AUTO_PORT_FORWARD: true
-              VPN_FIREWALL_TYPE: auto
-              VPN_PIA_PORT_FORWARD_PERSIST: false
-              VPN_PIA_DIP_TOKEN: no
-            envFrom:
-              - secretRef:
-                  name: qbittorrent-secret
+              TZ: America/Los_Angeles
             probes:
               liveness: &probes
                 enabled: true
@@ -63,14 +52,16 @@ spec:
                 memory: 8Gi
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
-              capabilities: { add: ["NET_ADMIN"] }
-        pod:
-          securityContext:
-            runAsUser: 0
-            runAsGroup: 0
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [65536]
     persistence:
       config:
         existingClaim: *app
@@ -107,9 +98,16 @@ spec:
                 port: *port
     service:
       app:
-        enabled: true
         forceRename: *app
         primary: true
         ports:
           http:
             port: *port
+      bittorrent:
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 10.0.20.35
+        ports:
+          bittorrent-tcp:
+            port: *bittorrentPort
+            protocol: TCP
