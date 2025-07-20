@@ -7,4 +7,4 @@ components:
   - ../../components/repos/app-template
 resources:
   - ./overseerr/ks.yaml
-  - ./immich/ks.yaml
+  # - ./immich/ks.yaml
