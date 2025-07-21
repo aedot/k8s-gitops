@@ -166,7 +166,7 @@ spec:
         server: shango.internal
         path: /mnt/user/data
         globalMounts:
-          - path: /torrents
+          - path: /data
 
       empty-config:
         type: emptyDir
