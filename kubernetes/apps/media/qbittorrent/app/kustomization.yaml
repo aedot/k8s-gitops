@@ -11,5 +11,11 @@ configMapGenerator:
     options:
       labels:
         loki_rule: "true"
+  - name: qbittorrent-coredns
+    files:
+      - ./resources/Corefile
+    options:
+      labels:
+        coredns: "true"
 generatorOptions:
   disableNameSuffixHash: true
