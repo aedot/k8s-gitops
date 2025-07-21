@@ -14,4 +14,5 @@ resources:
   - ./flaresolverr/ks.yaml
   - ./plex/ks.yaml
   - ./tautulli/ks.yaml
+  - ./recyclarr/ks.yaml
   # - ./qbittorrent/ks.yaml
