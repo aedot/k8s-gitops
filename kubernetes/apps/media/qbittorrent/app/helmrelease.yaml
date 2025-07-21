@@ -55,10 +55,17 @@ spec:
               VPN_PORT_FORWARDING: on
               VPN_PORT_FORWARDING_PROVIDER: private internet access
               FIREWALL_INPUT_PORTS: &port 8080
-              FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16
+              FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16 # allow access to the cluster network
             envFrom:
               - secretRef:
                   name: qbittorrent-secret
+            lifecycle:
+              postStart:
+                exec:
+                  command:
+                    - /bin/sh
+                    - -c
+                    - (ip rule del table 51820; ip -6 rule del table 51820) || true
             securityContext:
               capabilities:
                 add:
@@ -72,9 +79,18 @@ spec:
             image:
               repository: ghcr.io/home-operations/qbittorrent
               tag: 5.1.2@sha256:9dd0164cc23e9c937e0af27fd7c3f627d1df30c182cf62ed34d3f129c55dc0e8
+            env:
+              UMASK: "022"
+              QBITTORRENT__PORT: &port 8080
+              TZ: America/Los_Angeles
+              QBT_Preferences__WebUI__AlternativeUIEnabled: false
+              QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
+              QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
+                10.43.0.0/16, 10.0.20.0/24
+              QBT_Preferences__WebUI__LocalHostAuth: false
             securityContext:
-              runAsUser: 568
-              runAsGroup: 568
+              runAsUser: 1000
+              runAsGroup: 1000
               runAsNonRoot: true
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -113,8 +129,8 @@ spec:
               CRON_SCHEDULE: "*/5 * * * *"
               LOG_TIMESTAMP: false
             securityContext:
-              runAsUser: 568
-              runAsGroup: 568
+              runAsUser: 1000
+              runAsGroup: 1000
               runAsNonRoot: true
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -145,7 +161,6 @@ spec:
           qbittorrent:
             app:
               - path: /config
-                subPath: qbittorrent
       media:
         type: nfs
         server: shango.internal
