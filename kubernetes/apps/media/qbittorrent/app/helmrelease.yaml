@@ -22,15 +22,13 @@ spec:
           securityContext:
             runAsUser: 0
             runAsGroup: 0
-          extraVolumes:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        volumes:
             - name: dev-net-tun
               hostPath:
                 path: /dev/net/tun
-          extraVolumeMounts:
-            - name: dev-net-tun
-              mountPath: /dev/net/tun
-        annotations:
-          reloader.stakater.com/auto: "true"
+                type: CharDevice
         containers:
           app:
             image:
@@ -63,6 +61,9 @@ spec:
                 cpu: 100m
               limits:
                 memory: 8Gi
+            volumeMounts:
+              - name: dev-net-tun
+                mountPath: /dev/net/tun
 
     service:
       app:
