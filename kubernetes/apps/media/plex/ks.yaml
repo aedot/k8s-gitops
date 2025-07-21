@@ -13,7 +13,7 @@ spec:
   path: ./kubernetes/apps/media/plex/app
   components:
     - ../../../../components/keda/nfs-scaler
-    - ../../../../components/volsync/volsync
+    - ../../../../components/volsync
     - ../../../../components/gatus/guarded
   dependsOn:
     - name: longhorn
