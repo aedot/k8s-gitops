@@ -9,17 +9,17 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../components/gatus
-    - ../../../../components/keda/nfs-scaler
-    - ../../../../components/volsync
-  interval: 1h
+  interval: 30m
   path: ./kubernetes/apps/media/plex/app
+  components:
+    - ../../../../components/keda/nfs-scaler
+    - ../../../../components/volsync/volsync
+    - ../../../../components/gatus/guarded
   dependsOn:
-    - name: intel-device-plugin-gpu
-      namespace: kube-system
     - name: longhorn
       namespace: longhorn-system
+    - name: intel-device-plugin-gpu
+      namespace: kube-system
     - name: volsync
       namespace: volsync-system
   prune: true
@@ -39,4 +39,3 @@ spec:
       GATUS_PATH: /identity
       VOLSYNC_CACHE_CAPACITY: 25Gi
       VOLSYNC_CAPACITY: 50Gi
-
