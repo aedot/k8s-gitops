@@ -56,9 +56,9 @@ spec:
               VPN_PORT_FORWARDING_PROVIDER: pia
               FIREWALL_INPUT_PORTS: &port 8080
               FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16
-            envFrom:
+            envFrom: &envFrom
               - secretRef:
-                  name: qbittorrent
+                  name: qbittorrent-secret
             securityContext:
               capabilities:
                 add:
@@ -102,11 +102,12 @@ spec:
             env:
               GLUETUN_CONTROL_SERVER_HOST: localhost
               GLUETUN_CONTROL_SERVER_PORT: 8000
-              GLUETUN_CONTROL_SERVER_API_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: qbittorrent-secret
-                    key: GLUETUN_CONTROL_SERVER_API_KEY
+              envFrom: *envFrom
+              # GLUETUN_CONTROL_SERVER_API_KEY:
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: qbittorrent-secret
+              #       key: GLUETUN_CONTROL_SERVER_API_KEY
               QBITTORRENT_HOST: localhost
               QBITTORRENT_WEBUI_PORT: *port
               CRON_ENABLED: true
@@ -172,7 +173,7 @@ spec:
 
       gluetun-auth:
         type: secret
-        name: qbittorrent-secret
+        name: *envFrom
         advancedMounts:
           qbittorrent:
             gluetun:
