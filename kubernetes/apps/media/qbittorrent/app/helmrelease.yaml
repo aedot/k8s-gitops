@@ -52,6 +52,18 @@ spec:
                 cpu: 100m
               limits:
                 memory: 8Gi
+
+    #add to fix wireguard crashing
+    extraVolumes:
+      - name: dev-net-tun
+        hostPath:
+          path: /dev/net/tun
+          type: CharDevice
+
+    extraVolumeMounts:
+      - name: dev-net-tun
+        mountPath: /dev/net/tun
+
     service:
       app:
         primary: true
