@@ -18,6 +18,17 @@ spec:
   values:
     controllers:
       qbittorrent:
+        pod:
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+          extraVolumes:
+            - name: dev-net-tun
+              hostPath:
+                path: /dev/net/tun
+          extraVolumeMounts:
+            - name: dev-net-tun
+              mountPath: /dev/net/tun
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -53,17 +64,6 @@ spec:
               limits:
                 memory: 8Gi
 
-    #add to fix wireguard crashing
-    extraVolumes:
-      - name: dev-net-tun
-        hostPath:
-          path: /dev/net/tun
-          type: CharDevice
-
-    extraVolumeMounts:
-      - name: dev-net-tun
-        mountPath: /dev/net/tun
-
     service:
       app:
         primary: true
@@ -96,10 +96,3 @@ spec:
         globalMounts:
           - path: /torrents
 
-      # wireguard-config:
-      #   type: secret
-      #   name: qbittorrent-wireguard-config
-      #   defaultMode: 0400
-      #   globalMounts:
-      #     - path: /config/wireguard/wg0.conf
-      #       subPath: wg0.conf
