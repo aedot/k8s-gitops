@@ -8,11 +8,9 @@
     log {
         class error
     }
-    forward . tls://1.1.1.1 tls://1.0.0.1 {
-        tls_servername tls.cloudflare-dns.com
-        policy sequential
-        health_check 5s
-    }
+    forward . /etc/resolv.conf
+    cache 30
+    loop
     reload
 }
 
@@ -23,5 +21,5 @@ cluster.local:53 {
     log {
         class error
     }
-    forward . 10.43.0.10
+    forward . 10.42.0.10
 }
