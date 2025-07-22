@@ -1,8 +1,9 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app qbittorrent
+  name: qbittorrent
 spec:
   interval: 1h
   chartRef:
@@ -18,89 +19,68 @@ spec:
   values:
     controllers:
       qbittorrent:
-        # annotations:
-        #   secret.reloader.stakater.com/reload: qbittorrent-secret,qbittorrent-gluetun-secret
-        #   config.reloader.stakater.com/reload: qbittorrent-coredns
-
-        pod:
-          securityContext:
-            fsGroup: 1000
-            fsGroupChangePolicy: "OnRootMismatch"
-
-        # initContainers:
-        #   coredns:
-        #     image:
-        #       repository: mirror.gcr.io/coredns/coredns
-        #       tag: 1.12.2@sha256:af8c8d35a5d184b386c4a6d1a012c8b218d40d1376474c7d071bb6c07201f47d
-        #     args:
-        #       - -conf
-        #       - /etc/coredns/Corefile
-        #     restartPolicy: Always
-
-          # gluetun:
-          #   dependsOn:
-          #     - coredns
-          #   image:
-          #     repository: ghcr.io/qdm12/gluetun
-          #     tag: v3.40.0@sha256:2b42bfa046757145a5155acece417b65b4443c8033fb88661a8e9dcf7fda5a00
-          #   env:
-          #     DOT: "off"
-          #     DNS_ADDRESS: 127.0.0.2
-          #     HTTP_CONTROL_SERVER_AUTH_CONFIG_FILEPATH: &gluetunAuthPath /gluetun/auth.toml
-          #     VPN_SERVICE_PROVIDER: custom
-          #     VPN_TYPE: openvpn
-          #     OPENVPN_CUSTOM_CONFIG: &gluetunOpenvpnPath /gluetun/custom.conf
-          #     VPN_INTERFACE: tun0
-          #     FIREWALL_INPUT_PORTS: &port 8080
-          #     FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16 # allow access to the cluster network
-          #   envFrom:
-          #     - secretRef:
-          #         name: qbittorrent-secret
-          #   restartPolicy: Always
-          #   securityContext:
-          #     capabilities:
-          #       add:
-          #         - NET_ADMIN
-          #     allowPrivilegeEscalation: false
-
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
-            nameOverride: qbittorrent
             image:
               repository: ghcr.io/home-operations/qbittorrent
               tag: 5.1.2@sha256:9dd0164cc23e9c937e0af27fd7c3f627d1df30c182cf62ed34d3f129c55dc0e8
             env:
-              UMASK: "022"
-              QBI_WEBUI__PORT: &port 8080
+              TZ: America/Los_Angeles
+              QBT_WEBUI_PORT: &port 80
+              QBT_TORRENTING_PORT: &torrentPort 50413
             probes:
-              liveness:
+              liveness: &probes
                 enabled: true
-              readiness:
-                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v2/app/version
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
               startup:
                 enabled: true
                 spec:
                   failureThreshold: 30
-                  periodSeconds: 5
-            resources:
-              requests:
-                cpu: 100m
-                memory: 3Gi
-              limits:
-                memory: 5Gi
+                  periodSeconds: 10
             securityContext:
-              runAsUser: 1000
-              runAsGroup: 1000
-              runAsNonRoot: true
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
+        seccompProfile: { type: RuntimeDefault }
+      terminationGracePeriodSeconds: 300
     service:
       app:
+        controller: qbittorrent
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 10.0.20.38
         ports:
           http:
+            primary: true
             port: *port
+          bittorrent:
+            enabled: true
+            port: *torrentPort
+            protocol: TCP
     route:
       app:
         hostnames:
@@ -114,58 +94,14 @@ spec:
           - backendRefs:
               - identifier: app
                 port: *port
-
     persistence:
       config:
-        enabled: true
-        existingClaim: *app
-        advancedMounts:
-          qbittorrent:
-            app:
-              - path: /config
+        existingClaim: qbittorrent
       media:
         type: nfs
         server: shango.internal
         path: /mnt/user/data
         globalMounts:
           - path: /data
-
-      empty-config:
+      tmp:
         type: emptyDir
-        advancedMounts:
-          qbittorrent:
-            port-forward:
-              - path: /config
-
-      # downloads:
-      #   existingClaim: downloads
-      #   globalMounts:
-      #     - path: /downloads
-
-      # coredns:
-      #   type: configMap
-      #   name: qbittorrent-coredns
-      #   advancedMounts:
-      #     qbittorrent:
-      #       coredns:
-      #         - path: /etc/coredns/Corefile
-      #           subPath: Corefile
-      #           readOnly: true
-
-      # gluetun-auth:
-      #   type: secret
-      #   name: qbittorrent-gluetun-secret
-      #   advancedMounts:
-      #     qbittorrent:
-      #       gluetun:
-      #         - path: *gluetunAuthPath
-      #           subPath: auth.toml
-
-      # gluetun-openvpn:
-      #   type: secret
-      #   name: qbittorrent-secret
-      #   advancedMounts:
-      #     qbittorrent:
-      #       gluetun:
-      #         - path: *gluetunOpenvpnPath
-      #           subPath: OPENVPN_CONFIG
