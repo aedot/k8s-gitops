@@ -168,4 +168,4 @@ spec:
           qbittorrent:
             gluetun:
               - path: *gluetunOpenvpnPath
-                subPath: openvpn_config
+                subPath: OPENVPN_CONFIG
