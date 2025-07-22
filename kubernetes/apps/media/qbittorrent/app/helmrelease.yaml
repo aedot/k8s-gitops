@@ -23,9 +23,9 @@ spec:
           config.reloader.stakater.com/reload: qbittorrent-coredns
 
         pod:
-        securityContext:
-          fsGroup: 1000
-          fsGroupChangePolicy: "OnRootMismatch"
+          securityContext:
+            fsGroup: 1000
+            fsGroupChangePolicy: "OnRootMismatch"
 
         initContainers:
           coredns:
