@@ -137,10 +137,10 @@ spec:
             port-forward:
               - path: /config
 
-      downloads:
-        existingClaim: downloads
-        globalMounts:
-          - path: /downloads
+      # downloads:
+      #   existingClaim: downloads
+      #   globalMounts:
+      #     - path: /downloads
 
       coredns:
         type: configMap
