@@ -94,12 +94,3 @@ spec:
         path: /mnt/user/data
         globalMounts:
           - path: /data
-
-      wireguard:
-        enabled: true
-        type: secret
-        name: qbittorrent-secret
-        defaultMode: 0400
-        globalMounts:
-          - path: /config/wireguard/wg0.conf
-            subPath: wg0.conf
