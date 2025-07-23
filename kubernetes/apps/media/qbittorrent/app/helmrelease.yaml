@@ -21,6 +21,23 @@ spec:
       qbittorrent:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          copy-wireguard:
+            image:
+              repository: busybox
+              tag: 1.37.0-glibc
+            command:
+              - sh
+              - -c
+              - |
+                mkdir -p /config/wireguard && \
+                cp /tmp/wg/wg0.conf /config/wireguard/wg0.conf && \
+                chmod 400 /config/wireguard/wg0.conf
+            volumeMounts:
+              - name: config
+                mountPath: /config
+              - name: wireguard-secret
+                mountPath: /tmp/wg
         containers:
           app:
             image:
@@ -29,7 +46,7 @@ spec:
             env:
               TZ: America/Los_Angeles
               WEBUI_PORT: &port 8080
-              VPN_ENABLED: "false"
+              VPN_ENABLED: "true"
               VPN_CONF: wg0
               VPN_PROVIDER: pia
               VPN_LAN_NETWORK: 10.0.0.0/8
