@@ -96,3 +96,8 @@ spec:
         path: /mnt/user/data
         globalMounts:
           - path: /data
+
+      dev-net-tun:
+        enabled: true
+        type: hostPath
+        hostPath: /dev/net/tun
