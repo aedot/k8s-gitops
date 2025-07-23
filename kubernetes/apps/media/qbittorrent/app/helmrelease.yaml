@@ -21,23 +21,6 @@ spec:
       qbittorrent:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          copy-wireguard:
-            image:
-              repository: busybox
-              tag: 1.37.0-glibc
-            command:
-              - sh
-              - -c
-              - |
-                mkdir -p /config/wireguard && \
-                cp /tmp/wg/wg0.conf /config/wireguard/wg0.conf && \
-                chmod 400 /config/wireguard/wg0.conf
-            volumeMounts:
-              - name: config
-                mountPath: /config
-              - name: wireguard-secret
-                mountPath: /tmp/wg
         containers:
           app:
             image:
@@ -111,3 +94,12 @@ spec:
         path: /mnt/user/data
         globalMounts:
           - path: /data
+
+      wireguard:
+        enabled: true
+        type: secret
+        name: qbittorrent-secret
+        defaultMode: 0400
+        globalMounts:
+          - path: /config/wireguard/wg0.conf
+            subPath: wg0.conf
