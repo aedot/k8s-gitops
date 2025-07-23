@@ -147,5 +147,5 @@ spec:
         enabled: true
         type: nfs
         server: shango.internal
-        path: /mnt/user/data/torrent
+        path: /mnt/user/data/torrents
 
