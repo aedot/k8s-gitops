@@ -47,7 +47,7 @@ spec:
               # VPN_TYPE: openvpn
               # OPENVPN_CUSTOM_CONFIG: &gluetunOpenvpnPath /gluetun/custom.conf
               # VPN_INTERFACE: tun0
-              # FIREWALL_INPUT_PORTS: 8080
+              FIREWALL_INPUT_PORTS: 8080
               # FIREWALL_OUTBOUND_SUBNETS: 10.40.0.0/16,10.43.0.0/16
             envFrom:
               - secretRef:
@@ -65,6 +65,7 @@ spec:
               repository: ghcr.io/home-operations/qbittorrent
               tag: 5.1.2@sha256:9dd0164cc23e9c937e0af27fd7c3f627d1df30c182cf62ed34d3f129c55dc0e8
             env:
+              TZ: America/Los_Angeles
               UMASK: "022"
               QBT_WEBUI_PORT: &port 8080
             probes:
