@@ -54,7 +54,7 @@ spec:
                 add: ["NET_ADMIN"]
 
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
+              readOnlyRootFilesystem: false
 
             resources:
               requests:
