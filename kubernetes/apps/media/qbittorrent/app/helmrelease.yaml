@@ -143,11 +143,9 @@ spec:
                 subPath: Corefile
                 readOnly: true
 
-      data:
+      torrent:
         enabled: true
         type: nfs
         server: shango.internal
-        path: /mnt/user/data
-        globalMounts:
-          - path: /data
+        path: /mnt/user/data/torrent
 

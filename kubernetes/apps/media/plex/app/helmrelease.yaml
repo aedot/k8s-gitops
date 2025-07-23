@@ -75,7 +75,7 @@ spec:
       media:
         type: nfs
         server: shango.internal
-        path: /mnt/user/data
+        path: /mnt/user/data/media
         globalMounts:
           - readOnly: true
       tmpfs:

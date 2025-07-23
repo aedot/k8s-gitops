@@ -77,7 +77,7 @@ spec:
     persistence:
       config:
         existingClaim: *app
-      media:
+      data:
         type: nfs
         server: shango.internal
         path: /mnt/user/data
