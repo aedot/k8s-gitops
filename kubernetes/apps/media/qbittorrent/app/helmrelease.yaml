@@ -36,7 +36,7 @@ spec:
               VPN_LAN_LEAK_ENABLED: "false"
               VPN_EXPOSE_PORTS_ON_LAN: "true"
               VPN_AUTO_PORT_FORWARD: "true"
-              VPN_FIREWALL_TYPE: auto
+              VPN_FIREWALL_TYPE: legacy
               VPN_HEALTHCHECK_ENABLED: "false"
               VPN_PIA_DIP_TOKEN: "no"
               VPN_PIA_PORT_FORWARD_PERSIST: "false"
@@ -50,9 +50,11 @@ spec:
                 enabled: false
 
             securityContext:
+              runAsUser: 1000
+              runAsGroup: 1000
+              runAsNonRoot: true
               capabilities:
                 add: ["NET_ADMIN"]
-
               allowPrivilegeEscalation: true
               readOnlyRootFilesystem: false
 
