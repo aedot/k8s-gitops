@@ -24,63 +24,65 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/qbittorrent
-              tag: 5.1.2@sha256:9dd0164cc23e9c937e0af27fd7c3f627d1df30c182cf62ed34d3f129c55dc0e8
+              repository: ghcr.io/hotio/qbittorrent
+              tag: release-5.1.2
             env:
               TZ: America/Los_Angeles
-              QBT_WEBUI_PORT: &port 80
-              QBT_TORRENTING_PORT: &torrentPort 50413
-            # probes:
-            #   liveness: &probes
-            #     enabled: true
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /api/v2/app/version
-            #         port: *port
-            #       initialDelaySeconds: 0
-            #       periodSeconds: 10
-            #       timeoutSeconds: 1
-            #       failureThreshold: 3
-            #   readiness: *probes
-            #   startup:
-            #     enabled: true
-            #     spec:
-            #       failureThreshold: 30
-            #       periodSeconds: 10
+              WEBUI_PORT: &port 8080
+              VPN_ENABLED: "true"
+              VPN_CONF: wg0
+              VPN_PROVIDER: pia
+              VPN_LAN_NETWORK: 10.0.0.0/8
+              VPN_LAN_LEAK_ENABLED: "false"
+              VPN_EXPOSE_PORTS_ON_LAN: "true"
+              VPN_AUTO_PORT_FORWARD: "true"
+              VPN_FIREWALL_TYPE: auto
+              VPN_HEALTHCHECK_ENABLED: "false"
+              VPN_PIA_DIP_TOKEN: "no"
+              VPN_PIA_PORT_FORWARD_PERSIST: "false"
+              PRIVOXY_ENABLED: "false"
+              UNBOUND_ENABLED: "false"
+            envFrom:
+              - secretRef:
+                  name: qbittorrent-secret
+            probes:
+              liveness:
+                enabled: false
+
             securityContext:
+              capabilities:
+                add: ["NET_ADMIN"]
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+
             resources:
               requests:
                 cpu: 100m
               limits:
                 memory: 2Gi
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [10000]
-        seccompProfile: { type: RuntimeDefault }
-      terminationGracePeriodSeconds: 300
+
+        pod:
+          securityContext:
+            sysctls:
+              - name: net.ipv4.conf.all.src_valid_mark
+                value: "1"
+              - name: net.ipv6.conf.all.disable_ipv6
+                value: "1"
+            runAsUser: 1000
+            runAsGroup: 1000
+            runAsNonRoot: true
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            seccompProfile:
+              type: RuntimeDefault
+
     service:
       app:
         controller: qbittorrent
-        type: LoadBalancer
-        annotations:
-          lbipam.cilium.io/ips: 10.0.20.38
+        primary: true
         ports:
           http:
-            primary: true
             port: *port
-          bittorrent:
-            enabled: true
-            port: *torrentPort
-            protocol: TCP
     route:
       app:
         hostnames:
@@ -94,14 +96,24 @@ spec:
           - backendRefs:
               - identifier: app
                 port: *port
+
     persistence:
       config:
         existingClaim: qbittorrent
-      media:
+
+      data:
+        enabled: true
         type: nfs
         server: shango.internal
         path: /mnt/user/data
         globalMounts:
           - path: /data
-      tmp:
-        type: emptyDir
+
+      # wireguard-config:
+      #   enabled: true
+      #   type: secret
+      #   name: wireguard-config
+      #   defaultMode: 0400
+      #   globalMounts:
+      #     - path: /config/wireguard/wg0.conf
+      #       subPath: wg0.conf
