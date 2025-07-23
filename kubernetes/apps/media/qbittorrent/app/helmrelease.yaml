@@ -127,14 +127,14 @@ spec:
             gluetun:
               - path: *gluetunAuthPath
                 subPath: auth.toml
-      gluetun-openvpn:
-        type: secret
-        name: qbittorrent-secret
-        advancedMounts:
-          qbittorrent:
-            gluetun:
-              - path: *gluetunOpenvpnPath
-                subPath: openvpn_config
+      # gluetun-openvpn:
+      #   type: secret
+      #   name: qbittorrent-secret
+      #   advancedMounts:
+      #     qbittorrent:
+      #       gluetun:
+      #         - path: *gluetunOpenvpnPath
+      #           subPath: openvpn_config
       coredns:
         type: configMap
         name: qbittorrent-coredns
