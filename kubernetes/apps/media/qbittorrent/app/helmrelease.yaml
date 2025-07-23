@@ -50,9 +50,6 @@ spec:
                 enabled: false
 
             securityContext:
-              runAsUser: 1000
-              runAsGroup: 1000
-              runAsNonRoot: true
               capabilities:
                 add: ["NET_ADMIN"]
               allowPrivilegeEscalation: true
