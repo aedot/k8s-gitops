@@ -20,52 +20,75 @@ spec:
     controllers:
       qbittorrent:
         annotations:
-          reloader.stakater.com/auto: "true"
-        containers:
-          app:
+          secret.reloader.stakater.com/reload: qbittorrent-secret,qbittorrent-gluetun-secret
+          config.reloader.stakater.com/reload: qbittorrent-coredns
+
+        initContainers:
+          coredns:
             image:
-              repository: ghcr.io/hotio/qbittorrent
-              tag: release-5.1.2@sha256:4c731e88dd419a20f0e158cef9672e902a7e2c71acea48b8989567f00b5fb095
+              repository: mirror.gcr.io/coredns/coredns
+              tag: 1.12.2@sha256:af8c8d35a5d184b386c4a6d1a012c8b218d40d1376474c7d071bb6c07201f47d
+            args:
+              - -conf
+              - /etc/coredns/Corefile
+            restartPolicy: Always
+
+          gluetun:
+            dependsOn:
+              - coredns
+            image:
+              repository: ghcr.io/qdm12/gluetun
+              tag: v3.40.0@sha256:2b42bfa046757145a5155acece417b65b4443c8033fb88661a8e9dcf7fda5a00
             env:
-              TZ: America/Los_Angeles
-              WEBUI_PORT: &port 8080
-              VPN_ENABLED: "true"
-              VPN_CONF: wg0
-              VPN_PROVIDER: pia
-              VPN_LAN_NETWORK: 10.0.0.0/8
-              VPN_LAN_LEAK_ENABLED: "false"
-              VPN_EXPOSE_PORTS_ON_LAN: "true"
-              VPN_AUTO_PORT_FORWARD: "true"
-              VPN_FIREWALL_TYPE: auto
-              VPN_HEALTHCHECK_ENABLED: "false"
-              VPN_PIA_DIP_TOKEN: "no"
-              VPN_PIA_PORT_FORWARD_PERSIST: "false"
-              PRIVOXY_ENABLED: "false"
-              UNBOUND_ENABLED: "false"
+              DOT: "off"
+              DNS_ADDRESS: "127.0.0.2"
+              HTTP_CONTROL_SERVER_AUTH_CONFIG_FILEPATH: &gluetunAuthPath /gluetun/auth.toml
+              VPN_SERVICE_PROVIDER: custom
+              VPN_TYPE: openvpn
+              OPENVPN_CUSTOM_CONFIG: &gluetunOpenvpnPath /gluetun/custom.conf
+              VPN_INTERFACE: tun0
+              FIREWALL_INPUT_PORTS: 8080
+              FIREWALL_OUTBOUND_SUBNETS: 10.40.0.0/16,10.43.0.0/16
             envFrom:
               - secretRef:
                   name: qbittorrent-secret
+            restartPolicy: Always
+            securityContext:
+              capabilities:
+                add:
+                  - NET_ADMIN
+              allowPrivilegeEscalation: false
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/home-operations/qbittorrent
+              tag: 5.1.2@sha256:9dd0164cc23e9c937e0af27fd7c3f627d1df30c182cf62ed34d3f129c55dc0e8
+            env:
+              UMASK: "022"
+              QBT_WEBUI_PORT: &port 8080
             probes:
               liveness:
                 enabled: false
 
-            securityContext:
-              capabilities:
-                add: ["NET_ADMIN"]
-
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
-
             resources:
               requests:
-                cpu: 100m
+                cpu: 150m
+                memory: 2048Mi
               limits:
-                memory: 2Gi
+                memory: 8192Mi
+            securityContext:
+              runAsUser: 1000
+              runAsGroup: 1000
+              runAsNonRoot: true
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
 
     service:
       app:
-        controller: qbittorrent
-        primary: true
         ports:
           http:
             port: *port
@@ -86,8 +109,41 @@ spec:
     persistence:
       config:
         existingClaim: qbittorrent
-        globalMounts:
-          - path: /config
+        advancedMounts:
+          qbittorrent:
+            app:
+              - path: /config
+      empty-config:
+        type: emptyDir
+        advancedMounts:
+          qbittorrent:
+            port-forward:
+              - path: /config
+      gluetun-auth:
+        type: secret
+        name: qbittorrent-gluetun-secret
+        advancedMounts:
+          qbittorrent:
+            gluetun:
+              - path: *gluetunAuthPath
+                subPath: auth.toml
+      gluetun-openvpn:
+        type: secret
+        name: qbittorrent-secret
+        advancedMounts:
+          qbittorrent:
+            gluetun:
+              - path: *gluetunOpenvpnPath
+                subPath: openvpn_config
+      coredns:
+        type: configMap
+        name: qbittorrent-coredns
+        advancedMounts:
+          qbittorrent:
+            coredns:
+              - path: /etc/coredns/Corefile
+                subPath: Corefile
+                readOnly: true
 
       data:
         enabled: true

@@ -1,0 +1,99 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: qbittorrent
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      qbittorrent:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/hotio/qbittorrent
+              tag: release-5.1.2@sha256:4c731e88dd419a20f0e158cef9672e902a7e2c71acea48b8989567f00b5fb095
+            env:
+              TZ: America/Los_Angeles
+              WEBUI_PORT: &port 8080
+              VPN_ENABLED: "true"
+              VPN_CONF: wg0
+              VPN_PROVIDER: pia
+              VPN_LAN_NETWORK: 10.0.0.0/8
+              VPN_LAN_LEAK_ENABLED: "false"
+              VPN_EXPOSE_PORTS_ON_LAN: "true"
+              VPN_AUTO_PORT_FORWARD: "true"
+              VPN_FIREWALL_TYPE: auto
+              VPN_HEALTHCHECK_ENABLED: "false"
+              VPN_PIA_DIP_TOKEN: "no"
+              VPN_PIA_PORT_FORWARD_PERSIST: "false"
+              PRIVOXY_ENABLED: "false"
+              UNBOUND_ENABLED: "false"
+            envFrom:
+              - secretRef:
+                  name: qbittorrent-secret
+            probes:
+              liveness:
+                enabled: false
+
+            securityContext:
+              capabilities:
+                add: ["NET_ADMIN"]
+
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 2Gi
+
+    service:
+      app:
+        controller: qbittorrent
+        primary: true
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          - qb.${SECRET_DOMAIN}
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
+
+    persistence:
+      config:
+        existingClaim: qbittorrent
+        globalMounts:
+          - path: /config
+
+      data:
+        enabled: true
+        type: nfs
+        server: shango.internal
+        path: /mnt/user/data
+        globalMounts:
+          - path: /data
+
