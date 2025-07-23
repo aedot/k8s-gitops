@@ -19,6 +19,9 @@ spec:
   values:
     controllers:
       dragonfly-operator:
+        replicas: 1
+        serviceAccount:
+          identifier: *app
         containers:
           app:
             image:
@@ -60,19 +63,19 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: *app
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: *app
     service:
       app:
         controller: *app
@@ -81,8 +84,6 @@ spec:
             port: *port
           metrics:
             port: 8080
-    serviceAccount:
-      *app : {}
     serviceMonitor:
       app:
         serviceName: *app
@@ -92,44 +93,16 @@ spec:
             path: /metrics
             interval: 1m
             scrapeTimeout: 10s
-    rbac:
-      roles:
-        *app :
-          type: ClusterRole
-          rules:
-            - apiGroups: ["coordination.k8s.io"]
-              resources: ["leases"]
-              verbs:
-                ["get", "list", "watch", "create", "update", "patch", "delete"]
-            - apiGroups: [""]
-              resources: ["events"]
-              verbs: ["create", "patch"]
-            - apiGroups: [""]
-              resources: ["pods", "services"]
-              verbs:
-                ["create", "delete", "get", "list", "patch", "update", "watch"]
-            - apiGroups: ["apps"]
-              resources: ["statefulsets"]
-              verbs:
-                ["create", "delete", "get", "list", "patch", "update", "watch"]
-            - apiGroups: ["dragonflydb.io"]
-              resources: ["dragonflies"]
-              verbs:
-                ["create", "delete", "get", "list", "patch", "update", "watch"]
-            - apiGroups: ["dragonflydb.io"]
-              resources: ["dragonflies/finalizers"]
-              verbs: ["update"]
-            - apiGroups: ["dragonflydb.io"]
-              resources: ["dragonflies/status"]
-              verbs: ["get", "patch", "update"]
-      bindings:
-        *app :
-          type: ClusterRoleBinding
-          subjects:
-            - kind: ServiceAccount
-              name: *app
-              namespace: dbms
-          roleRef:
-            apiGroup: rbac.authorization.k8s.io
-            kind: ClusterRole
-            name: *app
+    serviceAccount:
+      dragonfly-operator: {}
+  postRenderers:
+    - kustomize:
+        patches:
+          - patch: |-
+              apiVersion: monitoring.coreos.com/v1
+              kind: ServiceMonitor
+              metadata:
+                name: dragonfly-operator
+                namespace: dbms
+              spec:
+                fallbackScrapeProtocol: PrometheusText1.0.0
