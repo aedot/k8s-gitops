@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/hotio/qbittorrent
-              tag: release-5.1.2
+              tag: release-5.1.2@sha256:4c731e88dd419a20f0e158cef9672e902a7e2c71acea48b8989567f00b5fb095
             env:
               TZ: America/Los_Angeles
               WEBUI_PORT: &port 8080
@@ -97,7 +97,3 @@ spec:
         globalMounts:
           - path: /data
 
-      dev-net-tun:
-        enabled: true
-        type: hostPath
-        hostPath: /dev/net/tun
