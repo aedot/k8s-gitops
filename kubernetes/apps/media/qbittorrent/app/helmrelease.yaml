@@ -53,7 +53,7 @@ spec:
               capabilities:
                 add: ["NET_ADMIN"]
 
-              allowPrivilegeEscalation: false
+              allowPrivilegeEscalation: true
               readOnlyRootFilesystem: false
 
             resources:
