@@ -27,9 +27,9 @@ spec:
               repository: ghcr.io/hotio/qbittorrent
               tag: release-5.1.2
             env:
-              UMASK: 002
-              PUID: 99
-              PGID: 100
+              UMASK: "002"
+              PUID: "99"
+              PGID: "100"
               TZ: America/Los_Angeles
               WEBUI_PORT: &port 8080
               VPN_ENABLED: "true"
