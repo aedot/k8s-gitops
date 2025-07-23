@@ -30,15 +30,15 @@ spec:
               TZ: America/Los_Angeles
               WEBUI_PORT: &port 8080
               VPN_ENABLED: "true"
-              VPN_CONF: wg0
-              VPN_PROVIDER: pia
-              VPN_LAN_NETWORK: 10.0.20.0/24
+              VPN_CONF: "wg0"
+              VPN_PROVIDER: "pia"
+              VPN_KEEP_LOCAL_DNS: "false"
+              VPN_LAN_NETWORK: "10.0.20.0/24"
               VPN_LAN_LEAK_ENABLED: "false"
-              VPN_EXPOSE_PORTS_ON_LAN: "true"
+              # VPN_EXPOSE_PORTS_ON_LAN: "true"
               VPN_AUTO_PORT_FORWARD: "true"
-              VPN_FIREWALL_TYPE: auto
+              VPN_FIREWALL_TYPE: "auto"
               VPN_HEALTHCHECK_ENABLED: "false"
-              VPN_PIA_DIP_TOKEN: "no"
               VPN_PIA_PORT_FORWARD_PERSIST: "false"
               PRIVOXY_ENABLED: "false"
               UNBOUND_ENABLED: "false"
@@ -51,9 +51,8 @@ spec:
 
             securityContext:
               capabilities:
-                add: ["NET_ADMIN"]
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
+                add:
+                  - NET_ADMIN
 
             resources:
               requests:
