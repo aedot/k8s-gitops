@@ -81,6 +81,8 @@ spec:
         type: nfs
         server: shango.internal
         path: /mnt/user/data
+        globalMounts:
+          - path: /data
       tmpfs:
         type: emptyDir
         advancedMounts:

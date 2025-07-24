@@ -85,6 +85,17 @@ spec:
                 drop:
                   - ALL
 
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
+        seccompProfile: { type: RuntimeDefault }
+      terminationGracePeriodSeconds: 300
+      
     service:
       app:
         ports:
@@ -143,9 +154,12 @@ spec:
                 subPath: Corefile
                 readOnly: true
 
-      torrent:
+      data:
         enabled: true
         type: nfs
         server: shango.internal
-        path: /mnt/user/data/torrents
+        path: /mnt/user/data
+        globalMounts:
+          - path: /torrents
+            subPath: torrents
 

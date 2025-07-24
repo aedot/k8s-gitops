@@ -77,7 +77,8 @@ spec:
         server: shango.internal
         path: /mnt/user/data/media
         globalMounts:
-          - readOnly: true
+          - path: /media
+            readOnly: true
       tmpfs:
         type: emptyDir
         advancedMounts:
