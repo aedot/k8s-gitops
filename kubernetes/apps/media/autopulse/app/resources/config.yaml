@@ -1,0 +1,26 @@
+app:
+  hostname: 0.0.0.0
+  port: 2875
+  database_url: postgres://{{ .AUTOPULSE_POSTGRES_USER }}:{{ .AUTOPULSE_POSTGRES_PASS }}@postgres-17-rw.database.svc.cluster.local:5432/${APP}?sslmode=disable
+
+auth:
+  enabled: false
+
+opts:
+  check_path: false
+  max_retries: 5
+  default_timer_wait: 120
+  cleanup_days: 14
+
+triggers:
+  sonarr:
+    type: sonarr
+  radarr:
+    type: radarr
+
+
+targets:
+  plex:
+    type: plex
+    url: http://plex.media.svc.cluster.local:32400
+    token: {{ .PLEX_TOKEN }}
