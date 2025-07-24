@@ -79,23 +79,20 @@ spec:
               limits:
                 memory: 8192Mi
             securityContext:
+              runAsNonRoot: true
+              runAsUser: 1000
+              runAsGroup: 1000
+              fsGroup: 1000
+              fsGroupChangePolicy: OnRootMismatch
+              supplementalGroups: [10000]
+              seccompProfile: { type: RuntimeDefault }
+              terminationGracePeriodSeconds: 300
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
                 drop:
                   - ALL
 
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [10000]
-        seccompProfile: { type: RuntimeDefault }
-      terminationGracePeriodSeconds: 300
-      
     service:
       app:
         ports:
