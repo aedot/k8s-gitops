@@ -79,14 +79,6 @@ spec:
               limits:
                 memory: 8192Mi
             securityContext:
-              runAsNonRoot: true
-              runAsUser: 1000
-              runAsGroup: 1000
-              fsGroup: 1000
-              fsGroupChangePolicy: OnRootMismatch
-              supplementalGroups: [10000]
-              seccompProfile: { type: RuntimeDefault }
-              terminationGracePeriodSeconds: 300
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
