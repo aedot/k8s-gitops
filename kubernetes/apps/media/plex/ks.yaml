@@ -14,7 +14,7 @@ spec:
   components:
     - ../../../../components/keda/nfs-scaler
     - ../../../../components/volsync
-    - ../../../../components/gatus/guarded
+    - ../../../../components/gatus
   dependsOn:
     - name: longhorn
       namespace: longhorn-system

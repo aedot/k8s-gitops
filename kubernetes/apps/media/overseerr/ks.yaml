@@ -13,7 +13,7 @@ spec:
   path: ./kubernetes/apps/media/overseerr/app
   components:
     - ../../../../components/volsync
-    - ../../../../components/gatus/external
+    - ../../../../components/gatus
   dependsOn:
     - name: longhorn
       namespace: longhorn-system

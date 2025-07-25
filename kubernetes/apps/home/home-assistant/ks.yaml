@@ -13,7 +13,7 @@ spec:
   path: ./kubernetes/apps/home/home-assistant/app
   components:
     - ../../../../components/volsync
-    - ../../../../components/gatus/internal
+    - ../../../../components/gatus
   dependsOn:
     - name: multus-networks
       namespace: network
