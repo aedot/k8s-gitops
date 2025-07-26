@@ -26,11 +26,21 @@ spec:
             image:
               repository: seanap/auto-m4b
               tag: latest@sha256:bf50bb8c674a6cced23115fc260791a72782e1ab57dbeff5184b848f4737bc6e
+            env:
+              SLEEPTIME: 30m # Time to wait before checking for new files (30 minutes)
             resources:
               requests:
                 cpu: 10m
               limits:
                 memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [65536]
     persistence:
       temp:
         type: nfs
