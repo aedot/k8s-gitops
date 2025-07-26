@@ -26,12 +26,6 @@ spec:
             image:
               repository: seanap/auto-m4b
               tag: latest@sha256:bf50bb8c674a6cced23115fc260791a72782e1ab57dbeff5184b848f4737bc6e
-            args:
-              - --input-dir=/import
-              - --output-dir=/import
-              - --watch
-              - --delete
-              - --output-format=m4b
             resources:
               requests:
                 cpu: 10m
