@@ -16,4 +16,5 @@ resources:
   - ./tautulli/ks.yaml
   - ./recyclarr/ks.yaml
   - ./qbittorrent/ks.yaml
-  - ./beets/ks.yaml
+  - ./autom4b/ks.yaml
+  # - ./beets/ks.yaml
