@@ -32,7 +32,7 @@ spec:
       isWALArchiver: true
       parameters: &parameters
         barmanObjectName: r2
-        serverName: postgres-v21
+        serverName: postgres-v23
   bootstrap:
     recovery:
       source: source
@@ -40,4 +40,6 @@ spec:
     - name: source
       plugin:
         name: barman-cloud.cloudnative-pg.io
-        parameters: *parameters
+        parameters:
+          barmanObjectName: r2
+          serverName: postgres-v21
