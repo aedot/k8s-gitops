@@ -6,7 +6,7 @@ namespace: dbms
 components:
   - ../../components/common
   - ../../components/repos/app-template
-resources:
+resources: []
   # - ./cloudnative-pg/ks.yaml
-  - ./pgadmin/ks.yaml
-  - ./emqx/ks.yaml
+  # - ./pgadmin/ks.yaml
+  # - ./emqx/ks.yaml
