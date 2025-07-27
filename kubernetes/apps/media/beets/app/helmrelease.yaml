@@ -21,40 +21,14 @@ spec:
       beets:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          auto-m4b:
-            image:
-              repository: seanap/auto-m4b
-              tag: latest@sha256:bf50bb8c674a6cced23115fc260791a72782e1ab57dbeff5184b848f4737bc6e
-            args:
-              - --input-dir=/import
-              - --output-dir=/import
-              - --watch
-              - --delete
-              - --output-format=m4b
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 512Mi
         containers:
           app:
             image:
               repository: ghcr.io/home-operations/beets
               tag: 2.3.1@sha256:cc4975f1a0be4e238d29fe13c18ce37e08964af0d5ceb1811485751b6490bcaf
-            command: ["/bin/sh", "-c"]
-            args:
-              - |
-                echo "Installing inotify-tools..."
-                apk add --no-cache inotify-tools
-                echo "Watching /import for changes..."
-                while true; do
-                  inotifywait -r -e close_write,move,create,delete /import && \
-                  echo "Detected change, importing..." && \
-                  beet -c /config/.config/beets/config.yaml import /import
-                  sleep 5
-                done
             env:
+              BETANIN_HOST: 0.0.0.0
+              BETANIN_PORT: &port 80
               TZ: America/Los_Angeles
             probes:
               liveness:
@@ -75,7 +49,6 @@ spec:
                 cpu: 10m
               limits:
                 memory: 1Gi
-
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -87,7 +60,7 @@ spec:
       app:
         ports:
           http:
-            port: 8337
+            port: *port
     route:
       app:
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
@@ -95,39 +68,16 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
-
     persistence:
-      config:
-        type: emptyDir
-      audiobook:
+      media:
         type: nfs
         server: shango.internal
         path: /mnt/user/data/media
         globalMounts:
           - path: /audiobooks
-            subPath: audiobooks
       import:
         type: nfs
         server: shango.internal
-        path: /mnt/user/data/media
+        path: /mnt/user/data/autom4b
         globalMounts:
-          - path: /import
-            subPath: audiobooks-import
-      config-file:
-        type: configMap
-        name: beets-configmap
-        globalMounts:
-          - path: /config/.config/beets/config.yaml
-            subPath: config.yaml
-            readOnly: true
-      # secret-file:
-      #   type: secret
-      #   name: beets-secret
-      #   globalMounts:
-      #     - path: /config/.config/betanin/config.toml
-      #       subPath: config.toml
-      #       readOnly: true
-      tmp:
-        type: emptyDir
-
-
+          - path: /untagged
