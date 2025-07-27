@@ -32,7 +32,7 @@ spec:
       isWALArchiver: true
       parameters: &parameters
         barmanObjectName: r2
-        serverName: postgres-v23
+        serverName: postgres-v21
   bootstrap:
     recovery:
       source: source
