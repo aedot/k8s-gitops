@@ -4,55 +4,41 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: postgres
+  annotations:
+    cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
-  imageName: ghcr.io/cloudnative-pg/postgresql:${POSTGRESQL_VERSION}
   instances: 3
+  imageName: ghcr.io/cloudnative-pg/postgresql:${POSTGRESQL_VERSION}
   primaryUpdateStrategy: unsupervised
   storage:
     size: 20Gi
     storageClass: longhorn
-  enableSuperuserAccess: true
   superuserSecret:
     name: cloudnative-pg-secret
+  enableSuperuserAccess: true
   postgresql:
     parameters:
       max_connections: "200"
       shared_buffers: 256MB
-  monitoring:
-    enablePodMonitor: true
   resources:
     requests:
       cpu: 500m
     limits:
+      hugepages-2Mi: 2Gi # Requires sysctl set on the host
       memory: 4Gi
-  backup:
-    retentionPolicy: 30d
-    barmanObjectStore: &barmanObjectStore
-      data:
-        compression: bzip2
-      wal:
-        compression: bzip2
-        maxParallel: 8
-      destinationPath: s3://cnpg-6g2d33/
-      endpointURL: https://c04ec44babd84f729574b781430d8417.r2.cloudflarestorage.com
-      # Note: serverName version needs to be incremented
-      # when recovering from an existing cnpg cluster
-      serverName: postgres17-v23
-      s3Credentials:
-          accessKeyId:
-            name: cloudnative-pg-secret
-            key: AWS_ACCESS_KEY_ID
-          secretAccessKey:
-            name: cloudnative-pg-secret
-            key: AWS_SECRET_ACCESS_KEY
-  # Note: previousCluster needs to be set to the name of the previous
-  # cluster when recovering from an existing cnpg cluster
+  monitoring:
+    enablePodMonitor: true
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters: &parameters
+        barmanObjectName: r2
+        serverName: postgres-v23
   bootstrap:
     recovery:
-      source: &previousCluster postgres17-v22
-  # Note: externalClusters is needed when recovering from an existing cnpg cluster
+      source: source
   externalClusters:
-    - name: *previousCluster
-      barmanObjectStore:
-        <<: *barmanObjectStore
-        serverName: *previousCluster
+    - name: source
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters: *parameters
