@@ -81,8 +81,8 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: *namespace
-    - name: cloudnative-pg-barman-cloud
-      namespace: *namespace
+    # - name: cloudnative-pg-barman-cloud
+    #   namespace: *namespace
     - name: longhorn
       namespace: longhorn-system
   healthCheckExprs:
