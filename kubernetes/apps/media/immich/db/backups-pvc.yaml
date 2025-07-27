@@ -12,7 +12,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: shango.internal
-    path: "/mnt/user/k8s/immich/psqlbackup"
+    path: "/mnt/user/backup/immich-psql"
   mountOptions:
     - nfsvers=4.2
     - nconnect=8

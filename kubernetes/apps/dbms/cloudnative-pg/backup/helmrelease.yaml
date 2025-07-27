@@ -74,7 +74,7 @@ spec:
         enabled: true
         type: nfs
         server: shango.internal
-        path: /mnt/user/backup/postgres17
+        path: /mnt/user/backup/cnpg-db
         globalMounts:
           - path: /backups
       scripts:

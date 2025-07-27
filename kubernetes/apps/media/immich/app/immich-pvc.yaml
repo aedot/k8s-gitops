@@ -12,7 +12,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: shango.internal
-    path: "/mnt/user/k8s/immich/library"
+    path: "/mnt/user/photo/immich"
   # Note: The first two options are strictly for NFSv4.2
   mountOptions:
     - nfsvers=4.2
