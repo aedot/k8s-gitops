@@ -8,5 +8,5 @@ components:
   - ../../components/repos/app-template
 resources:
   - ./cloudnative-pg/ks.yaml
-  # - ./pgadmin/ks.yaml
-  # - ./emqx/ks.yaml
+  - ./pgadmin/ks.yaml
+  - ./emqx/ks.yaml
