@@ -22,7 +22,7 @@ spec:
   interval: 30m
   timeout: 5m
   dependsOn:
-    - name: postgres-cluster
+    - name: cloudnative-pg-cluster
       namespace: dbms
     - name: lldap
       namespace: *namespace

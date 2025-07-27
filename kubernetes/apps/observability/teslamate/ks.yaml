@@ -12,7 +12,7 @@ spec:
   interval: 30m
   path: ./kubernetes/apps/observability/teslamate/app
   dependsOn:
-    - name: postgres-cluster
+    - name: cloudnative-pg-cluster
       namespace: dbms
     - name: akeyless-stores
       namespace: external-secrets

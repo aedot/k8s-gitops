@@ -21,7 +21,7 @@ spec:
       namespace: external-secrets
     - name: pocket-id
       namespace: security
-    - name: postgres-cluster
+    - name: cloudnative-pg-cluster
       namespace: dbms
   prune: true
   sourceRef:

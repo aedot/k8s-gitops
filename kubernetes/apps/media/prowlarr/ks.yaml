@@ -12,7 +12,7 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/media/prowlarr/app
   dependsOn:
-    - name: cloudnative-pg
+    - name: cloudnative-pg-cluster
       namespace: dbms
     - name: akeyless-stores
       namespace: external-secrets

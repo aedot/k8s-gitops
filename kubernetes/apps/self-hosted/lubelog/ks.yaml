@@ -14,7 +14,7 @@ spec:
   components:
     - ../../../../components/volsync
   dependsOn:
-    - name: postgres-cluster
+    - name: cloudnative-pg-cluster
       namespace: dbms
     - name: longhorn
       namespace: longhorn-system

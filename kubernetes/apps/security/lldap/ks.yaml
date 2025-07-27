@@ -20,7 +20,7 @@ spec:
   interval: 30m
   timeout: 5m
   dependsOn:
-    - name: postgres-cluster
+    - name: cloudnative-pg-cluster
       namespace: dbms
     - name: akeyless-stores
       namespace: external-secrets
