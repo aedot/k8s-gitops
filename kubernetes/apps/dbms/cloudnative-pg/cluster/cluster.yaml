@@ -27,7 +27,7 @@ spec:
       isWALArchiver: true
       parameters: &parameters
         barmanObjectName: cloudflare-r2
-        serverName: postgres-v24
+        serverName: postgres-v23
   bootstrap:
     recovery:
       source: orgin
@@ -35,7 +35,5 @@ spec:
     - name: orgin
       plugin:
         name: barman-cloud.cloudnative-pg.io
-        parameters:
-          barmanObjectName: cloudflare-r2
-          serverName: postgres-v23
+        parameters: *parameters
 
