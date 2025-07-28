@@ -28,19 +28,27 @@ spec:
       memory: 4Gi
   monitoring:
     enablePodMonitor: true
+    # when doing major upgrade and backup doesn't exist
+  bootstrap:
+    initdb:
+      import:
+        type: monolith
+        databases: ["*"]
+        roles: ["*"]
+        source:
+          externalCluster: &previousCluster postgres-v22
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
       parameters: &parameters
         barmanObjectName: r2
         serverName: postgres-v24
-  bootstrap:
-    recovery:
-      source: source
-  externalClusters:
-    - name: source
-      plugin:
-        name: barman-cloud.cloudnative-pg.io
-        parameters: 
-          barmanObjectName: r2
-          serverName: postgres-v23
+  # bootstrap:
+  #   recovery:
+  #     source: source
+  # externalClusters:
+  #   - name: source
+  #     plugin:
+  #       name: barman-cloud.cloudnative-pg.io
+  #       parameters: *parameters
+
