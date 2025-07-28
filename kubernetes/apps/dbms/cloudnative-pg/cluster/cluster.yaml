@@ -20,6 +20,12 @@ spec:
     parameters:
       max_connections: "200"
       shared_buffers: 256MB
+  resources:
+    requests:
+      cpu: 500m
+    limits:
+      hugepages-2Mi: 2Gi # Requires sysctl set on the host
+      memory: 4Gi
   monitoring:
     enablePodMonitor: true
   plugins:
@@ -30,9 +36,9 @@ spec:
         serverName: postgres-v23
   bootstrap:
     recovery:
-      source: orgin
+      source: source
   externalClusters:
-    - name: orgin
+    - name: source
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters: *parameters
