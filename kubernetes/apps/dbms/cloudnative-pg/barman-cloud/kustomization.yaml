@@ -7,4 +7,4 @@ resources:
   - ./certificate.yaml
   - ./helmrelease.yaml
   - ./rbac.yaml
-  - ./objectstore.yaml
+  # - ./objectstore.yaml
