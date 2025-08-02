@@ -44,7 +44,7 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
         serviceAccount:
-          identifier: system-upgrade-controller
+          name: *app
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
