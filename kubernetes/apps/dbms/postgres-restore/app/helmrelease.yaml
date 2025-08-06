@@ -16,11 +16,11 @@ spec:
             - |
               echo "Scanning for backups in /backups/daily/..."
 
-              # Extract unique DB names from file prefixes, supporting dashes and underscores
-              for db_name in $(ls /backups/daily/*.sql.gz 2>/dev/null | sed -E 's|.*/(.+)-[0-9]{8}.*\.sql\.gz|\1|' | sort -u); do
+              # Extract unique DB names from filenames
+              for db_name in $(ls /backups/daily/*.sql.gz 2>/dev/null | sed -E 's|.*/(.+)-([0-9]{8}|latest).*\.sql\.gz|\1|' | sort -u); do
                 echo "Processing DB: $db_name"
 
-                # Find latest matching backup file for this DB
+                # Find the latest backup file for this DB
                 latest_backup=$(ls -1 /backups/daily/${db_name}-*.sql.gz 2>/dev/null | sort | tail -n 1)
 
                 if [ -f "$latest_backup" ]; then
