@@ -31,15 +31,15 @@ spec:
       isWALArchiver: true
       parameters: &parameters
         barmanObjectName: r2
-        serverName: postgres17-v31
-  bootstrap:
-    recovery:
-      source: source
-  externalClusters:
-    - name: source
-      plugin:
-        name: barman-cloud.cloudnative-pg.io
-        parameters: *parameters
+        serverName: postgres17-v41
+  # bootstrap:
+  #   recovery:
+  #     source: source
+  # externalClusters:
+  #   - name: source
+  #     plugin:
+  #       name: barman-cloud.cloudnative-pg.io
+  #       parameters: *parameters
 
 
 
