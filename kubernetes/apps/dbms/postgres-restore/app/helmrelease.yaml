@@ -17,7 +17,7 @@ spec:
               echo "Scanning for backups in /backups/daily/..."
 
               # Extract unique DB names from filenames
-              for db_name in $(ls /backups/daily/*.sql.gz 2>/dev/null | sed -E 's|.*/(.+)-([0-9]{8}|latest).*\.sql\.gz|\1|' | sort -u); do
+              for db_name in $(ls /backups/daily/*.sql.gz 2>/dev/null | sed -E 's|.*/(.+)-(latest|[0-9]{8}).*\.sql\.gz|\1|' | sort -u); do
                 echo "Processing DB: $db_name"
 
                 # Find the latest backup file for this DB
