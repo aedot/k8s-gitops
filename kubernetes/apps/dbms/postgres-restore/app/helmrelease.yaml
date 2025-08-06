@@ -14,26 +14,29 @@ spec:
             - sh
             - -c
             - |
-              echo "Starting restore from /backups/daily/..."
+              echo "Scanning for backups in /backups/daily/..."
 
-              for db_path in /backups/daily/*; do
-                db_name=$(basename "$db_path")
-                latest_backup=$(ls -1 "$db_path"/*-latest.sql.gz 2>/dev/null | sort | tail -n 1)
+              # Extract unique DB names from file prefixes
+              for db_name in $(ls /backups/daily/*.sql.gz | sed -E 's|.*/([^/-]+)-.*\.sql\.gz|\1|' | sort -u); do
+                echo "Processing DB: $db_name"
+
+                # Find latest matching backup file for this DB
+                latest_backup=$(ls -1 /backups/daily/${db_name}-*.sql.gz 2>/dev/null | sort | tail -n 1)
 
                 if [ -f "$latest_backup" ]; then
-                  echo "Preparing to restore $db_name from $latest_backup"
+                  echo "Found latest backup: $latest_backup"
 
-                  # Create the DB if it doesn't exist (ignore error if already exists)
+                  # Create the DB if it doesn't exist
                   echo "CREATE DATABASE $db_name;" | \
                     PGPASSWORD=$POSTGRES_PASSWORD psql -h postgres-rw.dbms.svc.cluster.local -U $POSTGRES_USER -d postgres 2>/dev/null || true
 
-                  echo "Restoring into $db_name..."
+                  # Restore the backup
                   gunzip -c "$latest_backup" | \
                     PGPASSWORD=$POSTGRES_PASSWORD psql -h postgres-rw.dbms.svc.cluster.local -U $POSTGRES_USER -d "$db_name"
 
-                  echo "Restore for $db_name complete."
+                  echo "Restore completed for $db_name"
                 else
-                  echo "No backups found for $db_name"
+                  echo "No backup found for $db_name"
                 fi
               done
 
