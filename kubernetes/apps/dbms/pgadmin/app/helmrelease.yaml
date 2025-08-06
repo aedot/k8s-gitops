@@ -41,19 +41,19 @@ spec:
                   secretKeyRef:
                     name: pgadmin-secret
                     key: PGADMIN_DEFAULT_PASSWORD
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /misc/ping
-                    port: *port
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
+            # probes:
+            #   liveness: &probes
+            #     enabled: true
+            #     custom: true
+            #     spec:
+            #       httpGet:
+            #         path: /misc/ping
+            #         port: *port
+            #       initialDelaySeconds: 0
+            #       periodSeconds: 10
+            #       timeoutSeconds: 1
+            #       failureThreshold: 3
+            #   readiness: *probes
             resources:
               requests:
                 cpu: 50m
@@ -100,8 +100,8 @@ spec:
         advancedMounts:
           pgadmin:
             app:
-              - path: /pgadmin4/config_local.py
-                subPath: config_local.py
+              # - path: /pgadmin4/config_local.py
+              #   subPath: config_local.py
               - path: /pgadmin4/pgpass
                 subPath: pgpass
       server-json:
