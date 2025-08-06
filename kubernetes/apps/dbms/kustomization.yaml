@@ -7,5 +7,5 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
-  - ./cloudnative-pg/ks.yaml
+  # - ./cloudnative-pg/ks.yaml
   - ./postgres-backup/ks.yaml

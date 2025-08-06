@@ -19,8 +19,7 @@ metadata:
 spec:
   cluster:
     name: postgres
-  schedule: "0 5 * * *"  # Daily at midnight Los Angeles time
-  # schedule: "@daily"  # Alternative syntax for daily backup
+  schedule: "@daily"
   backupOwnerReference: self
   method: plugin
   pluginConfiguration:
