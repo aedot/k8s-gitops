@@ -21,7 +21,7 @@ spec:
     namespace: flux-system
   wait: true
   dependsOn:
-    - name: postgres-cluster
+    - name: cloudnative-pg-cluster
       namespace: *namespace
     - name: akeyless-stores
       namespace: external-secrets
