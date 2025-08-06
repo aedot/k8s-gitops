@@ -48,11 +48,29 @@ spec:
               tag: v1.6.4@sha256:da768baa319f23d6815d048d0d49ce4aacd9eea15ad46d48a5c01ca15fbde392
             env:
               TZ: America/Los_Angeles
+              ANALYTICS_DISABLED: "true"
               APP_URL: https://id.${SECRET_DOMAIN}
               TRUST_PROXY: "true"
               DB_PROVIDER: postgres
-              UPDATE_CHECK_DISABLED: "true"
+              EMAILS_VERIFIED: "true"
+              KEYS_STORAGE: database
+              UI_CONFIG_DISABLED: "true"
+              LDAP_ENABLED: "true"
+              LDAP_URL: ldaps://lldap.security.svc.cluster.local
+              LDAP_SKIP_CERT_VERIFY: "true"
+              LDAP_USER_GROUP_SEARCH_FILTER: (&(objectClass=group)(cn=ID*))
+              LDAP_ATTRIBUTE_USER_UNIQUE_IDENTIFIER: objectGUID
+              LDAP_ATTRIBUTE_GROUP_UNIQUE_IDENTIFIER: objectGUID
+              LDAP_ATTRIBUTE_USER_FIRST_NAME: givenName
+              LDAP_ATTRIBUTE_USER_LAST_NAME: sn
+              LDAP_ATTRIBUTE_USER_USERNAME: sAMAccountName
+              LDAP_ATTRIBUTE_USER_EMAIL: mail
+              LDAP_ATTRIBUTE_GROUP_MEMBER: member
+              LDAP_ATTRIBUTE_GROUP_NAME: cn
+              LDAP_ATTRIBUTE_ADMIN_GROUP: _pocket-id_admins
               SESSION_DURATION: 1440
+              UPLOAD_PATH: /app/data/uploads
+              GEOLITE_DB_PATH: /app/data/GeoLite2-City.mmdb
             envFrom: *envFrom
             probes:
               liveness: &probes
