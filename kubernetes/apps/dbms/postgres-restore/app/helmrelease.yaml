@@ -14,14 +14,14 @@ spec:
             - sh
             - -c
             - |
-              echo "Scanning for backups in /backups/daily/..."
+              echo "Scanning for backup in /backup/daily/..."
 
               TODAY=$(date +%Y%m%d)
 
-              for db_name in $(ls /backups/daily/*-$TODAY.sql.gz 2>/dev/null | sed -E "s@.*/(.+)-$TODAY\.sql\.gz@\1@" | sort -u); do
+              for db_name in $(ls /backup/daily/*-$TODAY.sql.gz 2>/dev/null | sed -E "s@.*/(.+)-$TODAY\.sql\.gz@\1@" | sort -u); do
                 echo "Processing DB: $db_name"
 
-                backup_file="/backups/daily/${db_name}-${TODAY}.sql.gz"
+                backup_file="/backup/daily/${db_name}-${TODAY}.sql.gz"
 
                 if [ -f "$backup_file" ]; then
                   echo "Found today's backup: $backup_file"
@@ -44,7 +44,7 @@ spec:
                 name: postgres-backup-secret
           volumeMounts:
             - name: backup
-              mountPath: /backups
+              mountPath: /backup
       volumes:
         - name: backup
           nfs:
