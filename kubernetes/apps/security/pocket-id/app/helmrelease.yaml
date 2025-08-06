@@ -54,20 +54,20 @@ spec:
               DB_PROVIDER: postgres
               EMAILS_VERIFIED: "true"
               KEYS_STORAGE: database
-              UI_CONFIG_DISABLED: "true"
-              LDAP_ENABLED: "true"
-              LDAP_URL: "ldaps://lldap.security.svc.cluster.local:5389"
-              LDAP_SKIP_CERT_VERIFY: "true"
-              LDAP_USER_GROUP_SEARCH_FILTER: (&(objectClass=group)(cn=ID*))
-              LDAP_ATTRIBUTE_USER_UNIQUE_IDENTIFIER: objectGUID
-              LDAP_ATTRIBUTE_GROUP_UNIQUE_IDENTIFIER: objectGUID
-              LDAP_ATTRIBUTE_USER_FIRST_NAME: givenName
-              LDAP_ATTRIBUTE_USER_LAST_NAME: sn
-              LDAP_ATTRIBUTE_USER_USERNAME: sAMAccountName
-              LDAP_ATTRIBUTE_USER_EMAIL: mail
-              LDAP_ATTRIBUTE_GROUP_MEMBER: member
-              LDAP_ATTRIBUTE_GROUP_NAME: cn
-              LDAP_ATTRIBUTE_ADMIN_GROUP: _pocket-id_admins
+              UI_CONFIG_DISABLED: "false"
+              # LDAP_ENABLED: "true"
+              # LDAP_URL: "ldaps://lldap.security.svc.cluster.local:5389"
+              # LDAP_SKIP_CERT_VERIFY: "true"
+              # LDAP_USER_GROUP_SEARCH_FILTER: (&(objectClass=group)(cn=ID*))
+              # LDAP_ATTRIBUTE_USER_UNIQUE_IDENTIFIER: objectGUID
+              # LDAP_ATTRIBUTE_GROUP_UNIQUE_IDENTIFIER: objectGUID
+              # LDAP_ATTRIBUTE_USER_FIRST_NAME: givenName
+              # LDAP_ATTRIBUTE_USER_LAST_NAME: sn
+              # LDAP_ATTRIBUTE_USER_USERNAME: sAMAccountName
+              # LDAP_ATTRIBUTE_USER_EMAIL: mail
+              # LDAP_ATTRIBUTE_GROUP_MEMBER: member
+              # LDAP_ATTRIBUTE_GROUP_NAME: cn
+              # LDAP_ATTRIBUTE_ADMIN_GROUP: _pocket-id_admins
               SESSION_DURATION: 1440
               UPLOAD_PATH: /app/data/uploads
               GEOLITE_DB_PATH: /app/data/GeoLite2-City.mmdb
