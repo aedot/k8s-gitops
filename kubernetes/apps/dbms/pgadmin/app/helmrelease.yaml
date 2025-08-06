@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: dpage/pgadmin4
-              tag: "9.5"
+              tag: "9.6.0"
             env:
               PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: "False"
               PGADMIN_DISABLE_POSTFIX: "true"
@@ -41,19 +41,19 @@ spec:
                   secretKeyRef:
                     name: pgadmin-secret
                     key: PGADMIN_DEFAULT_PASSWORD
-            # probes:
-            #   liveness: &probes
-            #     enabled: true
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /misc/ping
-            #         port: *port
-            #       initialDelaySeconds: 0
-            #       periodSeconds: 10
-            #       timeoutSeconds: 1
-            #       failureThreshold: 3
-            #   readiness: *probes
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /misc/ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
             resources:
               requests:
                 cpu: 50m
