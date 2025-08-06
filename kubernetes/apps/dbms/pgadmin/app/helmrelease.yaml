@@ -100,8 +100,8 @@ spec:
         advancedMounts:
           pgadmin:
             app:
-              # - path: /pgadmin4/config_local.py
-              #   subPath: config_local.py
+              - path: /pgadmin4/config_local.py
+                subPath: config_local.py
               - path: /pgadmin4/pgpass
                 subPath: pgpass
       server-json:
