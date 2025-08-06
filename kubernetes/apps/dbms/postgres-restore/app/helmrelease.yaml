@@ -14,28 +14,29 @@ spec:
             - sh
             - -c
             - |
-              echo "Scanning for backup in /backup/daily/..."
+              echo "Scanning for backups in /backups/daily/..."
 
               TODAY=$(date +%Y%m%d)
 
-              for db_name in $(ls /backup/daily/*-$TODAY.sql.gz 2>/dev/null | sed -E "s@.*/(.+)-$TODAY\.sql\.gz@\1@" | sort -u); do
+              for backup_file in /backups/daily/*-${TODAY}.sql.gz; do
+                if [ ! -f "$backup_file" ]; then
+                  continue
+                fi
+
+                # Extract DB name from filename
+                db_name=$(basename "$backup_file" | sed -E "s/-${TODAY}\.sql\.gz$//")
+
                 echo "Processing DB: $db_name"
 
-                backup_file="/backup/daily/${db_name}-${TODAY}.sql.gz"
+                # Create DB if it doesn't exist
+                echo "CREATE DATABASE $db_name;" | \
+                  PGPASSWORD=$POSTGRES_PASSWORD psql -h postgres-rw.dbms.svc.cluster.local -U $POSTGRES_USER -d postgres 2>/dev/null || true
 
-                if [ -f "$backup_file" ]; then
-                  echo "Found today's backup: $backup_file"
+                # Restore DB
+                gunzip -c "$backup_file" | \
+                  PGPASSWORD=$POSTGRES_PASSWORD psql -h postgres-rw.dbms.svc.cluster.local -U $POSTGRES_USER -d "$db_name"
 
-                  echo "CREATE DATABASE $db_name;" | \
-                    PGPASSWORD=$POSTGRES_PASSWORD psql -h postgres-rw.dbms.svc.cluster.local -U $POSTGRES_USER -d postgres 2>/dev/null || true
-
-                  gunzip -c "$backup_file" | \
-                    PGPASSWORD=$POSTGRES_PASSWORD psql -h postgres-rw.dbms.svc.cluster.local -U $POSTGRES_USER -d "$db_name"
-
-                  echo "Restore completed for $db_name"
-                else
-                  echo "No backup found for $db_name with today's date"
-                fi
+                echo "Restore completed for $db_name"
               done
 
               echo "All restores complete."
@@ -44,7 +45,7 @@ spec:
                 name: postgres-backup-secret
           volumeMounts:
             - name: backup
-              mountPath: /backup
+              mountPath: /backups
       volumes:
         - name: backup
           nfs:
