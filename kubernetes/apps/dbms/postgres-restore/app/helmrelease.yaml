@@ -1,0 +1,51 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cnpg-local-restore
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: restore
+          image: postgres:17-alpine
+          command:
+            - sh
+            - -c
+            - |
+              echo "Starting restore from /backups/daily/..."
+
+              for db_path in /backups/daily/*; do
+                db_name=$(basename "$db_path")
+                latest_backup=$(ls -1 "$db_path"/*-latest.sql.gz 2>/dev/null | sort | tail -n 1)
+
+                if [ -f "$latest_backup" ]; then
+                  echo "Preparing to restore $db_name from $latest_backup"
+
+                  # Create the DB if it doesn't exist (ignore error if already exists)
+                  echo "CREATE DATABASE $db_name;" | \
+                    PGPASSWORD=$POSTGRES_PASSWORD psql -h postgres-rw.dbms.svc.cluster.local -U $POSTGRES_USER -d postgres 2>/dev/null || true
+
+                  echo "Restoring into $db_name..."
+                  gunzip -c "$latest_backup" | \
+                    PGPASSWORD=$POSTGRES_PASSWORD psql -h postgres-rw.dbms.svc.cluster.local -U $POSTGRES_USER -d "$db_name"
+
+                  echo "Restore for $db_name complete."
+                else
+                  echo "No backups found for $db_name"
+                fi
+              done
+
+              echo "All restores complete."
+          envFrom:
+            - secretRef:
+                name: postgres-backup-secret
+          volumeMounts:
+            - name: backup
+              mountPath: /backups
+      volumes:
+        - name: backup
+          nfs:
+            server: shango.internal
+            path: /mnt/user/backup/cnpg-db
