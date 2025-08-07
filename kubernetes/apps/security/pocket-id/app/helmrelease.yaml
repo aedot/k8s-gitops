@@ -52,22 +52,26 @@ spec:
               APP_URL: https://id.${SECRET_DOMAIN}
               TRUST_PROXY: "true"
               DB_PROVIDER: postgres
-              EMAILS_VERIFIED: "true"
+              # EMAILS_VERIFIED: "true"
               KEYS_STORAGE: database
-              UI_CONFIG_DISABLED: "false"
+              # UI_CONFIG_DISABLED: "false"
+        ## CURRENTLY USING UI
               # LDAP_ENABLED: "true"
-              # LDAP_URL: "ldaps://lldap.security.svc.cluster.local:5389"
+              # LDAP_URL: "ldap://lldap.security.svc.cluster.local:5389"
+              # LDAP_USER_SEARCH_FILTER: (&(objectClass=person)
+              # LDAP_USER_GROUP_SEARCH_FILTER: (&(objectClass=groupOfNames)(!(cn=*lldap*))) # Exclude lldap groups
               # LDAP_SKIP_CERT_VERIFY: "true"
-              # LDAP_USER_GROUP_SEARCH_FILTER: (&(objectClass=group)(cn=ID*))
-              # LDAP_ATTRIBUTE_USER_UNIQUE_IDENTIFIER: objectGUID
-              # LDAP_ATTRIBUTE_GROUP_UNIQUE_IDENTIFIER: objectGUID
-              # LDAP_ATTRIBUTE_USER_FIRST_NAME: givenName
-              # LDAP_ATTRIBUTE_USER_LAST_NAME: sn
-              # LDAP_ATTRIBUTE_USER_USERNAME: sAMAccountName
+              # LDAP_SOFT_DELETE_USERS: "false"
+              # LDAP_ATTRIBUTE_USER_UNIQUE_IDENTIFIER: uuid
+              # LDAP_ATTRIBUTE_USER_USERNAME: user_id
               # LDAP_ATTRIBUTE_USER_EMAIL: mail
+              # LDAP_ATTRIBUTE_USER_FIRST_NAME: first_name
+              # LDAP_ATTRIBUTE_USER_LAST_NAME: last_name
+              # LDAP_ATTRIBUTE_USER_PROFILE_PICTURE: avatar
               # LDAP_ATTRIBUTE_GROUP_MEMBER: member
+              # LDAP_ATTRIBUTE_GROUP_UNIQUE_IDENTIFIER: uuid
               # LDAP_ATTRIBUTE_GROUP_NAME: cn
-              # LDAP_ATTRIBUTE_ADMIN_GROUP: pocket-id_admin
+              # LDAP_ATTRIBUTE_ADMIN_GROUP: pocket_id_admin
               SESSION_DURATION: 1440
               UPLOAD_PATH: /app/data/uploads
               GEOLITE_DB_PATH: /app/data/GeoLite2-City.mmdb
