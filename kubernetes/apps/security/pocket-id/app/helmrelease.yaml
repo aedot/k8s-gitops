@@ -67,7 +67,7 @@ spec:
               # LDAP_ATTRIBUTE_USER_EMAIL: mail
               # LDAP_ATTRIBUTE_GROUP_MEMBER: member
               # LDAP_ATTRIBUTE_GROUP_NAME: cn
-              # LDAP_ATTRIBUTE_ADMIN_GROUP: _pocket-id_admins
+              # LDAP_ATTRIBUTE_ADMIN_GROUP: pocket-id_admin
               SESSION_DURATION: 1440
               UPLOAD_PATH: /app/data/uploads
               GEOLITE_DB_PATH: /app/data/GeoLite2-City.mmdb
