@@ -25,7 +25,7 @@ spec:
           autom4b:
             image:
               repository: seanap/auto-m4b
-              tag: latest@sha256:bf50bb8c674a6cced23115fc260791a72782e1ab57dbeff5184b848f4737bc6e
+              tag: latest@sha256:0a8c10ab6b983fcd63e5bb408244f00efc728b86882b9e5e48ceb5e7fe299d64
             env:
               CPU_CORES: 2
               SLEEPTIME: 60m

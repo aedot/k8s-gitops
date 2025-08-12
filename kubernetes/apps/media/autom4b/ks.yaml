@@ -13,6 +13,7 @@ spec:
   path: ./kubernetes/apps/media/autom4b/app
   components:
     - ../../../../components/keda/nfs-scaler
+    - ../../../../components/volsync
   dependsOn:
     - name: keda
       namespace: observability
