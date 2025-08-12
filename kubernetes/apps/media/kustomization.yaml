@@ -6,6 +6,7 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
+  - ./autom4b/ks.yaml
   - ./overseerr/ks.yaml
   - ./immich/ks.yaml
   - ./sonarr/ks.yaml
