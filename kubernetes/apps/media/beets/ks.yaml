@@ -11,15 +11,11 @@ spec:
       app.kubernetes.io/name: *app
   interval: 30m
   path: ./kubernetes/apps/media/beets/app
-  components:
-    - ../../../../components/volsync
-  dependsOn:
-    - name: autom4b
-      namespace: media
-    - name: longhorn
-      namespace: longhorn-system
-    - name: volsync
-      namespace: volsync-system
+  # dependsOn:
+    # - name: autom4b
+    #   namespace: media
+    # - name: longhorn
+    #   namespace: longhorn-system
   prune: true
   sourceRef:
     kind: GitRepository
@@ -32,6 +28,3 @@ spec:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
-    substitute:
-      APP: *app
-      VOLSYNC_CAPACITY: 1Gi

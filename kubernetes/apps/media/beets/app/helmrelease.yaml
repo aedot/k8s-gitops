@@ -18,22 +18,45 @@ spec:
       retries: 3
   values:
     controllers:
-      autom4b:
+      beets:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          autom4b:
+          beets:
             image:
-              repository: lscr.io/linuxserver/beets
-              tag: 2.3.1-ls283
+              repository: ghcr.io/home-operations/beets
+              tag: 2.3.1@sha256:cc4975f1a0be4e238d29fe13c18ce37e08964af0d5ceb1811485751b6490bcaf
             env:
               TZ: America/Los_Angeles
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
               limits:
                 memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     persistence:
+      config:
+        type: emptyDir
       audiobooks:
         type: nfs
         server: shango.internal
@@ -46,15 +69,11 @@ spec:
         path: /mnt/user/data/autom4b/untagged
         globalMounts:
           - path: /input
-      config:
-        enabled: true
-        existingClaim: *app
-        globalMounts:
-          - path: /config
-      scripts:
+      config-file:
         type: configMap
-        name: beets-scripts
+        name: beets-configmap
         globalMounts:
-          - path: /scripts
-            subPath: /custom-cont-init.d
+          - path: /config/.config/beets/config.yaml
+            subPath: config.yaml
+            readOnly: true
 
