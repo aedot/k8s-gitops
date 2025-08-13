@@ -27,6 +27,8 @@ spec:
               repository: ghcr.io/home-operations/beets
               tag: 2.3.1@sha256:cc4975f1a0be4e238d29fe13c18ce37e08964af0d5ceb1811485751b6490bcaf
             env:
+              BETANIN_HOST: 0.0.0.0
+              BETANIN_PORT: &port 80
               TZ: America/Los_Angeles
             # probes:
             #   liveness: &probes
@@ -48,21 +50,32 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
     persistence:
       config:
         type: emptyDir
-      audiobooks:
+      media:
         type: nfs
         server: shango.internal
-        path: /mnt/user/data/media/audiobooks
-        globalMounts:
-          - path: /audiobooks
-      input:
-        type: nfs
-        server: shango.internal
-        path: /mnt/user/data/autom4b/untagged
-        globalMounts:
-          - path: /input
+        path: /mnt/user/data
+        advancedMounts:
+          beets:
+            app:
+              - path: /downloads
+                subPath: torrents/audiobooks
+              - path: /audiobooks
+                subPath: media/audiobooks
       config-file:
         type: configMap
         name: beets-configmap
