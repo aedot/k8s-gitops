@@ -28,10 +28,10 @@ spec:
               tag: 2.3.1@sha256:cc4975f1a0be4e238d29fe13c18ce37e08964af0d5ceb1811485751b6490bcaf
             env:
               TZ: America/Los_Angeles
-            probes:
-              liveness: &probes
-                enabled: true
-              readiness: *probes
+            # probes:
+            #   liveness: &probes
+            #     enabled: true
+            #   readiness: *probes
             resources:
               requests:
                 cpu: 100m
