@@ -83,4 +83,13 @@ spec:
           - path: /config/.config/beets/config.yaml
             subPath: config.yaml
             readOnly: true
+      secret-file:
+        type: secret
+        name: beets-secret
+        globalMounts:
+          - path: /config/.config/betanin/config.toml
+            subPath: config.toml
+            readOnly: true
+      tmp:
+        type: emptyDir
 
