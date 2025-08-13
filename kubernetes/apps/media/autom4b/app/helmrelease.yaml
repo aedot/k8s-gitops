@@ -40,8 +40,7 @@ spec:
         type: nfs
         server: shango.internal
         path: /mnt/user/data/autom4b
-        globalMounts:
-          - path: /temp
+
       config:
         enabled: true
         existingClaim: *app
