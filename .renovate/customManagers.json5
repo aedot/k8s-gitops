@@ -4,7 +4,11 @@
     {
       customType: "regex",
       description: "Process annotated dependencies",
-      managerFilePatterns: ["/(^|/).+\\.ya?ml(?:\\.j2)?$/"],
+      managerFilePatterns: [
+        "/(^|/).+\\.env$/",
+        "/(^|/).+\\.sh$/",
+        "/(^|/).+\\.ya?ml(?:\\.j2)?$/",
+      ],
       matchStrings: [
         // # renovate: datasource=github-releases depName=kubernetes/kubernetes
         // version: 1.33.1
