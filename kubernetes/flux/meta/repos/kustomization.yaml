@@ -8,6 +8,4 @@ resources:
   - ./longhorn.yaml
   - ./bjw-s.yaml
   - ./cloudnative-pg.yaml
-  - ./emqx.yaml
   - ./grafana.yaml
-  - ./open-webui.yaml
