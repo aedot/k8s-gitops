@@ -3,25 +3,23 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app lubelog
-  namespace: &namespace self-hosted
+  name: &app fa-actual
+  namespace: &namespace default
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 30m
-  path: ./kubernetes/apps/self-hosted/lubelog/app
+  path: ./kubernetes/apps/default/actual/fa
   components:
     - ../../../../components/volsync
   dependsOn:
-    - name: cloudnative-pg-cluster
-      namespace: dbms
     - name: longhorn
       namespace: longhorn-system
     - name: volsync
       namespace: volsync-system
-    - name: akeyless-stores
-      namespace: external-secrets
+    - name: pocket-id
+      namespace: security
   prune: true
   sourceRef:
     kind: GitRepository
@@ -36,4 +34,4 @@ spec:
         kind: Secret
     substitute:
       APP: *app
-      VOLSYNC_CAPACITY: 1Gi
+      VOLSYNC_CAPACITY: 5Gi
