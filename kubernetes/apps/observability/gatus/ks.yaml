@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: postgres-cluster
+    - name: cloudnative-pg-cluster
       namespace: dbms
     - name: akeyless-stores
       namespace: external-secrets
