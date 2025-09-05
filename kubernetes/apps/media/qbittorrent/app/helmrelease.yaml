@@ -114,12 +114,12 @@ spec:
           qbittorrent:
             qbittorrent:
               - path: /config
-      empty-config:
-        type: emptyDir
-        advancedMounts:
-          qbittorrent:
-            port-forward:
-              - path: /config
+      # empty-config:
+      #   type: emptyDir
+      #   advancedMounts:
+      #     qbittorrent:
+      #       port-forward:
+      #         - path: /config
       gluetun-auth:
         type: secret
         name: qbittorrent-gluetun-secret
