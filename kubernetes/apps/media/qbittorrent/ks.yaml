@@ -17,8 +17,6 @@ spec:
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
-    - name: volsync
-      namespace: volsync-system
   prune: true
   sourceRef:
     kind: GitRepository
