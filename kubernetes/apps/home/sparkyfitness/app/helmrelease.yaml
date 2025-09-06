@@ -42,7 +42,7 @@ spec:
               SPARKY_FITNESS_SERVER_PORT: &server-port 3010
               SPARKY_FITNESS_FRONTEND_URL: "https://sparkyfitness.${SECRET_DOMAIN}"
               SPARKY_FITNESS_LOG_LEVEL: "info"
-              SPARKY_FITNESS_DISABLE_SIGNUP: "false"
+              SPARKY_FITNESS_DISABLE_SIGNUP: "true"
               NODE_ENV: "production"
               TZ: "America/Los_Angeles"
             probes:
