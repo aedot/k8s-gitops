@@ -3,25 +3,20 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app radarr
-  namespace: &namespace media
+  name: &app prowlarr
+  namespace: &namespace downloads
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/media/radarr/app
-  components:
-    - ../../../../components/keda/nfs-scaler
+  path: ./kubernetes/apps/downloads/prowlarr/app
   dependsOn:
-    - name: longhorn
-      namespace: longhorn-system
     - name: cloudnative-pg-cluster
       namespace: dbms
     - name: akeyless-stores
       namespace: external-secrets
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -33,5 +28,3 @@ spec:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
-    substitute:
-      APP: *app

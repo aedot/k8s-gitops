@@ -3,21 +3,19 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app sonarr
-  namespace: &namespace media
+  name: &app recyclarr
+  namespace: &namespace downloads
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 30m
-  path: ./kubernetes/apps/media/sonarr/app
+  path: ./kubernetes/apps/downloads/recyclarr/app
   components:
-    - ../../../../components/keda/nfs-scaler
+    - ../../../../components/volsync
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
-    - name: cloudnative-pg-cluster
-      namespace: dbms
     - name: akeyless-stores
       namespace: external-secrets
   prune: true
@@ -34,3 +32,4 @@ spec:
         kind: Secret
     substitute:
       APP: *app
+      VOLSYNC_CAPACITY: 1Gi

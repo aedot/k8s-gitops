@@ -10,11 +10,5 @@ resources:
   #TODO: find way to implement autom4b into beets using https://github.com/Neurrone/beets-audible
   # - ./beets/ks.yaml
   - ./overseerr/ks.yaml
-  - ./sonarr/ks.yaml
-  - ./radarr/ks.yaml
-  - ./prowlarr/ks.yaml
-  - ./flaresolverr/ks.yaml
   - ./plex/ks.yaml
   - ./tautulli/ks.yaml
-  - ./recyclarr/ks.yaml
-  - ./qbittorrent/ks.yaml
