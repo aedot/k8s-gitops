@@ -12,3 +12,4 @@ resources:
   - ./overseerr/ks.yaml
   - ./plex/ks.yaml
   - ./tautulli/ks.yaml
+  - ./maintainerr/ks.yaml
