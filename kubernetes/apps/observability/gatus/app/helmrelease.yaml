@@ -73,7 +73,7 @@ spec:
               limits:
                 memory: 256Mi
         serviceAccount:
-          name: *app
+          identifier: *app
     defaultPodOptions:
       hostUsers: false
       securityContext:
@@ -104,7 +104,7 @@ spec:
           http:
             port: *port
     serviceAccount:
-      name: *app
+      gatus: {}
     persistence:
       config:
         type: emptyDir
