@@ -13,6 +13,7 @@ spec:
   path: ./kubernetes/apps/media/wizarr/app
   components:
     - ../../../../components/volsync
+    - ../../../../components/gatus/external
   dependsOn:
     - name: plex
       namespace: *namespace
@@ -33,3 +34,4 @@ spec:
     substitute:
       APP: *app
       VOLSYNC_CAPACITY: 2Gi
+      GATUS_SUBDOMAIN: onboard
