@@ -8,6 +8,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  component:
+    - ../../../../components/gatus/guarded
   dependsOn:
     - name: akeyless-stores
       namespace: external-secrets
