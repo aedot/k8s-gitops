@@ -13,3 +13,4 @@ resources:
   - ./plex/ks.yaml
   - ./tautulli/ks.yaml
   - ./maintainerr/ks.yaml
+  - ./wizarr/ks.yaml
