@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app system-upgrade-controller
+  name: system-upgrade-controller
 spec:
   interval: 1h
   chartRef:
@@ -19,7 +19,6 @@ spec:
   values:
     controllers:
       system-upgrade-controller:
-        replicas: 2
         strategy: RollingUpdate
         containers:
           app:
@@ -34,16 +33,32 @@ spec:
                 valueFrom:
                   fieldRef:
                     fieldPath: spec.nodeName
+              SYSTEM_UPGRADE_JOB_BACKOFF_LIMIT: "99"
               SYSTEM_UPGRADE_JOB_PRIVILEGED: false
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-        serviceAccount:
-          name: *app
     defaultPodOptions:
-      hostUsers: false
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
+    rawResources:
+      talosServiceAccount:
+        apiVersion: talos.dev/v1alpha1
+        kind: ServiceAccount
+        spec:
+          spec:
+            roles: ["os:admin"]
+    rbac:
+      bindings:
+        system-upgrade-controller:
+          type: ClusterRoleBinding
+          roleRef:
+            kind: ClusterRole
+            name: cluster-admin
+          subjects:
+            - identifier: system-upgrade-controller
+    serviceAccount:
+      system-upgrade-controller: {}
