@@ -122,10 +122,10 @@ spec:
       gatus: {}
     persistence:
       config:
-        existingClaim: gatus
+        type: emptyDir
       config-file:
         type: configMap
-        name: gatus-configmap
+        name: "{{ .Release.Name }}-configmap"
         globalMounts:
           - path: /config/config.yaml
             subPath: config.yaml
