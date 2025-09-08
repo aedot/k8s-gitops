@@ -81,7 +81,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: gatus
+        controller: *app
         ports:
           http:
             port: *port
@@ -101,8 +101,8 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-            - identifier: app
-              port: *port
+              - name: *app
+                port: *port
     rbac:
       roles:
         gatus:
