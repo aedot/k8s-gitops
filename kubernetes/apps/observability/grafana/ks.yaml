@@ -8,13 +8,13 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  component:
-    - ../../../../components/gatus/guarded
   dependsOn:
     - name: akeyless-stores
       namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/observability/grafana/app
+  components:
+    - ../../../../components/gatus/guarded
   postBuild:
     substituteFrom:
       - name: cluster-secrets
