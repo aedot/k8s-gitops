@@ -11,4 +11,4 @@ resources:
   - ./home-assistant/ks.yaml
   - ./mealie/ks.yaml
   - ./mosquitto/ks.yaml
-  - ./sparkyfitness/ks.yaml # DISABLED FOR NOW - NOT FULLY DEVELOPED
+  # - ./sparkyfitness/ks.yaml # DISABLED FOR NOW - NOT FULLY DEVELOPED
