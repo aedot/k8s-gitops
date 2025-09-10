@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app postgres-backup
+  name: &app cnpg-dump
   namespace: &namespace dbms
 spec:
   targetNamespace: *namespace
@@ -11,7 +11,7 @@ spec:
       app.kubernetes.io/name: *app
   interval: 30m
   timeout: 5m
-  path: "./kubernetes/apps/dbms/postgres-backup/app"
+  path: "./kubernetes/apps/dbms/cnpg-dump/app"
   prune: true
   sourceRef:
     kind: GitRepository

@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app cnpg-backup
+  name: &app cnpg-dump
 spec:
   chartRef:
     kind: OCIRepository
@@ -30,7 +30,7 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     controllers:
-      postgres-backup:
+      cnpg-dump:
         type: cronjob
         cronjob:
           concurrencyPolicy: Forbid
@@ -44,7 +44,7 @@ spec:
               EXCLUDE_DBS: app postgres template0 template1
             envFrom: &envFrom
               - secretRef:
-                  name: postgres-backup-secret
+                  name: cnpg-dump-secret
             command: /scripts/list_dbs.sh
         containers:
           app:
@@ -80,7 +80,7 @@ spec:
       scripts:
         enabled: true
         type: configMap
-        name: postgres-backup-scripts # overriden by kustomizeconfig
+        name: cnpg-dump-scripts # overriden by kustomizeconfig
         defaultMode: 0775
         globalMounts:
           - path: /scripts
