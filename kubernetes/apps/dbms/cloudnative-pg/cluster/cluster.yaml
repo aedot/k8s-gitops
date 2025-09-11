@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: postgres17
+  name: postgres
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
@@ -11,7 +11,7 @@ spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:${POSTGRESQL_VERSION}
   primaryUpdateStrategy: unsupervised
   storage:
-    size: 20Gi
+    size: 50Gi
     storageClass: longhorn
   superuserSecret:
     name: cloudnative-pg-secret
@@ -28,21 +28,19 @@ spec:
   monitoring:
     enablePodMonitor: true
   plugins:
-  - name: barman-cloud.cloudnative-pg.io
-    isWALArchiver: true
-    parameters: &parameters
-      barmanObjectName: r2
-      serverName: postgres17-v21
-  # bootstrap:
-  #   recovery:
-  #     source: source
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters: &parameters
+        barmanObjectName: r2
+        serverName: postgres17-v41
+  bootstrap:
+    recovery:
+      source: source
   externalClusters:
     - name: source
       plugin:
         name: barman-cloud.cloudnative-pg.io
-        parameters:
-          barmanObjectName: r2
-          serverName: postgres17-v41
+        parameters: *parameters
 
 
 
