@@ -8,7 +8,7 @@ spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: system-upgrade-controller
+    name: app-template
   install:
     remediation:
       retries: -1
