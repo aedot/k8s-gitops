@@ -43,38 +43,3 @@ spec:
         parameters: *parameters
 
 
-
-# OLD CLUSTER SETTINGS
-#TODO: Remove this section when the cluster is stable & include README instructions
-#  backup:
-#     retentionPolicy: 30d
-#     barmanObjectStore: &barmanObjectStore
-#       data:
-#         compression: bzip2
-#       wal:
-#         compression: bzip2
-#         maxParallel: 8
-#       destinationPath: s3://cnpg-6g2d33/
-#       endpointURL: https://c04ec44babd84f729574b781430d8417.r2.cloudflarestorage.com
-#       # Note: serverName version needs to be incremented
-#       # when recovering from an existing cnpg cluster
-#       serverName: postgres17-v31
-#       s3Credentials:
-#           accessKeyId:
-#             name: cloudnative-pg-secret
-#             key: AWS_ACCESS_KEY_ID
-#           secretAccessKey:
-#             name: cloudnative-pg-secret
-#             key: AWS_SECRET_ACCESS_KEY
-#   # Note: previousCluster needs to be set to the name of the previous
-#   # cluster when recovering from an existing cnpg cluster
-#   bootstrap:
-#     recovery:
-#       source: &previousCluster postgres17-v22
-#   # Note: externalClusters is needed when recovering from an existing cnpg cluster
-#   externalClusters:
-#     - name: *previousCluster
-#       barmanObjectStore:
-#         <<: *barmanObjectStore
-#         serverName: *previousCluster
-
