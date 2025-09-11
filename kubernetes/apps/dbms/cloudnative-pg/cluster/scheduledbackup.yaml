@@ -15,10 +15,10 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: postgres-backup
+  name: cnpg-backup
 spec:
   cluster:
-    name: postgres
+    name: postgres17
   schedule: "@daily"
   backupOwnerReference: self
   method: plugin

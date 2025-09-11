@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: postgres
+  name: postgres17
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
@@ -33,9 +33,9 @@ spec:
     parameters: &parameters
       barmanObjectName: r2
       serverName: postgres17-v42
-  # bootstrap:
-  #   recovery:
-  #     source: source
+  bootstrap:
+    recovery:
+      source: source
   externalClusters:
     - name: source
       plugin:
