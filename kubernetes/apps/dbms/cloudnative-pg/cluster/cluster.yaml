@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: postgres
+  name: postgres17
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
