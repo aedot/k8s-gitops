@@ -1,19 +1,5 @@
 ---
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: OCIRepository
-metadata:
-  name: cilium
-spec:
-  interval: 1h
-  layerSelector:
-    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
-    operation: copy
-  ref:
-    tag: 1.18.1
-  url: oci://ghcr.io/home-operations/charts-mirror/cilium
-  verify:
-    provider: cosign
----
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -23,33 +9,98 @@ spec:
   chartRef:
     kind: OCIRepository
     name: cilium
-  valuesFrom:
-    - kind: ConfigMap
-      name: cilium-values
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
   values:
-    hubble:
+    autoDirectNodeRoutes: true
+    bpf:
+      datapathMode: netkit
+      masquerade: true
+      preallocatedMaps: true
+      # Ref: https://github.com/siderolabs/talos/issues/10002
+      hostLegacyRouting: true
+    cluster:
+      id: 1
+      name: k8s-gitops
+    cni:
+      # Required for pairing with Multus CNI
+      exclusive: false
+    cgroup:
+      automount:
+        enabled: false
+      hostRoot: /sys/fs/cgroup
+    # NOTE: devices might need to be set if you have more than one active NIC on your hosts
+    devices: enp88s0
+    endpointRoutes:
       enabled: true
-      metrics:
-        enabled:
-          - dns:query
-          - drop
-          - tcp
-          - flow
-          - port-distribution
-          - icmp
-          - http
+    envoy:
+      rollOutPods: true
+      prometheus:
         serviceMonitor:
           enabled: true
-        dashboards:
+    gatewayAPI:
+      enabled: true
+    dashboards:
+      enabled: true
+      annotations:
+        grafana_folder: Network
+    hubble:
+      enabled: false
+    ipam:
+      mode: kubernetes
+    ipv4NativeRoutingCIDR: 10.42.0.0/16
+    k8sServiceHost: 127.0.0.1
+    k8sServicePort: 7445
+    kubeProxyReplacement: true
+    kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+    l2announcements:
+      enabled: true
+    loadBalancer:
+      algorithm: maglev
+      mode: "dsr"
+    localRedirectPolicy: true
+    operator:
+      dashboards:
+        enabled: true
+        annotations:
+          grafana_folder: Network
+      prometheus:
+        enabled: true
+        serviceMonitor:
           enabled: true
-      relay:
+      replicas: 1
+      rollOutPods: true
+    prometheus:
+      enabled: true
+      serviceMonitor:
         enabled: true
-        rollOutPods: true
-        prometheus:
-          serviceMonitor:
-            enabled: true
-      ui:
-        enabled: true
-        rollOutPods: true
-    # operator:
-    #   tolerations: []
+        trustCRDsExist: true
+    rollOutCiliumPods: true
+    routingMode: native
+    securityContext:
+      capabilities:
+        ciliumAgent:
+          - CHOWN
+          - KILL
+          - NET_ADMIN
+          - NET_RAW
+          - IPC_LOCK
+          - SYS_ADMIN
+          - SYS_RESOURCE
+          - PERFMON
+          - BPF
+          - DAC_OVERRIDE
+          - FOWNER
+          - SETGID
+          - SETUID
+        cleanCiliumState:
+          - NET_ADMIN
+          - SYS_ADMIN
+          - SYS_RESOURCE
+    socketLB:
+      hostNamespaceOnly: true
