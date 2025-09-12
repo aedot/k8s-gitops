@@ -3,20 +3,27 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: flux-operator
+  name: k8s-gateway
 spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: flux-operator
+    name: k8s-gateway
   install:
     remediation:
       retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
   values:
-    serviceMonitor:
-      create: true
+    fullnameOverride: k8s-gateway
+    domain: "${SECRET_DOMAIN}"
+    ttl: 1
+    service:
+      type: LoadBalancer
+      port: 53
+      annotations:
+        lbipam.cilium.io/ips: "10.0.10.20"
+      externalTrafficPolicy: Cluster
+    watchedResources: ["HTTPRoute", "Service"]

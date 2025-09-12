@@ -3,20 +3,16 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: flux-operator
+  name: gateway-api-crds
 spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: flux-operator
+    name: gateway-api-crds
   install:
     remediation:
       retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
-  values:
-    serviceMonitor:
-      create: true

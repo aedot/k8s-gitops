@@ -15,3 +15,4 @@ resources:
   - ./intel-device-plugins/ks.yaml
   - ./node-feature-discovery/ks.yaml
   - ./snapshot-controller/ks.yaml
+  - ./gateway-api-crds/ks.yaml

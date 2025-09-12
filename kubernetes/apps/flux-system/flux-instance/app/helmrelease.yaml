@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -15,7 +15,11 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
+  dependsOn:
+    - name: flux-operator
+      namespace: flux-system
   values:
     instance:
       distribution:
@@ -30,17 +34,16 @@ spec:
         - notification-controller
       sync:
         kind: GitRepository
-        url: https://github.com/aedot/k8s-gitops
-        ref: refs/heads/main
+        url: "https://github.com/aedot/k8s-gitops.git"
+        ref: "refs/heads/main"
         path: kubernetes/flux/cluster
-        interval: 1h
       commonMetadata:
         labels:
           app.kubernetes.io/name: flux
       kustomize:
         patches:
           - # Increase the number of workers
-            patch: |-
+            patch: |
               - op: add
                 path: /spec/template/spec/containers/0/args/-
                 value: --concurrent=10
@@ -51,7 +54,7 @@ spec:
               kind: Deployment
               name: (kustomize-controller|helm-controller|source-controller)
           - # Increase the memory limits
-            patch: |-
+            patch: |
               apiVersion: apps/v1
               kind: Deployment
               metadata:
@@ -63,12 +66,12 @@ spec:
                       - name: manager
                         resources:
                           limits:
-                            memory: 2Gi
+                            memory: 1Gi
             target:
               kind: Deployment
               name: (kustomize-controller|helm-controller|source-controller)
           - # Enable in-memory kustomize builds
-            patch: |-
+            patch: |
               - op: add
                 path: /spec/template/spec/containers/0/args/-
                 value: --concurrent=20
@@ -82,7 +85,7 @@ spec:
               kind: Deployment
               name: kustomize-controller
           - # Enable Helm repositories caching
-            patch: |-
+            patch: |
               - op: add
                 path: /spec/template/spec/containers/0/args/-
                 value: --helm-cache-max-size=10
@@ -96,7 +99,7 @@ spec:
               kind: Deployment
               name: source-controller
           - # Flux near OOM detection for Helm
-            patch: |-
+            patch: |
               - op: add
                 path: /spec/template/spec/containers/0/args/-
                 value: --feature-gates=OOMWatch=true
@@ -110,7 +113,7 @@ spec:
               kind: Deployment
               name: helm-controller
           - # Disable chart digest tracking
-            patch: |-
+            patch: |
               - op: add
                 path: /spec/template/spec/containers/0/args/-
                 value: --feature-gates=DisableChartDigestTracking=true
