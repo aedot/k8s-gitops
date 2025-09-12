@@ -8,6 +8,8 @@ components:
 resources:
   - ./cilium/ks.yaml
   - ./coredns/ks.yaml
+  - ./gateway-api-crds/ks.yaml
+  - ./intel-device-plugins/ks.yaml
   - ./metrics-server/ks.yaml
   - ./reloader/ks.yaml
   - ./spegel/ks.yaml
