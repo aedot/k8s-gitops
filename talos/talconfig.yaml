@@ -8,7 +8,7 @@ kubernetesVersion: "${kubernetesVersion}"
 endpoint: https://10.0.20.10:6443
 additionalApiServerCertSans: &sans
   - "127.0.0.1"
-  - "10.0.20.10"
+  - &talosControlplaneVip "10.0.20.10"
 additionalMachineCertSans: *sans
 
 clusterPodNets: ["10.42.0.0/16"]
@@ -26,6 +26,32 @@ nodes:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
     controlPlane: true
+    nodeLabels:
+      intel.feature.node.kubernetes.io/gpu: "true"
+    schematic: &schematic
+      customization:
+        extraKernelArgs:
+          - -init_on_alloc                      # Less security, faster puter
+          - -selinux                            # Less security, faster puter
+          - -init_on_free                      # Less security, faster puter
+          - apparmor=0                          # Less security, more speed
+          - init_on_alloc=0                     # Less security, more speed
+          - init_on_free=0                      # Less security, more speed
+          - intel_iommu=on                      # PCI Passthrough
+          - iommu=pt                            # PCI Passthrough
+          - mitigations=off                     # Less security, more speed
+          - security=none                       # Less security, more speed
+          - net.ifnames=1                       # Enable predictable NIC naming
+          - talos.auditd.disabled=1             # Less security, faster puter
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/gasket-driver
+            - siderolabs/i915
+            - siderolabs/intel-ucode
+            - siderolabs/iscsi-tools
+            - siderolabs/mei
+            - siderolabs/thunderbolt
+            - siderolabs/util-linux-tools
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "58:47:ca:7b:e6:e5"
@@ -37,7 +63,8 @@ nodes:
             gateway: "10.0.20.1"
         mtu: 1500
         vip:
-          ip: "10.0.20.10"
+          ip: *talosControlplaneVip
+
   - hostname: "aje"
     ipAddress: "10.0.20.12"
     installDisk: "/dev/nvme0n1"
@@ -45,6 +72,9 @@ nodes:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
     controlPlane: true
+    nodeLabels:
+      intel.feature.node.kubernetes.io/gpu: "true"
+    schematic: *schematic
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "58:47:ca:7b:e9:49"
@@ -56,7 +86,8 @@ nodes:
             gateway: "10.0.20.1"
         mtu: 1500
         vip:
-          ip: "10.0.20.10"
+          ip: *talosControlplaneVip
+
   - hostname: "oba"
     ipAddress: "10.0.20.13"
     installDisk: "/dev/nvme0n1"
@@ -64,6 +95,9 @@ nodes:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
     controlPlane: true
+    nodeLabels:
+      intel.feature.node.kubernetes.io/gpu: "true"
+    schematic: *schematic
     networkInterfaces:
       - deviceSelector:
           hardwareAddr: "58:47:ca:7b:ea:1d"
@@ -75,7 +109,7 @@ nodes:
             gateway: "10.0.20.1"
         mtu: 1500
         vip:
-          ip: "10.0.20.10"
+          ip: *talosControlplaneVip
 
 # Global patches
 patches:
@@ -84,6 +118,7 @@ patches:
   - "@./patches/global/machine-network.yaml"
   - "@./patches/global/machine-sysctls.yaml"
   - "@./patches/global/machine-time.yaml"
+  - "@./patches/global/machine-features.yaml"
 
 # Controller patches
 controlPlane:
