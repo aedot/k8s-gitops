@@ -13,8 +13,8 @@ spec:
   path: ./kubernetes/apps/downloads/qbittorrent/app
   components:
     - ../../../../components/keda/nfs-scaler
-    - ../../../../components/volsync
     - ../../../../components/gatus/guarded
+    - ../../../../components/volsync
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
