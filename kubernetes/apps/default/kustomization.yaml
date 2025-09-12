@@ -5,7 +5,7 @@ namespace: default
 components:
   - ../../components/common
   - ../../components/repos/app-template
-resources:
-  - ./actual/ks.yaml
-  - ./it-tools/ks.yaml
-  - ./lubelog/ks.yaml
+resources: []
+  # - ./actual/ks.yaml
+  # - ./it-tools/ks.yaml
+  # - ./lubelog/ks.yaml

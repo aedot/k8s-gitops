@@ -5,10 +5,10 @@ namespace: home
 components:
   - ../../components/common
   - ../../components/repos/app-template
-resources:
-  - ./scrypted/ks.yaml
-  - ./zigbee2mqtt/ks.yaml
-  - ./home-assistant/ks.yaml
-  - ./mealie/ks.yaml
-  - ./mosquitto/ks.yaml
+resources: []
+  # - ./scrypted/ks.yaml
+  # - ./zigbee2mqtt/ks.yaml
+  # - ./home-assistant/ks.yaml
+  # - ./mealie/ks.yaml
+  # - ./mosquitto/ks.yaml
   # - ./sparkyfitness/ks.yaml # DISABLED FOR NOW - NOT FULLY DEVELOPED

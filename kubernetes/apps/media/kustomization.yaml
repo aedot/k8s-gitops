@@ -5,11 +5,11 @@ namespace: media
 components:
   - ../../components/common
   - ../../components/repos/app-template
-resources:
-  # - ./autom4b/ks.yaml
-  #TODO: find way to implement autom4b into beets using https://github.com/Neurrone/beets-audible
-  # - ./beets/ks.yaml
-  - ./overseerr/ks.yaml
-  - ./plex/ks.yaml
-  - ./tautulli/ks.yaml
-  - ./wizarr/ks.yaml
+resources: []
+  # # - ./autom4b/ks.yaml
+  # #TODO: find way to implement autom4b into beets using https://github.com/Neurrone/beets-audible
+  # # - ./beets/ks.yaml
+  # - ./overseerr/ks.yaml
+  # - ./plex/ks.yaml
+  # - ./tautulli/ks.yaml
+  # - ./wizarr/ks.yaml
