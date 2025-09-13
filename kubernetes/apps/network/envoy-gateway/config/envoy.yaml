@@ -39,7 +39,7 @@ spec:
     group: gateway.envoyproxy.io
     kind: EnvoyProxy
     name: envoy
-    namespace: networking
+    namespace: network
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
