@@ -31,7 +31,7 @@ spec:
               TZ: America/Los_Angeles
               MATTER_SERVER__INSTANCE_NAME: "{{ .Release.Name }}"
               MATTER_SERVER__PORT: &port 5580
-              MATTER_SERVER__APPLICATION_URL: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+              MATTER_SERVER__APPLICATION_URL: &host "matter.${SECRET_DOMAIN}"
               MATTER_SERVER__LOG_LEVEL: info
             args:
               - --storage-path=/data
@@ -57,6 +57,7 @@ spec:
         fsGroup: 0
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [34]
+        
     service:
       app:
         ports:
