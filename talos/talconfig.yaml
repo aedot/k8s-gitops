@@ -29,15 +29,18 @@ nodes:
     networkInterfaces:
       - interface: bond0
         bond:
+          deviceSelectors:
+            - hardwareAddr: "58:47:ca:7b:e6:e5"
+              driver: igc
           mode: active-backup
-          deviceSelectors: [{ hardwareAddr: "58:47:ca:7b:e6:e5", driver: igc }]
         dhcp: true
-        mtu: 1500
+        # addresses: ["10.0.20.11/24"]
+        # routes:
+        #   - network: "0.0.0.0/0"
+        #     gateway: "10.0.20.1"
         vip:
           ip: *talosControlplaneVip
-        vlans: &Vlans
-          - # Services VLAN (K8S svcs)
-            { vlanId: 20, dhcp: false, mtu: 1500 }
+        vlans: &vlans
           - # IoT VLAN
             { vlanId: 101, dhcp: false, mtu: 1500 }
   - hostname: "aje"
@@ -50,13 +53,18 @@ nodes:
     networkInterfaces:
       - interface: bond0
         bond:
+          deviceSelectors:
+            - hardwareAddr: "58:47:ca:7b:e9:49"
+              driver: igc
           mode: active-backup
-          deviceSelectors: [{ hardwareAddr: "58:47:ca:7b:e9:49", driver: igc }]
         dhcp: true
-        mtu: 1500
+        # addresses: ["10.0.20.12/24"]
+        # routes:
+        #   - network: "0.0.0.0/0"
+        #     gateway: "10.0.20.1"
         vip:
           ip: *talosControlplaneVip
-        vlans: *Vlans
+        vlans: *vlans
 
   - hostname: "oba"
     ipAddress: "10.0.20.13"
@@ -68,13 +76,18 @@ nodes:
     networkInterfaces:
       - interface: bond0
         bond:
+          deviceSelectors:
+            - hardwareAddr: "58:47:ca:7b:ea:1d"
+              driver: igc
           mode: active-backup
-          deviceSelectors: [{ hardwareAddr: "58:47:ca:7b:ea:1d", driver: igc }]
         dhcp: true
-        mtu: 1500
+        # addresses: ["10.0.20.13/24"]
+        # routes:
+        #   - network: "0.0.0.0/0"
+        #     gateway: "10.0.20.1"
         vip:
           ip: *talosControlplaneVip
-        vlans: *Vlans
+        vlans: *vlans
 
 # Controller patches
 controlPlane:
@@ -88,7 +101,6 @@ controlPlane:
         - -init_on_alloc                      # Less security, faster puter
         - -init_on_free                      # Less security, faster puter
         - -selinux                            # Less security, faster puter
-        - i915.enable_guc=3                   # Meteor Lake CPU / iGPU
         - apparmor=0                          # Less security, more speed
         - init_on_alloc=0                     # Less security, more speed
         - init_on_free=0                      # Less security, more speed
@@ -96,8 +108,6 @@ controlPlane:
         - iommu=pt                            # PCI Passthrough
         - mitigations=off                     # Less security, more speed
         - security=none                       # Less security, more speed
-        - net.ifnames=1                       # Enable predictable NIC naming
-        - sysctl.kernel.kexec_load_disabled=1 # Meteor Lake CPU / iGPU
         - talos.auditd.disabled=1             # Less security, faster puter
       systemExtensions:
         officialExtensions:

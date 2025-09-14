@@ -3,7 +3,7 @@
 apiVersion: cilium.io/v2alpha1
 kind: CiliumLoadBalancerIPPool
 metadata:
-  name: lb-pool
+  name: pool
 spec:
   allowFirstLastIPs: "No"
   blocks:
@@ -18,10 +18,7 @@ spec:
   loadBalancerIPs: true
   # NOTE: interfaces might need to be set if you have more than one active NIC on your hosts
   interfaces:
-  - bond0.20      # <-- use bond+ if using bonded interfaces
-  # - enp88s0
-  #   - ^eno[0-9]+
-  #   - ^eth[0-9]+
+  - bond0     
   nodeSelector:
     matchLabels:
       kubernetes.io/os: linux

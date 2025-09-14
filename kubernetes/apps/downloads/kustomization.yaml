@@ -4,10 +4,10 @@ kind: Kustomization
 namespace: downloads
 components:
   - ../../components/common
-resources: []
-  # - ./sonarr/ks.yaml
-  # - ./radarr/ks.yaml
-  # - ./prowlarr/ks.yaml
-  # - ./flaresolverr/ks.yaml
-  # - ./recyclarr/ks.yaml
-  # - ./qbittorrent/ks.yaml
+resources: 
+  - ./sonarr/ks.yaml
+  - ./radarr/ks.yaml
+  - ./prowlarr/ks.yaml
+  - ./flaresolverr/ks.yaml
+  - ./recyclarr/ks.yaml
+  - ./qbittorrent/ks.yaml

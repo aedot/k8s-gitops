@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: home
 components:
   - ../../components/common
-resources: []
-  # - ./mosquitto/ks.yaml
-  # - ./zigbee2mqtt/ks.yaml
+resources:
+  - ./mosquitto/ks.yaml
+  - ./zigbee2mqtt/ks.yaml
 
