@@ -17,8 +17,9 @@ metadata:
 spec:
   loadBalancerIPs: true
   # NOTE: interfaces might need to be set if you have more than one active NIC on your hosts
-  # interfaces:
-    # - enp88s0
+  interfaces:
+  - bond0      # <-- use bond+ if using bonded interfaces
+  # - enp88s0
   #   - ^eno[0-9]+
   #   - ^eth[0-9]+
   nodeSelector:
