@@ -30,19 +30,16 @@ nodes:
       - interface: bond0
         bond:
           mode: active-backup
-          deviceSelectors:
-            - hardwareAddr: "58:47:ca:7b:e6:e5"
+          deviceSelectors: [{ hardwareAddr: "58:47:ca:7b:e6:e5", driver: igc }]
         dhcp: true
+        mtu: 1500
         vip:
           ip: *talosControlplaneVip
-        vlans:
-          - &vlans101
-            # IoT VLAN
-            vlanId: 101
-            dhcp: false
-            mtu: 1500
-            dhcpOptions:
-              routeMetric: 4096
+        vlans: &Vlans
+          - # Services VLAN (K8S svcs)
+            { vlanId: 20, dhcp: false, mtu: 1500 }
+          - # IoT VLAN
+            { vlanId: 101, dhcp: false, mtu: 1500 }
   - hostname: "aje"
     ipAddress: "10.0.20.12"
     installDisk: "/dev/nvme0n1"
@@ -54,13 +51,13 @@ nodes:
       - interface: bond0
         bond:
           mode: active-backup
-          deviceSelectors:
-            - hardwareAddr: "58:47:ca:7b:e9:49"
+          deviceSelectors: [{ hardwareAddr: "58:47:ca:7b:e9:49", driver: igc }]
         dhcp: true
+        mtu: 1500
         vip:
           ip: *talosControlplaneVip
-        vlans:
-          - *vlans101
+        vlans: *Vlans
+
   - hostname: "oba"
     ipAddress: "10.0.20.13"
     installDisk: "/dev/nvme0n1"
@@ -72,13 +69,12 @@ nodes:
       - interface: bond0
         bond:
           mode: active-backup
-          deviceSelectors:
-            - hardwareAddr: "58:47:ca:7b:ea:1d"
+          deviceSelectors: [{ hardwareAddr: "58:47:ca:7b:ea:1d", driver: igc }]
         dhcp: true
+        mtu: 1500
         vip:
           ip: *talosControlplaneVip
-        vlans:
-          - *vlans101
+        vlans: *Vlans
 
 # Controller patches
 controlPlane:
