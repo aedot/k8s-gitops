@@ -55,10 +55,10 @@ spec:
             envFrom: *envFrom
             resources:
               requests:
-                cpu: 10m
-                memory: 100Mi
+                cpu: 5m
+                memory: 36Mi
               limits:
-                memory: 500Mi
+                memory: 128Mi
     service:
       app:
         controller: *app

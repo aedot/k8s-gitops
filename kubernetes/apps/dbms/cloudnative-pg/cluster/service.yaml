@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres17-loadbalancer
+  labels:
+    cnpg.io/cluster: postgres17
+  annotations:
+    lbipam.cilium.io/ips: 10.0.20.38
+spec:
+  ports:
+    - protocol: TCP
+      port: 5432
+  selector:
+    cnpg.io/cluster: postgres17
+    cnpg.io/instanceRole: primary
+  type: LoadBalancer
