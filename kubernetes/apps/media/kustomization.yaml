@@ -4,8 +4,8 @@ kind: Kustomization
 namespace: media
 components:
   - ../../components/common
-resources: 
+resources:
   - ./overseerr/ks.yaml
   - ./plex/ks.yaml
-  - ./tautulli/ks.yaml
+  # - ./tautulli/ks.yaml
   - ./wizarr/ks.yaml
