@@ -13,6 +13,7 @@
     ':automergeBranch',
     ':dependencyDashboard',
     ':disableRateLimiting',
+    ':gitSignOff',
     ':semanticCommits',
     ':timezone(America/Los_Angeles)',
   ],
@@ -26,6 +27,6 @@
     managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"]
   },
   kubernetes: {
-    managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"]
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"]
   },
 }
