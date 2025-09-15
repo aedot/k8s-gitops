@@ -10,7 +10,7 @@ resources:
   - ./karma/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./teslamate/ks.yaml
-  # - ./gatus/ks.yaml
+  - ./gatus/ks.yaml
   - ./loki/ks.yaml
   - ./alloy/ks.yaml
   - ./unpoller/ks.yaml
