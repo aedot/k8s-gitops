@@ -7,5 +7,4 @@ components:
 resources:
   - ./overseerr/ks.yaml
   - ./plex/ks.yaml
-  - ./tautulli/ks.yaml
   - ./wizarr/ks.yaml
