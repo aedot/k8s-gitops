@@ -24,7 +24,6 @@ spec:
     env:
       GF_DATE_FORMATS_USE_BROWSER_LOCALE: true
       GF_EXPLORE_ENABLED: true
-      GF_FEATURE_TOGGLES_ENABLE: publicDashboards
       GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
       GF_SECURITY_ANGULAR_SUPPORT_ENABLED: true
       GF_SERVER_ROOT_URL: https://grafana.${SECRET_DOMAIN}
@@ -40,34 +39,8 @@ spec:
         org_id: 1
         org_name: Main Org.
         org_role: Viewer
-      date_formats:
-        use_browser_locale: true
-        full_date: "MMM Do, YYYY hh:mm:ss a"
-      explore:
-        enabled: true
-      grafana_net:
-        url: https://grafana.net
-      log:
-        mode: console
-        filters: rendering:debug
       news:
         news_feed_enabled: false
-      panels:
-        disable_sanitize_html: true
-      paths:
-        data: /var/lib/grafana/data
-        logs: /var/log/grafana
-        plugins: /var/lib/grafana/plugins
-        provisioning: /etc/grafana/provisioning
-      security:
-        allow_embedding: true
-        cookie_samesite: grafana
-      server:
-        root_url: https://grafana.${SECRET_DOMAIN}
-      users:
-        auto_assign_org: true
-        auto_assign_org_id: 1
-
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -87,10 +60,8 @@ spec:
             uid: loki
             access: proxy
             url: http://loki-headless.observability.svc.cluster.local:3100
-            version: 1
-            isDefault: false
             jsonData:
-              maxLines: 200
+              maxLines: 250
           - name: Alertmanager
             type: alertmanager
             uid: alertmanager
@@ -111,7 +82,6 @@ spec:
             jsonData:
               postgresVersion: 1000
               sslmode: disable
-
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
@@ -178,7 +148,6 @@ spec:
             allowUiUpdates: true
             options:
               path: /var/lib/grafana/dashboards/teslamate
-
     dashboards:
       data:
         external-secrets:
@@ -241,6 +210,11 @@ spec:
           revision: 6
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
+        envoy:
+          # renovate: depName="Envoy Proxy Monitoring gRPC"
+          gnetId: 23239
+          revision: 1
+          datasource: [{ name: DS_AFRANET_PROMETHEUS, value: Prometheus }]
         external-dns:
           # renovate: depName="External-dns"
           gnetId: 15038
@@ -355,7 +329,6 @@ spec:
         tesla-visited:
           url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/visited.json
           datasource: TeslaMate
-
     sidecar:
       image:
         registry: ghcr.io
@@ -373,8 +346,8 @@ spec:
       datasources:
         enabled: true
         searchNamespace: ALL
-        initDatasources: "true"
         labelValue: ""
+        label: grafana_datasource
     plugins:
       - grafana-clock-panel
       - grafana-piechart-panel
@@ -382,12 +355,8 @@ spec:
       - natel-discrete-panel
       - pr0ps-trackmap-panel
       - vonage-status-panel
-      - natel-plotly-panel
-      - https://github.com/panodata/panodata-map-panel/releases/download/0.16.0/panodata-map-panel-0.16.0.zip;grafana-worldmap-panel-ng
     serviceMonitor:
       enabled: true
-    serviceAccount:
-      autoMount: true
     route:
       main:
         enabled: true
@@ -396,14 +365,6 @@ spec:
           - name: envoy-internal
             namespace: network
             sectionName: https
-    imageRenderer:
-      enabled: true
-      replicas: 2
-      networkPolicy:
-        limitIngress: false
-      serviceMonitor:
-        enabled: true
-
     persistence:
       enabled: false
     testFramework:
