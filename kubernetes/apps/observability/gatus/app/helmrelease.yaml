@@ -48,6 +48,7 @@ spec:
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
               TZ: America/Los_Angeles
+              SECRET_DOMAIN: ${SECRET_DOMAIN}
             probes:
               liveness: &probes
                 enabled: true
@@ -70,8 +71,6 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-        serviceAccount:
-          identifier: *app
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -122,10 +121,10 @@ spec:
       gatus: {}
     persistence:
       config:
-        type: emptyDir
+        existingClaim: *app
       config-file:
         type: configMap
-        name: "{{ .Release.Name }}-configmap"
+        name: "gatus-configmap"
         globalMounts:
           - path: /config/config.yaml
             subPath: config.yaml

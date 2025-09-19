@@ -32,6 +32,7 @@ There is a template at [onedr0p/cluster-template](https://github.com/onedr0p/clu
 - [multus](https://github.com/k8snetworkplumbingwg/multus-cni): Multi-homed pod networking.
 - [longhorn](https://github.com/longhorn/longhorn): Distributed block storage for peristent storage.
 - [spegel](https://github.com/spegel-org/spegel): Stateless cluster local OCI registry mirror.
+- [envoy-gateway](https://github.com/envoyproxy/gateway): Gateway API management for my HTTProutes.
 - [volsync](https://github.com/backube/volsync): Backup and recovery of persistent volume claims.
 
 ### GitOps
