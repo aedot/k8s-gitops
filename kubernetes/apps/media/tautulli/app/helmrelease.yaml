@@ -27,12 +27,8 @@ spec:
               repository: ghcr.io/home-operations/tautulli
               tag: 2.16.0@sha256:2a092f86a51f5718111097b0fced33eaa876b5904a543b7504f92357a4f75635
             env:
-              TAUTULLI_HTTP_BASE_URL: https://{{ .Release.Name }}.${SECRET_DOMAIN}
               TAUTULLI__PORT: &port 80
               TZ: America/Los_Angeles
-            envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness: &probes
                 enabled: true
@@ -41,7 +37,7 @@ spec:
                   httpGet:
                     path: /status
                     port: *port
-                  initialDelaySeconds: 0
+                  initialDelaySeconds: 15
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
