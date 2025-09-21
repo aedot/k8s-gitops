@@ -39,7 +39,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: cert-manager-issuers
+    - name: cert-manager
       namespace: cert-manager
     - name: akeyless-stores
       namespace: external-secrets
@@ -57,3 +57,4 @@ spec:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
+
