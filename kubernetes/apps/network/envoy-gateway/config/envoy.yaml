@@ -11,7 +11,6 @@ spec:
     type: Kubernetes
     kubernetes:
       envoyDeployment:
-        replicas: 2
         container:
           image: mirror.gcr.io/envoyproxy/envoy:v1.35.3
           resources:
@@ -21,6 +20,21 @@ spec:
               memory: 1Gi
       envoyService:
         externalTrafficPolicy: Cluster
+      envoyHpa:
+        minReplicas: 1
+        maxReplicas: 2
+        metrics:
+          - resource:
+              name: cpu
+              target:
+                averageUtilization: 60
+                type: Utilization
+            type: Resource
+        behavior:
+          scaleUp:
+            stabilizationWindowSeconds: 300
+          scaleDown:
+            stabilizationWindowSeconds: 300
   shutdown:
     drainTimeout: 180s
   telemetry:
@@ -87,12 +101,14 @@ spec:
     - name: http
       protocol: HTTP
       port: 80
+      hostname: '*.${SECRET_DOMAIN}'
       allowedRoutes:
         namespaces:
           from: Same
     - name: https
       protocol: HTTPS
       port: 443
+      hostname: '*.${SECRET_DOMAIN}'
       allowedRoutes:
         namespaces:
           from: All
