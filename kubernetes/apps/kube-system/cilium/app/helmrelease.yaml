@@ -34,6 +34,13 @@ spec:
       enabled: true
     cni:
       exclusive: false # Needed to allow Cilium to work with Multus
+    envoy:
+      rollOutPods: true
+      prometheus:
+        serviceMonitor:
+          enabled: true
+    gatewayAPI:
+      enabled: true
     hubble:
       enabled: false
     ipam:

@@ -57,7 +57,7 @@ spec:
         fsGroup: 0
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [34]
-        
+
     service:
       app:
         ports:
@@ -67,8 +67,8 @@ spec:
       app:
         hostnames: [*host]
         parentRefs:
-          - name: envoy-internal
-            namespace: network
+          - name: internal
+            namespace: kube-system
             sectionName: https
         rules:
           - backendRefs:
