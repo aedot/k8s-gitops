@@ -12,7 +12,7 @@ spec:
   interval: 30m
   path: ./kubernetes/apps/media/plex/app
   components:
-    - ../../../../components/keda/nfs-scaler
+    - ../../../../components/keda
     - ../../../../components/volsync
     - ../../../../components/gatus/external
   dependsOn:
