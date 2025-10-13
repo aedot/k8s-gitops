@@ -13,8 +13,6 @@ spec:
       namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/observability/grafana/app
-  components:
-    - ../../../../components/gatus/guarded
   postBuild:
     substituteFrom:
       - name: cluster-secrets

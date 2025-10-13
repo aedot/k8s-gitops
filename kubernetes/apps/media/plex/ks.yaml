@@ -14,7 +14,6 @@ spec:
   components:
     - ../../../../components/keda
     - ../../../../components/volsync
-    - ../../../../components/gatus/external
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
@@ -36,6 +35,5 @@ spec:
         kind: Secret
     substitute:
       APP: *app
-      GATUS_PATH: /web/index.html
       VOLSYNC_CACHE_CAPACITY: 25Gi
       VOLSYNC_CAPACITY: 50Gi

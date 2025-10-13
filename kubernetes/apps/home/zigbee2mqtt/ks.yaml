@@ -12,7 +12,6 @@ spec:
   path: ./kubernetes/apps/home/zigbee2mqtt/app
   components:
     - ../../../../components/volsync
-    - ../../../../components/gatus/guarded
   dependsOn:
     - name: mosquitto
       namespace: *namespace

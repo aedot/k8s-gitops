@@ -71,6 +71,9 @@ spec:
           - port: http
     route:
       app:
+        annotations:
+          gatus.home-operations.com/endpoint: |
+            url: https://{{ .Release.Name }}.${SECRET_DOMAIN}/healthz
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
         parentRefs:
           - name: external

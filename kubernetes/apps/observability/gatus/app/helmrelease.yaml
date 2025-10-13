@@ -87,6 +87,9 @@ spec:
           - port: http
     route:
       app:
+        annotations:
+          gatus.home-operations.com/endpoint: |
+            url: https://{{ .Release.Name }}.${SECRET_DOMAIN}/health
         hostnames:
           - "{{ .Release.Name }}.${SECRET_DOMAIN}"
           - status.${SECRET_DOMAIN}
@@ -98,7 +101,7 @@ spec:
           - backendRefs:
               - name: *app
                 port: *port
-  
+
     serviceAccount:
       gatus: {}
     persistence:

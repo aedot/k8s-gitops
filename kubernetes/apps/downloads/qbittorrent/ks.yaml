@@ -13,7 +13,6 @@ spec:
   path: ./kubernetes/apps/downloads/qbittorrent/app
   components:
     - ../../../../components/keda
-    - ../../../../components/gatus/guarded
     - ../../../../components/volsync
   dependsOn:
     - name: longhorn
