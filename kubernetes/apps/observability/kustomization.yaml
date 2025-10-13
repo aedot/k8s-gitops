@@ -14,9 +14,9 @@ resources:
   - ./karma/ks.yaml
   - ./keda/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
-  - ./loki/ks.yaml
   - ./nut-exporter/ks.yaml
   - ./silence-operator/ks.yaml
   - ./smartctl-exporter/ks.yaml
   - ./teslamate/ks.yaml
   - ./unpoller/ks.yaml
+  - ./victoria-logs/ks.yaml
