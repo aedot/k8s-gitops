@@ -4,6 +4,6 @@ kind: Kustomization
 namespace: security
 components:
   - ../../components/common
-resources: 
-  - ./lldap/ks.yaml
-  - ./pocket-id/ks.yaml
+resources: []
+  # - ./lldap/ks.yaml
+  # - ./pocket-id/ks.yaml
