@@ -32,7 +32,7 @@ spec:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
       parameters: &parameters
-        barmanObjectName: r2
+        barmanObjectName: cloudflare_r2
         serverName: postgres17-v41
   bootstrap:
     recovery:
