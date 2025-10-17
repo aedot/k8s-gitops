@@ -15,9 +15,6 @@ spec:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
-    substitute:
-      APP: *app
-      GATUS_SUBDOMAIN: status
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -25,5 +22,3 @@ spec:
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
-  timeout: 5m
-  wait: false

@@ -8,13 +8,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: gatus
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
   values:
     controllers:
       gatus:
@@ -28,7 +21,6 @@ spec:
             args:
               - --auto-httproute
               - --enable-httproute
-              - --enable-service
             resources:
               requests:
                 cpu: 10m
@@ -41,7 +33,7 @@ spec:
               repository: ghcr.io/twin/gatus
               tag: v5.26.0@sha256:3c0314bd1b1e9d7c34d8f2efee16b380770a9639ec5386cc305e8df104e097dc
             env:
-              WEB_PORT: &port 8080
+              GATUS_WEB_PORT: &port 8080
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
               TZ: America/Los_Angeles
@@ -71,15 +63,16 @@ spec:
           name: *app
     defaultPodOptions:
       hostUsers: false
-    service:
-      app:
-        ports:
-          http:
-            port: *port
-    serviceMonitor:
-      app:
-        endpoints:
-          - port: http
+    persistence:
+      config:
+        type: emptyDir
+      config-file:
+        type: configMap
+        name: "{{ .Release.Name }}-configmap"
+        globalMounts:
+          - path: /config/config.yaml
+            subPath: config.yaml
+            readOnly: true
     route:
       app:
         annotations:
@@ -92,17 +85,14 @@ spec:
           - name: external
             namespace: kube-system
             sectionName: https
-        rules:
-          - backendRefs:
-              - name: *app
-                port: *port
-    persistence:
-      config:
-        type: emptyDir
-      config-file:
-        type: configMap
-        name: "gatus-configmap"
-        globalMounts:
-          - path: /config/config.yaml
-            subPath: config.yaml
-            readOnly: true
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    serviceMonitor:
+      app:
+        endpoints:
+          - port: http
+
+
