@@ -11,6 +11,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/security/pocket-id/app
+  components:
+    - ../../../../components/volsync
   prune: true
   sourceRef:
     kind: GitRepository
