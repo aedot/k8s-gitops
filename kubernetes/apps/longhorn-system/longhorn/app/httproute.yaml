@@ -7,8 +7,8 @@ metadata:
 spec:
   hostnames: ["longhorn.${SECRET_DOMAIN}"]
   parentRefs:
-    - name: internal
-      namespace: kube-system
+    - name: envoy-internal
+      namespace: nework
       sectionName: https
   rules:
     - backendRefs:

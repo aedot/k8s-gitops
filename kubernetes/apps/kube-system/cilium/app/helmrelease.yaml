@@ -35,10 +35,11 @@ spec:
     cni:
       exclusive: false # Needed to allow Cilium to work with Multus
     envoy:
-      rollOutPods: true
-      prometheus:
-        serviceMonitor:
-          enabled: true
+      enabled: false
+      # rollOutPods: true
+      # prometheus:
+      #   serviceMonitor:
+      #     enabled: true
     gatewayAPI:
       enabled: true
     hubble:
@@ -61,6 +62,7 @@ spec:
       rollOutPods: true
       dashboards:
         enabled: true
+        grafana_folder: Network
       prometheus:
         enabled: true
         serviceMonitor:

@@ -76,8 +76,8 @@ spec:
             url: https://{{ .Release.Name }}.${SECRET_DOMAIN}/healthz
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
         parentRefs:
-          - name: external
-            namespace: kube-system
+          - name: envoy-external
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:
