@@ -41,7 +41,7 @@ spec:
       #   serviceMonitor:
       #     enabled: true
     gatewayAPI:
-      enabled: true
+      enabled: false
     hubble:
       enabled: false
     ipam:
@@ -94,5 +94,3 @@ spec:
           - NET_ADMIN
           - SYS_ADMIN
           - SYS_RESOURCE
-    # socketLB:
-    #   hostNamespaceOnly: true
