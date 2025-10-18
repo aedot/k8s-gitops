@@ -1,3 +1,13 @@
 cluster:
   apiServer:
-    admissionControl: []
+    admissionControl:
+      - name: PodSecurity
+        configuration:
+          defaults:
+            enforce: baseline
+            audit: baseline
+            warn: baseline
+          exemptions:
+            namespaces:
+              - kube-system
+              - longhorn-system
