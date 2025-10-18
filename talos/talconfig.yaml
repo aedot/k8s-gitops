@@ -21,11 +21,18 @@ cniConfig:
 nodes:
   - hostname: "oya"
     ipAddress: "10.0.20.11"
-    installDisk: "/dev/nvme0n1"
+    installDiskSelector:
+      model: "SPCC M.2 PCIe SSD"
     machineSpec:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
     controlPlane: true
+    userVolumes:
+      - name: longhorn
+        provisioning:
+          diskSelector:
+            match: disk.model == "KINGSTON OM8PGP41024N-A0"
+          minSize: "500GiB"
     networkInterfaces:
       - interface: bond0
         bond:
@@ -34,10 +41,6 @@ nodes:
               driver: igc
           mode: active-backup
         dhcp: true
-        # addresses: ["10.0.20.11/24"]
-        # routes:
-        #   - network: "0.0.0.0/0"
-        #     gateway: "10.0.20.1"
         vip:
           ip: *talosControlplaneVip
         vlans: &vlans
@@ -45,11 +48,18 @@ nodes:
             { vlanId: 101, dhcp: false, mtu: 1500 }
   - hostname: "aje"
     ipAddress: "10.0.20.12"
-    installDisk: "/dev/nvme0n1"
+    installDiskSelector:
+      model: "Netac NVMe SSD 1TB"
     machineSpec:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
     controlPlane: true
+    userVolumes:
+      - name: longhorn
+        provisioning:
+          diskSelector:
+            match: disk.model == "KINGSTON OM8PGP41024N-A0"
+          minSize: "500GiB"
     networkInterfaces:
       - interface: bond0
         bond:
@@ -58,21 +68,24 @@ nodes:
               driver: igc
           mode: active-backup
         dhcp: true
-        # addresses: ["10.0.20.12/24"]
-        # routes:
-        #   - network: "0.0.0.0/0"
-        #     gateway: "10.0.20.1"
         vip:
           ip: *talosControlplaneVip
         vlans: *vlans
 
   - hostname: "oba"
     ipAddress: "10.0.20.13"
-    installDisk: "/dev/nvme0n1"
+    installDiskSelector:
+      model: "SPCC M.2 PCIe SSD"
     machineSpec:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
     controlPlane: true
+    userVolumes:
+      - name: longhorn
+        provisioning:
+          diskSelector:
+            match: disk.model == "KINGSTON OM8PGP41024N-A0"
+          minSize: "500GiB"
     networkInterfaces:
       - interface: bond0
         bond:
@@ -81,10 +94,6 @@ nodes:
               driver: igc
           mode: active-backup
         dhcp: true
-        # addresses: ["10.0.20.13/24"]
-        # routes:
-        #   - network: "0.0.0.0/0"
-        #     gateway: "10.0.20.1"
         vip:
           ip: *talosControlplaneVip
         vlans: *vlans
@@ -98,17 +107,20 @@ controlPlane:
   schematic:
     customization:
       extraKernelArgs:
-        - -init_on_alloc                      # Less security, faster puter
-        - -init_on_free                      # Less security, faster puter
-        - -selinux                            # Less security, faster puter
-        - apparmor=0                          # Less security, more speed
-        - init_on_alloc=0                     # Less security, more speed
-        - init_on_free=0                      # Less security, more speed
-        - intel_iommu=on                      # PCI Passthrough
-        - iommu=pt                            # PCI Passthrough
-        - mitigations=off                     # Less security, more speed
-        - security=none                       # Less security, more speed
-        - talos.auditd.disabled=1             # Less security, faster puter
+        - -init_on_alloc # Less security, faster puter
+        - -init_on_free # Less security, faster puter
+        - -selinux # Less security, faster puter
+        - apparmor=0 # Less security, faster puter
+        - i915.enable_guc=3 # Meteor Lake CPU / iGPU
+        - init_on_alloc=0 # Less security, faster puter
+        - init_on_free=0 # Less security, faster puter
+        - intel_iommu=on # PCI Passthrough
+        - iommu=pt # PCI Passthrough
+        - mitigations=off # Less security, faster puter
+        - module_blacklist=igc # Disable onboard NIC
+        - security=none # Less security, faster puter
+        - sysctl.kernel.kexec_load_disabled=1 # Meteor Lake CPU / iGPU
+        - talos.auditd.disabled=1 # Less security, faster puter
       systemExtensions:
         officialExtensions:
           - siderolabs/gasket-driver
@@ -120,14 +132,13 @@ controlPlane:
           - siderolabs/util-linux-tools
 
   patches:
+    # Controller patches
       - "@./patches/controller/admission-controller-patch.yaml"
       - "@./patches/controller/cluster.yaml"
     # Global patches
+      - "@./patches/global/machine-features.yaml"
       - "@./patches/global/machine-files.yaml"
       - "@./patches/global/machine-kubelet.yaml"
       - "@./patches/global/machine-network.yaml"
       - "@./patches/global/machine-sysctls.yaml"
       - "@./patches/global/machine-time.yaml"
-      - "@./patches/global/machine-features.yaml"
-      - "@./patches/global/machine-longhorn.yaml"
-
