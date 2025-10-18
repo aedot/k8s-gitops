@@ -10,3 +10,4 @@ cluster:
           exemptions:
             namespaces:
               - longhorn-system
+              - network
