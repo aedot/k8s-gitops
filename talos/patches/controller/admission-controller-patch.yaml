@@ -4,10 +4,11 @@ cluster:
       - name: PodSecurity
         configuration:
           defaults:
-            enforce: baseline
+            enforce: privileged
             audit: baseline
             warn: baseline
           exemptions:
             namespaces:
               - kube-system
               - longhorn-system
+
