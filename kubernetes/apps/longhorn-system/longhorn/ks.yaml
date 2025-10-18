@@ -4,8 +4,6 @@ kind: Kustomization
 metadata:
   name: &app longhorn
   namespace: &namespace longhorn-system
-  labels:
-    pod-security.kubernetes.io/enforce: privileged
 spec:
   commonMetadata:
     labels:

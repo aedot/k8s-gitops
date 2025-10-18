@@ -8,5 +8,5 @@ cluster:
             audit: baseline
             warn: baseline
           exemptions:
-            namespaces: []
-              # - longhorn-system
+            namespaces:
+              - longhorn-system
