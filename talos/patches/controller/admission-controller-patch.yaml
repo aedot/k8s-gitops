@@ -1,14 +1,17 @@
+# patches/global/machine-admission.yaml
 cluster:
   apiServer:
     admissionControl:
       - name: PodSecurity
         configuration:
           defaults:
-            enforce: privileged
-            audit: baseline
-            warn: baseline
+            audit: restricted
+            audit-version: latest
+            enforce: baseline
+            enforce-version: latest
+            warn: restricted
+            warn-version: latest
           exemptions:
             namespaces:
               - kube-system
               - longhorn-system
-
