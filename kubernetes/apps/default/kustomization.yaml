@@ -6,7 +6,7 @@ namespace: default
 components:
   - ../../components/common
 resources:
-  # - ./actual/ks.yaml
+  - ./actual/ks.yaml
   - ./echo/ks.yaml
-  # - ./it-tools/ks.yaml
-  # - ./lubelog/ks.yaml
+  - ./it-tools/ks.yaml
+  - ./lubelog/ks.yaml
