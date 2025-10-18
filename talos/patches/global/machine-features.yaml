@@ -19,3 +19,4 @@ machine:
       enabled: true
       resolveMemberNames: true
       forwardKubeDNSToHost: false
+    
