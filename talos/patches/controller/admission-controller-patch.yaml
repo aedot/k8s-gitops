@@ -1,7 +1,3 @@
 cluster:
   apiServer:
-    admissionControl:
-      - name: NamespaceLifecycle
-      - name: ResourceQuota
-      - name: LimitRanger
-      - name: NodeRestriction
+    admissionControl: []
