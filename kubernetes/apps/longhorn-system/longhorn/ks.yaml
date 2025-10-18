@@ -8,12 +8,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-      pod-security.kubernetes.io/enforce: privileged
-      pod-security.kubernetes.io/enforce-version: latest
-      pod-security.kubernetes.io/audit: privileged
-      pod-security.kubernetes.io/audit-version: latest
-      pod-security.kubernetes.io/warn: privileged
-      pod-security.kubernetes.io/warn-version: latest
   interval: 30m
   path: ./kubernetes/apps/longhorn-system/longhorn/app
   postBuild:
