@@ -30,6 +30,16 @@ spec:
       replicaAutoBalance: best-effort
       storageMinimalAvailablePercentage: "1"
       storageReservedPercentageForDefaultDisk: "10"
+    longhornManager:
+      extraVolumes:
+        - name: longhorn-host-mnt
+          hostPath:
+            path: /var/mnt/longhorn
+            type: DirectoryOrCreate
+      extraVolumeMounts:
+        - name: longhorn-host-mnt
+          mountPath: /var/mnt/longhorn
+          readOnly: false
     ingress:
       enabled: false
     metrics:
