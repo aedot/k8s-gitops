@@ -18,7 +18,7 @@ spec:
     persistence:
       defaultDataLocality: best-effort
     defaultSettings:
-      # createDefaultDiskLabeledNodes: true
+      createDefaultDiskLabeledNodes: true
       defaultDataPath: "/var/mnt/longhorn"
       defaultDataLocality: best-effort
       defaultLonghornStaticStorageClass: longhorn
@@ -30,8 +30,8 @@ spec:
       replicaAutoBalance: "true"
       storageMinimalAvailablePercentage: "1"
       storageReservedPercentageForDefaultDisk: "10"
-    defaultBackupStore:
-      backupTarget: nfs://shango.internal:/mnt/user/backup/longhorn
+    # defaultBackupStore:
+    #   backupTarget: nfs://shango.internal:/mnt/user/backup/longhorn
     ingress:
       enabled: false
     metrics:
