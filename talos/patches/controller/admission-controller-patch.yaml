@@ -11,3 +11,4 @@ cluster:
             namespaces:
               - longhorn-system
               - network
+              - observability
