@@ -78,15 +78,12 @@ spec:
               limits:
                 memory: 8192Mi
             securityContext:
-              securityContext:
-              runAsUser: 568
-              runAsGroup: 568
               runAsNonRoot: true
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
+              runAsUser: 1000
+              runAsGroup: 1000
+              fsGroup: 1000
+              fsGroupChangePolicy: OnRootMismatch
+              supplementalGroups: [65536]
 
     service:
       app:
