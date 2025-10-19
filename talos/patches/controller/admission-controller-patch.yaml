@@ -13,3 +13,4 @@ cluster:
               - longhorn-system
               - network
               - observability
+              - volsync-system
