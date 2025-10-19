@@ -3,35 +3,25 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: echo
+  name: echo-server
 spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: echo
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  dependsOn:
-    - name: cloudflare-tunnel
-      namespace: network
+    name: echo-server
   values:
     controllers:
-      echo:
+      echo-server:
         strategy: RollingUpdate
         containers:
           app:
             image:
               repository: ghcr.io/mendhak/http-https-echo
-              tag: 37
+              tag: 37@sha256:f55000d9196bd3c853d384af7315f509d21ffb85de315c26e9874033b9f83e15
             env:
               HTTP_PORT: &port 80
               LOG_WITHOUT_NEWLINE: true
-              LOG_IGNORE_PATH: /healthz
+              LOG_IGNORE_PATH: &path /healthz
               PROMETHEUS_ENABLED: true
             probes:
               liveness: &probes
@@ -39,7 +29,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /healthz
+                    path: *path
                     port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
@@ -58,8 +48,8 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 65534
-        runAsGroup: 65534
+        runAsUser: 1000
+        runAsGroup: 1000
     service:
       app:
         ports:
@@ -74,7 +64,9 @@ spec:
         annotations:
           gatus.home-operations.com/endpoint: |
             url: https://{{ .Release.Name }}.${SECRET_DOMAIN}/healthz
-        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        hostnames:
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          - echo.${SECRET_DOMAIN}
         parentRefs:
           - name: envoy-external
             namespace: network
