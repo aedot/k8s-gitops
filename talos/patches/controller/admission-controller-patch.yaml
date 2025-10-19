@@ -9,6 +9,7 @@ cluster:
             warn: baseline
           exemptions:
             namespaces:
+              - downloads
               - longhorn-system
               - network
               - observability
