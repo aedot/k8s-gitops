@@ -84,6 +84,9 @@ spec:
               fsGroup: 1000
               fsGroupChangePolicy: OnRootMismatch
               supplementalGroups: [65536]
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
 
     service:
       app:
