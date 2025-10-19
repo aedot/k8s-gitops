@@ -110,16 +110,8 @@ spec:
     persistence:
       config:
         existingClaim: *app
-        advancedMounts:
-          qbittorrent:
-            app:
-              - path: /config
-      # empty-config:
-      #   type: emptyDir
-      #   advancedMounts:
-      #     qbittorrent:
-      #       port-forward:
-      #         - path: /config
+      tmp:
+        type: emptyDir
       gluetun-auth:
         type: secret
         name: qbittorrent-gluetun-secret
