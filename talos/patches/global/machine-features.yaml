@@ -1,8 +1,6 @@
 # Enable K8s Talos API Access
 machine:
   features:
-    rbac: true
-    stableHostname: true
     kubernetesTalosAPIAccess:
       enabled: true
       allowedRoles:
@@ -10,13 +8,3 @@ machine:
       allowedKubernetesNamespaces:
         - actions-runner-system
         - system-upgrade
-    apidCheckExtKeyUsage: true
-    diskQuotaSupport: true
-    kubePrism:
-      enabled: true
-      port: 7445
-    hostDNS:
-      enabled: true
-      resolveMemberNames: true
-      forwardKubeDNSToHost: false
-    
