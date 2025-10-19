@@ -1,17 +1,20 @@
-cluster:
-  apiServer:
-    admissionControl:
-      - name: PodSecurity
-        configuration:
-          defaults:
-            enforce: baseline
-            audit: baseline
-            warn: baseline
-          exemptions:
-            namespaces:
-              - downloads
-              - home
-              - longhorn-system
-              - network
-              - observability
-              - volsync-system
+# cluster:
+#   apiServer:
+#     admissionControl:
+#       - name: PodSecurity
+#         configuration:
+#           defaults:
+#             enforce: baseline
+#             audit: baseline
+#             warn: baseline
+#           exemptions:
+#             namespaces:
+#               - downloads
+#               - home
+#               - longhorn-system
+#               - network
+#               - observability
+#               - volsync-system
+
+- op: remove
+  path: /cluster/apiServer/admissionControl
