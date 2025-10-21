@@ -130,14 +130,14 @@ spec:
             options:
               path: /var/lib/grafana/dashboards/teslamate
     dashboards:
-      data:
-        external-secrets:
-          # renovate: depName="External Secrets"
-          gnetId: 21640
-          revision: 4
-          datasource:
-            - name: DS_METRICS
-              value: Prometheus
+      # data:
+      #   external-secrets:
+      #     # renovate: depName="External Secrets"
+      #     gnetId: 21640
+      #     revision: 4
+      #     datasource:
+      #       - name: DS_METRICS
+      #         value: Prometheus
       kubernetes:
         kubernetes-api-server:
           # renovate: depName="Kubernetes / System / API Server"
