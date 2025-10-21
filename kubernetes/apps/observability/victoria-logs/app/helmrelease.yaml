@@ -18,6 +18,14 @@ spec:
         size: 20Gi
       serviceMonitor:
         enabled: true
+      route:
+        enabled: true
+        hostnames:
+          - logs.${SECRET_DOMAIN}
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
     dashboards:
       enabled: true
       labels:
