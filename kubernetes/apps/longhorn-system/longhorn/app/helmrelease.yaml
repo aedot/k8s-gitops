@@ -19,6 +19,7 @@ spec:
       defaultDataLocality: best-effort
     defaultSettings:
       defaultDataPath: "/var/mnt/longhorn"
+      backupTarget: "nfs://shango.internal:/mnt/user/backup/longhorn"
       defaultDataLocality: best-effort
       defaultLonghornStaticStorageClass: longhorn
       defaultReplicaCount: "3"
