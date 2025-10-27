@@ -1,18 +1,57 @@
 {
-    "editor.bracketPairColorization.enabled": true,
-    "files.associations": {
-        "**/*.json5": "json5"
-    },
-    "files.trimTrailingWhitespace": true,
-    "sops.defaults.ageKeyFile": "age.key",
-    "vs-kubernetes": {
-        "vs-kubernetes.kubeconfig": "./kubeconfig",
-        "vs-kubernetes.knownKubeconfigs": [
-          "./kubeconfig"
-      ]
-    },
-    "yaml.schemaStore.enable": true,
-    "yaml.schemas": {
-        "kubernetes": "./kubernetes/**/*.yaml"
-    }
+  "editor.bracketPairColorization.enabled": true,
+  "editor.fontFamily": "FiraCode Nerd Font",
+  "editor.fontLigatures": true,
+  "editor.guides.bracketPairs": true,
+  "editor.guides.bracketPairsHorizontal": true,
+  "editor.guides.highlightActiveBracketPair": true,
+  "editor.hover.delay": 1500,
+  "editor.rulers": [100],
+  "editor.stickyScroll.enabled": false,
+  "explorer.autoReveal": false,
+  "files.associations": {
+    "**/*.json5": "json5",
+    "**/*.yaml.j2": "yaml"
+  },
+  "files.trimTrailingWhitespace": true,
+  "sops.defaults.ageKeyFile": "age.key",
+  "material-icon-theme.files.associations": {
+    "*.gotmpl": "smarty",
+    "kubeconfig": "kubernetes",
+    "talosconfig": "kubernetes"
+  },
+  "material-icon-theme.folders.associations": {
+    // top level
+    ".github/workflows": "ci",
+    ".renovate": "robot",
+    "bootstrap": "seeders",
+    "bootstrap/helmfile.d": "helm",
+    "flux": "pipe",
+    "talos": "linux",
+     // namespaces
+    "actions-runner-system": "github",
+    "cert-manager": "guard",
+    "dbms": "database",
+    "default": "home",
+    "downloads": "download",
+    "external-secrets": "secure",
+    "flux-system": "pipe",
+    "home": "user",
+    "kube-system": "kubernetes",
+    "longhorn-system": "dump",
+    "media": "video",
+    "network": "connection",
+    "observability": "event",
+    "security": "shield",
+    "system-upgrade": "update",
+    "volsync-system": "cloudflare"
+  },
+  "vs-kubernetes": {
+    "vs-kubernetes.kubeconfig": "./kubernetes/kubeconfig",
+    "vs-kubernetes.knownKubeconfigs": ["./kubernetes/kubeconfig"]
+  },
+  "yaml.schemaStore.enable": true,
+  "yaml.schemas": {
+      "kubernetes": "./kubernetes/**/*.yaml"
+  }
 }
