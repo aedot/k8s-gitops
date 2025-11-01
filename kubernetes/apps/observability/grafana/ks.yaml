@@ -39,6 +39,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
+    - name: grafana
+      namespace: observability
     - name: akeyless-stores
       namespace: external-secrets
     - name: longhorn

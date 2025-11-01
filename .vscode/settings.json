@@ -17,17 +17,13 @@
   "sops.defaults.ageKeyFile": "age.key",
   "material-icon-theme.files.associations": {
     "*.gotmpl": "smarty",
-    "kubeconfig": "kubernetes",
-    "talosconfig": "kubernetes"
-  },
-  "material-icon-theme.folders.associations": {
-    // top level
     ".github/workflows": "ci",
+    ".private": "archive",
     ".renovate": "robot",
     "bootstrap": "seeders",
-    "bootstrap/helmfile.d": "helm",
     "flux": "pipe",
     "talos": "linux",
+    "bootstrap/helmfile.d": "helm",
      // namespaces
     "actions-runner-system": "github",
     "cert-manager": "guard",
@@ -52,6 +48,19 @@
   },
   "yaml.schemaStore.enable": true,
   "yaml.schemas": {
-      "kubernetes": "./kubernetes/**/*.yaml"
+    "prettier.configPath": ".github/linters/.prettierrc.yaml",
+  "prettier.ignorePath": ".github/linters/.prettierignore",
+  "yaml.schemaStore.enable": true,
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/kustomization.json": "**/kustomization.yaml",
+    "https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json": "**/install.yaml",
+    "https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json": "**/helm-release.yaml",
+    "https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json": "**/prometheus-rule.yaml",
+    "https://kubernetes-schemas.pages.dev/external-secrets.io/externalsecret_v1": "**/external-secrets.yaml",
+    "https://kubernetes-schemas.pages.dev/monitoring.coreos.com/podmonitor_v1.json": "**/pod-monitor.yaml",
+    "https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json": "**/httproute.yaml",
+    "https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1beta2.json": "**/oci-repository.yaml",
+    "https://homelab-schemas-epg.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json": "**/grafana-dashboard.yaml"
   }
+}
 }
