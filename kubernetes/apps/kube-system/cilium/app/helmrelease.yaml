@@ -36,6 +36,8 @@ spec:
       exclusive: false # Needed to allow Cilium to work with Multus
     envoy:
       enabled: false
+    gatewayAPI:
+      enabled: false
     hubble:
       enabled: false
     ipam:
@@ -56,7 +58,6 @@ spec:
       rollOutPods: true
       dashboards:
         enabled: true
-        grafana_folder: Network
       prometheus:
         enabled: true
         serviceMonitor:
@@ -88,5 +89,3 @@ spec:
           - NET_ADMIN
           - SYS_ADMIN
           - SYS_RESOURCE
-    # socketLB:
-    #   hostNamespaceOnly: true
