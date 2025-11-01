@@ -16,7 +16,7 @@ spec:
           key: "DATABASE_PASS"
   datasource:
     type: postgres
-    url: postgres17-rw.databases
+    url: postgres17-rw.dbms
     user: postgres
     secureJsonData:
       password: $DATABASE_PASS
