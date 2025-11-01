@@ -16,8 +16,8 @@ spec:
           key: "DATABASE_PASS"
   datasource:
     type: postgres
-    url: postgres17-rw.dbms
-    user: postgres
+    url: postgres17-ro.dbms
+    user: tessy
     secureJsonData:
       password: $DATABASE_PASS
     name: TeslaMate
