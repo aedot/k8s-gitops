@@ -48,7 +48,7 @@
   },
   "vs-kubernetes": {
     "vs-kubernetes.kubeconfig": "./kubernetes/kubeconfig",
-    "vs-kubernetes.knownKubeconfigs": ["./kubernetes/kubeconfig"]
+    "vs-kubernetes.knownKubeconfigs": []
   },
   "yaml.schemaStore.enable": true,
   "yaml.schemas": {

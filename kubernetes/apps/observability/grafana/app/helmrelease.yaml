@@ -130,11 +130,11 @@ spec:
             options:
               path: /var/lib/grafana/dashboards/teslamate
     dashboards:
-      Data:
+      data:
         external-secrets:
           url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
           datasource: Prometheus
-      Kubernetes:
+      kubernetes:
         kubernetes-api-server:
           # renovate: depName="Kubernetes / System / API Server"
           gnetId: 15761
@@ -170,7 +170,7 @@ spec:
           gnetId: 11454
           revision: 14
           datasource: Prometheus
-      Network:
+      network:
         blackbox-exporter:
           # renovate: depName="Prometheus Blackbox Exporter"
           gnetId: 7587
@@ -210,7 +210,7 @@ spec:
           gnetId: 11312
           revision: 9
           datasource: Prometheus
-      Storage:
+      storage:
         longhorn:
           # renovate: depName="Longhorn"
           gnetId: 16888
@@ -241,7 +241,7 @@ spec:
           revision: 1
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
-      Teslamate:
+      teslamate:
         tesla-battery-health:
           url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/battery-health.json
           datasource: TeslaMate
