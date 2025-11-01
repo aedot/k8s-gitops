@@ -12,7 +12,7 @@ spec:
     - targetPath: "secureJsonData.password"
       valueFrom:
         secretKeyRef:
-          name: "teslamate"
+          name: "teslamate-secret"
           key: "DATABASE_PASS"
   datasource:
     type: postgres
