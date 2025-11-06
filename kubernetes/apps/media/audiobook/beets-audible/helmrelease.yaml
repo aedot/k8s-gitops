@@ -35,9 +35,9 @@ spec:
                 memory: 512Mi
     defaultPodOptions:
       securityContext:
-        runAsNonRoot: false
-        runAsUser: 0
-        runAsGroup: 0
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
@@ -62,9 +62,8 @@ spec:
                 port: *port
     persistence:
       config:
-        type: nfs
-        server: shango.internal
-        path: /mnt/user/data/beets
+        enabled: true
+        existingClaim: *app
         globalMounts:
           - path: /config
       audiobook:
@@ -79,7 +78,3 @@ spec:
         path: /mnt/user/data/autom4b/recentlyadded
         globalMounts:
           - path: /input
-      run:
-        type: emptyDir
-        globalMounts:
-          - path: /run
