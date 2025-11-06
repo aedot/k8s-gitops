@@ -62,6 +62,10 @@ spec:
               - name: *app
                 port: *port
     persistence:
+      run:
+        type: emptyDir
+        globalMounts:
+          - path: /run
       config:
         enabled: true
         existingClaim: *app
