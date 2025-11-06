@@ -78,3 +78,7 @@ spec:
         path: /mnt/user/data/autom4b/recentlyadded
         globalMounts:
           - path: /input
+      run:
+        type: emptyDir
+        globalMounts:
+          - path: /run
