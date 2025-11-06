@@ -23,6 +23,8 @@ spec:
             env:
               TZ: America/Los_Angeles
               PORT: &port 8337
+              PUID: "1000"
+              PGID: "1000"
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
