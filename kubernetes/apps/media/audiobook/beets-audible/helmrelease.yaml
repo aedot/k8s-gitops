@@ -12,7 +12,7 @@ spec:
 
   values:
     controllers:
-      overseerr:
+      beets-audible:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
