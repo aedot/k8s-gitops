@@ -67,8 +67,9 @@ spec:
         globalMounts:
           - path: /run
       config:
-        enabled: true
-        existingClaim: *app
+        type: nfs
+        server: shango.internal
+        path: /mnt/user/data/beets
         globalMounts:
           - path: /config
       audiobook:
