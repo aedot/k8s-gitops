@@ -9,12 +9,23 @@ spec:
     kind: OCIRepository
     name: audiobook
   interval: 30m
-
   values:
     controllers:
       beets-audible:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          busybox:
+            image:
+              repository: ghcr.io/aedot/busybox
+              tag: 1.37.0@sha256:b2150d9ba285fd72a62bb20722b14f517072040b03720daf2f0b29f2389685d9
+            command:
+              - sh
+              - -c
+              - |
+                mkdir -p /config
+                mkdir -p /config/scripts
+                chown -R 1000:1000 /config
         containers:
           app:
             image:
