@@ -23,8 +23,6 @@ spec:
             env:
               TZ: America/Los_Angeles
               PORT: &port 8337
-              PUID: "1000"
-              PGID: "1000"
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -69,9 +67,8 @@ spec:
         globalMounts:
           - path: /run
       config:
-        type: nfs
-        server: shango.internal
-        path: /mnt/user/data/beets
+        enabled: true
+        existingClaim: *app
         globalMounts:
           - path: /config
       audiobook:
