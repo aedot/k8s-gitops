@@ -30,7 +30,7 @@ spec:
           app:
             image:
               repository: ghcr.io/aedot/beets-audible
-              tag: 2.5.1@sha256:df78f9d2cd43b49655f1dda153e116f00477abebafe3b90f2ef363662672b50c
+              tag: 2.5.1@sha256:60ce497dc6a2f3946b7d66466cb62b29ffb704b8d1dd7adebb550792accd7580
             env:
               TZ: America/Los_Angeles
               PORT: &port 8337
