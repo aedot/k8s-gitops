@@ -1,0 +1,57 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: autom4b
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: audiobook
+  interval: 30m
+  values:
+    controllers:
+      autom4b:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/aedot/autom4b
+              tag: 0.5.2@sha256:fe643ca893dfffc8632bc91edb6f7cbba8b7fe651c8979bea3405c771fa2a33d
+            env:
+              PUID: 1000
+              PGID: 1000
+              SLEEPTIME: 5m
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 361Mi
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: false     
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+    persistence:
+      temp:
+        type: nfs
+        server: shango.internal
+        path: /mnt/user/data/autom4b
+        globalMounts:
+          - path: /temp
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          autom4b:
+            app:
+              - path: /config
