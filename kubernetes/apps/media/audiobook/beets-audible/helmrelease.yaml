@@ -68,11 +68,11 @@ spec:
               - name: *app
                 port: *port
     persistence:
-      config:
-        enabled: true
-        existingClaim: *app
+      config-file:
+        type: configMap
+        name: beets-audible-config
         globalMounts:
-          - path: /resources/config.yaml
+          - path: /config/config.yaml
             subPath: config.yaml
             readOnly: true
       audiobook:
