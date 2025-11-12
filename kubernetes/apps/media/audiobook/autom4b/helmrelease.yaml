@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/aedot/autom4b
-              tag: 0.5.2@sha256:fe643ca893dfffc8632bc91edb6f7cbba8b7fe651c8979bea3405c771fa2a33d
+              tag: 0.5.2@sha256:05f550c61a3707ebe29129cae5c19a1fa033e49574c7cf1053de9b3f199e7e00
             env:
               PUID: 1000
               PGID: 1000
