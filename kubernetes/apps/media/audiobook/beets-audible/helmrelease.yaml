@@ -69,8 +69,8 @@ spec:
                 port: *port
     persistence:
       config:
-        type: configMap
-        name: beets-audible-config
+        enabled: true
+        existingClaim: *app
         globalMounts:
           - path: /resources/config.yaml
             subPath: config.yaml
