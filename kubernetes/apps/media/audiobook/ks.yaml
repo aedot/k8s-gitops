@@ -1,16 +1,46 @@
+# ---
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app autom4b
+#   namespace: &namespace media
+# spec:
+#   commonMetadata:
+#     labels:
+#       app.kubernetes.io/name: *app
+#   interval: 30m
+#   path: ./kubernetes/apps/media/audiobook/autom4b
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   targetNamespace: *namespace
+#   timeout: 5m
+#   wait: false
+#   postBuild:
+#     substituteFrom:
+#       - name: cluster-secrets
+#         kind: Secret
+#     substitute:
+#       APP: *app
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app autom4b
+  name: &app beets-audible
   namespace: &namespace media
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 30m
-  path: ./kubernetes/apps/media/audiobook/autom4b
+  path: ./kubernetes/apps/media/audiobook/beets-audible
+  dependsOn:
+    - name: longhorn
+      namespace: longhorn-system
   prune: true
   sourceRef:
     kind: GitRepository
@@ -25,34 +55,4 @@ spec:
         kind: Secret
     substitute:
       APP: *app
-# ---
-# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: &app beets-audible
-#   namespace: &namespace media
-# spec:
-#   commonMetadata:
-#     labels:
-#       app.kubernetes.io/name: *app
-#   interval: 30m
-#   path: ./kubernetes/apps/media/audiobook/beets-audible
-#   dependsOn:
-#     - name: longhorn
-#       namespace: longhorn-system
-#   prune: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: flux-system
-#     namespace: flux-system
-#   targetNamespace: *namespace
-#   timeout: 5m
-#   wait: false
-#   postBuild:
-#     substituteFrom:
-#       - name: cluster-secrets
-#         kind: Secret
-#     substitute:
-      # APP: *app
 

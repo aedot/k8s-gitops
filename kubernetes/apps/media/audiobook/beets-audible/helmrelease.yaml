@@ -14,18 +14,6 @@ spec:
       beets-audible:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          busybox:
-            image:
-              repository: ghcr.io/aedot/busybox
-              tag: 1.37.0@sha256:6b6411e10ab162cfe7e71dcb5253c7d2b6180b37456687e309323a1490cea777
-            command:
-              - sh
-              - -c
-              - |
-                mkdir -p /config
-                mkdir -p /config/scripts
-                chown -R 1000:1000 /config
         containers:
           app:
             image:
@@ -34,6 +22,16 @@ spec:
             env:
               TZ: America/Los_Angeles
               PORT: &port 8337
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -41,18 +39,15 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 361Mi
               limits:
-                memory: 512Mi
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: false      # allow root startup
-        runAsUser: 0
-        runAsGroup: 0
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile:
-          type: RuntimeDefault
+                memory: 256Mi
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            runAsNonRoot: true
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         controller: *app
@@ -73,15 +68,13 @@ spec:
               - name: *app
                 port: *port
     persistence:
-      run:
-        type: emptyDir
-        globalMounts:
-          - path: /run
       config:
-        enabled: true
-        existingClaim: *app
+        type: configMap
+        name: beets-audible-config
         globalMounts:
-          - path: /config
+          - path: /resources/config.yaml
+            subPath: config.yaml
+            readOnly: true
       audiobook:
         type: nfs
         server: shango.internal
@@ -91,6 +84,6 @@ spec:
       input:
         type: nfs
         server: shango.internal
-        path: /mnt/user/data/autom4b/recentlyadded
+        path: /mnt/user/data/autom4b/untagged
         globalMounts:
           - path: /input

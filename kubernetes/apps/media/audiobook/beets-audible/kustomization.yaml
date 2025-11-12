@@ -6,3 +6,11 @@ resources:
   - ./pvc.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
+configMapGenerator:
+  - name: beets-audible-config
+    files:
+      - ./resources/config.yaml
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    reloader.stakater.com/match: "true"
