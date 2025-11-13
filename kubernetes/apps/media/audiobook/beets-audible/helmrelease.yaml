@@ -53,6 +53,10 @@ spec:
         seccompProfile:
           type: RuntimeDefault
     persistence:
+      run:
+        type: emptyDir
+        globalMounts:
+          - path: /run
       config:
         enabled: true
         existingClaim: *app
