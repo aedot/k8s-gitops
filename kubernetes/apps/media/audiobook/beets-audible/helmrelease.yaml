@@ -14,17 +14,6 @@ spec:
       beets-audible:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          busybox:
-            image:
-              repository: ghcr.io/aedot/busybox
-              tag: 1.37.0@sha256:6b6411e10ab162cfe7e71dcb5253c7d2b6180b37456687e309323a1490cea777
-            command:
-              - sh
-              - -c
-              - |
-                mkdir -p /config
-                chown -R 1000:1000 /config
         containers:
           app:
             image:
@@ -32,17 +21,8 @@ spec:
               tag: 2.5.1@sha256:60ce497dc6a2f3946b7d66466cb62b29ffb704b8d1dd7adebb550792accd7580
             env:
               TZ: America/Los_Angeles
-              PORT: &port 8337
-            probes:
-              liveness:
-                enabled: true
-              readiness:
-                enabled: true
-              startup:
-                enabled: true
-                spec:
-                  failureThreshold: 30
-                  periodSeconds: 10
+              PUID: 1000
+              PGID: 1000
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -59,25 +39,6 @@ spec:
             runAsNonRoot: true
             fsGroup: 1000
             fsGroupChangePolicy: OnRootMismatch
-    service:
-      app:
-        controller: *app
-        ports:
-          http:
-            port: *port
-    route:
-      app:
-        hostnames:
-          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
-          - beets.${SECRET_DOMAIN}
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-            sectionName: https
-        rules:
-          - backendRefs:
-              - name: *app
-                port: *port
     persistence:
       config-file:
         type: configMap
@@ -86,7 +47,7 @@ spec:
           - path: /config/config.yaml
             subPath: config.yaml
             readOnly: true
-      audiobook:
+      audiobooks:
         type: nfs
         server: shango.internal
         path: /mnt/user/data/media/audiobooks
