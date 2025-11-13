@@ -14,6 +14,15 @@ spec:
       beets-audible:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          beets-audible-init:
+            image:
+              repository: ghcr.io/aedot/busybox
+              tag: 1.37.0@sha256:6b6411e10ab162cfe7e71dcb5253c7d2b6180b37456687e309323a1490cea777
+            command:
+              - sh
+              - -c
+              - cp /tmp/config.yaml /config/config.yaml
         containers:
           app:
             image:
@@ -40,13 +49,11 @@ spec:
             fsGroup: 1000
             fsGroupChangePolicy: OnRootMismatch
     persistence:
-      config-file:
-        type: configMap
-        name: beets-audible-config
+      config:
+        enabled: true
+        existingClaim: *app
         globalMounts:
-          - path: /config/config.yaml
-            subPath: config.yaml
-            readOnly: true
+          - path: /config
       audiobooks:
         type: nfs
         server: shango.internal
