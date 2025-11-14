@@ -17,12 +17,13 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/aedot/autom4b
-              tag: 0.5.2@sha256:05f550c61a3707ebe29129cae5c19a1fa033e49574c7cf1053de9b3f199e7e00
+              repository: seanap/auto-m4b
+              tag: latest@sha256:0a8c10ab6b983fcd63e5bb408244f00efc728b86882b9e5e48ceb5e7fe299d64
             env:
               PUID: 1000
               PGID: 1000
               SLEEPTIME: 5m
+              MAKE_BACKUP: Y
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -35,7 +36,7 @@ spec:
                 memory: 512Mi
     defaultPodOptions:
       securityContext:
-        runAsNonRoot: false     
+        runAsNonRoot: false
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
