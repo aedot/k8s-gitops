@@ -16,8 +16,7 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           app:
-            command:
-              - /app/entrypoint.sh
+            command: []
             args: []
             image:
               repository: ghcr.io/aedot/soundbind
