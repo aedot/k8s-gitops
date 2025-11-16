@@ -85,9 +85,3 @@ spec:
         path: /mnt/user/data/autom4b
         globalMounts:
           - path: /temp
-      tmpfs:
-        type: emptyDir
-        advancedMounts:
-          soundbind:
-            app:
-              - path: /config
