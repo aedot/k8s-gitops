@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: autom4b
+  name: &app soundbind
 spec:
   chartRef:
     kind: OCIRepository
@@ -11,17 +11,21 @@ spec:
   interval: 30m
   values:
     controllers:
-      autom4b:
+      soundbind:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: seanap/auto-m4b
-              tag: latest@sha256:0a8c10ab6b983fcd63e5bb408244f00efc728b86882b9e5e48ceb5e7fe299d64
+              repository: ghcr.io/aedot/soundbind
+              tag: v1.0.0@sha256-33a6b6100fa674fa62c7fa6cb3283f1aa2833b219bd1978ebf84c95721421b45
             env:
               PUID: 1000
               PGID: 1000
+              LOG_LEVEL: INFO
+              TZ: America/Los_Angeles
+              WATCH_INTERVAL: 10m
+              WEB_UI_PORT: &port 8080
               SLEEPTIME: 5m
               MAKE_BACKUP: Y
             securityContext:
@@ -34,6 +38,32 @@ spec:
                 memory: 361Mi
               limits:
                 memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       temp:
         type: nfs
@@ -44,6 +74,6 @@ spec:
       tmpfs:
         type: emptyDir
         advancedMounts:
-          autom4b:
+          soundbind:
             app:
               - path: /config
