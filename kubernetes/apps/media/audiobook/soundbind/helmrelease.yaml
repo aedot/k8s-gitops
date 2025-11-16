@@ -16,11 +16,9 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           app:
-            command: ["python"]
-            args: ["/app/main.py"]
             image:
               repository: ghcr.io/aedot/soundbind
-              tag: v1.0.0@sha256:1eaa4e3a31863af0898061eac8107c514c3f13de0c9f726aece1ee896001ac2f
+              tag: v0.2.0@sha256:49e94b0e28047ab182598faf8471aad72dd7c781499de742dd8fc5179453c477
             env:
               PUID: 1000
               PGID: 1000
