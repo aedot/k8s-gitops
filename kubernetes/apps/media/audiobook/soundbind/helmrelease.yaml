@@ -82,6 +82,6 @@ spec:
       temp:
         type: nfs
         server: shango.internal
-        path: /mnt/user/data/autom4b
+        path: /mnt/user/data/soundbind
         globalMounts:
           - path: /temp
