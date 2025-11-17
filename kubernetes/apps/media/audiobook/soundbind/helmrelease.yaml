@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/aedot/soundbind
-              tag: v0.2.0@sha256:49e94b0e28047ab182598faf8471aad72dd7c781499de742dd8fc5179453c477
+              tag: v0.2.0@sha256:4e37c63ce6515803b06217a0d68fbc269a52bdfa6d2103c561005a6ba7684ab3
             env:
               PUID: 1000
               PGID: 1000
