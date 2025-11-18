@@ -14,6 +14,19 @@ spec:
       beets-audible:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          fix-permissions:
+            image:
+              repository: ghcr.io/aedot/busybox
+              tag: 1.37.0@sha256:6b6411e10ab162cfe7e71dcb5253c7d2b6180b37456687e309323a1490cea777
+            command:
+              - /bin/sh
+              - -c
+              - |
+                mkdir -p /config/audible
+                chown -R 1000:1000 /config
+            securityContext:
+              runAsUser: 0
         containers:
           app:
             image:
@@ -21,15 +34,10 @@ spec:
               tag: 2.5.1@sha256:62c87dce2b6a0cad827c7e53ec6be8da572aac8c312ee02fe123921e12b1c025
             env:
               TZ: America/Los_Angeles
-              PUID: 1000
-              PGID: 1000
             securityContext:
               runAsNonRoot: true
               runAsUser: 1000
               runAsGroup: 1000
-              fsGroup: 1000
-              fsGroupChangePolicy: OnRootMismatch
-              supplementalGroups: [65536]
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
@@ -38,7 +46,24 @@ spec:
                 cpu: 100m
               limits:
                 memory: 512Mi
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups: [65536]
     persistence:
+      config-file:
+        type: configMap
+        name: beets-audible-config
+        advancedMounts:
+          beets-audible:
+            app:
+              - path: /tmp/config/config.yaml
+                subPath: config.yaml
+                readOnly: true
       config:
         enabled: true
         existingClaim: *app
