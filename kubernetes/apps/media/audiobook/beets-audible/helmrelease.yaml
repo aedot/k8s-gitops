@@ -15,18 +15,22 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
-          fix-permissions:
+          setup-dirs:
             image:
-              repository: ghcr.io/aedot/busybox
+              repository: busybox
               tag: 1.37.0@sha256:6b6411e10ab162cfe7e71dcb5253c7d2b6180b37456687e309323a1490cea777
             command:
               - /bin/sh
               - -c
               - |
                 mkdir -p /config/audible
-                chown -R 1000:1000 /config
+                touch /config/.initialized
             securityContext:
-              runAsUser: 0
+              runAsUser: 1000
+              runAsGroup: 1000
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
         containers:
           app:
             image:
