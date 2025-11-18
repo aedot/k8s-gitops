@@ -5,7 +5,7 @@ namespace: media
 components:
   - ../../components/common
 resources:
-  - ./audiobookself/ks.yaml
+  - ./audiobookshelf/ks.yaml
   - ./overseerr/ks.yaml
   - ./plex/ks.yaml
   - ./tautulli/ks.yaml
