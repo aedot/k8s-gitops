@@ -3,7 +3,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
-  name: audiobookshelf
+  name: audiobook
 spec:
   interval: 5m
   layerSelector:

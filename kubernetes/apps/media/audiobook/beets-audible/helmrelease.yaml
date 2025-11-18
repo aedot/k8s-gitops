@@ -1,0 +1,58 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app beets-audible
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: audiobook
+  interval: 30m
+  values:
+    controllers:
+      beets-audible:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/aedot/beets-audible
+              tag: 2.5.1@sha256:62023b0a8f6d8fea2f6572c93569cda5e327e1d4dbd47d4772fe02e9ff0affc8
+            env:
+              TZ: America/Los_Angeles
+              PUID: 1000
+              PGID: 1000
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 1000
+              runAsGroup: 1000
+              fsGroup: 1000
+              fsGroupChangePolicy: OnRootMismatch
+              supplementalGroups: [65536]
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 512Mi
+    persistence:
+      config:
+        enabled: true
+        existingClaim: *app
+        globalMounts:
+          - path: /config
+      audiobooks:
+        type: nfs
+        server: shango.internal
+        path: /mnt/user/data/media/audiobooks
+        globalMounts:
+          - path: /audiobooks
+      input:
+        type: nfs
+        server: shango.internal
+        path: /mnt/user/data/soundbind/untagged
+        globalMounts:
+          - path: /input
