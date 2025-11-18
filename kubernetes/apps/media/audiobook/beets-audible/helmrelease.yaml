@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/aedot/beets-audible
-              tag: 2.5.1@sha256:1256b2e94afdc4dc4757d0435b610a313f6b17cefe9e0ae0abef6a886d293d5b
+              tag: 2.5.1@sha256:62c87dce2b6a0cad827c7e53ec6be8da572aac8c312ee02fe123921e12b1c025
             env:
               TZ: America/Los_Angeles
               PUID: 1000
