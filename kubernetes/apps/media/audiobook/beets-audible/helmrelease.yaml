@@ -48,7 +48,7 @@ spec:
         advancedMounts:
           beets-audible:
             app:
-              - path: /etc/cloudflared/config.yaml
+              - path: /tmp/config/config.yaml
                 subPath: config.yaml
                 readOnly: true
       config:
