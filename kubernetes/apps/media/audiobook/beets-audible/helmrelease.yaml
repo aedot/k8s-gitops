@@ -82,6 +82,6 @@ spec:
       input:
         type: nfs
         server: shango.internal
-        path: /mnt/user/data/soundbind/untagged
+        path: /mnt/user/data/m4b-tool/untagged
         globalMounts:
           - path: /input
