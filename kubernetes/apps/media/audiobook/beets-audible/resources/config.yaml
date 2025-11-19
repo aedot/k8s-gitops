@@ -1,7 +1,7 @@
 # add audible to the list of plugins
 # copyartifacts is optional but recommended if you're manually specifying metadata via metadata.yml, see the "Importing non-audible content" section
 # also add the "web" plugin if using the docker image
-plugins: audible edit fromfilename scrub web
+plugins: audible edit fromfilename plexupdate scrub web
 
 directory: /audiobooks
 
