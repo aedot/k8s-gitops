@@ -35,7 +35,7 @@ spec:
           app:
             image:
               repository: ghcr.io/aedot/beets-audible
-              tag: 2.5.1@sha256:62c87dce2b6a0cad827c7e53ec6be8da572aac8c312ee02fe123921e12b1c025
+              tag: 2.5.1@sha256:c6ad177ee25f7482722a6021b32c13d63f00770d982cc01d6f6dc4c398f1aa6c
             env:
               TZ: America/Los_Angeles
             securityContext:
