@@ -25,16 +25,6 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-            probes:
-              liveness:
-                enabled: true
-              readiness:
-                enabled: true
-              startup:
-                enabled: true
-                spec:
-                  periodSeconds: 10
-                  failureThreshold: 30
             resources:
               requests:
                 cpu: 100m
