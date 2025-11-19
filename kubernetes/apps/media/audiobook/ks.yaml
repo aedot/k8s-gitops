@@ -38,14 +38,9 @@ spec:
       app.kubernetes.io/name: *app
   interval: 30m
   path: ./kubernetes/apps/media/audiobook/beets-audible
-  components:
-    - ../../../../components/keda
-    - ../../../../components/volsync
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
-    - name: volsync
-      namespace: volsync-system
   prune: true
   sourceRef:
     kind: GitRepository
