@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/aedot/m4b-tool
-              tag: v0.5.2@sha256:9510bd3b9b61fe6466c6ce3f8fc826b1ced5f3dd178a5c5fe52d50806ce5d08d
+              tag: v0.5.2@sha256:80330cd84acb254caffc6cd3d336a20ae5fc02ee5a071c040c88c574f2010a44
             env:
               SLEEPTIME: 5m
             securityContext:
