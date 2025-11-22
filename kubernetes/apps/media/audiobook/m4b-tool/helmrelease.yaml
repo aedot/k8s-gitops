@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app m4b-tool
+  name: m4b-tool
 spec:
   chartRef:
     kind: OCIRepository
@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/aedot/m4b-tool
-              tag: v0.5.2@sha256:80330cd84acb254caffc6cd3d336a20ae5fc02ee5a071c040c88c574f2010a44
+              tag: v0.5.2@sha256:712a33ad4c3d768ef0fdb22a079af286fef5479c6f0a255d1a1c5801496d9bff
             env:
               SLEEPTIME: 5m
             securityContext:
