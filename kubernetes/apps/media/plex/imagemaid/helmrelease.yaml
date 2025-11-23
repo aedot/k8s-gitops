@@ -16,7 +16,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         cronjob:
-          schedule: "@daily"
+          schedule: "@weekly"
           timeZone: America/Los_Angeles
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
@@ -24,11 +24,11 @@ spec:
         containers:
           app:
             image:
-              repository: kometateam/imagemaid
-              tag: v1.1.1
+              repository: docker.io/kometateam/imagemaid
+              tag: v1.1.1@sha256:fbec331b36c1473f8a9c4214f55e5b097860476c8a5274eb61a2b85df89e56cc
             env:
               PLEX_URL: http://plex.media.svc.cluster.local:32400
-              PLEX_PATH: /config/Library/Application Support/Plex Media Server
+              PLEX_PATH: /data/Library/Application Support/Plex Media Server
               MODE: remove
               PHOTO_TRANSCODER: true
               TZ: America/Los_Angeles
@@ -53,9 +53,7 @@ spec:
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
-        runAsGroup: 100
-        fsGroup: 100
-        fsGroupChangePolicy: OnRootMismatch
+        runAsGroup: 1000
       affinity:
         podAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -66,14 +64,13 @@ spec:
                     values: ["plex"]
               topologyKey: kubernetes.io/hostname
     persistence:
+      config:
+        type: emptyDir
       plex-config:
         existingClaim: plex
         globalMounts:
-          - path: /config
-      tmpfs:
-        type: emptyDir
-        advancedMounts:
-          imagemaid:
-            app:
-              - path: /config
-                subPath: config
+          - path: /data
+      plex-cache:
+        existingClaim: plex-cache
+        globalMounts:
+          - path: /data/Library/Application Support/Plex Media Server/Cache
