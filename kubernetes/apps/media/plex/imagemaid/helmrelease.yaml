@@ -69,7 +69,7 @@ spec:
       plex-config:
         existingClaim: plex
         globalMounts:
-          - path: /data/plex_config
+          - path: /config
       tmpfs:
         type: emptyDir
         advancedMounts:
