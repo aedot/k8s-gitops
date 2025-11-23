@@ -40,5 +40,5 @@ scrub:
 plex:
   host: plex.media
   port: 32400
-  token: '${PLEX_TOKEN}'
+  token: <<PLEX_TOKEN>>
   library_name: Audiobooks
