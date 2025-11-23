@@ -21,6 +21,9 @@ spec:
               tag: 2.5.1@sha256:c6ad177ee25f7482722a6021b32c13d63f00770d982cc01d6f6dc4c398f1aa6c
             env:
               TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: plex-secret
             securityContext:
               runAsNonRoot: true
               runAsUser: 1000

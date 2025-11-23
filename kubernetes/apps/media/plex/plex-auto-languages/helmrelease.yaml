@@ -1,0 +1,32 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app plex-auto-languages
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: plex-auto-languages
+  values:
+    controllers:
+      plex-auto-languages:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/journeydocker/plex-auto-languages
+              tag: 1.3.16@sha256:f178d9e0da97605aac544114d8dd4f40eefb44398354c20d637f5f967aa25376
+            env:
+              TZ: America/Los_Angeles
+              PLEX_URL: "http://plex.media.svc.cluster.local:32400"
+            envFrom:
+              - secretRef:
+                  name: plex-secret
+            resources:
+              requests:
+                cpu: 75m
+                memory: 300M
+              limits:
+                memory: 600M
