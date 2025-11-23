@@ -8,13 +8,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: plex
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
   values:
     controllers:
       plex:
@@ -48,16 +41,20 @@ spec:
                   failureThreshold: 30
                   periodSeconds: 10
             resources:
+              claims:
+                - name: gpu
               requests:
-                cpu: 100m
+                cpu: 250m
               limits:
-                gpu.intel.com/i915: 1
                 memory: 10Gi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
     defaultPodOptions:
+      resourceClaims:
+        - name: gpu
+          resourceClaimTemplateName: plex-gpu
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000

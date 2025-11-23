@@ -14,10 +14,11 @@ spec:
   components:
     - ../../../../components/keda
     - ../../../../components/volsync
+    - ../../../../components/gpu
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
-    - name: intel-device-plugin-gpu
+    - name: intel-gpu-resource-driver
       namespace: kube-system
     - name: volsync
       namespace: volsync-system

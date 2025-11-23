@@ -14,6 +14,8 @@ spec:
   components:
     - ../../../../components/volsync
   dependsOn:
+    - name: intel-gpu-resource-driver
+      namespace: kube-system
     - name: multus-networks
       namespace: network
     - name: longhorn

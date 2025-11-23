@@ -17,14 +17,10 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    defaultPodOptions:
-      nodeSelector:
-        intel.feature.node.kubernetes.io/gpu: "true"
     controllers:
       scrypted:
         annotations:
           reloader.stakater.com/auto: "true"
-
         pod:
           annotations:
             k8s.v1.cni.cncf.io/networks: |
@@ -41,7 +37,6 @@ spec:
             supplementalGroups:
               - 44
               - 109
-
         containers:
           app:
             env:
@@ -56,14 +51,25 @@ spec:
               - "exec"
               - "scrypted-serve"
             resources:
+              claims:
+                - name: gpu
               limits:
-                gpu.intel.com/i915: 1
                 memory: 8Gi
               requests:
                 cpu: 100m
             securityContext:
               privileged: true
-
+    defaultPodOptions:
+      resourceClaims:
+        - name: gpu
+          resourceClaimTemplateName: scrypted-gpu
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [65537]
     service:
       app:
         controller: *app
@@ -86,7 +92,6 @@ spec:
           - backendRefs:
               - name: *app
                 port: *port
-
     persistence:
       config:
         existingClaim: *app

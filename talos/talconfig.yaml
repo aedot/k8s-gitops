@@ -105,7 +105,7 @@ nodes:
 # Controller patches
 controlPlane:
   nodeLabels:
-    intel.feature.node.kubernetes.io/gpu: "true"
+    node.kubernetes.io/gpu: "true"
     topology.kubernetes.io/region: main
 
   schematic:
