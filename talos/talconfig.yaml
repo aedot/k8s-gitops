@@ -106,7 +106,7 @@ nodes:
 controlPlane:
   nodeLabels:
     node.kubernetes.io/gpu: "true"
-    topology.kubernetes.io/region: main
+    topology.kubernetes.io/region: k8s
 
   schematic:
     customization:
