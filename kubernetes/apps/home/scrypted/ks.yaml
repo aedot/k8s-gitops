@@ -13,7 +13,7 @@ spec:
   path: ./kubernetes/apps/home/scrypted/app
   components:
     - ../../../../components/volsync
-    - ../../../../components/gpu
+    # - ../../../../components/gpu
   dependsOn:
     - name: intel-gpu-resource-driver
       namespace: kube-system
