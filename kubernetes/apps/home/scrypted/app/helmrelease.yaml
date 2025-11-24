@@ -8,14 +8,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: scrypted
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
   values:
     controllers:
       scrypted:
@@ -69,7 +61,7 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [65537]
+        supplementalGroups: [44]
     service:
       app:
         controller: *app
