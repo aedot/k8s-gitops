@@ -54,7 +54,7 @@ spec:
     defaultPodOptions:
       resourceClaims:
         - name: gpu
-          resourceClaimTemplateName: scrypted-gpu
+          resourceClaimTemplateName: scrypted
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
