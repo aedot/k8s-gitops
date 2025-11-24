@@ -6,6 +6,6 @@ components:
   - ../../components/common
 resources:
   - ./audiobook/ks.yaml
-  - ./overseerr/ks.yaml
+  - ./seerr/ks.yaml
   - ./plex/ks.yaml
   - ./tautulli/ks.yaml
