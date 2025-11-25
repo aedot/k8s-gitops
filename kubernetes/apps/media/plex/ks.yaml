@@ -14,7 +14,7 @@ spec:
   components:
     - ../../../../components/keda
     - ../../../../components/volsync
-    # - ../../../../components/gpu
+    - ../../../../components/gpu
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
