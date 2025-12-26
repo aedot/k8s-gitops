@@ -7,3 +7,4 @@ components:
   - ../../components/sops
 resources:
   - ./longhorn/ks.yaml
+  - ./namespace.yaml
