@@ -1,0 +1,98 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app gatus
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: gatus
+  values:
+    controllers:
+      gatus:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          gatus-sidecar:
+            image:
+              repository: ghcr.io/home-operations/gatus-sidecar
+              tag: 0.0.9@sha256:31a52dd0e579c1f865b2580a4bb715d2a893deb1351fedeaba73598e9a578cbe
+            args:
+              - --auto-httproute
+              - --enable-httproute
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 32Mi
+            restartPolicy: Always
+        containers:
+          app:
+            image:
+              repository: ghcr.io/twin/gatus
+              tag: v5.30.0@sha256:bab5a31cb3cfde7fd9913a5ff97652883e4db08f3b429a62a7a188c746df4219
+            env:
+              GATUS_WEB_PORT: &port 8080
+              GATUS_CONFIG_PATH: /config
+              GATUS_DELAY_START_SECONDS: 5
+              TZ: America/Los_Angeles
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 256Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { add: ["NET_RAW"], drop: ["ALL"] }
+        serviceAccount:
+          name: *app
+    defaultPodOptions:
+      hostUsers: false
+    persistence:
+      config:
+        type: emptyDir
+      config-file:
+        type: configMap
+        name: "{{ .Release.Name }}-configmap"
+        globalMounts:
+          - path: /config/config.yaml
+            subPath: config.yaml
+            readOnly: true
+    route:
+      app:
+        annotations:
+          gatus.home-operations.com/endpoint: |
+            url: https://{{ .Release.Name }}.${SECRET_DOMAIN}/health
+        hostnames:
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          - status.${SECRET_DOMAIN}
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    serviceMonitor:
+      app:
+        endpoints:
+          - port: http
+
+

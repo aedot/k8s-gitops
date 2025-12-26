@@ -5,5 +5,6 @@ kind: Kustomization
 components:
   - ../../components/sops
 resources:
-  - ./longhorn/ks.yaml
   - ./namespace.yaml
+  - ./cloudnative-pg/ks.yaml
+  - ./cnpg-dump/ks.yaml
