@@ -10,4 +10,4 @@ components:
 resources:
   - ./namespace.yaml
   - ./cloudnative-pg/ks.yaml
-  - ./cnpg-dump/ks.yaml
+  # - ./cnpg-dump/ks.yaml
