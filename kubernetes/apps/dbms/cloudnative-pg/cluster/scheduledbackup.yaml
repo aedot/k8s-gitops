@@ -5,7 +5,7 @@ metadata:
   name: cnpg-backup
 spec:
   cluster:
-    name: postgres17
+    name: postgres18
   schedule: "@daily"
   backupOwnerReference: self
   method: plugin
