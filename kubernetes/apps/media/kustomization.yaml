@@ -7,9 +7,9 @@ components:
   - ../../components/sops
   - ../../components/alerts
 
-resources: []
-  # - ./namespace.yaml
-  # - ./audiobook/ks.yaml
-  # - ./seerr/ks.yaml
-  # - ./plex/ks.yaml
-  # - ./tautulli/ks.yaml
+resources:
+  - ./namespace.yaml
+  - ./audiobook/ks.yaml
+  - ./seerr/ks.yaml
+  - ./plex/ks.yaml
+  - ./tautulli/ks.yaml
