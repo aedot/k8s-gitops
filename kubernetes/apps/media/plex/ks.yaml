@@ -39,9 +39,6 @@ metadata:
   name: auto-languages
 spec:
   targetNamespace: media
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: plex
   path: ./kubernetes/apps/media/plex/auto-languages
