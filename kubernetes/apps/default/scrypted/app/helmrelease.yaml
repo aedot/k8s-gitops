@@ -2,20 +2,12 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app scrypted
+  name: scrypted
 spec:
   interval: 30m
   chartRef:
     kind: OCIRepository
     name: scrypted
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
   values:
     defaultPodOptions:
       nodeSelector:
@@ -66,7 +58,6 @@ spec:
 
     service:
       app:
-        controller: *app
         ports:
           http:
             port: *port
@@ -81,15 +72,10 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
-            sectionName: https
-        rules:
-          - backendRefs:
-              - name: *app
-                port: *port
 
     persistence:
       config:
-        existingClaim: *app
+        existingClaim: "{{ .Release.Name }}"
         advancedMounts:
           scrypted:
             app:

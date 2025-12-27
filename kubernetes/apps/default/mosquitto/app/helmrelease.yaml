@@ -8,18 +8,10 @@ spec:
   chartRef:
     kind: OCIRepository
     name: mosquitto
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
   values:
     controllers:
       mosquitto:
-        annotations:
-          reloader.stakater.com/auto: "true"
+        type: statefulset
         containers:
           app:
             image:
@@ -27,16 +19,6 @@ spec:
               tag: 2.0.22@sha256:fd9982f5ed92a6c2a90805601d2275f8fbd7f2d47c4cb3836f7db0bdc7a91bec
             env:
               TZ: America/Los_Angeles
-            probes:
-              liveness:
-                enabled: true
-              readiness:
-                enabled: true
-              startup:
-                enabled: true
-                spec:
-                  failureThreshold: 30
-                  periodSeconds: 10
             resources:
               requests:
                 cpu: 10m
@@ -46,6 +28,12 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              storageClass: longhorn
+              accessMode: ReadWriteOnce
+              size: 5Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -55,15 +43,31 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
+        type: LoadBalancer
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: mosquitto.${SECRET_DOMAIN}
+          gatus.home-operations.com/endpoint: |-
+            group: services
+          lbipam.cilium.io/ips: 10.0.20.32
+        externalTrafficPolicy: Local
         ports:
           http:
             port: 1883
+    configMaps:
+      config:
+        data:
+          mosquitto.conf: |-
+            allow_anonymous true
+            autosave_interval 60
+            connection_messages false
+            listener 1883
+            per_listener_settings false
+            persistence true
+            persistence_location /config
     persistence:
-      data:
-        existingClaim: mosquitto-cache
       config-file:
         type: configMap
-        name: mosquitto-configmap
+        identifier: config
         globalMounts:
           - path: /mosquitto/config/mosquitto.conf
             subPath: mosquitto.conf

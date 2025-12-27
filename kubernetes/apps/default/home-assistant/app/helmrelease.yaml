@@ -3,19 +3,12 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app home-assistant
+  name: home-assistant
 spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
     name: home-assistant
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
   values:
     controllers:
       home-assistant:
@@ -32,7 +25,7 @@ spec:
               TZ: America/Los_Angeles
             envFrom:
               - secretRef:
-                  name: home-assistant-secret
+                  name: "{{ .Release.Name }}-secret"
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -40,7 +33,6 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 256Mi
               limits:
                 memory: 2Gi
           codeserver:
@@ -83,54 +75,29 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        type: LoadBalancer
-        annotations:
-          lbipam.cilium.io/ips: 10.0.20.31
         ports:
           http:
-            port: &port 8123
-          codeserver:
-            port: &codeserverPort 12321
+            appProtocol: kubernetes.io/ws
+            port: 8123
     route:
       app:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 200"]
         hostnames:
           - "{{ .Release.Name }}.${SECRET_DOMAIN}"
           - hass.${SECRET_DOMAIN}
         parentRefs:
           - name: envoy-internal
             namespace: network
-            sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
-      codeserver:
-        hostnames: ["hass-code.${SECRET_DOMAIN}"]
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-            sectionName: https
-        rules:
-          - backendRefs:
-              - name: "{{ .Release.Name }}"
-                port: *codeserverPort
     persistence:
       config:
-        existingClaim: *app
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /config
       config-cache:
-        existingClaim: home-assistant-cache
+        existingClaim: "{{ .Release.Name }}-cache"
         globalMounts:
           - path: /config/.venv
-      tmpfs:
+      tmp:
         type: emptyDir
-        advancedMounts:
-          home-assistant:
-            app:
-              - path: /config/logs
-                subPath: logs
-              - path: /config/tts
-                subPath: tts
-              - path: /tmp
-                subPath: tmp
