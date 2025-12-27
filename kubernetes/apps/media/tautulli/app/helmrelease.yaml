@@ -23,19 +23,19 @@ spec:
               TAUTULLI_HTTP_BASE_URL: https://{{ .Release.Name }}.${SECRET_DOMAIN}
               TAUTULLI__PORT: &port 80
               TZ: America/Los_Angeles
-            # probes:
-            #   liveness: &probes
-            #     enabled: true
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /status
-            #         port: *port
-            #       initialDelaySeconds: 0
-            #       periodSeconds: 10
-            #       timeoutSeconds: 1
-            #       failureThreshold: 3
-            #   readiness: *probes
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /status
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
             resources:
               requests:
                 cpu: 10m
@@ -66,5 +66,16 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-      tmp:
+      config-cache:
+        existingClaim: "{{ .Release.Name }}-cache"
+        globalMounts:
+          - path: /config/cache
+      tmpfs:
         type: emptyDir
+        advancedMounts:
+          tautulli:
+            app:
+              - path: /config/logs
+                subPath: logs
+              - path: /tmp
+                subPath: tmp
