@@ -8,7 +8,7 @@ components:
 
 resources:
   - ./namespace.yaml
-  # - ./sonarr/ks.yaml
+  - ./sonarr/ks.yaml
   - ./radarr/ks.yaml
   - ./prowlarr/ks.yaml
   - ./flaresolverr/ks.yaml
