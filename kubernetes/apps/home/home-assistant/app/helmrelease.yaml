@@ -1,0 +1,136 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app home-assistant
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: home-assistant
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      home-assistant:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/home-operations/home-assistant
+              tag: 2025.10.4@sha256:25a113a6d3e42ac66ba6b4172300b8c9a66f91e707a03cab5ad454910ca37eeb
+            env:
+              HASS_HTTP_TRUSTED_PROXY_1: 10.0.20.0/24
+              HASS_HTTP_TRUSTED_PROXY_2: 10.42.0.0/16
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: home-assistant-secret
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 256Mi
+              limits:
+                memory: 2Gi
+          codeserver:
+            image:
+              repository: ghcr.io/coder/code-server
+              tag: 4.105.1@sha256:2d48970bd2084aa34a522d772b6a437981ea80407465b3bf7958553985c570e1
+            env:
+              TZ: America/Los_Angeles
+            args:
+              [
+                "--auth",
+                "none",
+                "--user-data-dir",
+                "/config/.vscode",
+                "--extensions-dir",
+                "/config/.vscode",
+                "--port",
+                "12321",
+                "/config",
+              ]
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [{
+            "name": "iot",
+            "namespace": "network",
+            "ips": ["10.0.101.13/24"]
+          }]
+      hostUsers: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 10.0.20.31
+        ports:
+          http:
+            port: &port 8123
+          codeserver:
+            port: &codeserverPort 12321
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          - hass.${SECRET_DOMAIN}
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
+      codeserver:
+        hostnames: ["hass-code.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: "{{ .Release.Name }}"
+                port: *codeserverPort
+    persistence:
+      config:
+        existingClaim: *app
+        globalMounts:
+          - path: /config
+      config-cache:
+        existingClaim: home-assistant-cache
+        globalMounts:
+          - path: /config/.venv
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          home-assistant:
+            app:
+              - path: /config/logs
+                subPath: logs
+              - path: /config/tts
+                subPath: tts
+              - path: /tmp
+                subPath: tmp
