@@ -9,7 +9,7 @@ components:
 
 resources:
   - ./namespace.yaml
-  - ./audiobook/ks.yaml
+  # - ./audiobook/ks.yaml
   - ./seerr/ks.yaml
   # - ./plex/ks.yaml
   # - ./tautulli/ks.yaml
