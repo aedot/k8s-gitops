@@ -78,4 +78,4 @@ spec:
         kind: Secret
     substitute:
       # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql
-      POSTGRESQL_VERSION: "18.1"
+      POSTGRESQL_VERSION: "17.7"
