@@ -67,11 +67,11 @@ spec:
       namespace: longhorn-system
     - name: akeyless-stores
       namespace: external-secrets
-  healthCheckExprs:
-      - apiVersion: postgresql.cnpg.io/v1
-        kind: Cluster
-        failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
-        current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
+  # healthCheckExprs:
+  #     - apiVersion: postgresql.cnpg.io/v1
+  #       kind: Cluster
+  #       failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
+  #       current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
   postBuild:
     substituteFrom:
       - name: cluster-secrets
