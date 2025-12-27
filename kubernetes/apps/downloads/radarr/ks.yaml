@@ -5,18 +5,14 @@ kind: Kustomization
 metadata:
   name: radarr
 spec:
-  interval: 1h
-  path: ./kubernetes/apps/downloads/radarr/app
   components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
-    - name: cloudnative-pg-cluster
-      namespace: dbms
-    - name: akeyless-stores
-      namespace: external-secrets
+  interval: 1h
+  path: ./kubernetes/apps/downloads/radarr/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -30,3 +26,4 @@ spec:
         kind: Secret
     substitute:
       APP: radarr
+      VOLSYNC_CAPACITY: 5Gi
