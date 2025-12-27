@@ -36,9 +36,9 @@ spec:
         serverName: postgres18-v1
   bootstrap:
     recovery:
-      source: source
+      source: &previousCluster postgres17-v41
   externalClusters:
-    - name: postgres17-v41
+    - name: *previousCluster
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters:
