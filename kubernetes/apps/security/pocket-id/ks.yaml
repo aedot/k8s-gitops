@@ -27,4 +27,5 @@ spec:
       - name: cluster-secrets
         kind: Secret
     substitute:
+      APP: pocket-id
       VOLSYNC_CAPACITY: 1Gi
