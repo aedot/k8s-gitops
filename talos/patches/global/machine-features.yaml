@@ -1,6 +1,7 @@
 # Enable K8s Talos API Access
 machine:
   features:
+    apidCheckExtKeyUsage: true
     diskQuotaSupport: true
     hostDNS:
       enabled: true
@@ -17,3 +18,4 @@ machine:
         - actions-runner-system
         - system-upgrade
     rbac: true
+
