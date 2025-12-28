@@ -6,8 +6,9 @@ namespace: dbms
 
 components:
   - ../../components/sops
+  - ../../components/alerts
 
 resources:
   - ./namespace.yaml
   - ./cloudnative-pg/ks.yaml
-  # - ./cnpg-dump/ks.yaml
+  - ./cnpg-dump/ks.yaml

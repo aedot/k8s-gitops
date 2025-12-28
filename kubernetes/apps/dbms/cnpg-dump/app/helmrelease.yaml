@@ -3,24 +3,12 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app cnpg-dump
+  name: cnpg-dump
 spec:
   chartRef:
     kind: OCIRepository
     name: cnpg-dump
-  interval: 30m
-  maxHistory: 2
-  install:
-    createNamespace: true
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
-  uninstall:
-    keepHistory: false
+  interval: 1h
   values:
     defaultPodOptions:
       securityContext:
@@ -44,7 +32,7 @@ spec:
               EXCLUDE_DBS: app postgres template0 template1
             envFrom: &envFrom
               - secretRef:
-                  name: cnpg-dump-secret
+                  name: "{{ .Release.Name }}-secret"
             command: /scripts/list_dbs.sh
         containers:
           app:
@@ -62,7 +50,6 @@ spec:
             envFrom: *envFrom
     service:
       app:
-        controller: *app
         enabled: false
     persistence:
       config:
