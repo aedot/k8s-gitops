@@ -9,13 +9,8 @@ spec:
   components:
     - ../../../../components/volsync
   dependsOn:
-    - name: mosquitto
     - name: longhorn
       namespace: longhorn-system
-    - name: volsync
-      namespace: volsync-system
-    - name: akeyless-stores
-      namespace: external-secrets
   prune: true
   sourceRef:
     kind: GitRepository
