@@ -11,7 +11,8 @@ spec:
   values:
     controllers:
       mosquitto:
-        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -28,12 +29,6 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              storageClass: longhorn
-              accessMode: ReadWriteOnce
-              size: 5Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -43,13 +38,6 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        type: LoadBalancer
-        annotations:
-          external-dns.alpha.kubernetes.io/hostname: mosquitto.${SECRET_DOMAIN}
-          gatus.home-operations.com/endpoint: |-
-            group: services
-          lbipam.cilium.io/ips: 10.0.20.32
-        externalTrafficPolicy: Local
         ports:
           http:
             port: 1883
@@ -65,6 +53,8 @@ spec:
             persistence true
             persistence_location /config
     persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
       config-file:
         type: configMap
         identifier: config
