@@ -11,8 +11,7 @@ spec:
   values:
     controllers:
       mosquitto:
-        annotations:
-          reloader.stakater.com/auto: "true"
+        type: statefulset
         containers:
           app:
             image:
@@ -29,6 +28,12 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              storageClass: longhorn
+              accessMode: ReadWriteOnce
+              size: 5Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -53,8 +58,6 @@ spec:
             persistence true
             persistence_location /config
     persistence:
-      config:
-        existingClaim: "{{ .Release.Name }}"
       config-file:
         type: configMap
         identifier: config
