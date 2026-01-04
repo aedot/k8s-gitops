@@ -23,6 +23,7 @@ spec:
               RADARR__APP__THEME: dark
               RADARR__AUTH__METHOD: External
               RADARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              RADARR__LOG__DBENABLED: "False"
               RADARR__LOG__LEVEL: info
               RADARR__SERVER__PORT: &port 80
               RADARR__UPDATE__BRANCH: develop
@@ -47,7 +48,7 @@ spec:
               requests:
                 cpu: 100m
               limits:
-                memory: 2Gi
+                memory: 4Gi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -62,25 +63,14 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-      config-cache:
-        existingClaim: "{{ .Release.Name }}-cache"
-        globalMounts:
-          - path: /config/MediaCover
       data:
         type: nfs
         server: shango.internal
         path: /mnt/user/data
         globalMounts:
           - path: /data
-      tmpfs:
+      tmp:
         type: emptyDir
-        advancedMounts:
-          radarr:
-            app:
-              - path: /config/logs
-                subPath: logs
-              - path: /tmp
-                subPath: tmp
     route:
       app:
         hostnames:
