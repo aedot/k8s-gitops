@@ -13,14 +13,6 @@ spec:
       radarr:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 17@sha256:86a1992d46273c58fd4ad95b626081dfaabfe16bd56944675169e406d1a660dd
-            envFrom: &envFrom
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
         containers:
           app:
             image:
@@ -35,7 +27,9 @@ spec:
               RADARR__SERVER__PORT: &port 80
               RADARR__UPDATE__BRANCH: develop
               TZ: America/Los_Angeles
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness: &probes
                 enabled: true
@@ -52,7 +46,6 @@ spec:
             resources:
               requests:
                 cpu: 100m
-                memory: 284Mi
               limits:
                 memory: 2Gi
             securityContext:
@@ -69,6 +62,10 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
+      config-cache:
+        existingClaim: "{{ .Release.Name }}-cache"
+        globalMounts:
+          - path: /config/MediaCover
       data:
         type: nfs
         server: shango.internal
