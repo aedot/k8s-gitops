@@ -11,7 +11,7 @@ spec:
     - ../../../../components/volsync
   dependsOn:
     - name: multus-networks
-      namespace: network
+      namespace: kube-system
     - name: longhorn
       namespace: longhorn-system
     - name: volsync
