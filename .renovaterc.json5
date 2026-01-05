@@ -5,15 +5,16 @@
     'docker:enableMajor',
     'helpers:pinGitHubActionDigests',
     'github>aedot/k8s-gitops//.renovate/autoMerge.json5',
+    'github>aedot/k8s-gitops//.renovate/changelogs.json5',
     'github>aedot/k8s-gitops//.renovate/customManagers.json5',
     'github>aedot/k8s-gitops//.renovate/grafanaDashboards.json5',
     'github>aedot/k8s-gitops//.renovate/groups.json5',
     'github>aedot/k8s-gitops//.renovate/labels.json5',
+    'github>aedot/k8s-gitops//.renovate/overrides.json5',
     'github>aedot/k8s-gitops//.renovate/semanticCommits.json5',
     ':automergeBranch',
     ':dependencyDashboard',
     ':disableRateLimiting',
-    ':gitSignOff',
     ':semanticCommits',
     ':timezone(America/Los_Angeles)',
   ],
@@ -21,10 +22,10 @@
   suppressNotifications: ["prEditedNotification", "prIgnoreNotification"],
   ignorePaths: ["**/resources/**", "**/*.sops.*"],
   flux: {
-    managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"]
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"]
   },
   "helm-values": {
-    managerFilePatterns: ["/(^|/)kubernetes/.+\\.ya?ml$/"]
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"]
   },
   kubernetes: {
     managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"]
