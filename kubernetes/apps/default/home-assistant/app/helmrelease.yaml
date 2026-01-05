@@ -35,29 +35,6 @@ spec:
                 cpu: 10m
               limits:
                 memory: 2Gi
-          codeserver:
-            image:
-              repository: ghcr.io/coder/code-server
-              tag: 4.107.0@sha256:4b622c4cd1b0f559fec0df67fcf09042d63e9ce84c575102066afd9511695627
-            env:
-              TZ: America/Los_Angeles
-            args:
-              [
-                "--auth",
-                "none",
-                "--user-data-dir",
-                "/config/.vscode",
-                "--extensions-dir",
-                "/config/.vscode",
-                "--port",
-                "12321",
-                "/config",
-              ]
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 512Mi
     defaultPodOptions:
       annotations:
         k8s.v1.cni.cncf.io/networks: |
@@ -66,7 +43,6 @@ spec:
             "namespace": "kube-system",
             "ips": ["10.0.101.13/24"]
           }]
-      hostUsers: false
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
