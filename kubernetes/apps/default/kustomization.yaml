@@ -9,7 +9,7 @@ components:
 
 resources:
   - ./namespace.yaml
-  - ./actual/ks.yaml
+  # - ./actual/ks.yaml
   - ./echo/ks.yaml
   - ./home-assistant/ks.yaml
   - ./it-tools/ks.yaml
