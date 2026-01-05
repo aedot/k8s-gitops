@@ -7,7 +7,7 @@ metadata:
 spec:
   chartRef:
     kind: OCIRepository
-    name: fa-actual
+    name: actual
   interval: 30m
   values:
     controllers:
