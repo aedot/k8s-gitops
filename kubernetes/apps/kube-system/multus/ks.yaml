@@ -5,9 +5,9 @@ kind: Kustomization
 metadata:
   name: multus
 spec:
-  targetNamespace: network
+  targetNamespace: kube-system
   interval: 30m
-  path: "./kubernetes/apps/network/multus/app"
+  path: "./kubernetes/apps/kube-system/multus/app"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -21,9 +21,9 @@ kind: Kustomization
 metadata:
   name: multus-networks
 spec:
-  targetNamespace: network
+  targetNamespace: kube-system
   interval: 30m
-  path: "./kubernetes/apps/network/multus/networks"
+  path: "./kubernetes/apps/kube-system/multus/networks"
   prune: true
   sourceRef:
     kind: GitRepository

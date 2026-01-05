@@ -63,7 +63,7 @@ spec:
         k8s.v1.cni.cncf.io/networks: |
           [{
             "name": "iot",
-            "namespace": "network",
+            "namespace": "kube-system",
             "ips": ["10.0.101.13/24"]
           }]
       hostUsers: false
