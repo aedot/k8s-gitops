@@ -1,34 +1,30 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: plex
+  name: agregarr
 spec:
-  interval: 30m
-  path: ./kubernetes/apps/media/plex/app
   components:
-    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
+  targetNamespace: media
+  path: ./kubernetes/apps/media/agregarr/app
+  prune: true
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
-    - name: intel-gpu-resource-driver
-      namespace: kube-system
     - name: volsync
       namespace: volsync-system
-  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: media
+  timeout: 5m
   wait: false
   postBuild:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
     substitute:
-      APP: plex
-      VOLSYNC_CAPACITY: 50Gi
-
+      APP: agregarr
+  interval: 30m
