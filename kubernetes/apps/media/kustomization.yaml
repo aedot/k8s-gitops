@@ -10,6 +10,7 @@ components:
 resources:
   - ./namespace.yaml
   - ./agregarr/ks.yaml
+  - ./imagemaid/ks.yaml
   - ./plex/ks.yaml
   - ./seerr/ks.yaml
   - ./tautulli/ks.yaml
