@@ -11,6 +11,7 @@ spec:
     name: snapshot-controller
   values:
     controller:
-      replicaCount: 2
       serviceMonitor:
         create: true
+    webhook:
+      enabled: false
