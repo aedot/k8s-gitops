@@ -28,7 +28,7 @@ spec:
               tag: v1.1.1@sha256:fbec331b36c1473f8a9c4214f55e5b097860476c8a5274eb61a2b85df89e56cc
             env:
               PLEX_URL: http://plex.media.svc.cluster.local:32400
-              PLEX_PATH: /data/Library/Application Support/Plex Media Server
+              PLEX_PATH: /data/plex_config/Library/Application Support/Plex Media Server
               MODE: remove
               PHOTO_TRANSCODER: true
               TZ: America/Los_Angeles
@@ -54,6 +54,7 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
       affinity:
         podAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -64,13 +65,18 @@ spec:
                     values: ["plex"]
               topologyKey: kubernetes.io/hostname
     persistence:
-      config:
-        type: emptyDir
       plex-config:
         existingClaim: plex
         globalMounts:
-          - path: /config
+          - path: /data/plex_config
       plex-cache:
         existingClaim: plex-cache
         globalMounts:
-          - path: /config/Library/Application Support/Plex Media Server/Cache
+          - path: /data/plex_config/Library/Application Support/Plex Media Server/Cache
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          imagemaid:
+            app:
+              - path: /config
+                subPath: config
