@@ -16,7 +16,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         cronjob:
-          schedule: "@weekly"
+          schedule: "@daily"
           timeZone: America/Los_Angeles
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
@@ -73,4 +73,4 @@ spec:
       plex-cache:
         existingClaim: plex-cache
         globalMounts:
-          - path: /data/Library/Application Support/Plex Media Server/Cache
+          - path: /config/Library/Application Support/Plex Media Server/Cache
