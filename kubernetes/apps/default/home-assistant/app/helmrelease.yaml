@@ -53,7 +53,7 @@ spec:
               - "12321"
               - /config
             env:
-              HASS_SERVER: http://localhost:8123
+              TZ: America/Los_Angeles
             resources:
               requests:
                 cpu: 10m
@@ -77,13 +77,12 @@ spec:
       app:
         ports:
           http:
-            appProtocol: kubernetes.io/ws
-            port: 8123
+            port: &port 8123
+          codeserver:
+            port: &codeserverPort 12321
     route:
       app:
-        forceRename: "{{ .Release.Name }}"
         annotations:
-          external-dns.alpha.kubernetes.io/controller: none
           gatus.home-operations.com/endpoint: |-
             conditions: ["[STATUS] == 200"]
         hostnames:
@@ -91,6 +90,10 @@ spec:
         parentRefs:
           - name: envoy-external
             namespace: network
+        rules:
+          - backendRefs:
+              - name: "{{ .Release.Name }}"
+                port: *port
       code-server:
         annotations:
           gatus.home-operations.com/enabled: "false"
@@ -99,6 +102,10 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
+        rules:
+          - backendRefs:
+              - name: "{{ .Release.Name }}"
+                port: *codeserverPort
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
@@ -108,23 +115,5 @@ spec:
         existingClaim: "{{ .Release.Name }}-cache"
         globalMounts:
           - path: /config/.venv
-      tmpfs:
+      tmp:
         type: emptyDir
-        advancedMounts:
-          home-assistant:
-            app:
-              - path: /config/.venv
-                subPath: .venv
-              - path: /media/llmvision
-                subPath: llmvision
-              - path: /config/logs
-                subPath: logs
-              - path: /config/tts
-                subPath: tts
-              - path: /tmp
-                subPath: tmp
-            code-server:
-              - path: /tmp
-                subPath: code-server-tmp
-              - path: /nonexistent
-                subPath: nonexistent
