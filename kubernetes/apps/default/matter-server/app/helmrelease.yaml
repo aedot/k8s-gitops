@@ -61,11 +61,10 @@ spec:
             namespace: network
         rules:
           - backendRefs:
-              - name: {{ .Release.Name }}
+              - name: "{{ .Release.Name }}"
                 port: *port
-
     persistence:
       data:
-        existingClaim: {{ .Release.Name }}
+        existingClaim: "{{ .Release.Name }}"
       tmp:
         type: emptyDir
