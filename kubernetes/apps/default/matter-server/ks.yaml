@@ -13,6 +13,9 @@ spec:
     - name: volsync
       namespace: volsync-system
   postBuild:
+    substitute:
+      APP: matter-server
+      VOLSYNC_CAPACITY: 5Gi
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
