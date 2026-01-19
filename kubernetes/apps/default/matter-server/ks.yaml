@@ -13,11 +13,6 @@ spec:
     - name: volsync
       namespace: volsync-system
   postBuild:
-    substitute:
-      APP: matter-server
-      VOLSYNC_CAPACITY: 5Gi
-      VOLSYNC_PGID: "0"
-      VOLSYNC_PUID: "0"
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
