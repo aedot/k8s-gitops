@@ -14,6 +14,7 @@ resources:
   - ./home-assistant/ks.yaml
   - ./it-tools/ks.yaml
   - ./lubelog/ks.yaml
+  - ./matter-server/ks.yaml
   - ./mosquitto/ks.yaml
   - ./scrypted/ks.yaml
   - ./zigbee/ks.yaml
