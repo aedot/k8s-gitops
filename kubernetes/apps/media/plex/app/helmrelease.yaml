@@ -22,24 +22,24 @@ spec:
               PLEX_ADVERTISE_URL: https://{{ .Release.Name }}.${SECRET_DOMAIN}:443,http://10.0.20.37:32400
               PLEX_NO_AUTH_NETWORKS: 10.0.101.0/24,10.0.40.0/24,10.0.20.0/24
               TZ: America/Los_Angeles
-            # probes:
-            #   liveness: &probes
-            #     enabled: true
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /identity
-            #         port: &port 32400
-            #       initialDelaySeconds: 0
-            #       periodSeconds: 10
-            #       timeoutSeconds: 1
-            #       failureThreshold: 3
-            #   readiness: *probes
-            #   startup:
-            #     enabled: true
-            #     spec:
-            #       failureThreshold: 30
-            #       periodSeconds: 10
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /identity
+                    port: &port 32400
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -113,7 +113,7 @@ spec:
           - # Ref: https://forums.plex.tv/t/external-srt-subtitles-are-not-working-w-reverse-proxy/886540
             backendRefs:
             - identifier: app
-              port: &port 32400
+              port: *port
             filters:
               - type: RequestHeaderModifier
                 requestHeaderModifier:
