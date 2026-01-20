@@ -7,11 +7,15 @@ spec:
     {
       "cniVersion": "1.1.0",
       "name": "iot",
+      "logLevel": "verbose",
       "plugins": [
         {
           "type": "macvlan",
           "master": "bond0.101",
           "mode": "bridge",
+          "capabilities": {
+            "ips": true
+          },
           "ipam": {
             "type": "static",
             "routes": [
@@ -21,6 +25,10 @@ spec:
         },
         {
           "type": "sbr"
+        },
+        "sysctl": {
+        "net.ipv6.conf.net1.accept_ra": "1",
+        "net.ipv6.conf.net1.accept_ra_rt_info_max_plen": "128"
         }
       ]
     }
