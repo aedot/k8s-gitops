@@ -1,0 +1,55 @@
+---
+machine:
+  install:
+    diskSelector:
+      serial: AA230711NV01KG10664
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: oba
+---
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: longhorn
+volumeType: disk
+provisioning:
+  diskSelector:
+    match: disk.serial == "50026B7383951A37"
+  minSize: "300GiB"
+  grow: true
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: bond0-m0
+selector:
+  match: glob("58:47:ca:7b:ea:1d", mac(link.hardware_addr)) && glob("igc", link.driver)
+---
+apiVersion: v1alpha1
+kind: BondConfig
+name: bond0
+links:
+  - bond0-m0
+bondMode: active-backup
+---
+apiVersion: v1alpha1
+kind: DHCPv4Config
+name: bond0
+---
+apiVersion: v1alpha1
+kind: Layer2VIPConfig
+name: 10.0.20.10
+link: bond0
+---
+apiVersion: v1alpha1
+kind: VLANConfig
+name: bond0.101
+vlanID: 101
+parent: bond0
+mtu: 1500
+---
+apiVersion: v1alpha1
+kind: VLANConfig
+name: bond0.50
+vlanID: 50
+parent: bond0
+mtu: 1500

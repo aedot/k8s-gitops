@@ -7,7 +7,7 @@
 helmDefaults:
   args:
     - --include-crds
-    - --no-hooks
+    - --no-hooks # Prevent helmfile apply or sync
   postRenderer: bash
   postRendererArgs:
     - -c
