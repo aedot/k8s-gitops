@@ -6,8 +6,7 @@ metadata:
 spec:
   cluster:
     name: postgres17
-  schedule: 15 1 * * *
-  timeZone: America/Los_Angeles
+  schedule: 15 09 * * * # Daily at 01:15 PST (UTC-8) / 12:15 PDT (UTC-7)
   backupOwnerReference: self
   method: plugin
   pluginConfiguration:
