@@ -4,19 +4,9 @@ apiVersion: volsync.backube/v1alpha1
 kind: KopiaMaintenance
 metadata:
   name: daily
-  namespace: volsync
 spec:
   enabled: true
   trigger:
     schedule: 0 */12 * * *
   repository:
     repository: volsync-maintenance
-  resources:
-    requests:
-      cpu: "100m"
-      memory: "1Gi"
-    limits:
-      memory: "8Gi"
-  successfulJobsHistoryLimit: 1
-  failedJobsHistoryLimit: 1
-  suspend: false
