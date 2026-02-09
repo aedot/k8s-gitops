@@ -3,13 +3,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: observability
-
 components:
   - ../../components/sops
-  - ../../components/alerts
-
+  - ../../components/namespace
 resources:
-  - ./namespace.yaml
   - ./blackbox-exporter/ks.yaml
   - ./fluent-bit/ks.yaml
   - ./gatus/ks.yaml

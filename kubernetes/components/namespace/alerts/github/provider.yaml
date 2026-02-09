@@ -3,9 +3,9 @@
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Provider
 metadata:
-  name: github-status
+  name: github
 spec:
   type: github
   address: https://github.com/aedot/k8s-gitops
   secretRef:
-    name: github-status-token-secret
+    name: github-token-secret
