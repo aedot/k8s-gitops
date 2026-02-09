@@ -95,7 +95,7 @@ spec:
       repository:
         type: nfs
         server: shango.internal
-        path: /mnt/user/VolsyncKopia
+        path: /mnt/arraycache/VolsyncKopia
         globalMounts:
           - path: /repository
       tmpfs:
