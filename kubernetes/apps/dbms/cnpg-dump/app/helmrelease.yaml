@@ -22,8 +22,7 @@ spec:
         type: cronjob
         cronjob:
           concurrencyPolicy: Forbid
-          schedule: "0 4 * * *" # Daily at 04:00 (PDT/PST aware)
-          timeZone: America/Los_Angeles
+          schedule: "0 12 * * *" # Daily at 04:00
         initContainers:
           init-db:
             image:
