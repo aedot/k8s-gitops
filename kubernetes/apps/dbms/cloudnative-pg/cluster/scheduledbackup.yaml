@@ -6,7 +6,7 @@ metadata:
 spec:
   cluster:
     name: postgres17
-  schedule: "15 09 * * *"
+  schedule: "@hourly"
   backupOwnerReference: self
   method: plugin
   pluginConfiguration:
