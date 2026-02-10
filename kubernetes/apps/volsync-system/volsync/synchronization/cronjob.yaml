@@ -85,6 +85,6 @@ spec:
             - name: repository
               nfs:
                 server: shango.internal
-                path: /mnt/arraycache/VolsyncKopia
+                path: /mnt/user/VolsyncKopia
             - name: tmp
               emptyDir: {}
