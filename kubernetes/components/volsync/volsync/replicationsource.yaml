@@ -34,7 +34,7 @@ metadata:
 spec:
   sourcePVC: ${APP}
   trigger:
-    schedule: "${VOLSYNC_SCHEDULE:=0 */2 * * *}"
+    schedule: "${VOLSYNC_SCHEDULE:=0 */8 * * *}"
   kopia:
     accessModes:
       - ${VOLSYNC_SNAP_ACCESSMODES:=ReadWriteOnce}
