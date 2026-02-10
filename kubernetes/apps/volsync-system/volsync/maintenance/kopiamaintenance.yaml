@@ -9,4 +9,4 @@ spec:
   trigger:
     schedule: 0 */12 * * *
   repository:
-    repository: volsync-maintenance
+    repository: volsync-maintenance-secret
