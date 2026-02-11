@@ -62,7 +62,7 @@ spec:
         enabled: true
         type: nfs
         server: shango.internal
-        path: /mnt/user/backups/k8s/cloudnative-db
+        path: /mnt/arraycache/backups/k8s/cnpg-db
         globalMounts:
           - path: /backups
       scripts:
