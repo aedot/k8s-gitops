@@ -16,7 +16,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         cronjob:
-          schedule: "@daily"
+          schedule: "0 1 * * *"   # Every day at 1:00 AM PDT/PST aware
           timeZone: America/Los_Angeles
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
