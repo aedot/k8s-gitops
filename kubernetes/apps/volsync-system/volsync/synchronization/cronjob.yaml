@@ -45,7 +45,7 @@ spec:
                     --path /repository \
                     --password "${KOPIA_PASSWORD}"
 
-                  echo "Starting Kopia synchronization to Cloudflare R2: ${R2_BUCKET}"
+                  echo "Starting Kopia synchronization to S3 bucket: ${S3_BUCKET}"
                   kopia repository sync-to s3 \
                     --bucket "${S3_BUCKET}" \
                     --endpoint "${S3_ENDPOINT}" \
