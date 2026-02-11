@@ -45,10 +45,12 @@ spec:
                     --path /repository \
                     --password "${KOPIA_PASSWORD}"
 
-                  echo "Starting Kopia synchronization to S3 bucket: ${S3_BUCKET}"
+                  echo "Starting synchronization to CLoudflare R2: ${S3_BUCKET}"
                   kopia repository sync-to s3 \
-                    --bucket "${S3_BUCKET}" \
-                    --endpoint "${S3_ENDPOINT}" \
+                    --bucket="${S3_BUCKET}" \
+                    --endpoint="${S3_ENDPOINT}" \
+                    --access-key="${AWS_ACCESS_KEY_ID}" \
+                    --secret-access-key="${AWS_SECRET_ACCESS_KEY}" \
                     --parallel=4 \
                     --delete \
                     --no-progress
