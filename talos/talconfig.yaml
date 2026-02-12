@@ -4,10 +4,10 @@ clusterName: k8s-gitops
 talosVersion: "${talosVersion}"
 kubernetesVersion: "${kubernetesVersion}"
 
-endpoint: https://10.0.20.10:6443
+endpoint: https://10.0.20.2:6443
 additionalApiServerCertSans: &sans
   - "127.0.0.1"
-  - &talosControlplaneVip "10.0.20.10"
+  - &talosControlplaneVip "10.0.20.2"
 additionalMachineCertSans: *sans
 
 clusterPodNets: ["10.42.0.0/16"]
@@ -19,7 +19,7 @@ cniConfig:
 
 nodes:
   - hostname: "oya"
-    ipAddress: "10.0.20.11"
+    ipAddress: "10.0.10.11"
     installDiskSelector:
       serial: A0D6073B184B00007040
     machineSpec:
@@ -50,7 +50,7 @@ nodes:
             { vlanId: 50, dhcp: false, mtu: 1500}
 
   - hostname: "aje"
-    ipAddress: "10.0.20.12"
+    ipAddress: "10.0.10.12"
     installDiskSelector:
       serial: AA202302171T21213049
     machineSpec:
@@ -77,7 +77,7 @@ nodes:
         vlans: *vlans
 
   - hostname: "oba"
-    ipAddress: "10.0.20.13"
+    ipAddress: "10.0.10.13"
     installDiskSelector:
       serial: AA230711NV01KG10664
     machineSpec:
