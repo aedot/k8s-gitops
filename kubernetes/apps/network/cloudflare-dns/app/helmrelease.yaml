@@ -20,14 +20,9 @@ spec:
     extraArgs:
       - --cloudflare-dns-records-per-page=1000
       - --cloudflare-proxied
-      - --events
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
       - --gateway-name=envoy-external
-      - --interval=1m
-      - --log-format=text
-      - --log-level=info
-      - --registry=txt
     triggerLoopOnEvent: true
     policy: sync
     sources: ["crd", "gateway-httproute"]
