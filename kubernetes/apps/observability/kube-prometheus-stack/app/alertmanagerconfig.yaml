@@ -26,6 +26,7 @@ spec:
           value: warning
           matchType: =
   receivers:
+    - name: blackhole
     - name: pushover
       pushoverConfigs:
         - html: true
