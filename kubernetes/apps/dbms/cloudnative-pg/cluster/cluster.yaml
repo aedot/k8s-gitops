@@ -23,7 +23,6 @@ spec:
   resources:
     requests:
       cpu: 500m
-      memory: 2Gi
     limits:
       memory: 4Gi
   monitoring:
@@ -32,15 +31,15 @@ spec:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
       parameters: &parameters
-        barmanObjectName: r2
-        serverName: postgres17-v41
-  bootstrap:
-    recovery:
-      source: source
-  externalClusters:
-    - name: source
-      plugin:
-        name: barman-cloud.cloudnative-pg.io
-        parameters: *parameters
+        barmanObjectName: cloudflare-r2
+        serverName: cluster17-v1
+  # bootstrap:
+  #   recovery:
+  #     source: source
+  # externalClusters:
+  #   - name: source
+  #     plugin:
+  #       name: barman-cloud.cloudnative-pg.io
+  #       parameters: *parameters
 
 
