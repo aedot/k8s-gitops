@@ -6,7 +6,7 @@ metadata:
   name: mosquitto
 spec:
   interval: 1h
-  path: ./kubernetes/apps/default/mosquitto/app
+  path: ./kubernetes/apps/dbms/mosquitto/app
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
