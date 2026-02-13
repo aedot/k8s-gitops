@@ -22,12 +22,9 @@ spec:
           parentRefs:
             - name: envoy-internal
               namespace: network
-              sectionName: https
       alertmanagerSpec:
         alertmanagerConfiguration:
           name: alertmanager
-          global:
-            resolveTimeout: 5m
         externalUrl:  https://alertmanager.${SECRET_DOMAIN}
         storage:
           volumeClaimTemplate:
@@ -50,37 +47,27 @@ spec:
           parentRefs:
             - name: envoy-internal
               namespace: network
-              sectionName: https
       prometheusSpec:
-        image:
-          registry: docker.io
-          repository: prompp/prompp
-          tag: 2.53.2-0.3.4
-        securityContext:
-          runAsNonRoot: true
-          runAsUser: 64535
-          runAsGroup: 64535
-          fsGroup: 64535
-        ruleSelectorNilUsesHelmValues: false
-        serviceMonitorSelectorNilUsesHelmValues: false
+        externalUrl: https://prometheus.${SECRET_DOMAIN}
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
+        ruleSelectorNilUsesHelmValues: false
+        serviceMonitorSelectorNilUsesHelmValues: false
         scrapeConfigSelectorNilUsesHelmValues: false
-        externalUrl: https://prometheus.${SECRET_DOMAIN}
         retention: 14d
         retentionSize: 50GB
         resources:
           requests:
             cpu: 100m
           limits:
-            memory: 4Gi
+            memory: 200Mi
         storageSpec:
           volumeClaimTemplate:
             spec:
               storageClassName: longhorn
               resources:
                 requests:
-                  storage: 20Gi
+                  storage: 50Gi
     prometheus-node-exporter:
       fullnameOverride: node-exporter
     kube-state-metrics:
