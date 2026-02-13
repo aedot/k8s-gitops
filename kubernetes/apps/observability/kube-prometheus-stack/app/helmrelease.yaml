@@ -39,6 +39,8 @@ spec:
           component: kube-apiserver
     kubeProxy:
       enabled: false
+    nodeExporter:
+      enabled: false
     prometheus:
       route:
         main:
