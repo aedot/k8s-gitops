@@ -37,6 +37,7 @@ spec:
             envFrom: *envFrom
             env:
               TZ: America/Los_Angeles
+              DISABLE_MQTT: "true"
               DATABASE_NAME: "teslamate"
               DATABASE_HOST: "postgres17-rw.dbms.svc.cluster.local"
             resources:
