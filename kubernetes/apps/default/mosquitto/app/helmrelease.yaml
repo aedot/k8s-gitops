@@ -42,9 +42,13 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
-      app:
+      mosquitto:
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 10.0.20.39
+        externalTrafficPolicy: Local
         ports:
-          http:
+          mqtt:
             port: 1883
     configMaps:
       config:
