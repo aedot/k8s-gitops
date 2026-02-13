@@ -13,11 +13,6 @@ spec:
       name: flux-metrics-configmap
       valuesKey: flux-metrics.yaml
   values:
-    crds:
-      enabled: true
-      upgradeJob:
-        enabled: true
-        forceConflicts: true
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
       route:
@@ -67,7 +62,7 @@ spec:
           requests:
             cpu: 100m
           limits:
-            memory: 200Mi
+            memory: 2000Mi
         storageSpec:
           volumeClaimTemplate:
             spec:
