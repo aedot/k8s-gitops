@@ -93,9 +93,10 @@ spec:
           - path: /config/repository.config
             subPath: repository.config
       repository:
+        enabled: true
         type: nfs
         server: shango.internal
-        path: /mnt/user/VolsyncKopia
+        path: /mnt/user/backups/k8s/volsynckopia
         globalMounts:
           - path: /repository
       tmpfs:
