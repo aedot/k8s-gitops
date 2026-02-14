@@ -33,6 +33,12 @@ nodes:
             match: disk.serial == "50026B73839504FD"
           minSize: "300GiB"
           grow: true
+      - name: local-path
+        provisioning:
+          diskSelector:
+            match: disk.serial == "A0D6073B184B00007040" && !system_disk
+          minSize: "500GiB"
+          grow: true
     networkInterfaces:
       - interface: bond0
         bond:
@@ -64,6 +70,12 @@ nodes:
             match: disk.serial == "50026B7383950E6D"
           minSize: "300GiB"
           grow: true
+      - name: local-path
+        provisioning:
+          diskSelector:
+            match: disk.serial == "AA202302171T21213049" && !system_disk
+          minSize: "500GiB"
+          grow: true
     networkInterfaces:
       - interface: bond0
         bond:
@@ -90,6 +102,12 @@ nodes:
           diskSelector:
             match: disk.serial == "50026B7383951A37"
           minSize: "300GiB"
+          grow: true
+      - name: local-path
+        provisioning:
+          diskSelector:
+            match: disk.serial == "AA230711NV01KG10664" && !system_disk
+          minSize: "500GiB"
           grow: true
     networkInterfaces:
       - interface: bond0
