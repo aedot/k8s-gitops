@@ -7,7 +7,6 @@ components:
   - ../../components/namespace
 resources:
   - ./actual/ks.yaml
-  - ./echo/ks.yaml
   - ./home-assistant/ks.yaml
   - ./it-tools/ks.yaml
   - ./lubelog/ks.yaml
