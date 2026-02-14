@@ -36,15 +36,15 @@ spec:
   # # Note: previousCluster needs to be set to the name of the previous
   # # cluster when recovering from an existing cnpg cluster
   # # bootstrap:
-  # bootstrap:
+  bootstrap:
   #   initdb: {}
-  #   recovery:
-  #     source: source
+    recovery:
+      source: source
   # # Note: externalClusters is needed when recovering from an existing cnpg cluster
-  # externalClusters:
-  #   - name: source
-  #     plugin:
-  #       name: barman-cloud.cloudnative-pg.io
-  #       parameters: *parameters
+  externalClusters:
+    - name: source
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters: *parameters
 
 

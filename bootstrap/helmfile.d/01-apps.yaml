@@ -53,12 +53,12 @@ releases:
     values: ['./templates/values.yaml.gotmpl']
     needs: ['kube-system/spegel']
 
-  - name: external-secrets
-    namespace: external-secrets
-    chart: oci://ghcr.io/external-secrets/charts/external-secrets
-    version: 2.0.0
-    values: ['./templates/values.yaml.gotmpl']
-    needs: ['cert-manager/cert-manager']
+  # - name: external-secrets
+  #   namespace: external-secrets
+  #   chart: oci://ghcr.io/external-secrets/charts/external-secrets
+  #   version: 2.0.0
+  #   values: ['./templates/values.yaml.gotmpl']
+  #   needs: ['cert-manager/cert-manager']
 
   - name: flux-operator
     namespace: flux-system
