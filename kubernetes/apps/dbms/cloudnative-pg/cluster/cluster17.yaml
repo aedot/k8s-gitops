@@ -38,10 +38,10 @@ spec:
   # # bootstrap:
   bootstrap:
     recovery:
-      source: cluster17-v1
+      source: source
   # # Note: externalClusters is needed when recovering from an existing cnpg cluster
   externalClusters:
-    - name: cluster17-v1
+    - name: source
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters:
