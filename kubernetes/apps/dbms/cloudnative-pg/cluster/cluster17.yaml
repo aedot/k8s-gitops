@@ -37,7 +37,6 @@ spec:
   # # cluster when recovering from an existing cnpg cluster
   # # bootstrap:
   bootstrap:
-  #   initdb: {}
     recovery:
       source: source
   # # Note: externalClusters is needed when recovering from an existing cnpg cluster
