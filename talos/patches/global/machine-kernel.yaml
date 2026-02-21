@@ -2,3 +2,4 @@ machine:
   kernel:
     modules:
       - name: nbd
+      - name: thunderbolt
