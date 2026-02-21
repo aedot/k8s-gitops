@@ -1,0 +1,35 @@
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  name: iot
+spec:
+  config: |
+    {
+      "cniVersion": "1.1.0",
+      "name": "iot",
+      "logLevel": "verbose",
+      "plugins": [
+        {
+          "type": "macvlan",
+          "master": "bond0.40",
+          "mode": "bridge",
+          "capabilities": {
+            "ips": true
+          },
+          "ipam": {
+            "type": "static",
+            "routes": [
+              { "dst": "0.0.0.0/0", "gw": "172.24.40.1" }
+            ]
+          }
+        },
+        { "type": "sbr" },
+        {
+          "type": "tuning",
+          "sysctl": {
+            "net.ipv6.conf.net1.accept_ra": "1",
+            "net.ipv6.conf.net1.accept_ra_rt_info_max_plen": "128"
+          }
+        }
+      ]
+    }
