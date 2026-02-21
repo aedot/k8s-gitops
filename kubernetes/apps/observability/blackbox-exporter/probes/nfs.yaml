@@ -10,4 +10,4 @@ spec:
   targets:
     staticConfig:
       static:
-        - shango.internal:2049
+        - unraid.internal:2049
