@@ -16,7 +16,7 @@ spec:
       scrapeTimeout: 30s
       params:
         server:
-          - oduduwa.internal
+          - nut.internal
         ups:
           - network-ups
       metricRelabelings:
@@ -60,7 +60,7 @@ spec:
       scrapeTimeout: 30s
       params:
         server:
-          - oduduwa.internal
+          - nut.internal
         ups:
           - server-ups
       metricRelabelings:
