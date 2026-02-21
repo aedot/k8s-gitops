@@ -11,7 +11,7 @@ spec:
 apiVersion: cilium.io/v2
 kind: CiliumBGPAdvertisement
 metadata:
-  name: l3-bgp-advertisement
+  name: cilium-bgp-advertisement
   labels:
     advertise: bgp
 spec:
@@ -27,7 +27,7 @@ spec:
 apiVersion: cilium.io/v2
 kind: CiliumBGPPeerConfig
 metadata:
-  name: l3-bgp-peer-config
+  name: cilium-bgp-peer-config-ipv4
 spec:
   families:
     - afi: ipv4
@@ -39,7 +39,7 @@ spec:
 apiVersion: cilium.io/v2
 kind: CiliumBGPClusterConfig
 metadata:
-  name: l3-bgp-cluster-config
+  name: cilium-bgp-cluster-config
 spec:
   nodeSelector:
     matchLabels:
@@ -52,7 +52,7 @@ spec:
           peerASN: 64513
           peerAddress: 172.24.1.1
           peerConfigRef:
-            name: l3-bgp-peer-config
+            name: cilium-bgp-peer-config-ipv4
 ---
 apiVersion: v1
 kind: Service
