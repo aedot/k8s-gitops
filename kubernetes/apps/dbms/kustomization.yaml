@@ -8,5 +8,5 @@ components:
   - ../../components/namespace
 resources:
   - ./cloudnative-pg/ks.yaml
-  # - ./cnpg-dump/ks.yaml
+  - ./cnpg-dump/ks.yaml
   - ./mosquitto/ks.yaml
