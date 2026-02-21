@@ -5,8 +5,8 @@ namespace: external-secrets
 
 components:
   - ../../components/sops
+  - ../../components/namespace
 
 resources:
-  - ./namespace.yaml
   - ./external-secrets/ks.yaml
   - ./akeyless/ks.yaml

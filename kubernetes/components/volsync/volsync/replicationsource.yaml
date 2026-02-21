@@ -1,0 +1,53 @@
+# ---
+# apiVersion: volsync.backube/v1alpha1
+# kind: ReplicationSource
+# metadata:
+#   name: "${APP}"
+# spec:
+#   sourcePVC: "${APP}"
+#   trigger:
+#     schedule: "15 */8 * * *"
+#   restic:
+#     copyMethod: "${VOLSYNC_COPYMETHOD:=Snapshot}"
+#     pruneIntervalDays: 7
+#     repository: "${APP}-restic-secret"
+#     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:=longhorn-snapclass}"
+#     cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:=1Gi}"
+#     cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:=longhorn-cache}"
+#     cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:=ReadWriteOnce}"]
+#     storageClassName: "${VOLSYNC_STORAGECLASS:=longhorn}"
+#     accessModes: ["${VOLSYNC_SNAP_ACCESSMODES:=ReadWriteOnce}"]
+#     moverSecurityContext:
+#       runAsUser: ${VOLSYNC_PUID:=1000}
+#       runAsGroup: ${VOLSYNC_PGID:=1000}
+#       fsGroup: ${VOLSYNC_PGID:=1000}
+#     retain:
+#       hourly: 24
+#       daily: 7
+
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: ${APP}
+spec:
+  sourcePVC: ${APP}
+  trigger:
+    schedule: "${VOLSYNC_SCHEDULE:=0 */8 * * *}"
+  kopia:
+    accessModes:
+      - ${VOLSYNC_SNAP_ACCESSMODES:=ReadWriteOnce}
+    compression: zstd-fastest
+    copyMethod: Snapshot
+    moverSecurityContext:
+      runAsUser: ${VOLSYNC_PUID:=1000}
+      runAsGroup: ${VOLSYNC_PGID:=1000}
+      fsGroup: ${VOLSYNC_PGID:=1000}
+    parallelism: 2
+    repository: ${APP}-volsync-secret
+    retain:
+      hourly: 24
+      daily: 7
+    storageClassName: ${VOLSYNC_STORAGECLASS:=longhorn-snapshot}
+    volumeSnapshotClassName: ${VOLSYNC_SNAPSHOTCLASS:=longhorn-snapclass}

@@ -1,0 +1,54 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app nut-exporter
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: nut-exporter
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    fullnameOverride: *app
+    controllers:
+      nut-exporter:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/druggeri/nut_exporter
+              tag: 3.2.3@sha256:a9e6c0100ebc0e8ec2c7a46de8af1366df8abd5d794f175b8ee6b2361819ee6e
+            env:
+              TZ: America/Los_Angeles
+            args:
+              - --nut.server="oduduwa.internal:3493"
+              # doubling some variables to ensure compatibility with the exporter
+              - --nut.vars_enable="battery.charge,battery.charge,battery.runtime,battery.type,battery.voltage,device.mfr,device.model,input.voltage,ups.beeper.status,ups.delay.shutdown,ups.load,ups.power.nominal,ups.status,ups.timer.shudown,ups.vendorid"
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+            resources:
+              limits:
+                cpu: 300m
+                memory: 200Mi
+    service:
+      app:
+        ports:
+          metrics:
+            enabled: true
+            protocol: TCP
+            port: 9199
