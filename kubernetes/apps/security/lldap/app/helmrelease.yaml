@@ -1,0 +1,86 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app lldap
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: lldap
+  interval: 30m
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    defaultPodOptions:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: *app
+    controllers:
+      lldap:
+        replicas: 1
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 17@sha256:86a1992d46273c58fd4ad95b626081dfaabfe16bd56944675169e406d1a660dd
+              pullPolicy: IfNotPresent
+            envFrom: &envFrom
+              - secretRef:
+                  name: lldap-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/lldap/lldap
+              tag: v0.6.2
+            env:
+              TZ: America/Los_Angeles
+              LLDAP_HTTP_PORT: &port 8080
+              LLDAP_HTTP_URL: https://lldap.${SECRET_DOMAIN}
+              LLDAP_LDAP_PORT: &ldapPort 5389
+              LLDAP_LDAP_BASE_DN: dc=home,dc=arpa
+            envFrom: *envFrom
+            resources:
+              requests:
+                cpu: 5m
+                memory: 36Mi
+              limits:
+                memory: 128Mi
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+          ldap:
+            enabled: true
+            port: *ldapPort
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
+    persistence:
+      data:
+        type: emptyDir
+        globalMounts:
+          - path: /data
