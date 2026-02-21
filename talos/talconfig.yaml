@@ -1,5 +1,5 @@
 ---
-clusterName: kubernetes
+clusterName: k8s-gitops
 
 talosVersion: "${talosVersion}"
 kubernetesVersion: "${kubernetesVersion}"
@@ -20,72 +20,141 @@ cniConfig:
 nodes:
   - hostname: "oya"
     ipAddress: "172.24.20.12"
-    installDisk: "/dev/nvme0n1"
+    installDiskSelector:
+      serial: A0D6073B184B00007040
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
+    talosImageURL: factory.talos.dev/installer/84ef3a96f6cd0b3321d0be76c54af0601a95ca5fd011374bb527e97e6f1974b8
     controlPlane: true
+    userVolumes:
+      - name: longhorn
+        provisioning:
+          diskSelector:
+            match: disk.serial == "50026B73839504FD"
+          minSize: "300GiB"
+          grow: true
     networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "58:47:ca:7b:e6:e4"
-        dhcp: false
-        addresses:
-          - "172.24.20.12/24"
-        routes:
-          - gateway: "172.24.20.1"
-            network: 0.0.0.0/0
-        mtu: 1500
+      - interface: bond0
+        bond:
+          deviceSelectors:
+            - hardwareAddr: "58:47:ca:7b:e6:e4"
+          mode: active-backup
+        dhcp: true
+        vlans: &vlans
+          - # IoT VLAN
+            { vlanId: 101, dhcp: false, mtu: 1500 }
+          - # Vpn VLAN
+            { vlanId: 50, dhcp: false, mtu: 1500}
         vip:
-          ip: "172.24.20.11"
+          ip: &vip "172.24.20.11"
+    extensionServices: &extensionServices
+      - name: nut-client
+        configFiles:
+          - content: MONITOR ${upsmonHost} 1 monuser secret slave
+            mountPath: /usr/local/etc/nut/upsmon.conf
+          - content: MODE=netclient
+            mountPath: /usr/local/etc/nut/nut.conf
+
   - hostname: "aje"
     ipAddress: "172.24.20.13"
-    installDisk: "/dev/nvme0n1"
+    installDiskSelector:
+      serial: AA202302171T21213049
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
+    talosImageURL: factory.talos.dev/installer/84ef3a96f6cd0b3321d0be76c54af0601a95ca5fd011374bb527e97e6f1974b8
     controlPlane: true
+    userVolumes:
+      - name: longhorn
+        provisioning:
+          diskSelector:
+            match: disk.serial == "50026B7383950E6D"
+          minSize: "300GiB"
+          grow: true
     networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "58:47:ca:7b:e9:48"
-        dhcp: false
-        addresses:
-          - "172.24.20.13/24"
-        routes:
-          - gateway: "172.24.20.1"
-            network: 0.0.0.0/0
-        mtu: 1500
+      - interface: bond0
+        bond:
+          deviceSelectors:
+            - hardwareAddr: "58:47:ca:7b:e9:48"
+          mode: active-backup
+        dhcp: true
         vip:
-          ip: "172.24.20.11"
+          ip: *vip
+        vlans: *vlans
+    extensionServices: *extensionServices
+
   - hostname: "oba"
     ipAddress: "172.24.20.14"
-    installDisk: "/dev/nvme1n1"
+    installDiskSelector:
+      serial: AA230711NV01KG10664
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/4996bded29de59048af8f58325ccfe1a1b6461ff098c669f87eef8f3e6b7239b
+    talosImageURL: factory.talos.dev/installer/84ef3a96f6cd0b3321d0be76c54af0601a95ca5fd011374bb527e97e6f1974b8
     controlPlane: true
+    userVolumes:
+      - name: longhorn
+        provisioning:
+          diskSelector:
+            match: disk.serial == "50026B7383951A37"
+          minSize: "300GiB"
+          grow: true
     networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "58:47:ca:7b:ea:1c"
-        dhcp: false
-        addresses:
-          - "172.24.20.14/24"
-        routes:
-          - gateway: "172.24.20.1"
-            network: 0.0.0.0/0
-        mtu: 1500
+      - interface: bond0
+        bond:
+          deviceSelectors:
+            - hardwareAddr: "58:47:ca:7b:ea:1c"
+          mode: active-backup
+        dhcp: true
         vip:
-          ip: "172.24.20.11"
+          ip: *vip
+        vlans: *vlans
+    extensionServices: *extensionServices
 
 # Global patches
 patches:
+  - "@./patches/global/machine-features.yaml"
   - "@./patches/global/machine-files.yaml"
+  - "@./patches/global/machine-kernel.yaml"
   - "@./patches/global/machine-kubelet.yaml"
   - "@./patches/global/machine-network.yaml"
   - "@./patches/global/machine-sysctls.yaml"
   - "@./patches/global/machine-time.yaml"
+  - "@./patches/global/machine-udev.yaml"
 
 # Controller patches
 controlPlane:
   patches:
     - "@./patches/controller/cluster.yaml"
+
+  nodeLabels:
+    node.kubernetes.io/gpu: "true"
+    topology.kubernetes.io/region: k8s
+
+  schematic:
+    customization:
+      extraKernelArgs:
+        - -init_on_alloc # Less security, faster puter
+        - -init_on_free # Less security, faster puter
+        - -selinux # Less security, faster puter
+        - apparmor=0 # Less security, faster puter
+        - i915.enable_guc=3 # Meteor Lake CPU / iGPU
+        - init_on_alloc=0 # Less security, faster puter
+        - init_on_free=0 # Less security, faster puter
+        - intel_iommu=on # PCI Passthrough
+        - iommu=pt # PCI Passthrough
+        - mitigations=off # Less security, faster puter
+        - module_blacklist=igc # Disable onboard NIC
+        - security=none # Less security, faster puter
+        - sysctl.kernel.kexec_load_disabled=1 # Meteor Lake CPU / iGPU
+        - talos.auditd.disabled=1 # Less security, faster puter
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/gasket-driver
+          - siderolabs/i915
+          - siderolabs/intel-ucode
+          - siderolabs/iscsi-tools
+          - siderolabs/mei
+          - siderolabs/nfsrahead
+          - siderolabs/nut-client
+          - siderolabs/thunderbolt
+          - siderolabs/util-linux-tools
 

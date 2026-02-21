@@ -2,6 +2,20 @@ machine:
   kubelet:
     extraConfig:
       serializeImagePulls: false
+      featureGates:
+        ImageVolume: true
+    extraMounts:
+      - destination: /var/mnt/longhorn
+        type: bind
+        source: /var/mnt/longhorn
+        options:
+          - "bind"
+          - "rshared"
+          - "rw"
+    defaultRuntimeSeccompProfileEnabled: true
     nodeIP:
       validSubnets:
         - 172.24.20.0/24
+    disableManifestsDirectory: true
+  nodeAnnotations:
+      node.longhorn.io/default-disks-config: '[{"path":"/var/mnt/longhorn","allowScheduling":true}]'
