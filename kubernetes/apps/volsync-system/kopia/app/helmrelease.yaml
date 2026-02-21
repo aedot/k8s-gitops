@@ -95,7 +95,7 @@ spec:
       repository:
         enabled: true
         type: nfs
-        server: shango.internal
+        server: unraid.internal
         path: /mnt/user/backups/k8s/volsynckopia
         globalMounts:
           - path: /repository
