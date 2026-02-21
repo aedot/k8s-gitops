@@ -1,0 +1,5 @@
+# renovate: datasource=docker depName=ghcr.io/siderolabs/installer
+talosVersion: v1.12.4
+# renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
+kubernetesVersion: v1.35.1
+upsmonHost: eaton@172.24.20.31
