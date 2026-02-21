@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: imagemaid
+spec:
+  targetNamespace: media
+  dependsOn:
+    - name: plex
+  path: ./kubernetes/apps/media/imagemaid/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  timeout: 5m
+  wait: false
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
+  interval: 30m
