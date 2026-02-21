@@ -45,7 +45,7 @@ spec:
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters:
-        barmanObjectName: cloudflare-r2
-        serverName: cluster17-v1
+          barmanObjectName: cloudflare-r2
+          serverName: cluster17-v1
 
 
