@@ -47,12 +47,16 @@ metadata:
   name: envoy-external
   annotations:
     external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+    gatus.home-operations.com/endpoint: |-
+      client:
+        dns-resolver: tcp://1.1.1.1:53
+      group: external
 spec:
   gatewayClassName: envoy
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: external.${SECRET_DOMAIN}
-      lbipam.cilium.io/ips: "172.24.20.51"
+      lbipam.cilium.io/ips: "172.24.30.20"
   listeners:
     - name: http
       protocol: HTTP
@@ -82,7 +86,7 @@ spec:
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: internal.${SECRET_DOMAIN}
-      lbipam.cilium.io/ips: "172.24.20.41"
+      lbipam.cilium.io/ips: "172.24.30.21"
   listeners:
     - name: http
       protocol: HTTP

@@ -19,8 +19,8 @@ spec:
               repository: ghcr.io/home-operations/plex
               tag: 1.43.0.10492@sha256:8cb062f2b0660bd7811387e6c799da0ce5f18112078fe21485c11adcc83a9c1c
             env:
-              PLEX_ADVERTISE_URL: https://{{ .Release.Name }}.${SECRET_DOMAIN}:443,http://10.0.20.37:32400
-              PLEX_NO_AUTH_NETWORKS: 10.0.101.0/24,10.0.40.0/24,10.0.20.0/24
+              PLEX_ADVERTISE_URL: https://{{ .Release.Name }}.${SECRET_DOMAIN}:443,http://172.16.30.81:32400
+              PLEX_NO_AUTH_NETWORKS: 172.24.1.0/24
               TZ: America/Los_Angeles
             probes:
               liveness: &probes
@@ -129,7 +129,7 @@ spec:
       app:
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: 10.0.30.201
+          lbipam.cilium.io/ips: 10.0.30.81
         externalTrafficPolicy: Local
         ports:
           http:
