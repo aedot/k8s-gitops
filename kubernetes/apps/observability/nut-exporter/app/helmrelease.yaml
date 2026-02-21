@@ -31,7 +31,7 @@ spec:
             env:
               TZ: America/Los_Angeles
             args:
-              - --nut.server="oduduwa.internal:3493"
+              - --nut.server="nut.internal:3493"
               # doubling some variables to ensure compatibility with the exporter
               - --nut.vars_enable="battery.charge,battery.charge,battery.runtime,battery.type,battery.voltage,device.mfr,device.model,input.voltage,ups.beeper.status,ups.delay.shutdown,ups.load,ups.power.nominal,ups.status,ups.timer.shudown,ups.vendorid"
             probes:
