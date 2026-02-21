@@ -6,7 +6,7 @@ metadata:
 spec:
   allowFirstLastIPs: "No"
   blocks:
-    - cidr: "172.24.20.0/24"
+    - cidr: "172.24.30.0/24"
 ---
 apiVersion: cilium.io/v2
 kind: CiliumBGPAdvertisement
