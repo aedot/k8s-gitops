@@ -5,4 +5,3 @@ resources:
   - ./grafanadashboard.yaml
   - ./helmrelease.yaml
   - ./helmrepository.yaml
-  - ./httproute.yaml

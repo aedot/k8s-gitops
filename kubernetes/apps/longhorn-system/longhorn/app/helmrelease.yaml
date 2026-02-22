@@ -15,15 +15,29 @@ spec:
         name: longhorn
         namespace: longhorn-system
   values:
+    preUpgradeChecker:
+      jobEnabled: false
+      upgradeVersionCheck: false
+    image:
+      longhorn:
+        instanceManager:
+          tag: v1.11.0-hotfix-1
+        manager:
+          tag: v1.11.0-hotfix-1
     persistence:
       defaultDataLocality: best-effort
+      recurringJobSelector:
+        enable: true
+        jobList: '[{"name":"recurring-fs-trim", "isGroup":false}]'
     defaultSettings:
       defaultDataPath: "/var/mnt/longhorn"
+      replicaDiskSoftAntiAffinity: false
+      createDefaultDiskLabeledNodes: true
       defaultDataLocality: best-effort
       defaultLonghornStaticStorageClass: longhorn
       defaultReplicaCount: "3"
-      guaranteedEngineManagerCPU: "20"
-      guaranteedReplicaManagerCPU: "20"
+      guaranteedEngineManagerCPU: "30"
+      guaranteedReplicaManagerCPU: "30"
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
       orphanAutoDeletion: "true"
       replicaAutoBalance: "best-effort"
@@ -31,6 +45,13 @@ spec:
       storageReservedPercentageForDefaultDisk: "10"
     ingress:
       enabled: false
+    httproute:
+      enabled: true
+      hostnames:
+        - "longhorn.${SECRET_DOMAIN}"
+      parentRefs:
+        - name: envoy-internal
+          namespace: network
     metrics:
       serviceMonitor:
         enabled: true
