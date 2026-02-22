@@ -10,14 +10,8 @@ spec:
     name: longhorn
   interval: 1h
   values:
-    preUpgradeChecker:
-      jobEnabled: false
-      upgradeVersionCheck: false
     persistence:
       defaultDataLocality: best-effort
-      recurringJobSelector:
-        enable: true
-        jobList: '[{"name":"recurring-fs-trim", "isGroup":false}]'
     defaultSettings:
       defaultDataPath: "/var/mnt/longhorn"
       replicaDiskSoftAntiAffinity: false
@@ -25,11 +19,11 @@ spec:
       defaultDataLocality: best-effort
       defaultLonghornStaticStorageClass: longhorn
       defaultReplicaCount: "3"
-      guaranteedEngineManagerCPU: "30"
-      guaranteedReplicaManagerCPU: "30"
+      guaranteedEngineManagerCPU: "20"
+      guaranteedReplicaManagerCPU: "20"
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
-      orphanAutoDeletion: "true"
-      replicaAutoBalance: "best-effort"
+      orphanAutoDeletion: true
+      replicaAutoBalance: best-effort
       storageMinimalAvailablePercentage: "1"
       storageReservedPercentageForDefaultDisk: "10"
     ingress:
