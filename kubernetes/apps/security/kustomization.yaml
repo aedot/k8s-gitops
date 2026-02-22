@@ -7,6 +7,6 @@ components:
   - ../../components/sops
   - ../../components/namespace
 
-resources:
-  - ./lldap/ks.yaml
-  - ./pocket-id/ks.yaml
+resources: []
+  # - ./lldap/ks.yaml
+  # - ./pocket-id/ks.yaml
