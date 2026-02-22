@@ -20,7 +20,8 @@ spec:
               repository: ghcr.io/home-operations/home-assistant
               tag: 2026.2.3@sha256:d73c9c53a8562e12211f24fd7303c422051220636972485df291dbec885d8a3d
             env:
-              HASS_HTTP_TRUSTED_PROXIES: 10.0.0.0/8
+              HASS_HTTP_TRUSTED_PROXY_1: 172.24.10.0/24
+              HASS_HTTP_TRUSTED_PROXY_2: 10.42.0.0/16
               HOME_ASSISTANT_EXTERNAL_URL: https://hass.${SECRET_DOMAIN}
               HOME_ASSISTANT_PURGE_KEEP_DAYS: 30
               TZ: America/Los_Angeles
@@ -65,7 +66,7 @@ spec:
           [{
             "name": "iot",
             "namespace": "kube-system",
-            "ips": ["10.0.101.13/24"]
+            "ips": ["172.24.40.22/24"]
           }]
       securityContext:
         runAsNonRoot: true
