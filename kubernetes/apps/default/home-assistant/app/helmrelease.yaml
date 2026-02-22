@@ -25,9 +25,6 @@ spec:
               HOME_ASSISTANT_EXTERNAL_URL: https://hass.${SECRET_DOMAIN}
               HOME_ASSISTANT_PURGE_KEEP_DAYS: 30
               TZ: America/Los_Angeles
-            envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
