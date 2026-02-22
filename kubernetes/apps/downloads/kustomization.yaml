@@ -5,12 +5,12 @@ namespace: downloads
 components:
   - ../../components/sops
   - ../../components/namespace
-resources: []
-  # - ./bazarr/ks.yaml
-  # - ./sonarr/ks.yaml
-  # - ./radarr/ks.yaml
-  # - ./prowlarr/ks.yaml
-  # - ./flaresolverr/ks.yaml
-  # - ./recyclarr/ks.yaml
-  # - ./qbittorrent/ks.yaml
-  # - ./qui/ks.yaml
+resources:
+  - ./bazarr/ks.yaml
+  - ./sonarr/ks.yaml
+  - ./radarr/ks.yaml
+  - ./prowlarr/ks.yaml
+  - ./flaresolverr/ks.yaml
+  - ./recyclarr/ks.yaml
+  - ./qbittorrent/ks.yaml
+  - ./qui/ks.yaml
