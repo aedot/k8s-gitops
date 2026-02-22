@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  # renovate: datasource=github-releases depName=kubernetes-csi/volumegroupsnapshotclasses versioning=semver
+  - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.4.0/client/config/crd/groupsnapshot.storage.k8s.io_volumegroupsnapshotclasses.yaml
+  # renovate: depName=kubernetes-csi/external-snapshotter/volumegroupsnapshotcontents datasource=github-releases versioning=semver
+  - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.4.0/client/config/crd/groupsnapshot.storage.k8s.io_volumegroupsnapshotcontents.yaml
+  # renovate: depName=kubernetes-csi/external-snapshotter/volumegroupsnapshots datasource=github-releases versioning=semver
+  - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.4.0/client/config/crd/groupsnapshot.storage.k8s.io_volumegroupsnapshots.yaml
+  # renovate: depName=kubernetes-csi/external-snapshotter/volumesnapshotclasses datasource=github-releases versioning=semver
+  - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.4.0/client/config/crd/snapshot.storage.k8s.io_volumesnapshotclasses.yaml
+  # renovate: depName=kubernetes-csi/external-snapshotter/volumesnapshotcontents datasource=github-releases versioning=semver
+  - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.4.0/client/config/crd/snapshot.storage.k8s.io_volumesnapshotcontents.yaml
+  # renovate: depName=kubernetes-csi/external-snapshotter/volumesnapshot datasource=github-releases versioning=semver
+  - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.4.0/client/config/crd/snapshot.storage.k8s.io_volumesnapshots.yaml
+  # renovate: depName=kubernetes-csi/external-snapshotter/rbac-snapshot-controller datasource=github-releases versioning=semver
+  - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/refs/tags/v8.4.0/deploy/kubernetes/snapshot-controller/rbac-snapshot-controller.yaml
+  - ./snapshot.yaml
