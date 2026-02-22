@@ -1,0 +1,76 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: agregarr
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: agregarr
+  interval: 1h
+  values:
+    controllers:
+      agregarr:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/agregarr/agregarr
+              tag: v2.4.0@sha256:5f638efaa7ebf19defaea2168ee95a7108709bd5598974f243c19b3993c11e50
+            env:
+              PORT: &port 80
+              TZ: America/Los_Angeles
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v1/status
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 1Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /app/config
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          agregarr:
+            app:
+              - path: /app/config/logs
+                subPath: logs
+              - path: /tmp
+                subPath: tmp
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    service:
+      app:
+        ports:
+          http:
+            port: *port

@@ -1,0 +1,24 @@
+---
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: cloudflare-r2
+spec:
+  configuration:
+    data:
+      compression: bzip2
+    destinationPath: s3://cloudnative-pg/
+    endpointURL: https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
+    s3Credentials:
+      accessKeyId:
+        name: cloudnative-pg-secret
+        key: AWS_ACCESS_KEY_ID
+      secretAccessKey:
+        name: cloudnative-pg-secret
+        key: AWS_SECRET_ACCESS_KEY
+    wal:
+      compression: bzip2
+      # current bug (https://github.com/cloudnative-pg/plugin-barman-cloud/issues/516#issuecomment-3278883369)
+      # currently set to 1 from 8
+      maxParallel: 1
+  retentionPolicy: 15d
