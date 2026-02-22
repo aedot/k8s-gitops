@@ -42,7 +42,7 @@ nodes:
         dhcp: true
         vlans: &vlans
           - # IoT VLAN
-            { vlanId: 101, dhcp: false, mtu: 1500 }
+            { vlanId: 40, dhcp: false, mtu: 1500 }
           - # Vpn VLAN
             { vlanId: 50, dhcp: false, mtu: 1500}
         vip:
