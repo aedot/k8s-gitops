@@ -69,7 +69,7 @@ spec:
         existingClaim: "{{ .Release.Name }}"
       data:
         type: nfs
-        server: unraid.internal
+        server: shango.internal
         path: /mnt/user/data
         globalMounts:
           - path: /data
