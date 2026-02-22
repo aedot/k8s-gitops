@@ -71,7 +71,7 @@ spec:
           - path: /config/Library/Application Support/Plex Media Server/Cache
       media:
         type: nfs
-        server: unraid.internal
+        server: shango.internal
         path: /mnt/user/data/media
         globalMounts:
           - path: /media
