@@ -5,4 +5,4 @@ resources:
   - ./secret.sops.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
-  - ./prometheus.yaml
+  - ./prometheusrule.yaml
