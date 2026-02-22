@@ -18,3 +18,9 @@ machine:
         - actions-runner-system
         - system-upgrade
     rbac: true
+
+---
+apiVersion: v1alpha1
+kind: WatchdogTimerConfig
+device: /dev/watchdog0
+timeout: 10m
