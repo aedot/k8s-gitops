@@ -16,6 +16,7 @@ spec:
         - aje.internal
         - oba.internal
         - oduduwa.internal
+        - obatala.internal
   metricRelabelings:
     - targetLabel: service
       replacement: blackbox-exporter-lan
