@@ -83,7 +83,7 @@ spec:
           volumes:
             - name: repository
               nfs:
-                server: unraid.internal
+                server: shango.internal
                 path: /mnt/user/backups/k8s/volsynckopia
             - name: tmp
               emptyDir: {}

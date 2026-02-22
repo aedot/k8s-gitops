@@ -16,17 +16,27 @@ spec:
         enabled: true
         storageClassName: longhorn
         size: 20Gi
-      serviceMonitor:
-        enabled: true
+      retentionPeriod: 14d
       route:
         enabled: true
         hostnames:
-          - logs.${SECRET_DOMAIN}
+          - victoria-logs.${SECRET_DOMAIN}
         parentRefs:
           - name: envoy-internal
             namespace: network
-            sectionName: https
+        extraRules:
+          - filters:
+              - type: RequestRedirect
+                requestRedirect:
+                  path:
+                    type: ReplaceFullPath
+                    replaceFullPath: /select/vmui/
+                  statusCode: 302
+            matches:
+              - path:
+                  type: Exact
+                  value: /
+      serviceMonitor:
+        enabled: true
     dashboards:
       enabled: true
-      labels:
-        grafana_dashboard: "1"
