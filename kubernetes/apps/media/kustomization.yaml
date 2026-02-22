@@ -7,9 +7,9 @@ components:
   - ../../components/sops
   - ../../components/namespace
 
-resources:
-  - ./agregarr/ks.yaml
-  - ./imagemaid/ks.yaml
-  - ./plex/ks.yaml
-  - ./seerr/ks.yaml
-  - ./tautulli/ks.yaml
+resources: []
+  # - ./agregarr/ks.yaml
+  # - ./imagemaid/ks.yaml
+  # - ./plex/ks.yaml
+  # - ./seerr/ks.yaml
+  # - ./tautulli/ks.yaml
