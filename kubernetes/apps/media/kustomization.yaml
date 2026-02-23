@@ -9,7 +9,6 @@ components:
 
 resources:
   - ./agregarr/ks.yaml
-  - ./decluttarr/ks.yaml
   - ./imagemaid/ks.yaml
   - ./plex/ks.yaml
   - ./seerr/ks.yaml
