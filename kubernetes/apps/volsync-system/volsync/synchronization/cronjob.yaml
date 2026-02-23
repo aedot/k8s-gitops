@@ -84,6 +84,6 @@ spec:
             - name: repository
               nfs:
                 server: shango.internal
-                path: /mnt/user/backups/k8s/volsynckopia
+                path: /mnt/user/backups/kubernetes/volsync
             - name: tmp
               emptyDir: {}
