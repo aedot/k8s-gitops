@@ -11,10 +11,10 @@ spec:
     endpointURL: https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
     s3Credentials:
       accessKeyId:
-        name: cloudnative-pg-secret
+        name: cnpg-secret
         key: AWS_ACCESS_KEY_ID
       secretAccessKey:
-        name: cloudnative-pg-secret
+        name: cnpg-secret
         key: AWS_SECRET_ACCESS_KEY
     wal:
       compression: bzip2

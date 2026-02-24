@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: postgres17-loadbalancer
   labels:
-    cnpg.io/cluster: postgres18
+    cnpg.io/cluster: postgres17
   annotations:
     lbipam.cilium.io/ips: 172.24.30.91
 spec:

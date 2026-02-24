@@ -2,7 +2,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: cnpg-backup
+  name: postgres17-barman
 spec:
   cluster:
     name: postgres17
