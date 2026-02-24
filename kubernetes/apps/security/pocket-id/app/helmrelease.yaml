@@ -28,9 +28,9 @@ spec:
               repository: ghcr.io/home-operations/postgres-init
               tag: 17@sha256:86a1992d46273c58fd4ad95b626081dfaabfe16bd56944675169e406d1a660dd
               pullPolicy: IfNotPresent
-            envFrom: &envFrom
+            envFrom:
               - secretRef:
-                  name: pocket-id-secret
+                  name: "{{ .Release.Name }}-initdb-secret"
         containers:
           app:
             image:
@@ -46,7 +46,9 @@ spec:
               SESSION_DURATION: 1440
               UPLOAD_PATH: /app/data/uploads
               GEOLITE_DB_PATH: /app/data/GeoLite2-City.mmdb
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness: &probes
                 enabled: true
