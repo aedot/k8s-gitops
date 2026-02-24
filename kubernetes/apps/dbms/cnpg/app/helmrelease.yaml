@@ -9,11 +9,11 @@ spec:
     kind: OCIRepository
     name: cnpg
   values:
+    fullnameOverride: cnpg-operator
     podLabels:
       app.kubernetes.io/component: operator
     crds:
       create: true
-    replicaCount: 2
     monitoring:
       podMonitorEnabled: true
       grafanaDashboard:
