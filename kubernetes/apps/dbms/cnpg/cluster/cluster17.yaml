@@ -13,7 +13,7 @@ spec:
     size: 20Gi
     storageClass: longhorn
   superuserSecret:
-    name: cloudnative-pg-secret
+    name: cnpg-secret
   enableSuperuserAccess: true
   postgresql:
     parameters:
