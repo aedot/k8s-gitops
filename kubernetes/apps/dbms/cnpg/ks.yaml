@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cloudnative-pg
+  name: cnpg-operator
 spec:
   targetNamespace: dbms
   interval: 30m
@@ -21,12 +21,10 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cloudnative-pg-barman-cloud
+  name: cnpg-barman-cloud
 spec:
   dependsOn:
-    - name: cert-manager
-      namespace: cert-manager
-    - name: cloudnative-pg
+    - name: cnpg-operator
   interval: 1h
   path: ./kubernetes/apps/dbms/cnpg/barman-cloud
   postBuild:
@@ -49,7 +47,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cloudnative-pg-cluster
+  name: cnpg-cluster
 spec:
   targetNamespace: dbms
   interval: 1h
@@ -61,8 +59,8 @@ spec:
     namespace: flux-system
   wait: true
   dependsOn:
-    - name: cloudnative-pg
-    - name: cloudnative-pg-barman-cloud
+    - name: cnpg-operator
+    - name: cnpg-barman-cloud
     - name: longhorn
       namespace: longhorn-system
     - name: akeyless-stores

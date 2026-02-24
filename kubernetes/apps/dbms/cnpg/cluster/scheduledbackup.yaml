@@ -2,10 +2,10 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: postgres17-barman
+  name: pgsql-cluster-barman
 spec:
   cluster:
-    name: postgres17
+    name: pgsql-cluster
   schedule: "0 0 11 * * *" # Every day at 0300 PST / 0200 PDT
   backupOwnerReference: self
   method: plugin

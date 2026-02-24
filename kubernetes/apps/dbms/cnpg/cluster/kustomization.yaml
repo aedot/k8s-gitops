@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./cluster17.yaml
   - ./gatus.yaml
+  - ./grafanadashboard.yaml
   - ./objectstore.yaml
   - ./prometheusrule.yaml
   - ./scheduledbackup.yaml

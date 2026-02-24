@@ -21,4 +21,4 @@ spec:
       # current bug (https://github.com/cloudnative-pg/plugin-barman-cloud/issues/516#issuecomment-3278883369)
       # currently set to 1 from 8
       maxParallel: 8
-  retentionPolicy: 15d
+  retentionPolicy: 7d
