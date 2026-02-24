@@ -7,6 +7,6 @@ components:
   - ../../components/sops
   - ../../components/namespace
 resources:
-  - ./cloudnative-pg/ks.yaml
+  - ./cnpg/ks.yaml
   # - ./cnpg-dump/ks.yaml
   # - ./mosquitto/ks.yaml
