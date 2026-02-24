@@ -7,6 +7,8 @@ metadata:
 spec:
   targetNamespace: security
   path: ./kubernetes/apps/security/lldap/app
+  components:
+    - ../../../../components/cnpg
   prune: true
   sourceRef:
     kind: GitRepository
@@ -15,7 +17,7 @@ spec:
   wait: false
   interval: 30m
   dependsOn:
-    - name: cloudnative-pg-cluster
+    - name: cnpg-cluster
       namespace: dbms
     - name: akeyless-stores
       namespace: external-secrets
@@ -23,3 +25,6 @@ spec:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
+    substitute:
+      APP: lldap
+      CNPG_NAME: pgsql-cluster
