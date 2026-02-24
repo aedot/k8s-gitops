@@ -6,7 +6,7 @@ namespace: dbms
 components:
   - ../../components/sops
   - ../../components/namespace
-resources:
+resources: []
   # - ./cloudnative-pg/ks.yaml
   # - ./cnpg-dump/ks.yaml
-  - ./mosquitto/ks.yaml
+  # - ./mosquitto/ks.yaml
