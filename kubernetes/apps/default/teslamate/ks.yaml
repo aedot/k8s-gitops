@@ -5,10 +5,10 @@ kind: Kustomization
 metadata:
   name: teslamate
 spec:
-  components:
-    - ../../../../components/cnpg
   interval: 30m
   path: ./kubernetes/apps/default/teslamate/app
+  components:
+    - ../../../../components/cnpg
   dependsOn:
     - name: cnpg-cluster
       namespace: dbms
