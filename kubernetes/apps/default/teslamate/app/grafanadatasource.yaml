@@ -16,12 +16,12 @@ spec:
           key: "DATABASE_PASS"
   datasource:
     type: postgres
-    url: postgres17-ro.dbms
-    user: tessy
+    url: ${CNPG_NAME:=pgsql-cluster}-ro.dbms.svc.cluster.local
+    user: ${APP}
     secureJsonData:
       password: $DATABASE_PASS
     name: TeslaMate
     access: proxy
     jsonData:
       sslmode: disable
-      database: teslamate
+      database: ${APP}

@@ -39,8 +39,6 @@ spec:
               TZ: America/Los_Angeles
               DISABLE_MQTT: "false"
               MQTT_HOST: "mosquitto.dbms.svc.cluster.local"
-              DATABASE_NAME: "teslamate"
-              DATABASE_HOST: "postgres17-rw.dbms.svc.cluster.local"
             resources:
               requests:
                 memory: 250Mi
