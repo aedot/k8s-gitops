@@ -6,7 +6,7 @@ metadata:
 spec:
   targetNamespace: dbms
   interval: 30m
-  path: "./kubernetes/apps/dbms/cloudnative-pg/app"
+  path: "./kubernetes/apps/dbms/cnpg/app"
   prune: true
   sourceRef:
     kind: GitRepository
@@ -28,7 +28,7 @@ spec:
       namespace: cert-manager
     - name: cloudnative-pg
   interval: 1h
-  path: ./kubernetes/apps/dbms/cloudnative-pg/barman-cloud
+  path: ./kubernetes/apps/dbms/cnpg/barman-cloud
   postBuild:
     substituteFrom:
       - name: cluster-secrets
@@ -53,7 +53,7 @@ metadata:
 spec:
   targetNamespace: dbms
   interval: 1h
-  path: "./kubernetes/apps/dbms/cloudnative-pg/cluster"
+  path: "./kubernetes/apps/dbms/cnpg/cluster"
   prune: true
   sourceRef:
     kind: GitRepository

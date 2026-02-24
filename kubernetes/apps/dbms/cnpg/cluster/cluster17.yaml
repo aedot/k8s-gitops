@@ -9,12 +9,11 @@ spec:
   instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:${POSTGRESQL_VERSION}
   primaryUpdateStrategy: unsupervised
-  primaryUpdateMethod: switchover
   storage:
     size: 20Gi
     storageClass: longhorn
   superuserSecret:
-    name: cnpg-secret
+    name: cloudnative-pg-secret
   enableSuperuserAccess: true
   postgresql:
     parameters:
