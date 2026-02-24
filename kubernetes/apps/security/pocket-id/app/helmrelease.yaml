@@ -20,8 +20,6 @@ spec:
               app.kubernetes.io/name: *app
     controllers:
       pocket-id:
-        replicas: 1
-        strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -101,7 +99,7 @@ spec:
                 port: *port
     persistence:
       data:
-        existingClaim: *app
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /app/data
             subPath: data

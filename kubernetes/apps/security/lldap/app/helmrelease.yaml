@@ -9,14 +9,6 @@ spec:
     kind: OCIRepository
     name: lldap
   interval: 30m
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
   values:
     defaultPodOptions:
       topologySpreadConstraints:
