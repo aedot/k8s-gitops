@@ -7,7 +7,7 @@ metadata:
 spec:
   sourcePVC: ${APP}
   trigger:
-    schedule: "${VOLSYNC_SCHEDULE:=0 */6 * * *}" # Every 6 hours by default
+    schedule: "00 11,17,23 * * *" # Every 12 hours at 11:00, 17:00 and 23:00
   kopia:
     accessModes:
       - ${VOLSYNC_SNAP_ACCESSMODES:=ReadWriteOnce}

@@ -5,7 +5,7 @@ kind: CronJob
 metadata:
   name: kopia-sync
 spec:
-  schedule: "15 3 * * *" # Daily at 03:00 (PDT/PST aware)
+  schedule: "15 4 * * *" # Daily at 04:00 (PDT/PST aware)
   timeZone: America/Los_Angeles
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 1

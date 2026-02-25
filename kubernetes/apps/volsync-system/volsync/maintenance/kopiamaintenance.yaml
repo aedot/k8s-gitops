@@ -7,6 +7,6 @@ metadata:
 spec:
   enabled: true
   trigger:
-    schedule: 45 */12 * * *
+    schedule: "15 12,18,00 * * *" # Every 12 hours at 12:30, 18:30 and 00:30
   repository:
     repository: volsync-maintenance-secret
