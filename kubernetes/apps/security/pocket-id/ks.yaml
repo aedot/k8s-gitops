@@ -9,7 +9,7 @@ spec:
   path: ./kubernetes/apps/security/pocket-id/app
   components:
     - ../../../../components/volsync
-    # - ../../../../components/cnpg
+    - ../../../../components/cnpg
   prune: true
   sourceRef:
     kind: GitRepository
