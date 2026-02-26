@@ -10,6 +10,9 @@ spec:
     name: longhorn
   interval: 1h
   values:
+    preUpgradeChecker:
+      jobEnabled: false
+      upgradeVersionCheck: false
     image:
       longhorn:
         instanceManager:
@@ -18,6 +21,9 @@ spec:
           tag: v1.11.0-hotfix-1
     persistence:
       defaultDataLocality: best-effort
+      recurringJobSelector:
+        enable: true
+        jobList: '[{"name":"recurring-fs-trim", "isGroup":false}]'
     defaultSettings:
       defaultDataPath: "/var/mnt/longhorn"
       replicaDiskSoftAntiAffinity: false
