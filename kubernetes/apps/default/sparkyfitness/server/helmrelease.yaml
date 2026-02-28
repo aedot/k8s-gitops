@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: ghcr.io/codewithcj/sparkyfitness-server
-              tag: v0.16.4.7@sha256:9c14389f501620fcae98400fa6d9103c90e5a520d0452ad06f30aa5efc5c0024
+              tag: v0.16.4.7@sha256:f8192a105593d6a361c46f879c7c108eae5b2c683535b78776aff8f9cd6f76a2
             env:
               SPARKY_FITNESS_DISABLE_EMAIL_LOGIN: true
               SPARKY_FITNESS_OIDC_AUTH_ENABLED: true
