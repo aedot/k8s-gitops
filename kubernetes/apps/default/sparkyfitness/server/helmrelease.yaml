@@ -29,11 +29,11 @@ spec:
               tag: v0.16.4.7@sha256:9c14389f501620fcae98400fa6d9103c90e5a520d0452ad06f30aa5efc5c0024
             env:
               SPARKY_FITNESS_DISABLE_EMAIL_LOGIN: false
-              SPARKY_FITNESS_OIDC_AUTH_ENABLED: true
-              SPARKY_FITNESS_OIDC_PROVIDER_SLUG: pocket-id
-              SparkY_FITNESS_OIDC_PROVIDER_NAME: Pocket-ID
-              SPARKY_FITNESS_OIDC_AUTO_REGISTER: true
-              SPARKY_FITNESS_OIDC_ISSUER_URL: https://sso.${SECRET_DOMAIN}
+              # SPARKY_FITNESS_OIDC_AUTH_ENABLED: true
+              # SPARKY_FITNESS_OIDC_PROVIDER_SLUG: pocket-id
+              # SparkY_FITNESS_OIDC_PROVIDER_NAME: Pocket-ID
+              # SPARKY_FITNESS_OIDC_AUTO_REGISTER: true
+              # SPARKY_FITNESS_OIDC_ISSUER_URL: https://sso.${SECRET_DOMAIN}
               SPARKY_FITNESS_FRONTEND_URL: https://fitness.${SECRET_DOMAIN}
               SPARKY_FITNESS_DISABLE_SIGNUP: true
               SPARKY_FITNESS_LOG_LEVEL: debug
