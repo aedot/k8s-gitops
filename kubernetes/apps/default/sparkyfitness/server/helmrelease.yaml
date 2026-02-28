@@ -30,9 +30,13 @@ spec:
             env:
               SPARKY_FITNESS_DISABLE_EMAIL_LOGIN: true
               SPARKY_FITNESS_OIDC_AUTH_ENABLED: true
+              SPARKY_FITNESS_OIDC_PROVIDER_SLUG: Pocket-Id
+              SparkY_FITNESS_OIDC_PROVIDER_NAME: Pocket-ID
+              SPARKY_FITNESS_OIDC_AUTO_REGISTER: true
               SPARKY_FITNESS_OIDC_ISSUER_URL: https://sso.${SECRET_DOMAIN}
+              
+              SPARKY_FITNESS_FRONTEND_URL: https://fitness.${SECRET_DOMAIN}
               SPARKY_FITNESS_DISABLE_SIGNUP: true
-              ALLOW_PRIVATE_NETWORK_CORS: false
               SPARKY_FITNESS_LOG_LEVEL: debug
               SPARKY_FITNESS_EXTRA_TRUSTED_ORIGINS: ""
               NODE_ENV: "production"
