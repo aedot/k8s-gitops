@@ -1,0 +1,58 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: sparkyfitness-server
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: sparkyfitness
+  interval: 30m
+  values:
+    controllers:
+      sparkyfitness-server:
+        forceRename: sparkyfitness-server
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 17@sha256:86a1992d46273c58fd4ad95b626081dfaabfe16bd56944675169e406d1a660dd
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-initdb-secret"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/codewithcj/sparkyfitness-server
+              tag: v0.16.4.7@sha256:9c14389f501620fcae98400fa6d9103c90e5a520d0452ad06f30aa5efc5c0024
+            env:
+              SPARKY_FITNESS_FRONTEND_URL: fitness.${SECRET_DOMAIN}
+              SPARKY_FITNESS_DISABLE_SIGNUP: false
+              ALLOW_PRIVATE_NETWORK_CORS: false
+              SPARKY_FITNESS_LOG_LEVEL: debug
+              SPARKY_FITNESS_EXTRA_TRUSTED_ORIGINS: ""
+              NODE_ENV: "production"
+              TZ: "America/Los_Angeles"
+              SERVER_UPLOADS_PATH: /uploads
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+            resources:
+              requests:
+                cpu: 15m
+              limits:
+                memory: 128M
+    service:
+      main:
+        controller: main
+        ports:
+          http:
+            port: 3010
+    persistence:
+      uploads:
+        type: persistentVolumeClaim
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /uploads
