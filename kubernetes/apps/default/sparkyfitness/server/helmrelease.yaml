@@ -21,7 +21,7 @@ spec:
               tag: 17@sha256:86a1992d46273c58fd4ad95b626081dfaabfe16bd56944675169e406d1a660dd
             envFrom:
               - secretRef:
-                  name: "{{ .Release.Name }}-initdb-secret"
+                  name: "sparkyfitness-initdb-secret"
         containers:
           app:
             image:
@@ -38,7 +38,7 @@ spec:
               SERVER_UPLOADS_PATH: /uploads
             envFrom:
               - secretRef:
-                  name: "{{ .Release.Name }}-secret"
+                  name: "sparkyfitness-secret"
             resources:
               requests:
                 cpu: 15m
