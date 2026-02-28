@@ -52,6 +52,6 @@ spec:
     persistence:
       uploads:
         type: persistentVolumeClaim
-        existingClaim: "{{ .Release.Name }}"
+        existingClaim: sparkyfitness
         globalMounts:
           - path: /uploads

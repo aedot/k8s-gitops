@@ -29,7 +29,6 @@ spec:
   postBuild:
     substitute:
       APP: sparkyfitness
-      VOLSYNC_CLAIM: sparkyfitness-server
       VOLSYNC_CAPACITY: 5Gi
       CNPG_NAME: pgsql-cluster
     substituteFrom:
