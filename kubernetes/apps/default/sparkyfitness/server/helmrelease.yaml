@@ -33,6 +33,7 @@ spec:
               SPARKY_FITNESS_DISABLE_SIGNUP: true
               SPARKY_FITNESS_FORCE_EMAIL_LOGIN: true
               SPARKY_FITNESS_LOG_LEVEL: debug
+              SPARKY_FITNESS_EMAIL_SECURE: true # Use 'true' for TLS/SSL, 'false' for plain text
               NODE_ENV: "production"
               TZ: "America/Los_Angeles"
               SERVER_UPLOADS_PATH: /uploads
@@ -50,8 +51,14 @@ spec:
           http:
             port: 3010
     persistence:
-      uploads:
-        type: persistentVolumeClaim
+      backup:
+        type: nfs
+        server: shango.internal
+        path: /mnt/user/backups/kubernetes/sparkyfitness
+        globalMounts:
+          - path: /backup
+      config:
+        enabled: true
         existingClaim: sparkyfitness
         globalMounts:
           - path: /uploads
