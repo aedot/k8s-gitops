@@ -28,9 +28,9 @@ spec:
               repository: ghcr.io/codewithcj/sparkyfitness-server
               tag: v0.16.4.7@sha256:9c14389f501620fcae98400fa6d9103c90e5a520d0452ad06f30aa5efc5c0024
             env:
-              SPARKY_FITNESS_DISABLE_EMAIL_LOGIN: false
+              SPARKY_FITNESS_DISABLE_EMAIL_LOGIN: true
               SPARKY_FITNESS_FRONTEND_URL: https://fitness.${SECRET_DOMAIN}
-              SPARKY_FITNESS_DISABLE_SIGNUP: true
+              SPARKY_FITNESS_DISABLE_SIGNUP: false
               SPARKY_FITNESS_LOG_LEVEL: debug
               SPARKY_FITNESS_EXTRA_TRUSTED_ORIGINS: ""
               NODE_ENV: "production"
