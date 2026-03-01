@@ -37,7 +37,6 @@ spec:
               NODE_ENV: "production"
               TZ: "America/Los_Angeles"
               SERVER_UPLOADS_PATH: /uploads
-              SERVER_BACKUP_PATH: /backup
             envFrom:
               - secretRef:
                   name: "sparkyfitness-secret"
@@ -52,12 +51,6 @@ spec:
           http:
             port: 3010
     persistence:
-      backup:
-        type: nfs
-        server: shango.internal
-        path: /mnt/user/backups/kubernetes/sparkyfitness
-        globalMounts:
-          - path: /backup
       config:
         enabled: true
         existingClaim: sparkyfitness

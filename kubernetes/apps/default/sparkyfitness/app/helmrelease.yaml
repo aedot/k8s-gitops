@@ -19,7 +19,7 @@ spec:
               repository: ghcr.io/codewithcj/sparkyfitness-frontend
               tag: v0.16.4.7@sha256:6d78b82ef1a876b6b8f3a73095185d6294908afa669b11c0f1ce02f9e18dfc80
             env:
-              SPARKY_FITNESS_LOG_LEVEL: debug
+              SPARKY_FITNESS_LOG_LEVEL: error
               SPARKY_FITNESS_SERVER_HOST: sparkyfitness-server.default
               SPARKY_FITNESS_SERVER_PORT: 3010
             resources:
@@ -39,5 +39,5 @@ spec:
         hostnames:
           - fitness.${SECRET_DOMAIN}
         parentRefs:
-          - name: envoy-internal
+          - name: envoy-external
             namespace: network
