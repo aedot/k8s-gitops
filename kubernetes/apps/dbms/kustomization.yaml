@@ -7,5 +7,5 @@ components:
   - ../../components/sops
   - ../../components/namespace
 resources:
-  - ./cnpg/ks.yaml
+  # - ./cnpg/ks.yaml
   - ./mosquitto/ks.yaml
