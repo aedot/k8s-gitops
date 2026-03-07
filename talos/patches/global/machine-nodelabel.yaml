@@ -1,0 +1,5 @@
+machine:
+  nodeAnnotations:
+    node.longhorn.io/default-disks-config: '[{"path":"/var/mnt/longhorn","allowScheduling":true}]'
+  nodeLabels:
+    node.longhorn.io/create-default-disk: "config"

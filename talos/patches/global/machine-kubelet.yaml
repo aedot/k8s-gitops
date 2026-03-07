@@ -17,5 +17,3 @@ machine:
       validSubnets:
         - 172.24.20.0/24
     disableManifestsDirectory: true
-  nodeAnnotations:
-      node.longhorn.io/default-disks-config: '[{"path":"/var/mnt/longhorn","allowScheduling":true}]'
