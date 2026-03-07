@@ -13,17 +13,13 @@ machine:
           cdi_spec_dirs = ["/var/cdi/static", "/var/cdi/dynamic"]
           device_ownership_from_security_context = true
 
-    - # NFS mounts
-      op: overwrite
+    # NFS mounts
+    - op: overwrite
       path: /etc/nfsmount.conf
       permissions: 0o644
       content: |
         [ NFSMount_Global_Options ]
-        nfsvers=4.1
-        soft=True
-        timeo=30
-        retrans=3
+        nfsvers=4
+        hard=True
+        nconnect=16
         noatime=True
-        rsize=65536
-        wsize=65536
-        nconnect=4
