@@ -31,8 +31,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/koush/scrypted
-              tag: v0.144.1-noble-lite@sha256:97c6f8162f3cd59240fa742da5ee39bc0f4978c49fa8f1ad35e259fa8103a171
+              repository: ghcr.io/bjw-s-labs/scrypted
+              tag: 0.141.0@sha256:c9e82faec2e27debeba03fd8d4bdb2aa53cdaf0f3f8aa77c04312a047db4c2ea
             probes:
               liveness:
                 enabled: true
