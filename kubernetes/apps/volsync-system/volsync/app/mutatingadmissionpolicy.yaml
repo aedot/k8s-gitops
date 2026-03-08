@@ -92,25 +92,27 @@ spec:
   failurePolicy: Fail
   reinvocationPolicy: IfNeeded
   mutations:
-    - patchType: JSONPatch
-      jsonPatch:
-        expression: >-
-          [
-            JSONPatch{
-              op: "add", path: "/spec/template/spec/containers/0/volumeMounts/-",
-              value: Object.spec.template.spec.containers.volumeMounts{
-                name: "repository",
-                mountPath: "/repository"
-              }
-            },
-            JSONPatch{
-              op: "add", path: "/spec/template/spec/volumes/-",
-              value: Object.spec.template.spec.volumes{
-                name: "repository",
-                nfs: Object.spec.template.spec.volumes.nfs{
-                  server: "shango.internal",
-                  path: "/mnt/user/backups/kubernetes/volsync"
-                }
+  -  patchType: JSONPatch
+     jsonPatch:
+      expression: |
+        [
+          JSONPatch{
+            op: "add", path: "/spec/template/spec/volumes/-",
+            value: Object.spec.template.spec.volumes{
+              name: "repository",
+              nfs: Object.spec.template.spec.volumes.nfs{
+                server: "shango.internal",
+                path: "/mnt/user/backups/kubernetes/volsync",
+                readOnly: false
               }
             }
-          ]
+          },
+          JSONPatch{
+            op: "add", path: "/spec/template/spec/containers/0/volumeMounts/-",
+            value: Object.spec.template.spec.containers.volumeMounts{
+              name: "repository",
+              mountPath: "/repository",
+              readOnly: false
+            }
+          }
+        ]

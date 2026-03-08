@@ -45,7 +45,8 @@ spec:
                 name: "repository",
                 nfs: Object.spec.template.spec.volumes.nfs{
                   server: "shango.internal",
-                  path: "/mnt/user/backups/kubernetes/volsync"
+                  path: "/mnt/user/backups/kubernetes/volsync",
+                  readOnly: false
                 }
               }
             },
@@ -53,7 +54,8 @@ spec:
               op: "add", path: "/spec/template/spec/containers/0/volumeMounts/-",
               value: Object.spec.template.spec.containers.volumeMounts{
                 name: "repository",
-                mountPath: "/repository"
+                mountPath: "/repository",
+                readOnly: false
               }
             }
           ]
