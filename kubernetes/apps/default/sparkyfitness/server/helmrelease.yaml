@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: ghcr.io/codewithcj/sparkyfitness-server
-              tag: v0.16.5.0@sha256:03ad16df0c0d4ca3f3de812f5d6454779a9d0718441aeba360b93cc55f7e05c7
+              tag: v0.16.5.0@sha256:83cac98f4d0ff0b137b694a76daa1cbfc928c98a304041a430f51c3f92d92758
             env:
               SPARKY_FITNESS_DISABLE_EMAIL_LOGIN: true
               SPARKY_FITNESS_FRONTEND_URL: https://fitness.${SECRET_DOMAIN}
