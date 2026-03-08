@@ -15,5 +15,12 @@ machine:
     net.ipv4.neigh.default.gc_thresh2: "8192" # Prevent ARP cache overflows
     net.ipv4.neigh.default.gc_thresh3: "16384" # Prevent ARP cache overflows
     net.ipv4.tcp_slow_start_after_idle: "0" # Preserve congestion window after idle
+    # TCP keepalive for better dead peer detection
+    net.ipv4.tcp_keepalive_time: "60" # Start keepalive after 60 seconds of idle
+    net.ipv4.tcp_keepalive_intvl: "10" # Send keepalive probes every 10 seconds
+    net.ipv4.tcp_keepalive_probes: "5" # Consider the connection dead after 5 failed probes
+    # NFS client optimizations
+    vm.dirty_background_ratio: "5" # Start writing dirty pages to disk when 5% of memory is dirty
+    vm.dirty_ratio: "10" # Maximum percentage of dirty pages before blocking processes
     user.max_user_namespaces: "11255" # User Namespaces
     vm.nr_hugepages: "2560"

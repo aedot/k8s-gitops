@@ -19,7 +19,9 @@ machine:
       permissions: 0o644
       content: |
         [ NFSMount_Global_Options ]
-        nfsvers=4
+        nfsvers=4.2
         hard=True
+        timeo=100
         nconnect=16
         noatime=True
+        retrans=2
