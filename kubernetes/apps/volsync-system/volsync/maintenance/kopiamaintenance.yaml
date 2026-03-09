@@ -6,14 +6,7 @@ metadata:
   name: daily
 spec:
   enabled: true
-  activeDeadlineSeconds: 21600
   trigger:
-    schedule: "0 */8 * * *" # Every 8 hours
+    schedule: "15 12,18,00 * * *" # Every 12 hours at 12:30, 18:30 and 00:30
   repository:
     repository: volsync-maintenance-secret
-  successfulJobsHistoryLimit: 1
-  podSecurityContext:
-    runAsUser: 1000
-    runAsGroup: 1000
-    fsGroup: 1000
-    fsGroupChangePolicy: OnRootMismatch

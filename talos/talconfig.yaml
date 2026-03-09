@@ -126,10 +126,6 @@ controlPlane:
   patches:
     - "@./patches/controller/cluster.yaml"
 
-  nodeLabels:
-    node.kubernetes.io/gpu: "true"
-    topology.kubernetes.io/region: main
-
   schematic:
     customization:
       extraKernelArgs:

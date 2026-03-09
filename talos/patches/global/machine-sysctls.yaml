@@ -5,22 +5,15 @@ machine:
     net.core.default_qdisc: "fq" # Fair Queuing - improves network fairness and reduces latency
     net.core.rmem_max: "67108864" # Maximum TCP receive window (64MB) - improves throughput
     net.core.wmem_max: "67108864" # Maximum TCP send window (64MB) - improves throughput
+    net.ipv4.ping_group_range: 0 2147483647 # Allow all users to use ping - improves usability
     net.ipv4.tcp_congestion_control: "bbr" # BBR congestion control - better performance than cubic
     net.ipv4.tcp_fastopen: "3" # Enables TCP Fast Open for both client and server
     net.ipv4.tcp_mtu_probing: "1" # Enables automatic MTU probing for optimal packet size
+    net.ipv4.tcp_notsent_lowat: "131072" # Minimum unsent bytes in socket buffer before sending (128KB) - reduces latency
     net.ipv4.tcp_rmem: "4096 87380 33554432" # TCP receive buffer sizes (min, default, max)
     net.ipv4.tcp_wmem: "4096 65536 33554432" # TCP send buffer sizes (min, default, max)
     net.ipv4.tcp_window_scaling: "1" # Enables TCP window scaling for better throughput
-    net.ipv4.neigh.default.gc_thresh1: "4096" # Prevent ARP cache overflows
-    net.ipv4.neigh.default.gc_thresh2: "8192" # Prevent ARP cache overflows
-    net.ipv4.neigh.default.gc_thresh3: "16384" # Prevent ARP cache overflows
     net.ipv4.tcp_slow_start_after_idle: "0" # Preserve congestion window after idle
-    # TCP keepalive for better dead peer detection
-    net.ipv4.tcp_keepalive_time: "60" # Start keepalive after 60 seconds of idle
-    net.ipv4.tcp_keepalive_intvl: "10" # Send keepalive probes every 10 seconds
-    net.ipv4.tcp_keepalive_probes: "5" # Consider the connection dead after 5 failed probes
-    # NFS client optimizations
-    vm.dirty_background_ratio: "5" # Start writing dirty pages to disk when 5% of memory is dirty
-    vm.dirty_ratio: "10" # Maximum percentage of dirty pages before blocking processes
-    user.max_user_namespaces: "11255" # User Namespaces
-    vm.nr_hugepages: "2560"
+    sunrpc.tcp_slot_table_entries: 128 # Increases the number of TCP slots for SunRPC - improves NFS performance
+    sunrpc.udp_slot_table_entries: 128 # Increases the number of UDP slots for SunRPC - improves NFS performance
+    user.max_user_namespaces: 11255 # Increases the maximum number of user namespaces - improves container performance
