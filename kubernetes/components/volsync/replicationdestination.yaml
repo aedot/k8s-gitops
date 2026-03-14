@@ -13,10 +13,10 @@ spec:
     accessModes:
       - ${VOLSYNC_ACCESSMODES:=ReadWriteOnce}
     capacity: ${VOLSYNC_CAPACITY:=5Gi}
-    # cleanupCachePVC: true
-    # cleanupTempPVC: true
+    cleanupCachePVC: false        # https://github.com/backube/volsync/issues/1504
+    cleanupTempPVC: false         # https://github.com/backube/volsync/issues/1504
     copyMethod: Snapshot
-    enableFileDeletion: true
+    enableFileDeletion: false     # https://github.com/backube/volsync/issues/1504
     moverSecurityContext:
       runAsUser: ${VOLSYNC_PUID:=1000}
       runAsGroup: ${VOLSYNC_PGID:=1000}
