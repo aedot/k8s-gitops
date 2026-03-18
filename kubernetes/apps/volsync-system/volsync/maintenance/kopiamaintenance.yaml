@@ -10,3 +10,9 @@ spec:
     schedule: "15 12,18,00 * * *" # Every 12 hours at 12:30, 18:30 and 00:30
   repository:
     repository: volsync-maintenance-secret
+  moverVolumes:
+      - mountPath: repository
+        volumeSource:
+          nfs:
+            server: shango.internal
+            path: /mnt/user/backups/kubernetes/volsync
