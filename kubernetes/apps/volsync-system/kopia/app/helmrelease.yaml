@@ -22,7 +22,7 @@ spec:
             env:
               KOPIA_WEB_ENABLED: true
               KOPIA_WEB_PORT: &port 80
-              TZ: America/Los_Angeles
+              TZ: America/New_York
             envFrom:
               - secretRef:
                   name: kopia-secret
@@ -69,11 +69,6 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
-            sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
     configMaps:
       config:
         data:
@@ -98,7 +93,6 @@ spec:
           - path: /config/repository.config
             subPath: repository.config
       repository:
-        enabled: true
         type: nfs
         server: shango.internal
         path: /mnt/user/backups/kubernetes/volsync
