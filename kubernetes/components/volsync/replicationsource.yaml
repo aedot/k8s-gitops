@@ -7,7 +7,7 @@ metadata:
 spec:
   sourcePVC: ${APP}
   trigger:
-    schedule: "00 11,17,23 * * *" # Every 12 hours at 11:00, 17:00 and 23:00
+    schedule: "00 11,23 * * *" # Every 12 hours at 11:00, and 23:00
   kopia:
     accessModes:
       - ${VOLSYNC_SNAP_ACCESSMODES:=ReadWriteOnce}
@@ -26,9 +26,7 @@ spec:
     parallelism: 2
     repository: ${APP}-volsync-secret
     retain:
-      hourly: 8
+      hourly: 24
       daily: 7
-      weekly: 4
-      monthly: 1
     storageClassName: ${VOLSYNC_STORAGECLASS:=longhorn-snapshot}
     volumeSnapshotClassName: ${VOLSYNC_SNAPSHOTCLASS:=longhorn-snapclass}

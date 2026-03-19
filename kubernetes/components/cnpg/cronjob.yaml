@@ -5,7 +5,7 @@ kind: CronJob
 metadata:
   name: &name ${APP}-pg-backups
 spec:
-  schedule: "0 */4 * * *" # Every 4 hours
+  schedule: "0 */12 * * *" # Every 12 hours
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
