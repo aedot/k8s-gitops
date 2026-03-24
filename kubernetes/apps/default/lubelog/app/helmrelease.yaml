@@ -29,7 +29,8 @@ spec:
               tag: v1.6.2
             env:
               TZ: America/Los_Angeles
-              LC_ALL: lt_LT.UTF-8
+              LC_ALL: en_US.UTF-8
+              LOGGING__LOGLEVEL__DEFAULT: debug
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
