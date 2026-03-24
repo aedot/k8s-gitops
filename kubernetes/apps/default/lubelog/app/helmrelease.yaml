@@ -29,16 +29,16 @@ spec:
               tag: v1.6.2
             env:
               TZ: America/Los_Angeles
-              LC_ALL: lt_LT.UTF-8
+              LC_ALL: en_US.UTF-8
+              # LOGGING__LOGLEVEL__DEFAULT: debug
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
             resources:
               requests:
                 cpu: 10m
-                memory: 80Mi
               limits:
-                memory: 125Mi
+                memory: 512Mi
     defaultPodOptions:
        securityContext:
         runAsUser: 568
