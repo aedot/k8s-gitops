@@ -30,7 +30,7 @@ spec:
             env:
               TZ: America/Los_Angeles
               LC_ALL: en_US.UTF-8
-              LOGGING__LOGLEVEL__DEFAULT: info
+              LOGGING__LOGLEVEL__DEFAULT: Information
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
