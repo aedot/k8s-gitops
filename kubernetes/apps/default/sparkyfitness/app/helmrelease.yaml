@@ -17,7 +17,7 @@ spec:
           sparkyfitness-frontend:
             image:
               repository: ghcr.io/codewithcj/sparkyfitness-frontend
-              tag: v0.16.5.0
+              tag: v0.16.5.4
             env:
               SPARKY_FITNESS_LOG_LEVEL: error
               SPARKY_FITNESS_SERVER_HOST: sparkyfitness-server.default
