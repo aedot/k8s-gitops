@@ -24,6 +24,9 @@ spec:
     - name: volsync
       namespace: volsync-system
   postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
     substitute:
       APP: sparkyfitness
       VOLSYNC_CAPACITY: 15Gi
@@ -44,3 +47,7 @@ spec:
     namespace: flux-system
   targetNamespace: default
   wait: false
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
