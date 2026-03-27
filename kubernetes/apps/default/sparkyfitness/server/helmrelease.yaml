@@ -67,3 +67,10 @@ spec:
         path: /mnt/user/backups/kubernetes/sparkyfitness
         globalMounts:
           - path: /backup
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+            subPath: tmp
+          - path: /app/SparkyFitnessServer/temp_uploads
+            subPath: temp_uploads
