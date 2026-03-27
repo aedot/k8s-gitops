@@ -68,7 +68,7 @@ spec:
         server: shango.internal
         path: /mnt/user/backups/kubernetes/sparkyfitness
         globalMounts:
-          - path: /backup
+          - path: /app/SparkyFitnessServer/backup
       tmp:
         type: emptyDir
         globalMounts:
