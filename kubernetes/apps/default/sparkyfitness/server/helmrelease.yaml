@@ -42,9 +42,10 @@ spec:
                   name: "sparkyfitness-secret"
             resources:
               requests:
-                cpu: 15m
+                cpu: 50m
+                memory: 256Mi
               limits:
-                memory: 128M
+                memory: 1Gi
     service:
       main:
         controller: main
