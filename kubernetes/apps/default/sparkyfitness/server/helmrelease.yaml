@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: sparkyfitness
+  name: sparkyfitness-server
 spec:
   chartRef:
     kind: OCIRepository
@@ -11,7 +11,6 @@ spec:
   values:
     controllers:
       main:
-        forceRename: sparkyfitness
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -23,15 +22,13 @@ spec:
               - secretRef:
                   name: "sparkyfitness-initdb-secret"
         containers:
-          app:
+          main:
             image:
               repository: ghcr.io/codewithcj/sparkyfitness-server
               tag: v0.16.5.4@sha256:d2d95f85662fe53a03f22ccb21dc0c3249d2ab7298c18c284a749172baa7b2c2
             env:
-              SPARKY_FITNESS_DISABLE_EMAIL_LOGIN: false
               SPARKY_FITNESS_FRONTEND_URL: https://fitness.${SECRET_DOMAIN}
               SPARKY_FITNESS_DISABLE_SIGNUP: false
-              SPARKY_FITNESS_FORCE_EMAIL_LOGIN: true
               SPARKY_FITNESS_LOG_LEVEL: ERROR
               SPARKY_FITNESS_EMAIL_SECURE: true # Use 'true' for TLS/SSL, 'false' for plain text
               NODE_ENV: "production"
@@ -53,8 +50,14 @@ spec:
           http:
             port: 3010
     persistence:
-      uploads:
-        type: persistentVolumeClaim
+      config:
+        enabled: true
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
-          - path: /app/SparkyFitnessServer/uploads
+          - path: /uploads
+      backup:
+        type: nfs
+        server: shango.internal
+        path: /mnt/user/backups/kubernetes/sparkyfitness
+        globalMounts:
+          - path: /backup
