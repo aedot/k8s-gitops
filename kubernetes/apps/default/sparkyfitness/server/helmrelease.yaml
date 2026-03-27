@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: sparkyfitness-server
+  name: sparkyfitness
 spec:
   chartRef:
     kind: OCIRepository
@@ -11,7 +11,7 @@ spec:
   values:
     controllers:
       sparkyfitness-server:
-        forceRename: sparkyfitness-server
+        forceRename: sparkyfitness
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -51,8 +51,15 @@ spec:
           http:
             port: 3010
     persistence:
-      config:
-        enabled: true
+      uploads:
+        type: persistentVolumeClaim
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /app/SparkyFitnessServer/uploads
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+            subPath: tmp
+          - path: /app/SparkyFitnessServer/temp_uploads
+            subPath: temp_uploads
