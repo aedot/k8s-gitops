@@ -1,0 +1,43 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: sparkyfitness-frontend
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: sparkyfitness-frontend
+  values:
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              # renovate: datasource=docker depName=ghcr.io/codewithcj/sparkyfitness-frontend
+              repository: ghcr.io/codewithcj/sparkyfitness-frontend
+              tag: v0.16.5.4
+            env:
+              SPARKY_FITNESS_LOG_LEVEL: debug
+              SPARKY_FITNESS_SERVER_HOST: sparkyfitness.default
+              SPARKY_FITNESS_SERVER_PORT: 3010
+            resources:
+              requests:
+                cpu: 15m
+                memory: 64M
+              limits:
+                memory: 64M
+    service:
+      app:
+        controller: main
+        ports:
+          http:
+            port: 80
+    route:
+      app:
+        hostnames:
+          - fitness.${SECRET_DOMAIN}
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
