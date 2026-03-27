@@ -53,6 +53,6 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: sparkyfitness
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
-          - path: /uploads
+          - path: /app/SparkyFitnessServer/uploads
