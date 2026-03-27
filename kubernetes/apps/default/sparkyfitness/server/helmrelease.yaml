@@ -52,11 +52,11 @@ spec:
           http:
             port: 3010
     persistence:
-      config:
-        enabled: true
+      uploads:
+        type: persistentVolumeClaim
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
-          - path: /uploads
+          - path: /app/SparkyFitnessServer/uploads
       backup:
         type: nfs
         server: shango.internal
