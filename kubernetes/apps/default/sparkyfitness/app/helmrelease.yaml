@@ -19,7 +19,7 @@ spec:
               repository: ghcr.io/codewithcj/sparkyfitness-frontend
               tag: v0.16.5.4
             env:
-              SPARKY_FITNESS_LOG_LEVEL: error
+              SPARKY_FITNESS_LOG_LEVEL: ERROR
               SPARKY_FITNESS_SERVER_HOST: sparkyfitness.default
               SPARKY_FITNESS_SERVER_PORT: 3010
             resources:
