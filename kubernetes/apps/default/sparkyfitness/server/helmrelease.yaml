@@ -10,7 +10,7 @@ spec:
   interval: 30m
   values:
     controllers:
-      sparkyfitness-server:
+      sparkyfitness:
         forceRename: sparkyfitness
         annotations:
           reloader.stakater.com/auto: "true"
@@ -56,10 +56,3 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /app/SparkyFitnessServer/uploads
-      tmp:
-        type: emptyDir
-        globalMounts:
-          - path: /tmp
-            subPath: tmp
-          - path: /app/SparkyFitnessServer/temp_uploads
-            subPath: temp_uploads
