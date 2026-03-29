@@ -52,7 +52,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+              capabilities: { drop: ["ALL"] }
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -98,7 +98,7 @@ spec:
       repository:
         type: nfs
         server: shango.internal
-        path: /mnt/user/backups/kubernetes/volsync
+        path: /mnt/ayewa/kubernetes/volsync
         globalMounts:
           - path: /repository
       tmpfs:
