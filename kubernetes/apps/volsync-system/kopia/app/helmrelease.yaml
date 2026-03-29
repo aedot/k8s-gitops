@@ -98,7 +98,7 @@ spec:
       repository:
         type: nfs
         server: shango.internal
-        path: /mnt/ayewa/kubernetes/volsync
+        path: /mnt/onile/kubernetes/volsync
         globalMounts:
           - path: /repository
       tmpfs:

@@ -15,4 +15,4 @@ spec:
         volumeSource:
           nfs:
             server: shango.internal
-            path: /mnt/ayewa/kubernetes/volsync
+            path: /mnt/onile/kubernetes/volsync

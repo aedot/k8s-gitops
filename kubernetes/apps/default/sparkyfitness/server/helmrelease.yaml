@@ -66,7 +66,7 @@ spec:
       backup:
         type: nfs
         server: shango.internal
-        path: /mnt/ayewa/kubernetes/sparkyfitness
+        path: /mnt/onile/kubernetes/sparkyfitness
         globalMounts:
           - path: /app/SparkyFitnessServer/backup
       tmp:
