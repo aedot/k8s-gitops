@@ -66,6 +66,7 @@ spec:
             conditions: ["[STATUS] == 200"]
         hostnames:
           - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          - "audiobooks.${SECRET_DOMAIN}"
         parentRefs:
           - name: envoy-internal
             namespace: network
