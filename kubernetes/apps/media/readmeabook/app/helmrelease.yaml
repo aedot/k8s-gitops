@@ -51,7 +51,7 @@ spec:
               readiness: *probes
             resources:
               requests:
-                cpu: 100m
+                cpu: 10m
               limits:
                 memory: 1Gi
     service:
@@ -92,4 +92,3 @@ spec:
         path: /mnt/user/data/torrents
         globalMounts:
           - path: /torrents
-
