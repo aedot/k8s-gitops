@@ -85,4 +85,10 @@ spec:
         path: /mnt/user/data/media
         globalMounts:
           - path: /media
-            readOnly: true
+      downloads:
+        type: nfs
+        server: shango.internal
+        path: /mnt/user/data/torrents
+        globalMounts:
+          - path: /torrents
+
