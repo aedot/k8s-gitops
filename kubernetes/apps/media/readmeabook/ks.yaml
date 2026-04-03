@@ -11,11 +11,8 @@ spec:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
     - ../../../../components/cnpg
+    - ../../../../components/dragonfly
   dependsOn:
-    - name: cnpg-cluster
-      namespace: dbms
-    - name: dragonfly-cluster
-      namespace: dbms
     - name: longhorn
       namespace: longhorn-system
     - name: volsync
@@ -36,4 +33,5 @@ spec:
       APP: readmeabook
       VOLSYNC_CAPACITY: 5Gi
       CNPG_NAME: pgsql-cluster
+      DRAGONFLY_REPLICAS: "3"
 

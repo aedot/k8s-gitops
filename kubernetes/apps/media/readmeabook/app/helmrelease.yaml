@@ -29,7 +29,7 @@ spec:
               tag: 1.1.7@sha256:ab24f95938b254ab76c9c4edc92b581bce10a272773d195446f094f4c8bd7a77
             env:
               PUBLIC_URL: "https://{{ .Release.Name }}.${SECRET_DOMAIN}"
-              REDIS_URL: redis://dragonfly.dbms.svc.cluster.local:6379
+              REDIS_URL: redis://readmeabook-dragonfly.dbms.svc.cluster.local:6379
               TZ: America/Los_Angeles
               PUID: 1000
               PGID: 1000
