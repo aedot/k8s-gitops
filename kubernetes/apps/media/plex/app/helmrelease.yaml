@@ -72,7 +72,7 @@ spec:
       media:
         type: nfs
         server: shango.internal
-        path: /mnt/user/data/media
+        path: /mnt/iremo/data/media
         globalMounts:
           - path: /media
             readOnly: true
