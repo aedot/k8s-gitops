@@ -102,7 +102,7 @@ spec:
         enabled: true
         type: nfs
         server: shango.internal
-        path: /mnt/user/data
+        path: /mnt/iremo/data
         globalMounts:
           - path: /torrents
             subPath: torrents

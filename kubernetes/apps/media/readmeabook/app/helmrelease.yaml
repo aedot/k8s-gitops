@@ -83,12 +83,12 @@ spec:
       media:
         type: nfs
         server: shango.internal
-        path: /mnt/user/data/media
+        path: /mnt/iremo/data/media
         globalMounts:
           - path: /media
       downloads:
         type: nfs
         server: shango.internal
-        path: /mnt/user/data/torrents
+        path: /mnt/iremo/data/torrents
         globalMounts:
           - path: /torrents
