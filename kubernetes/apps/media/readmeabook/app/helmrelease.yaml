@@ -83,7 +83,7 @@ spec:
       media:
         type: nfs
         server: shango.internal
-        path: /mnt/iremo/data/media
+        path: /mnt/alaafin/data/media
         globalMounts:
           - path: /media
       downloads:
