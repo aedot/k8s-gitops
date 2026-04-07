@@ -50,4 +50,4 @@ spec:
             - name: backups
               nfs:
                 server: shango.internal
-                path: /mnt/onile/kubernetes/postgres
+                path: /mnt/ooni/kubernetes/postgres

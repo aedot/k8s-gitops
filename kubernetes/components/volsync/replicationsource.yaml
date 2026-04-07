@@ -1,5 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/volsync.backube/replicationsource_v1alpha1.json
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
@@ -21,7 +20,7 @@ spec:
       - mountPath: repository
         volumeSource:
           nfs:
-            path: /mnt/onile/kubernetes/volsync
+            path: /mnt/ooni/kubernetes/volsync
             server: shango.internal
     parallelism: 2
     repository: ${APP}-volsync-secret

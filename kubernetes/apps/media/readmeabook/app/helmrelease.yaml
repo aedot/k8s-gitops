@@ -89,6 +89,6 @@ spec:
       downloads:
         type: nfs
         server: shango.internal
-        path: /mnt/iremo/data/torrents
+        path: /mnt/alaafin/data/torrents
         globalMounts:
           - path: /torrents
