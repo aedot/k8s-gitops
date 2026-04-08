@@ -72,9 +72,10 @@ spec:
       media:
         type: nfs
         server: shango.internal
-        path: /mnt/alaafin/data/media
+        path: /mnt/alaafin/data
         globalMounts:
-          - path: /media
+          - path: /data
+            subPath: media
             readOnly: true
       tmpfs:
         type: emptyDir
