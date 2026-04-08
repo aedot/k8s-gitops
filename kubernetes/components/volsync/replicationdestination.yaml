@@ -24,7 +24,7 @@ spec:
       - mountPath: repository
         volumeSource:
           nfs:
-            path: /mnt/ooni/kubernetes/volsync
+            path: /mnt/ooni/k8s/volsync
             server: shango.internal
     repository: ${APP}-volsync-secret
     sourceIdentity:
