@@ -26,7 +26,7 @@ spec:
               DEDUPARR_RADARR_MOVIES_URL: http://radarr.downloads.svc.cluster.local
               DEDUPARR_REMOVE_FROM_CLIENT: false
               DEDUPARR_SCHEDULE: service
-              DEDUPARR_SERVICE__INTERVAL: 2m
+              DEDUPARR_SERVICE__INTERVAL: 60m
               DEDUPARR_SERVICE__PORT: &port 80
               DEDUPARR_SONARR_SERIES_ENABLED: true
               DEDUPARR_SONARR_SERIES_URL: http://sonarr.downloads.svc.cluster.local
