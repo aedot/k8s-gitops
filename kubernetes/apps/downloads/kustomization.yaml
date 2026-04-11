@@ -11,10 +11,11 @@ resources:
   - ./brrpolice/ks.yaml
   - ./decluttarr/ks.yaml
   - ./deduparr/ks.yaml
-  - ./sonarr/ks.yaml
-  - ./radarr/ks.yaml
-  - ./prowlarr/ks.yaml
   - ./flaresolverr/ks.yaml
-  - ./recyclarr/ks.yaml
+  - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./qui/ks.yaml
+  - ./radarr/ks.yaml
+  - ./recyclarr/ks.yaml
+  - ./seasonpackerr/ks.yaml
+  - ./sonarr/ks.yaml
