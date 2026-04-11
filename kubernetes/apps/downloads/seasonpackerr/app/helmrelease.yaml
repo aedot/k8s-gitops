@@ -63,6 +63,8 @@ spec:
         type: nfs
         server: shango.internal
         path: /mnt/alaafin/data
+        globalMounts:
+          - path: /data
       tmp:
         type: emptyDir
     service:
