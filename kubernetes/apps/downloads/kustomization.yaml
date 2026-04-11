@@ -9,6 +9,7 @@ components:
 
 resources:
   - ./brrpolice/ks.yaml
+  - ./decluttarr/ks.yaml
   - ./deduparr/ks.yaml
   - ./sonarr/ks.yaml
   - ./radarr/ks.yaml
