@@ -44,6 +44,13 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /app/logs
+      media:
+        type: nfs
+        server: shango.internal
+        path: /mnt/alaafin/data/media
+        globalMounts:
+          - path: /media
+            readOnly: true
       secret-file:
         type: secret
         name: "{{ .Release.Name }}-secret"
