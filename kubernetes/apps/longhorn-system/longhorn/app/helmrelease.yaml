@@ -28,7 +28,7 @@ spec:
       guaranteedEngineManagerCPU: "20"
       guaranteedReplicaManagerCPU: "20"
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
-      orphanAutoDeletion: true
+      orphanAutoDeletion: replica-data;instance
       replicaAutoBalance: best-effort
       storageMinimalAvailablePercentage: "1"
       storageReservedPercentageForDefaultDisk: "10"
