@@ -15,4 +15,4 @@ spec:
         volumeSource:
           nfs:
             server: yemoja.internal
-            path: /mnt/ooni/k8s/volsync
+            path: /mnt/alaafin/k8s/volsync

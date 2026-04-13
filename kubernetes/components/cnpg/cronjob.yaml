@@ -50,4 +50,4 @@ spec:
             - name: backups
               nfs:
                 server: yemoja.internal
-                path: /mnt/ooni/k8s/postgres
+                path: /mnt/alaafin/k8s/postgres
