@@ -24,8 +24,8 @@ spec:
       - mountPath: repository
         volumeSource:
           nfs:
-            path: /mnt/ooni/k8s/volsync
-            server: shango.internal
+            path: /mnt/alaafin/k8s/volsync
+            server: yemoja.internal
     repository: ${APP}-volsync-secret
     sourceIdentity:
       sourceName: ${APP}
