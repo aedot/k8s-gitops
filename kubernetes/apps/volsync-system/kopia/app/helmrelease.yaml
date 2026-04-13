@@ -97,7 +97,7 @@ spec:
             subPath: repository.config
       repository:
         type: nfs
-        server: shango.internal
+        server: yemoja.internal
         path: /mnt/ooni/k8s/volsync
         globalMounts:
           - path: /repository

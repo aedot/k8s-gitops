@@ -61,7 +61,7 @@ spec:
     persistence:
       media:
         type: nfs
-        server: shango.internal
+        server: yemoja.internal
         path: /mnt/alaafin/data
         globalMounts:
           - path: /data

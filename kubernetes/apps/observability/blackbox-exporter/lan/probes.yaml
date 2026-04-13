@@ -11,7 +11,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - shango.internal
+        - yemoja.internal
         - oya.internal
         - aje.internal
         - oba.internal
@@ -34,7 +34,7 @@ spec:
   targets:
     staticConfig:
       static:
-        - shango.internal:2049
+        - yemoja.internal:2049
   metricRelabelings:
     - targetLabel: service
       replacement: blackbox-exporter-lan

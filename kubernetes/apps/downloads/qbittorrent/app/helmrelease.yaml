@@ -101,7 +101,7 @@ spec:
       data:
         enabled: true
         type: nfs
-        server: shango.internal
+        server: yemoja.internal
         path: /mnt/alaafin/data
         globalMounts:
           - path: /torrents

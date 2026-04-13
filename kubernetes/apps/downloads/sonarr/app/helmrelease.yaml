@@ -71,7 +71,7 @@ spec:
           - readOnly: true
       data:
         type: nfs
-        server: shango.internal
+        server: yemoja.internal
         path: /mnt/alaafin/data
         globalMounts:
           - path: /data
