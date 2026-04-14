@@ -7,7 +7,7 @@ metadata:
 spec:
   staticConfigs:
     - targets:
-        - shango.internal:9100
+        - yemoja.internal:9100
   metricsPath: /metrics
   relabelings:
     - action: replace
