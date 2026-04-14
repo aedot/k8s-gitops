@@ -8,19 +8,8 @@ spec:
   chartRef:
     kind: OCIRepository
     name: unifi-dns
-  install:
-    disableSchemaValidation: true
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    disableSchemaValidation: true
-    remediation:
-      strategy: rollback
-      retries: 3
   values:
     fullnameOverride: *app
-    logLevel: &logLevel debug
     provider:
       name: webhook
       webhook:
@@ -35,8 +24,6 @@ spec:
               secretKeyRef:
                 name: unifi-dns-secret
                 key: UNIFI_API_KEY
-          - name: LOG_LEVEL
-            value: *logLevel
         livenessProbe:
           httpGet:
             path: /healthz
@@ -49,11 +36,9 @@ spec:
             port: http-webhook
           initialDelaySeconds: 10
           timeoutSeconds: 5
-    extraArgs:
-      - --ignore-ingress-tls-spec
     triggerLoopOnEvent: true
     policy: sync
-    sources: ['gateway-httproute', 'service', 'crd']
+    sources: ['gateway-httproute', 'service']
     txtOwnerId: gitops
     txtPrefix: k8s.gitops.
     domainFilters: ["${SECRET_DOMAIN}"]
