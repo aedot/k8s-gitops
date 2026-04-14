@@ -62,7 +62,7 @@ spec:
         server:
           - oduduwa.internal
         ups:
-          - server-ups
+          - eaton-ups
       metricRelabelings:
         - action: replace
           replacement: server
@@ -73,7 +73,7 @@ spec:
           sourceLabels: [server]
           targetLabel: server
         - action: replace
-          replacement: nut-exporter-server-ups
+          replacement: nut-exporter-eaton-ups
           targetLabel: job
         - action: labeldrop
           regex: (pod)
