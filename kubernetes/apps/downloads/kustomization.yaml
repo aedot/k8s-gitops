@@ -10,7 +10,7 @@ components:
 resources:
   - ./brrpolice/ks.yaml
   - ./decluttarr/ks.yaml
-  - ./deduparr/ks.yaml
+  # - ./deduparr/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
