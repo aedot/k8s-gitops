@@ -16,5 +16,5 @@ resources:
   - ./matter-server/ks.yaml
   # - ./sparkyfitness/ks.yaml
   - ./scrypted/ks.yaml
-  # - ./teslamate/ks.yaml
+  - ./teslamate/ks.yaml
   - ./zigbee/ks.yaml
