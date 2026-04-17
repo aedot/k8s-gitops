@@ -8,12 +8,12 @@ components:
   - ../../components/namespace
 
 resources:
-  - ./brrpolice/ks.yaml
-  - ./decluttarr/ks.yaml
+  # - ./brrpolice/ks.yaml
+  # - ./decluttarr/ks.yaml
   - ./deduparr/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./prowlarr/ks.yaml
-  - ./qbittorrent/ks.yaml
+  # - ./qbittorrent/ks.yaml
   - ./qui/ks.yaml
   - ./radarr/ks.yaml
   - ./recyclarr/ks.yaml
