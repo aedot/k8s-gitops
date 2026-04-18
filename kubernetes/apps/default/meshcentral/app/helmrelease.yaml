@@ -20,7 +20,7 @@ spec:
               repository: ghcr.io/ylianst/meshcentral
               tag: 1.1.58@sha256:7119186739a295a289ef28235522331309f283c5a56b41657c9b2babea78dcdb
             env:
-              TZ: America/Edmonton
+              TZ: America/Los_Angeles
               NODE_ENV: production
               HOSTNAME: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
               ALLOW_NEW_ACCOUNTS: "false"
