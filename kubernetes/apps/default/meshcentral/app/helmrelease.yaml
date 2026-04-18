@@ -23,7 +23,7 @@ spec:
               TZ: America/Los_Angeles
               NODE_ENV: production
               HOSTNAME: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
-              ALLOW_NEW_ACCOUNTS: "false"
+              ALLOW_NEW_ACCOUNTS: "true"
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
