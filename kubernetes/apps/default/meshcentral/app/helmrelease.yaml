@@ -22,8 +22,8 @@ spec:
             env:
               TZ: America/Los_Angeles
               NODE_ENV: production
-              HOSTNAME: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
-              ALLOW_NEW_ACCOUNTS: "true"
+              HOSTNAME: &host "mesh.${SECRET_DOMAIN}"
+              ALLOW_NEW_ACCOUNTS: "false"
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
