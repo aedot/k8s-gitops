@@ -22,34 +22,25 @@ spec:
             env:
               HASS_HTTP_TRUSTED_PROXY_1: 172.24.0.0/16
               HASS_HTTP_TRUSTED_PROXY_2: 10.42.0.0/16
-              HOME_ASSISTANT_EXTERNAL_URL: https://hass.${SECRET_DOMAIN}
-              HOME_ASSISTANT_PURGE_KEEP_DAYS: 30
               TZ: America/Los_Angeles
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities:
+                drop: ["ALL"]
+                add: ["NET_RAW"]
             resources:
               requests:
                 cpu: 10m
+                memory: 256Mi
               limits:
                 memory: 2Gi
           code-server:
             image:
               repository: ghcr.io/coder/code-server
               tag: 4.116.0@sha256:4671fcaba60044478bc8238ad630cd53e19294de29012e6e2069411273f02415
-            args:
-              - --auth
-              - none
-              - --disable-telemetry
-              - --disable-update-check
-              - --user-data-dir
-              - /config/.code-server
-              - --extensions-dir
-              - /config/.code-server
-              - --port
-              - "12321"
-              - /config
+            args: ["--auth", "none", "--disable-telemetry", "--user-data-dir", "/config/.vscode", "--extensions-dir",
+              "/config/.vscode", "--port", "12321", "/config"]
             env:
               TZ: America/Los_Angeles
             resources:
