@@ -94,9 +94,9 @@ spec:
                 - urls:
                     - stun:stun.cloudflare.com:3478
             streams:
-              entrance:
+              front_door:
                 - rtspx://172.24.1.1:7441/4C5FvxLQm3fxtMVV
-              garage:
+              package:
                 - rtspx://172.24.1.1:7441/bo7I9I3Ni5qjSXBz
     persistence:
       config-file:
