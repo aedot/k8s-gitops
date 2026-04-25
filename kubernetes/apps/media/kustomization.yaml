@@ -11,6 +11,5 @@ resources:
   - ./agregarr/ks.yaml
   - ./imagemaid/ks.yaml
   - ./plex/ks.yaml
-  # - ./readmeabook/ks.yaml
   - ./seerr/ks.yaml
   - ./tautulli/ks.yaml
