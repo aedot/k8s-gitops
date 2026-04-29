@@ -21,7 +21,7 @@ spec:
             args:
               - --auto-httproute
               - --enable-httproute
-              - --enable-service
+              # - --enable-service
             resources:
               requests:
                 cpu: 10m
