@@ -34,22 +34,58 @@ spec:
                 memory: 500Mi
               limits:
                 memory: 4Gi
+          code-server:
+            image:
+              repository: ghcr.io/coder/code-server
+              tag: 4.117.0@sha256:e6702766518b961c7e3c41095c129c7c9a82b041578c53326c52fa363a057727
+            args: ["--auth", "none", "--disable-telemetry", "--user-data-dir", "/config/.vscode", "--extensions-dir",
+              "/config/.vscode", "--port", "12321", "/config"]
+            env:
+              TZ: America/Los_Angeles
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 500Mi
     service:
       app:
         ports:
           http:
-            port: 8267
+            port: &port 8267
           update:
             port: 8268
+          codeserver:
+            port: &codeserverPort 12321
     route:
       app:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 200"]
         hostnames:
           - "{{ .Release.Name }}.${SECRET_DOMAIN}"
         parentRefs:
           - name: envoy-internal
             namespace: network
+        rules:
+          - backendRefs:
+              - name: "{{ .Release.Name }}"
+                port: *port
+      code-server:
+        annotations:
+          gatus.home-operations.com/enabled: "false"
+        hostnames:
+          - "esp-code.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - name: "{{ .Release.Name }}"
+                port: *codeserverPort
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /config
+      tmp:
+        type: emptyDir
