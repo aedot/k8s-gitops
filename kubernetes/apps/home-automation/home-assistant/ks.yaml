@@ -3,10 +3,10 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: scrypted
+  name: home-assistant
 spec:
   interval: 30m
-  path: ./kubernetes/apps/default/scrypted/app
+  path: ./kubernetes/apps/home-automation/home-assistant/app
   components:
     - ../../../../components/volsync
   dependsOn:
@@ -21,12 +21,13 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: default
+  targetNamespace: home-automation
   wait: false
   postBuild:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
     substitute:
-      APP: scrypted
+      APP: home-assistant
       VOLSYNC_CAPACITY: 5Gi
+      GATUS_SUBDOMAIN: hass
