@@ -1,0 +1,55 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: espresense
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: espresense
+  values:
+    controllers:
+      espresense:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: espresense/espresense-companion
+              tag: 2.2.0-b17@sha256:449b0b4c2059a4cf5f74deb7d688c8e5d479eaeb337303e0ab9f579eae5f63d1
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  periodSeconds: 5
+                  failureThreshold: 30
+            resources:
+              requests:
+                cpu: 100m
+                memory: 500Mi
+              limits:
+                memory: 4Gi
+    service:
+      app:
+        ports:
+          http:
+            port: 8267
+          update:
+            port: 8268
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /config
