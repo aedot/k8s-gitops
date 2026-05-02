@@ -31,7 +31,7 @@ spec:
               - --log-level-sdk=info
             resources:
               limits:
-                memory: 350Mi
+                memory: 100Mi
     defaultPodOptions:
       annotations:
         k8s.v1.cni.cncf.io/networks: |
