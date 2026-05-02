@@ -9,4 +9,4 @@ components:
 resources:
   - ./cnpg/ks.yaml
   - ./dragonfly/ks.yaml
-  - ./mosquitto/ks.yaml
+  # - ./mosquitto/ks.yaml
