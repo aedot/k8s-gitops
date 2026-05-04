@@ -10,6 +10,8 @@ spec:
     kind: OCIRepository
     name: dragonfly-operator
   values:
+    defaultPodOptions:
+      automountServiceAccountToken: true
     controllers:
       dragonfly-operator:
         replicas: 1
@@ -56,6 +58,10 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: [ALL] }
         pod:
+          labels:
+            # required for the operator to determine a primary in each deployed cluster
+            # ref: https://deepwiki.com/dragonflydb/dragonfly-operator/2.2-manual-installation#namespace-resource
+            control-plane: controller-manager
           securityContext:
             runAsUser: 65534
             runAsGroup: 65534
@@ -86,3 +92,14 @@ spec:
             scrapeTimeout: 10s
     serviceAccount:
       dragonfly-operator: {}
+  postRenderers:
+    - kustomize:
+        patches:
+          - patch: |-
+              apiVersion: monitoring.coreos.com/v1
+              kind: ServiceMonitor
+              metadata:
+                name: dragonfly-operator
+                namespace: database
+              spec:
+                fallbackScrapeProtocol: PrometheusText1.0.0
