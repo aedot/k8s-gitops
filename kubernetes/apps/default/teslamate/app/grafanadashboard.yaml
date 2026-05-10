@@ -50,6 +50,17 @@ spec:
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
+  name: teslamate-database-info
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/database-info.json
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
   name: teslamate-drive-stats
 spec:
   allowCrossNamespaceImport: true
