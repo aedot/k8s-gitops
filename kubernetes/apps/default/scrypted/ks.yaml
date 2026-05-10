@@ -8,6 +8,7 @@ spec:
   interval: 30m
   path: ./kubernetes/apps/default/scrypted/app
   components:
+    - ../../../../components/gpu
     - ../../../../components/volsync
   dependsOn:
     - name: multus-networks
