@@ -8,7 +8,7 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/battery-health.json
+  url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/battery-health.json
 
 ---
 apiVersion: grafana.integreatly.org/v1beta1
@@ -20,7 +20,7 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/charge-level.json
+  url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/charge-level.json
 
 ---
 apiVersion: grafana.integreatly.org/v1beta1
@@ -32,7 +32,18 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  url: https://raw.github§usercontent.com/teslamate-org/teslamate/master/grafana/dashboards/charges.json
+  url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/charges.json
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: teslamate-charge-details
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/internal/charge-details.json
 
 ---
 apiVersion: grafana.integreatly.org/v1beta1
@@ -44,8 +55,18 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/charging-stats.json
-
+  url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/charging-stats.json
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: teslamate-drive-details
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/internal/drive-details.json
 ---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
@@ -67,7 +88,7 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/drive-stats.json
+  url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/drive-stats.json
 
 ---
 apiVersion: grafana.integreatly.org/v1beta1
@@ -79,7 +100,7 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/drives.json
+  url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/drives.json
 
 ---
 apiVersion: grafana.integreatly.org/v1beta1
@@ -91,7 +112,7 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/efficiency.json
+  url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/efficiency.json
 
 ---
 apiVersion: grafana.integreatly.org/v1beta1
@@ -103,7 +124,7 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/locations.json
+  url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/locations.json
 
 ---
 apiVersion: grafana.integreatly.org/v1beta1
@@ -115,7 +136,7 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/mileage.json
+  url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/mileage.json
 
 ---
 apiVersion: grafana.integreatly.org/v1beta1
@@ -127,7 +148,7 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/overview.json
+  url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/overview.json
 
 ---
 apiVersion: grafana.integreatly.org/v1beta1
@@ -139,7 +160,7 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/projected-range.json
+  url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/projected-range.json
 
 ---
 apiVersion: grafana.integreatly.org/v1beta1
@@ -151,7 +172,7 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/states.json
+  url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/states.json
 
 ---
 apiVersion: grafana.integreatly.org/v1beta1
@@ -163,7 +184,7 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/statistics.json
+  url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/statistics.json
 
 ---
 apiVersion: grafana.integreatly.org/v1beta1
@@ -175,7 +196,7 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/timeline.json
+  url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/timeline.json
 
 ---
 apiVersion: grafana.integreatly.org/v1beta1
@@ -187,7 +208,7 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/trip.json
+  url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/trip.json
 
 ---
 apiVersion: grafana.integreatly.org/v1beta1
@@ -199,7 +220,7 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/updates.json
+  url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/updates.json
 
 ---
 apiVersion: grafana.integreatly.org/v1beta1
@@ -211,7 +232,7 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/vampire-drain.json
+  url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/vampire-drain.json
 
 ---
 apiVersion: grafana.integreatly.org/v1beta1
@@ -223,28 +244,5 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/visited.json
+  url: https://raw.githubusercontent.com/teslamate-org/teslamate/refs/heads/main/grafana/dashboards/visited.json
 
----
-apiVersion: grafana.integreatly.org/v1beta1
-kind: GrafanaDashboard
-metadata:
-  name: teslamate-charge-details
-spec:
-  allowCrossNamespaceImport: true
-  instanceSelector:
-    matchLabels:
-      dashboards: grafana
-  url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/internal/charge-details.json
-
----
-apiVersion: grafana.integreatly.org/v1beta1
-kind: GrafanaDashboard
-metadata:
-  name: teslamate-drive-details
-spec:
-  allowCrossNamespaceImport: true
-  instanceSelector:
-    matchLabels:
-      dashboards: grafana
-  url: https://raw.githubusercontent.com/teslamate-org/teslamate/master/grafana/dashboards/internal/drive-details.json
