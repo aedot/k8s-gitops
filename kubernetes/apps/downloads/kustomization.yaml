@@ -7,15 +7,15 @@ components:
   - ../../components/sops
   - ../../components/namespace
 
-resources:
-  - ./brrpolice/ks.yaml
-  - ./decluttarr/ks.yaml
-  - ./deduparr/ks.yaml
-  - ./flaresolverr/ks.yaml
-  - ./prowlarr/ks.yaml
-  - ./qbittorrent/ks.yaml
-  - ./qui/ks.yaml
-  - ./radarr/ks.yaml
-  - ./recyclarr/ks.yaml
-  - ./seasonpackerr/ks.yaml
-  - ./sonarr/ks.yaml
+resources: []
+  # - ./brrpolice/ks.yaml
+  # - ./decluttarr/ks.yaml
+  # - ./deduparr/ks.yaml
+  # - ./flaresolverr/ks.yaml
+  # - ./prowlarr/ks.yaml
+  # - ./qbittorrent/ks.yaml
+  # - ./qui/ks.yaml
+  # - ./radarr/ks.yaml
+  # - ./recyclarr/ks.yaml
+  # - ./seasonpackerr/ks.yaml
+  # - ./sonarr/ks.yaml
