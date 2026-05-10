@@ -6,13 +6,13 @@ metadata:
   name: go2rtc
 spec:
   interval: 30m
-  path: ./kubernetes/apps/default/go2rtc/app
+  path: ./kubernetes/apps/home-automation/go2rtc/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: default
+  targetNamespace: home-automation
   wait: false
   postBuild:
     substituteFrom:
