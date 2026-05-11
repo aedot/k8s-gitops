@@ -117,6 +117,7 @@ patches:
   - "@./patches/global/machine-kubelet.yaml"
   - "@./patches/global/machine-network.yaml"
   - "@./patches/global/machine-sysctls.yaml"
+  - "@./patches/global/machine-sysfs.yaml"
   - "@./patches/global/machine-time.yaml"
   - "@./patches/global/machine-udev.yaml"
   - "@./patches/global/machine-nodelabel.yaml"

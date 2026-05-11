@@ -9,7 +9,7 @@ spec:
   path: ./kubernetes/apps/media/plex/app
   components:
     - ../../../../components/gpu
-    - ../../../../components/nfs-scaler
+    - ../../../../components/zeroscaler
     - ../../../../components/volsync
   dependsOn:
     - name: longhorn

@@ -1,0 +1,4 @@
+machine:
+  sysfs:
+    devices.system.cpu.cpufreq.policy0.scaling_governor: powersave
+    devices.system.cpu.cpufreq.policy0.energy_performance_preference: balancer_power

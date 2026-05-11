@@ -8,6 +8,7 @@ spec:
   path: ./kubernetes/apps/default/zigbee/app
   components:
     - ../../../../components/volsync
+    - ../../../../components/zeroscaler
   dependsOn:
     - name: longhorn
       namespace: longhorn-system

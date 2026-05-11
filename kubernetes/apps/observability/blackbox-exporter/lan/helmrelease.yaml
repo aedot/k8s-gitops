@@ -47,4 +47,4 @@ spec:
             severity: critical
           annotations:
             summary: |-
-              The probe targeting {{ $labels.instance }} is currently having connectivity issues
+              The host {{ $labels.target }} is currently unreachable

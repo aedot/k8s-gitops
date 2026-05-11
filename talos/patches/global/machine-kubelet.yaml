@@ -2,8 +2,7 @@ machine:
   kubelet:
     extraConfig:
       serializeImagePulls: false
-      featureGates:
-        ImageVolume: true
+      imageMaximumGCAge: 24h
     extraMounts:
       - destination: /var/mnt/longhorn
         type: bind
