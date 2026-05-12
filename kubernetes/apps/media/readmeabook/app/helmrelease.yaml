@@ -31,8 +31,8 @@ spec:
               PUBLIC_URL: "https://{{ .Release.Name }}.${SECRET_DOMAIN}"
               REDIS_URL: redis://readmeabook-dragonfly:6379
               TZ: America/Los_Angeles
-              # PUID: 1000
-              # PGID: 1000
+              PUID: 1000
+              PGID: 1000
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
@@ -41,19 +41,19 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /api/health
-                    port: &port 3030
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
+            # probes:
+            #   liveness: &probes
+            #     enabled: true
+            #     custom: true
+            #     spec:
+            #       httpGet:
+            #         path: /api/health
+            #         port: &port 3030
+            #       initialDelaySeconds: 0
+            #       periodSeconds: 10
+            #       timeoutSeconds: 1
+            #       failureThreshold: 3
+            #   readiness: *probes
             resources:
               requests:
                 cpu: 10m
@@ -70,7 +70,7 @@ spec:
       app:
         ports:
           http:
-            port: *port
+            port: 3030
     route:
       app:
         annotations:
