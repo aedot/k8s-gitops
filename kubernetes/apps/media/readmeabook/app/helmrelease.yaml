@@ -31,8 +31,8 @@ spec:
               PUBLIC_URL: "https://{{ .Release.Name }}.${SECRET_DOMAIN}"
               REDIS_URL: redis://readmeabook-dragonfly:6379
               TZ: America/Los_Angeles
-              PUID: 1000
-              PGID: 1000
+              # PUID: 1000
+              # PGID: 1000
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
