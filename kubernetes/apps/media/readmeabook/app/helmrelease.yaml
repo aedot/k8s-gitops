@@ -94,7 +94,7 @@ spec:
       media:
         type: nfs
         server: yemoja.internal
-        path: /mnt/user/data/media
+        path: /mnt/alaafin/data/media
         globalMounts:
           - path: /media
             readOnly: true
