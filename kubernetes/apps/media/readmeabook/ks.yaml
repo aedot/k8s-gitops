@@ -15,7 +15,7 @@ spec:
   dependsOn:
     - name: cnpg-cluster
       namespace: dbms
-    - name: dragonfly-cluster
+    - name: dragonfly
       namespace: dbms
     - name: longhorn
       namespace: longhorn-system
