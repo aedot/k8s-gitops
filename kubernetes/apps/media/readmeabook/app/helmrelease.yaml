@@ -91,13 +91,21 @@ spec:
                 subPath: config
               - path: /app/cache
                 subPath: cache
+      torrents:
+        type: nfs
+        server: yemoja.internal
+        path: /mnt/alaafin/data/torrents
+        globalMounts:
+          - path: /torrents
+            subPath: audiobooks
+            readOnly: false
       media:
         type: nfs
         server: yemoja.internal
         path: /mnt/alaafin/data/media
         globalMounts:
           - path: /media
-            readOnly: true
+            readOnly: false
       tmp:
         type: emptyDir
         globalMounts:
