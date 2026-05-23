@@ -99,9 +99,8 @@ spec:
           - identifier: gatus
     route:
       app:
-        # annotations:
-        #   gatus.home-operations.com/endpoint: |
-        #     url: https://{{ .Release.Name }}.${SECRET_DOMAIN}/health
+        annotations:
+          gatus.home-operations.com/enabled: "false"
         hostnames:
           - "{{ .Release.Name }}.${SECRET_DOMAIN}"
           - status.${SECRET_DOMAIN}

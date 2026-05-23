@@ -28,9 +28,9 @@ endpoints:
     conditions:
       - "[CONNECTED] == true"
 
-  - name: Lumen
+  - name: Quad9
     group: connectivity
-    url: icmp://4.2.2.1
+    url: icmp://9.9.9.9
     interval: 1m
     conditions:
       - "[CONNECTED] == true"
