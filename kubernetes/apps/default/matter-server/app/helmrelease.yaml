@@ -30,8 +30,11 @@ spec:
               - --log-level=debug
               - --log-level-sdk=info
             resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
               limits:
-                memory: 100Mi
+                memory: 256Mi
     defaultPodOptions:
       annotations:
         k8s.v1.cni.cncf.io/networks: |
