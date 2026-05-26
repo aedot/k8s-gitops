@@ -16,31 +16,64 @@ spec:
         containers:
           app:
             image:
-              repository: esphome/esphome
-              tag: 2026.5.1@sha256:2162b9e65fab85702548df25065077ac407a47577dda50f1563071d3c99082c9
+              repository: ghcr.io/home-operations/esphome
+              tag: 2026.4.5@sha256:6724ec0343383bda3baadf76856517ea93c5fd7406fba92af056939741f7de06
             env:
-              ESPHOME_DASHBOARD_USE_PING: true
-            probes:
-              liveness:
-                enabled: true
-              readiness:
-                enabled: true
-              startup:
-                enabled: true
-                spec:
-                  periodSeconds: 5
-                  failureThreshold: 30
+              TZ: "America/Los_Angeles"
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 100m
-                memory: 500Mi
+                cpu: 10m
+                memory: 128Mi
               limits:
-                memory: 4Gi
+                memory: 3Gi
+          code-server:
+            image:
+              repository: ghcr.io/coder/code-server
+              tag: 4.121.0@sha256:ea5f42d99998e2ba44297eca9b8a38a101e718ef54caaa41d649f6c6f1c8c71e
+            args:
+              - --auth
+              - none
+              - --disable-telemetry
+              - --disable-update-check
+              - --user-data-dir
+              - /config/.code-server
+              - --extensions-dir
+              - /config/.code-server
+              - --port
+              - "12321"
+              - /config
+            env:
+              TZ: America/Los_Angeles
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [{
+            "name": "iot",
+            "namespace": "kube-system",
+            "ips": ["172.24.40.24/24"]
+          }]
     service:
       app:
         ports:
           http:
-            port: 6052
+            port: &port 6052
+          code-server:
+            port: &codeserverPort 12321
     route:
       app:
         hostnames:
@@ -48,8 +81,48 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
+        rules:
+          - backendRefs:
+              - name: "{{ .Release.Name }}"
+                port: *port
+      code-server:
+        annotations:
+          gatus.home-operations.com/enabled: "false"
+        hostnames:
+          - "{{ .Release.Name }}-code.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - name: "{{ .Release.Name }}"
+                port: *codeserverPort
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-      cache:
-        existingClaim: "{{ .Release.Name }}-cache"
+        advancedMounts:
+          esphome:
+            app:
+              - path: /config
+            code-server:
+              - path: /config
+      secrets:
+        type: secret
+        name: esphome-secret
+        globalMounts:
+          - path: /config/secrets.yaml
+            subPath: secrets.yaml
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          esphome:
+            app:
+              - path: /cache
+                subPath: cache
+              - path: /tmp
+                subPath: esphome-tmp
+            code-server:
+              - path: /tmp
+                subPath: code-server-tmp
+              - path: /nonexistent
+                subPath: nonexistent
