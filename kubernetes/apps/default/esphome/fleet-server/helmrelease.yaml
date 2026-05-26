@@ -17,7 +17,7 @@ spec:
           app:
             image:
               repository: ghcr.io/weirded/esphome-dist-server
-              tag: 1.7.2-dev.7@sha256:e0ea75503b9fb5bf4f86c1763bf6102a3cacc60a5c9be17d88bb5f5ec742edfb
+              tag: 1.7.2-dev.7
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
