@@ -106,12 +106,6 @@ spec:
               - path: /config
             code-server:
               - path: /config
-      secrets:
-        type: secret
-        name: esphome-secret
-        globalMounts:
-          - path: /config/secrets.yaml
-            subPath: secrets.yaml
       tmpfs:
         type: emptyDir
         advancedMounts:
