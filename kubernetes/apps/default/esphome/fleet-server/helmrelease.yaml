@@ -57,7 +57,5 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-        advancedMounts:
-          esphome-dist-data:
-            app:
-              - path: /data
+        globalMounts:
+          - path: /data
