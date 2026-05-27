@@ -3,7 +3,8 @@ name: Renovate
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
     paths:
       - .renovaterc.json5
       - .renovate/**.json5
@@ -42,7 +43,7 @@ jobs:
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         id: app-token
         with:
-          app-id: ${{ secrets.BOT_APP_ID }}
+          client-id: ${{ secrets.BOT_APP_CLIENT_ID }}
           private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
 
       - name: Checkout
