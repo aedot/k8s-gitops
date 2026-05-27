@@ -24,7 +24,7 @@ nodes:
       serial: A0D6073B184B00007040
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/84ef3a96f6cd0b3321d0be76c54af0601a95ca5fd011374bb527e97e6f1974b8
+    talosImageURL: factory.talos.dev/installer/8af8cf71310e5eeddc32fa523441d6a0f181e0fb859e66bf7dbed7affb2e73c9
     controlPlane: true
     userVolumes:
       - name: longhorn
@@ -47,13 +47,6 @@ nodes:
             { vlanId: 50, dhcp: false, mtu: 1500}
         vip:
           ip: &vip "172.24.20.11"
-    extensionServices: &extensionServices
-      - name: nut-client
-        configFiles:
-          - content: MONITOR ${upsmonHost} 1 monuser secret slave
-            mountPath: /usr/local/etc/nut/upsmon.conf
-          - content: MODE=netclient
-            mountPath: /usr/local/etc/nut/nut.conf
 
   - hostname: "aje"
     ipAddress: "172.24.20.13"
@@ -61,7 +54,7 @@ nodes:
       serial: AA202302171T21213049
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/84ef3a96f6cd0b3321d0be76c54af0601a95ca5fd011374bb527e97e6f1974b8
+    talosImageURL: factory.talos.dev/installer/8af8cf71310e5eeddc32fa523441d6a0f181e0fb859e66bf7dbed7affb2e73c9
     controlPlane: true
     userVolumes:
       - name: longhorn
@@ -80,7 +73,6 @@ nodes:
         vip:
           ip: *vip
         vlans: *vlans
-    extensionServices: *extensionServices
 
   - hostname: "oba"
     ipAddress: "172.24.20.14"
@@ -88,7 +80,7 @@ nodes:
       serial: AA230711NV01KG10664
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/84ef3a96f6cd0b3321d0be76c54af0601a95ca5fd011374bb527e97e6f1974b8
+    talosImageURL: factory.talos.dev/installer/8af8cf71310e5eeddc32fa523441d6a0f181e0fb859e66bf7dbed7affb2e73c9
     controlPlane: true
     userVolumes:
       - name: longhorn
@@ -107,7 +99,6 @@ nodes:
         vip:
           ip: *vip
         vlans: *vlans
-    extensionServices: *extensionServices
 
 # Global patches
 patches:
@@ -117,9 +108,8 @@ patches:
   - "@./patches/global/machine-kubelet.yaml"
   - "@./patches/global/machine-network.yaml"
   - "@./patches/global/machine-sysctls.yaml"
-  # - "@./patches/global/machine-sysfs.yaml"
   - "@./patches/global/machine-time.yaml"
-  - "@./patches/global/machine-udev.yaml"
+  # - "@./patches/global/machine-udev.yaml"
   - "@./patches/global/machine-nodelabel.yaml"
 
 # Controller patches
@@ -130,29 +120,23 @@ controlPlane:
   schematic:
     customization:
       extraKernelArgs:
-        - -init_on_alloc # Less security, faster puter
-        - -init_on_free # Less security, faster puter
-        - -selinux # Less security, faster puter
-        - apparmor=0 # Less security, faster puter
-        - i915.enable_guc=3 # Meteor Lake CPU / iGPU
-        - init_on_alloc=0 # Less security, faster puter
-        - init_on_free=0 # Less security, faster puter
-        - intel_iommu=on # PCI Passthrough
-        - iommu=pt # PCI Passthrough
-        - mitigations=off # Less security, faster puter
-        - module_blacklist=igc # Disable onboard NIC
-        - security=none # Less security, faster puter
-        - sysctl.kernel.kexec_load_disabled=1 # Meteor Lake CPU / iGPU
-        - talos.auditd.disabled=1 # Less security, faster puter
+        - init_on_alloc=0                     # Less security, faster puter
+        - init_on_free=0                      # Less security, faster puter
+        - intel_iommu=on                      # PCI Passthrough
+        - iommu=pt                            # PCI Passthrough
+        - mitigations=off                     # Less security, faster puter
+        - security=none                       # Less security, faster puter
+        - talos.auditd.disabled=1             # Less security, faster puter
+        - i915.enable_guc=3                   # Enable GuC and HuC for better graphics performance and stability
+        - i915.force_probe=!a7a0              # Disable iGPU deviceID for i915
+        - xe.force_probe=a7a0                 # Enable iGPU deviceID for xe
       systemExtensions:
         officialExtensions:
-          - siderolabs/gasket-driver
           - siderolabs/i915
           - siderolabs/intel-ucode
           - siderolabs/iscsi-tools
           - siderolabs/mei
           - siderolabs/nfsrahead
-          - siderolabs/nut-client
-          - siderolabs/thunderbolt
           - siderolabs/util-linux-tools
+          - siderolabs/xe
 
