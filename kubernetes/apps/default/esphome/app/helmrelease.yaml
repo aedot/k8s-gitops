@@ -20,8 +20,9 @@ spec:
               tag: 2026.5.1@sha256:7886a4b0f04bd7d5e092e0b0cae277a47e39088d4d9028935df3304655300acd
             env:
               ESPHOME_DASHBOARD_USE_PING: true
-              PLATFORMIO_CORE_DIR: .plattformio
-              PLATFORMIO_GLOBALLIB_DIR: .plattformioLibs
+              PLATFORMIO_CORE_DIR: /config/.esphome/platformio
+              UV_CACHE_DIR: /config/.esphome/uv/cache
+              UV_DATA_DIR: /config/.esphome/uv/data
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
