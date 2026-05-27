@@ -12,6 +12,12 @@ spec:
     controllers:
       esphome:
         annotations:
+          k8s.v1.cni.cncf.io/networks: |
+            [{
+              "name": "iot",
+              "namespace": "kube-system",
+              "ips": ["172.24.40.24/24"]
+            }]
           reloader.stakater.com/auto: "true"
         containers:
           app:
@@ -50,19 +56,6 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 512Mi
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
-      annotations:
-        k8s.v1.cni.cncf.io/networks: |
-          [{
-            "name": "iot",
-            "namespace": "kube-system",
-            "ips": ["172.24.40.24/24"]
-          }]
     service:
       app:
         ports:
