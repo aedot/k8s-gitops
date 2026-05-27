@@ -48,6 +48,10 @@ spec:
               - /config
             env:
               TZ: America/Los_Angeles
+              PLATFORMIO_CORE_DIR: /cache/pio
+              ESPHOME_BUILD_PATH: /cache/build
+              ESPHOME_DATA_DIR: /cache/data
+              PIP_CACHE_DIR: /cache/pip
             resources:
               requests:
                 cpu: 10m
