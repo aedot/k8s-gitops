@@ -4,9 +4,9 @@ kind: Kustomization
 resources:
   - ./grafanadashboard.yaml
   - ./helmrelease.yaml
+  - ./httproute.yaml
   - ./ocirepository.yaml
   - ./secret.sops.yaml
-  - ./httproute.yaml
   - ./podmonitor.yaml
   - ./prometheusrule.yaml
   - ./receiver.yaml

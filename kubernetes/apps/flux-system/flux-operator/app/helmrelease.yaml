@@ -12,5 +12,19 @@ spec:
     serviceMonitor:
       create: true
     web:
+      config:
+        authentication:
+          type: Anonymous
+          anonymous:
+            username: flux
+            groups:
+              - flux-admin
+      httpRoute:
+        enabled: true
+        hostnames:
+          - flux-operator.${SECRET_DOMAIN}
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
       networkPolicy:
         create: false
