@@ -12,10 +12,6 @@ spec:
   hostnames:
     - technitium.${SECRET_DOMAIN}
   rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-      backendRefs:
+    - backendRefs:
         - name: technitium
           port: 5380
