@@ -7,5 +7,6 @@ subsets:
   - addresses:
       - ip: "${TECHNITIUM_IP}"
     ports:
-      - port: 5380
+      - name: http
+        port: 5380
         protocol: TCP
