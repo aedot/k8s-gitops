@@ -39,7 +39,7 @@ spec:
               DB_URL:
                 valueFrom:
                   secretKeyRef:
-                    name: teslamate-pgsql-secret
+                    name: teslamate-postgres-secret
                     key: uri
         containers:
           app:
