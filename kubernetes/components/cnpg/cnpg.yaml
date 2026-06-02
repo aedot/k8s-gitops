@@ -28,10 +28,6 @@ spec:
       memory: ${CNPG_MEMORY_REQUEST:-256Mi}
     limits:
       memory: ${CNPG_MEMORY_LIMIT:-512Mi}
-
-  postgresql:
-    pg_hba:
-      - host all all ${CNPG_PG_HBA_CIDR:-10.43.0.0/16} scram-sha-256
-
+      
   monitoring:
     enablePodMonitor: true
