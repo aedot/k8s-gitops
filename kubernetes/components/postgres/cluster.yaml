@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: ${APP}-psql
+  name: ${APP}
   annotations:
     # Required for same-path/same-serverName rebuilds via bootstrap.recovery.
     # The default check blocks recovery when the destination archive is non-empty,
@@ -39,21 +39,28 @@ spec:
       memory: 1Gi
   monitoring:
     enablePodMonitor: true
-  plugins:
-    - name: barman-cloud.cloudnative-pg.io
-      isWALArchiver: true
-      parameters: &parameters
-        barmanObjectName: cloudflare-r2
-        serverName: ${APP}
-  # # Note: previousCluster needs to be set to the name of the previous
-  # # cluster when recovering from an existing cnpg cluster
-  # # bootstrap:
   bootstrap:
     recovery:
-      source: source
+      source: &archive ${APP}-backup-archive
   # # Note: externalClusters is needed when recovering from an existing cnpg cluster
   externalClusters:
-    - name: source
-      plugin:
-        name: barman-cloud.cloudnative-pg.io
-        parameters: *parameters
+    - name: *archive
+      barmanObjectStore: &barman
+        destinationPath: s3://postgresql
+        serverName: ${APP}
+        endpointURL: https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
+        s3Credentials:
+          accessKeyId:
+            name: ${APP}-postgres
+            key: AWS_ACCESS_KEY_ID
+          secretAccessKey:
+            name: ${APP}-postgres
+            key: AWS_SECRET_ACCESS_KEY
+        wal:
+          compression: bzip2
+        data:
+          compression: bzip2
+  backup:
+    barmanObjectStore: *barman
+    retentionPolicy: 7d
+
