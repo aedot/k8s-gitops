@@ -32,3 +32,4 @@ spec:
         kind: Secret
     substitute:
       APP: lldap
+      POSTGRES_USERNAME: lldap
