@@ -21,7 +21,7 @@ spec:
     user: teslamate
     secureJsonData:
       password: "${DATABASE_PASS}"
-    name: TeslaMate
+    name: teslamate
     access: proxy
     jsonData:
       sslmode: disable
