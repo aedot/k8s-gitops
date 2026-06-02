@@ -9,6 +9,7 @@ spec:
     kind: OCIRepository
     name: lldap
   interval: 30m
+  dependsOn: []
   values:
     defaultPodOptions:
       topologySpreadConstraints:
