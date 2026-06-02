@@ -14,11 +14,11 @@ spec:
       - name: ${APP}
         ensure: present
         login: true
-        superuser: false
+        superuser: true
         createdb: false
         passwordSecret:
           name: ${APP}-postgres-secret
-          
+
   bootstrap:
     initdb:
       database: ${APP}
