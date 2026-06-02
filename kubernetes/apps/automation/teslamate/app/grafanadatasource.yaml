@@ -17,13 +17,18 @@ spec:
   datasource:
     name: TeslaMate
     type: postgres
+    uid: teslamate
     access: proxy
     url: teslamate-postgres-ro.automation.svc.cluster.local:5432
-    database: teslamate
     user: teslamate
     secureJsonData:
       password: "${DATABASE_PASS}"
     jsonData:
       database: teslamate
-      postgresVersion: 1000
+      maxOpenConns: 100
+      maxIdleConns: 100
+      maxIdleConnsAuto: true
+      connMaxLifetime: 14400
+      postgresVersion: 1600
+      timescaledb: false
       sslmode: disable
