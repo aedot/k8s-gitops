@@ -3,16 +3,8 @@
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 resources:
-  - ./cronjob.yaml
+  - ./cnpg.yaml
+  - ./database.yaml
   - ./externalsecret.yaml
-# patches:
-#   - target:
-#       group: helm.toolkit.fluxcd.io
-#       version: v2
-#       kind: HelmRelease
-    # patch: |-
-    #   - op: add
-    #     path: /spec/dependsOn/-
-    #     value:
-    #       name: cnpg-operator
-    #       namespace: dbms
+  - ./jobs/backup.cronjob.yaml
+  - ./jobs/restore.cronjob.yaml

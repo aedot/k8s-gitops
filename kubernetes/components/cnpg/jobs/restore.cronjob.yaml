@@ -1,11 +1,11 @@
 ---
-# yaml-language-server: $schema=https://github.com/yannh/kubernetes-json-schema/raw/refs/heads/master/master/cronjob.json
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: &name ${APP}-pg-backups
+  name: &name ${APP}-pg-restore
 spec:
-  schedule: "0 */12 * * *" # Every 12 hours
+  schedule: "0 0 31 2 *"  # Impossible date (February 31st) — safety net, never fires
+  suspend: true            # Primary guard: must be manually triggered
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -22,11 +22,10 @@ spec:
               - 65539
           containers:
             - name: *name
-              # https://github.com/prodrigestivill/docker-postgres-backup-local/discussions/109
               image: docker.io/prodrigestivill/postgres-backup-local:${PG_VER:=18}
               imagePullPolicy: IfNotPresent
               command:
-                - /backup.sh
+                - /restore.sh
               env:
                 - name: POSTGRES_HOST
                   value: ${CNPG_NAME:=pgsql-cluster}-rw.dbms.svc.cluster.local
@@ -42,10 +41,13 @@ spec:
                     secretKeyRef:
                       key: password
                       name: ${APP}-pguser-secret
+                # Omit to restore latest, or pin a specific file:
+                # - name: POSTGRES_RESTORE_FILE
+                #   value: /backups/${APP}-20260601-120000.sql.gz
               volumeMounts:
                 - mountPath: /backups
                   name: backups
-          restartPolicy: OnFailure
+          restartPolicy: Never  # No auto-retry — a failed restore should be investigated
           volumes:
             - name: backups
               nfs:

@@ -1,0 +1,37 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: ${APP}-postgres
+  annotations:
+    cnpg.io/skipEmptyWalArchiveCheck: enabled
+spec:
+  instances: ${CNPG_REPLICAS:-1}
+  imageName: ${CNPG_IMAGE:-ghcr.io/cloudnative-pg/postgresql:18.4-system-trixie}
+
+  bootstrap:
+    initdb:
+      database: ${APP}
+      owner: ${APP}
+
+  storage:
+    storageClass: ${CNPG_DATA_STORAGE_CLASS:-longhorn}
+    size: ${CNPG_DATA_STORAGE_SIZE:-4Gi}
+
+  walStorage:
+    storageClass: ${CNPG_WAL_STORAGE_CLASS:-longhorn}
+    size: ${CNPG_WAL_STORAGE_SIZE:-2Gi}
+
+  resources:
+    requests:
+      cpu: ${CNPG_CPU_REQUEST:-100m}
+      memory: ${CNPG_MEMORY_REQUEST:-256Mi}
+    limits:
+      memory: ${CNPG_MEMORY_LIMIT:-512Mi}
+
+  postgresql:
+    pg_hba:
+      - host all all ${CNPG_PG_HBA_CIDR:-10.43.0.0/16} scram-sha-256
+
+  monitoring:
+    enablePodMonitor: true
