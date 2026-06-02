@@ -54,7 +54,7 @@ spec:
                 value: *app
               - name: DATABASE_NAME
                 value: *app
-              - name: DATABASE_PASSWORD
+              - name: DATABASE_PASS
                 valueFrom:
                   secretKeyRef:
                     name: teslamate-postgres-app
