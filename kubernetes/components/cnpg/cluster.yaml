@@ -41,7 +41,7 @@ spec:
 
   postgresql:
     pg_hba:
-      - host all all ${CNPG_PG_HBA_CIDR:-10.42.0.0/16} scram-sha-256
+      - host all all ${CNPG_PG_HBA_CIDR:-10.43.0.0/16} scram-sha-256
 
   monitoring:
     enablePodMonitor: true
