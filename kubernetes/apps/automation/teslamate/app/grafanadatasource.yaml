@@ -15,14 +15,15 @@ spec:
           name: "teslamate-secret"
           key: "DATABASE_PASS"
   datasource:
+    name: TeslaMate
     type: postgres
+    access: proxy
     url: teslamate-postgres-ro.automation.svc.cluster.local:5432
-    database: TeslaMate
+    database: teslamate
     user: teslamate
     secureJsonData:
       password: "${DATABASE_PASS}"
-    name: TeslaMate
-    access: proxy
     jsonData:
-      sslmode: disable
       database: teslamate
+      postgresVersion: 1000
+      sslmode: disable
