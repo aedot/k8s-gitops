@@ -41,6 +41,9 @@ spec:
               TZ: America/Los_Angeles
               DISABLE_MQTT: "false"
               MQTT_HOST: "mosquitto.dbms.svc.cluster.local"
+              DATABASE_HOST: ${APP}-pgsql-rw
+              DATABASE_USER: "${APP}"
+              DATABASE_NAME: "${APP}"
             resources:
               requests:
                 memory: 250Mi

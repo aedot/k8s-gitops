@@ -24,7 +24,6 @@ spec:
   postBuild:
     substitute:
       APP: teslamate
-      CNPG_NAME: pgsql-cluster
     substituteFrom:
       - name: cluster-secrets
         kind: Secret

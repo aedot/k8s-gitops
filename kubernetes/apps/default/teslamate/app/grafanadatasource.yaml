@@ -16,7 +16,7 @@ spec:
           key: "DATABASE_PASS"
   datasource:
     type: postgres
-    url: ${CNPG_NAME:=pgsql-cluster}-ro.dbms.svc.cluster.local
+    url: ${APP}-pgsql-ro
     user: ${APP}
     secureJsonData:
       password: $DATABASE_PASS
