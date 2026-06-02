@@ -8,12 +8,12 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  valuesFrom:
-    - targetPath: "secureJsonData.password"
-      valueFrom:
-        secretKeyRef:
-          name: "teslamate-secret"
-          key: "DATABASE_PASS"
+  # valuesFrom:
+  #   - targetPath: "secureJsonData.password"
+  #     valueFrom:
+  #       secretKeyRef:
+  #         name: "teslamate-secret"
+  #         key: "DATABASE_PASS"
   datasource:
     name: TeslaMate
     type: postgres
@@ -22,7 +22,7 @@ spec:
     url: teslamate-postgres-ro.automation.svc.cluster.local:5432
     user: teslamate
     secureJsonData:
-      password: "${DATABASE_PASS}"
+      password: "{{ .DATABASE_PASS }}"
     jsonData:
       database: teslamate
       maxOpenConns: 100
