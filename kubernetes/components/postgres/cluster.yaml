@@ -16,8 +16,6 @@ spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:18.4-system-trixie
   primaryUpdateStrategy: unsupervised
   enableSuperuserAccess: true
-  minSyncReplicas: 1
-  maxSyncReplicas: 1
   storage:
     storageClass: longhorn
     size: 5Gi
