@@ -5,6 +5,6 @@ kind: Component
 resources:
   - ./cnpg.yaml
   - ./database.yaml
-  # - ./externalsecret.yaml
+  - ./externalsecret.yaml
   - ./jobs/backup.cronjob.yaml
   - ./jobs/restore.cronjob.yaml
