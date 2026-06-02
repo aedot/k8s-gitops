@@ -22,7 +22,6 @@ spec:
   wait: false
   interval: 1h
   dependsOn:
-    - name: lldap-postgres
     - name: akeyless-stores
       namespace: external-secrets
   postBuild:
