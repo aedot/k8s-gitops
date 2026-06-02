@@ -3,7 +3,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: postgres-${APP}
+  name: ${APP}-postgres
   annotations:
     # Required for same-path/same-serverName rebuilds via bootstrap.recovery.
     # The default check blocks recovery when the destination archive is non-empty,
