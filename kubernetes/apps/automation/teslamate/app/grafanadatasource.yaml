@@ -17,12 +17,12 @@ spec:
   datasource:
     type: postgres
     url: teslamate-postgres-ro.automation.svc.cluster.local:5432
+    database: teslamate
     user: teslamate
     secureJsonData:
       password: "${DATABASE_PASS}"
     name: TeslaMate
-    uid: TeslaMate
     access: proxy
     jsonData:
-      sslmode: require
+      sslmode: disable
       database: teslamate
