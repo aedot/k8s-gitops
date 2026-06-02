@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: &name ${APP}-pg-restore
+  name: &name ${APP}-postgres-restore
 spec:
   schedule: "0 0 31 2 *"  # Impossible date (February 31st) — safety net, never fires
   suspend: true            # Primary guard: must be manually triggered
@@ -28,19 +28,19 @@ spec:
                 - /restore.sh
               env:
                 - name: POSTGRES_HOST
-                  value: ${CNPG_NAME:=pgsql-cluster}-rw.dbms.svc.cluster.local
+                  value: ${APP}-postgres-rw.dbms.svc.cluster.local
                 - name: POSTGRES_DB
                   value: ${APP}
                 - name: POSTGRES_USER
                   valueFrom:
                     secretKeyRef:
                       key: user
-                      name: ${APP}-pguser-secret
+                      name: ${APP}-postgres-secret
                 - name: POSTGRES_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       key: password
-                      name: ${APP}-pguser-secret
+                      name: ${APP}-postgres-secret
                 # Omit to restore latest, or pin a specific file:
                 # - name: POSTGRES_RESTORE_FILE
                 #   value: /backups/${APP}-20260601-120000.sql.gz

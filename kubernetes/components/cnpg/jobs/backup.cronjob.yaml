@@ -3,7 +3,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: &name ${APP}-pg-backup
+  name: &name ${APP}-postgres-backup
 spec:
   schedule: "0 */12 * * *" # Every 12 hours
   concurrencyPolicy: Forbid
@@ -29,19 +29,19 @@ spec:
                 - /backup.sh
               env:
                 - name: POSTGRES_HOST
-                  value: ${CNPG_NAME:=pgsql-cluster}-rw.dbms.svc.cluster.local
+                  value: ${APP}-postgres-rw.dbms.svc.cluster.local
                 - name: POSTGRES_DB
                   value: ${APP}
                 - name: POSTGRES_USER
                   valueFrom:
                     secretKeyRef:
                       key: user
-                      name: ${APP}-pguser-secret
+                      name: ${APP}-postgres-secret
                 - name: POSTGRES_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       key: password
-                      name: ${APP}-pguser-secret
+                      name: ${APP}-postgres-secret
               volumeMounts:
                 - mountPath: /backups
                   name: backups
