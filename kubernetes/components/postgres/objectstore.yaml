@@ -7,7 +7,7 @@ spec:
   configuration:
     data:
       compression: bzip2
-    destinationPath: s3://postgresql/${APP}
+    destinationPath: s3://postgresql
     endpointURL: https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
     s3Credentials:
       accessKeyId:
