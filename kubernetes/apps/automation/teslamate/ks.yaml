@@ -6,12 +6,10 @@ metadata:
   name: teslamate
 spec:
   interval: 30m
-  path: ./kubernetes/apps/default/teslamate/app
+  path: ./kubernetes/apps/automation/teslamate/app
   components:
     - ../../../../components/cnpg
   dependsOn:
-    # - name: cnpg-cluster
-    #   namespace: dbms
     - name: akeyless-stores
       namespace: external-secrets
   prune: true
@@ -19,7 +17,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: default
+  targetNamespace: automation
   wait: false
   postBuild:
     substitute:
