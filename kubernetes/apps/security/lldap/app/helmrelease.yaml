@@ -24,7 +24,7 @@ spec:
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
+        # initContainers:
           # init-db:
           #   image:
           #     repository: ghcr.io/home-operations/postgres-init
