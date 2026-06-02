@@ -50,16 +50,21 @@ spec:
               repository: ghcr.io/lldap/lldap
               tag: v0.6.3
             env:
-              TZ: America/Los_Angeles
-              LLDAP_HTTP_PORT: &port 8080
-              LLDAP_HTTP_URL: https://lldap.${SECRET_DOMAIN}
-              LLDAP_LDAP_PORT: &ldapPort 5389
-              LLDAP_LDAP_BASE_DN: dc=home,dc=arpa
-              name: LLDAP_DATABASE_URL
-              valueFrom:
-                secretKeyRef:
-                  name: lldap-postgres-app
-                  key: uri
+              - name: TZ
+                value: America/Los_Angeles
+              - name: LLDAP_HTTP_PORT
+                value: "8080"
+              - name: LLDAP_HTTP_URL
+                value: https://lldap.${SECRET_DOMAIN}
+              - name: LLDAP_LDAP_PORT
+                value: "5389"
+              - name: LLDAP_LDAP_BASE_DN
+                value: dc=home,dc=arpa
+              - name: LLDAP_DATABASE_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: lldap-postgres-app
+                    key: uri
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
@@ -74,10 +79,10 @@ spec:
         controller: *app
         ports:
           http:
-            port: *port
+            port: 8080
           ldap:
             enabled: true
-            port: *ldapPort
+            port: 5389
     route:
       app:
         hostnames: ["{{ .Release.Name }}.${SECRET_DOMAIN}"]
@@ -88,7 +93,7 @@ spec:
         rules:
           - backendRefs:
               - name: *app
-                port: *port
+                port: 8080
     persistence:
       data:
         type: emptyDir
