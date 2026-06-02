@@ -10,8 +10,8 @@ spec:
   components:
     - ../../../../components/cnpg
   dependsOn:
-    - name: cnpg-cluster
-      namespace: dbms
+    # - name: cnpg-cluster
+    #   namespace: dbms
     - name: akeyless-stores
       namespace: external-secrets
   prune: true
