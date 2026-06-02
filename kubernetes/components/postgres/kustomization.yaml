@@ -7,4 +7,5 @@ resources:
   - ./externalsecret.yaml
   - ./jobs/backup.cronjob.yaml
   - ./jobs/restore.cronjob.yaml
+  - ./objectstore.yaml
   - ./scheduledbackup.yaml
