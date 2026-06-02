@@ -17,8 +17,6 @@ spec:
   wait: false
   interval: 30m
   dependsOn:
-    - name: cnpg-cluster
-      namespace: dbms
     - name: akeyless-stores
       namespace: external-secrets
   postBuild:
@@ -27,4 +25,3 @@ spec:
         kind: Secret
     substitute:
       APP: lldap
-      CNPG_NAME: pgsql-cluster
