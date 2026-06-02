@@ -1,0 +1,62 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: ${APP}
+  annotations:
+    # Required for same-path/same-serverName rebuilds via bootstrap.recovery.
+    # The default check blocks recovery when the destination archive is non-empty,
+    # which is exactly the case when the rebuilt cluster reuses the same Barman
+    # path. Safe here because the recovered cluster inherits the source's
+    # system_identifier and writes new WAL on a new timeline (no name collisions).
+    cnpg.io/skipEmptyWalArchiveCheck: enabled
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.4-system-trixie
+  primaryUpdateStrategy: unsupervised
+  enableSuperuserAccess: true
+  minSyncReplicas: 1
+  maxSyncReplicas: 1
+  storage:
+    storageClass: longhorn
+    size: 5Gi
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: topology.kubernetes.io/gpus
+                operator: DoesNotExist
+    topologyKey: kubernetes.io/hostname
+    podAntiAffinityType: required
+  postgresql:
+    parameters:
+      max_connections: "200"
+      max_wal_size: "256MB"
+      synchronous_commit: "on"
+  bootstrap:
+    recovery:
+      source: &archive ${APP}-backup-archive
+  externalClusters:
+    - name: *archive
+      barmanObjectStore: &barman
+        destinationPath: s3://postgresql/${APP}
+        serverName: ${APP}
+        endpointURL: https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
+        s3Credentials:
+          accessKeyId:
+            name: ${APP}-postgres-secret
+            key: AWS_ACCESS_KEY_ID
+          secretAccessKey:
+            name: ${APP}-postgres-secret
+            key: AWS_SECRET_ACCESS_KEY
+        wal:
+          compression: bzip2
+        data:
+          compression: bzip2
+  backup:
+    barmanObjectStore: *barman
+    retentionPolicy: 7d
+  monitoring:
+    enablePodMonitor: true
