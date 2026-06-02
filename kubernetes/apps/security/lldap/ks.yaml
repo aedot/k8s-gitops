@@ -4,6 +4,8 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: lldap
+  labels:
+        components.postgres/cnpg: init
 spec:
   targetNamespace: security
   path: ./kubernetes/apps/security/lldap/app

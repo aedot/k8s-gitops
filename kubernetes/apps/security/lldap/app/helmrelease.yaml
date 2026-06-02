@@ -63,7 +63,7 @@ spec:
               - name: LLDAP_DATABASE_URL
                 valueFrom:
                   secretKeyRef:
-                    name: lldap-postgres-app
+                    name: lldap-app
                     key: uri
             envFrom:
               - secretRef:
