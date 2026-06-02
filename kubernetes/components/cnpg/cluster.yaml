@@ -9,6 +9,16 @@ spec:
   instances: ${CNPG_REPLICAS:-1}
   imageName: ${CNPG_IMAGE:-ghcr.io/cloudnative-pg/postgresql:18.4-system-trixie}
 
+  managed:
+    roles:
+      - name: ${APP}
+        ensure: present
+        login: true
+        superuser: false
+        createdb: false
+        passwordSecret:
+          name: ${APP}-postgres-secret
+          
   bootstrap:
     initdb:
       database: ${APP}
@@ -28,6 +38,10 @@ spec:
       memory: ${CNPG_MEMORY_REQUEST:-256Mi}
     limits:
       memory: ${CNPG_MEMORY_LIMIT:-512Mi}
+
+  postgresql:
+    pg_hba:
+      - host all all ${CNPG_PG_HBA_CIDR:-10.42.0.0/16} scram-sha-256
 
   monitoring:
     enablePodMonitor: true
