@@ -9,7 +9,7 @@ spec:
     matchLabels:
       dashboards: grafana
   valuesFrom:
-    - targetPath: "secureJsonData.password"
+    - targetPath: secureJsonData.password
       valueFrom:
         secretKeyRef:
           name: teslamate-psql-app
@@ -22,9 +22,7 @@ spec:
     url: teslamate-psql-ro.default.svc.cluster.local:5432
     user: teslamate
     database: teslamate
-    secureJsonData:
-      password: "${password}"
     jsonData:
       postgresVersion: 1500
-      sslmode: require
+      sslmode: disable
       database: teslamate
