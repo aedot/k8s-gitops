@@ -19,16 +19,12 @@ spec:
     type: postgres
     uid: teslamate
     access: proxy
-    url: teslamate-psql-rw.default.svc.cluster.local:5432
+    url: teslamate-psql-ro.default.svc.cluster.local:5432
     user: teslamate
+    database: teslamate
     secureJsonData:
-      password: "{{ .DATABASE_PASS }}"
+      password: "${password}"
     jsonData:
+      postgresVersion: 1500
+      sslmode: require
       database: teslamate
-      maxOpenConns: 100
-      maxIdleConns: 100
-      maxIdleConnsAuto: true
-      connMaxLifetime: 14400
-      postgresVersion: 1600
-      timescaledb: false
-      sslmode: disable
