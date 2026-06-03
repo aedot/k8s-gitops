@@ -14,14 +14,6 @@ spec:
       readmeabook:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18@sha256:5086f94abc783f1147d7c2a32c01db00ab594820026e4f6a82ac2af3dbde7fc7
-            envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-initdb-secret"
         containers:
           app:
             image:
@@ -33,6 +25,36 @@ spec:
               TZ: America/Los_Angeles
               PUID: 1000
               PGID: 1000
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: readmeabook-psql-app
+                    key: fqdn-uri
+              DB_HOSTNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: readmeabook-psql-app
+                    key: host
+              DB_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: readmeabook-psql-app
+                    key: port
+              POSTGRES_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: readmeabook-psql-app
+                    key: username
+              POSTGRES_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: readmeabook-psql-app
+                    key: password
+              POSTGRES_DB:
+                valueFrom:
+                  secretKeyRef:
+                    name: readmeabook-psql-app
+                    key: dbname
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
