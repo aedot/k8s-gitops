@@ -22,26 +22,28 @@ spec:
               - 65539
           containers:
             - name: *name
-              # https://github.com/prodrigestivill/docker-postgres-backup-local/discussions/109
               image: docker.io/prodrigestivill/postgres-backup-local:${PG_VER:=18}
               imagePullPolicy: IfNotPresent
               command:
                 - /backup.sh
               env:
                 - name: POSTGRES_HOST
-                  value: ${APP}-postgres-rw.dbms.svc.cluster.local
+                  value: ${APP}-psql-rw
                 - name: POSTGRES_DB
-                  value: ${APP}
+                  valueFrom:
+                    secretKeyRef:
+                      name: ${APP}-psql-app
+                      key: dbname
                 - name: POSTGRES_USER
                   valueFrom:
                     secretKeyRef:
-                      key: user
-                      name: ${APP}-postgres-secret
+                      name: ${APP}-psql-app
+                      key: username
                 - name: POSTGRES_PASSWORD
                   valueFrom:
                     secretKeyRef:
+                      name: ${APP}-psql-app
                       key: password
-                      name: ${APP}-postgres-secret
               volumeMounts:
                 - mountPath: /backups
                   name: backups

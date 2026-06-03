@@ -5,8 +5,8 @@ kind: Component
 resources:
   - ./cluster.yaml
   - ./externalsecret.yaml
-  # - ./jobs/backup.cronjob.yaml
-  # - ./jobs/restore.cronjob.yaml
+  - ./jobs/backup.cronjob.yaml
+  - ./jobs/restore.cronjob.yaml
   - ./scheduledbackup.yaml
 patches:
   - target:
