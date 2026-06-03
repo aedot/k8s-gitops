@@ -18,7 +18,7 @@
       matchManagers: ["mise"],
       matchPackageNames: ["pipx:makejinja"],
       overridePackageName: "makejinja",
-      datasources: ["pypi"],
+      datasource: "pypi",
     },
   ],
 }
