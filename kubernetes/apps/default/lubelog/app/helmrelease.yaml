@@ -28,7 +28,7 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: lubelog-psql-app
-                    key: fqdn-uri
+                    key: test-uri
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
