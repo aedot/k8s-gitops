@@ -17,5 +17,5 @@ resources:
   - ./lubelog/ks.yaml
   - ./matter-server/ks.yaml
   - ./scrypted/ks.yaml
-  # - ./teslamate/ks.yaml
+  - ./teslamate/ks.yaml
   - ./zigbee/ks.yaml
