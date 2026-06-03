@@ -4,7 +4,6 @@ kind: GrafanaDatasource
 metadata:
   name: teslamate
 spec:
-  allowCrossNamespaceImport: true
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -17,11 +16,12 @@ spec:
   datasource:
     name: TeslaMate
     type: postgres
-    uid: TeslaMate
     access: proxy
     url: teslamate-psql-ro.default.svc.cluster.local:5432
     user: teslamate
     database: teslamate
+    secureJsonData:
+      password: ${password}
     jsonData:
       postgresVersion: 1500
       sslmode: disable
