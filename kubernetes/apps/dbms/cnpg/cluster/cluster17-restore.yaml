@@ -1,0 +1,43 @@
+---
+# Temporary restore cluster — apply manually, delete when done
+# kubectl apply -f kubernetes/apps/dbms/cnpg/cluster/cluster17-restore.yaml -n dbms
+# kubectl delete -f kubernetes/apps/dbms/cnpg/cluster/cluster17-restore.yaml -n dbms
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: pgsql-cluster-restore
+  annotations:
+    cnpg.io/skipEmptyWalArchiveCheck: enabled
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.9
+  primaryUpdateStrategy: unsupervised
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: cnpg-secret
+  storage:
+    size: 20Gi
+    storageClass: longhorn
+  resources:
+    requests:
+      cpu: 200m
+    limits:
+      memory: 1Gi
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: false
+      parameters:
+        barmanObjectName: cloudflare-r2
+        serverName: cluster17-v1
+  bootstrap:
+    recovery:
+      source: source
+      recoveryTarget:
+        backupID: "20260531T110000"
+  externalClusters:
+    - name: source
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: cloudflare-r2
+          serverName: cluster17-v1

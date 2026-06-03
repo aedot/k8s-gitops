@@ -22,15 +22,6 @@ spec:
       pocket-id:
         annotations:
           reloader.stakater.com/auto: "true"
-        # initContainers:
-        #   init-db:
-        #     image:
-        #       repository: ghcr.io/home-operations/postgres-init
-        #       tag: 17@sha256:86a1992d46273c58fd4ad95b626081dfaabfe16bd56944675169e406d1a660dd
-        #       pullPolicy: IfNotPresent
-        #     envFrom:
-        #       - secretRef:
-        #           name: "{{ .Release.Name }}-initdb-secret"
         containers:
           app:
             image:
@@ -42,6 +33,11 @@ spec:
               APP_URL: https://sso.${SECRET_DOMAIN}
               TRUST_PROXY: "true"
               DB_PROVIDER: postgres
+              DB_CONNECTION_STRING:
+                valueFrom:
+                  secretKeyRef:
+                    name: pocket-id-psql-app
+                    key: uri
               KEYS_STORAGE: database
               SESSION_DURATION: 1440
               UPLOAD_PATH: /app/data/uploads
