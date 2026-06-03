@@ -10,7 +10,6 @@ spec:
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
       name: technitium
-  useClientProtocol: true
   connection:
     bufferLimit: 8Mi
   timeout:
