@@ -8,18 +8,18 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  # valuesFrom:
-  #   - targetPath: "secureJsonData.password"
-  #     valueFrom:
-  #       secretKeyRef:
-  #         name: "teslamate-secret"
-  #         key: "DATABASE_PASS"
+  valuesFrom:
+    - targetPath: "secureJsonData.password"
+      valueFrom:
+        secretKeyRef:
+          name: teslamate-psql-app
+          key: password
   datasource:
     name: TeslaMate
     type: postgres
     uid: teslamate
     access: proxy
-    url: teslamate-postgres-ro.automation.svc.cluster.local:5432
+    url: teslamate-psql-rw.default.svc.cluster.local:5432
     user: teslamate
     secureJsonData:
       password: "{{ .DATABASE_PASS }}"
