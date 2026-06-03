@@ -45,7 +45,7 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: lldap-psql-app
-                    key: uri
+                    key: fqdn-uri
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"

@@ -37,7 +37,7 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: pocket-id-psql-app
-                    key: uri
+                    key: fqdn-uri
               KEYS_STORAGE: database
               SESSION_DURATION: 1440
               UPLOAD_PATH: /app/data/uploads
