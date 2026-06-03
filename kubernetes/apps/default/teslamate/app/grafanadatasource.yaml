@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/grafana.integreatly.org/grafanadatasource_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
@@ -22,7 +23,7 @@ spec:
     user: teslamate
     database: teslamate
     secureJsonData:
-      password: ${password}
+      password: "${password}"
     jsonData:
       postgresVersion: 1500
       sslmode: disable
