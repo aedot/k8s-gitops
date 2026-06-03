@@ -8,6 +8,7 @@ spec:
     kind: OCIRepository
     name: teslamate
   interval: 30m
+  dependsOn: []
   values:
     controllers:
       teslamate:
