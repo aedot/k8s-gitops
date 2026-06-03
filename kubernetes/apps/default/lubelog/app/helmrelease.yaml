@@ -24,6 +24,11 @@ spec:
               TZ: America/Los_Angeles
               LC_ALL: en_US.UTF-8
               # LOGGING__LOGLEVEL__DEFAULT: debug
+              POSTGRES_CONNECTION:
+                valueFrom:
+                  secretKeyRef:
+                    name: lubelog-psql-app
+                    key: uri
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
