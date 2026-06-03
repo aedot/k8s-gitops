@@ -13,5 +13,12 @@
       matchPackageNames: ["/factory\\.talos\\.dev/"],
       overridePackageName: "ghcr.io/siderolabs/installer",
     },
+    {
+      description: "Fix pipx:makejinja PyPI lookup in mise.toml",
+      matchManagers: ["mise"],
+      matchPackageNames: ["pipx:makejinja"],
+      overridePackageName: "makejinja",
+      datasources: ["pypi"],
+    },
   ],
 }
