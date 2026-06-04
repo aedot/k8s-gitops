@@ -29,15 +29,39 @@ spec:
               REVERSE_PROXY_AUTH: "True"
               PROXY_HEADER: HTTP_REMOTE_USER
               SECURE_PROXY_SSL_HEADER: "True"
-              DB_HOST: babybuddy-psql
-              DB_PORT: "5432"
-              DB_NAME: ${APP}
-              DB_USER: ${APP}
+              DB_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: babybuddy-psql-app
+                    key: host
+              DB_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: babybuddy-psql-app
+                    key: port
+              DB_NAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: babybuddy-psql-app
+                    key: dbname
+              DB_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: babybuddy-psql-app
+                    key: username
               DB_PASSWORD:
                 valueFrom:
                   secretKeyRef:
                     name: babybuddy-psql-app
                     key: password
+            envFrom:
+              - secretRef:
+                  name: babybuddy-secret
+    defaultPodOptions:
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "1"
     service:
       app:
         ports:
