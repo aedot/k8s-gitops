@@ -1,0 +1,56 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: babybuddy
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: babybuddy
+  values:
+    controllers:
+      babybuddy:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/linuxserver/babybuddy
+              tag: 2.9.2@sha256:8a6268c05d94021e96bff1460184190bb6766b924032bf4853ab1399d702571d
+            env:
+              TZ: America/Los_Angeles
+              CSRF_TRUSTED_ORIGINS: https://baby.${SECRET_DOMAIN}
+              PUID: 1000
+              PGID: 1000
+              DB_ENGINE: django.db.backends.postgresql
+              DEBUG: 'True'
+              REVERSE_PROXY_AUTH: "True"
+              PROXY_HEADER: HTTP_REMOTE_USER
+              SECURE_PROXY_SSL_HEADER: "True"
+              DB_HOST: babybuddy-psql
+              DB_PORT: "5432"
+              DB_NAME: ${APP}
+              DB_USER: ${APP}
+              DB_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: babybuddy-psql-app
+                    key: password
+    service:
+      app:
+        ports:
+          http:
+            port: 8000
+    route:
+      app:
+        hostnames:
+          - "baby.${SECRET_DOMAIN}"
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+    persistence:
+      config:
+        type: emptyDir

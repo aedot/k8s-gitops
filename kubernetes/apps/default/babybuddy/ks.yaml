@@ -1,0 +1,34 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: babybuddy
+  label:
+    components.postgres/cnpg: init
+spec:
+  interval: 30m
+  path: ./kubernetes/apps/default/babybuddy/app
+  components:
+    - ../../../../components/postgres
+  healthCheckExprs:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
+      current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
+  dependsOn:
+    - name: akeyless-stores
+      namespace: external-secrets
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: default
+  wait: false
+  postBuild:
+    substitute:
+      APP: babybuddy
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
