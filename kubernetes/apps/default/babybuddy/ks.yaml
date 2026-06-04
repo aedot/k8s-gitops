@@ -28,7 +28,6 @@ spec:
   postBuild:
     substitute:
       APP: babybuddy
-      VOLSYNC_CAPACITY: 3Gi
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
