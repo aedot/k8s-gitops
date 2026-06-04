@@ -1,5 +1,5 @@
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -21,7 +21,7 @@ spec:
               tag: 2.9.2@sha256:8a6268c05d94021e96bff1460184190bb6766b924032bf4853ab1399d702571d
             env:
               TZ: America/Los_Angeles
-              CSRF_TRUSTED_ORIGINS: https://baby.${SECRET_DOMAIN}
+              CSRF_TRUSTED_ORIGINS: https://baby.${SECRET_DOMAIN},https://{{ .Release.Name }}.${SECRET_DOMAIN}
               PUID: 1000
               PGID: 1000
               DB_ENGINE: django.db.backends.postgresql
@@ -72,4 +72,6 @@ spec:
             namespace: network
     persistence:
       config:
-        type: emptyDir
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /config
