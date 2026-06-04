@@ -9,7 +9,7 @@ components:
 
 resources:
   - ./actual/ks.yaml
-  - ./babybuddy/ks.yaml
+  # - ./babybuddy/ks.yaml
   - ./bambuddy/ks.yaml
   - ./echo/ks.yaml
   - ./esphome/ks.yaml
