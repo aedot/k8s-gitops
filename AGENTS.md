@@ -1,205 +1,111 @@
-# k8s-gitops Project Guide
+# AGENTS.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Overview
 
-This is a **Kubernetes GitOps home infrastructure repository** managed with Flux CD, Renovate, and GitHub Actions. The cluster runs on [Talos Linux](https://www.taloslinux.com/) with persistent storage via [Longhorn](https://longhorn.io/).
+This is a Kubernetes GitOps home lab repository. [Flux](https://fluxcd.io/) watches `kubernetes/` and reconciles the cluster state from Git. [Renovate](https://docs.renovatebot.com/) creates PRs for dependency updates. The cluster runs on [Talos Linux](https://www.talos.dev/) with [Longhorn](https://longhorn.io/) for persistent storage.
 
-**Key tools:** Kubernetes, Flux, Renovate, Talos, Kustomize, Helm
+## Common Commands
 
-## Directory Structure
+All tools are installed via `mise install` (see `.mise.toml`). Task automation uses `just`:
 
-```
-kubernetes/
-├── apps/              # Kubernetes workloads organized by namespace
-│   ├── flux-system/       # Flux CD system
-│   ├── cert-manager/      # Certificate management
-│   ├── kube-system/       # Core Kubernetes components
-│   ├── longhorn-system/   # Persistent storage
-│   ├── observability/     # Monitoring & logging
-│   ├── security/          # Security tools
-│   ├── network/           # Networking (Cilium, ExternalDNS)
-│   ├── media/             # Media services
-│   ├── dbms/              # Databases
-│   └── [other namespaces]/
-├── components/        # Reusable Kustomize components
-│   ├── namespace/         # Namespace templates with common components
-│   ├── postgres/          # PostgreSQL component
-│   ├── sops/              # SOPS secrets encryption
-│   └── [other components]/
-└── flux/              # Flux CD system configuration
-
-bootstrap/            # Initial cluster bootstrap scripts
-talos/               # Talos OS configuration
-docs/                # Documentation and reference guides
-.renovate/           # Renovate bot configuration files
-```
-
-## Architecture & Patterns
-
-### GitOps Flow
-1. **Git is source of truth** - All infrastructure defined in this repo
-2. **Flux watches** - `kubernetes/apps` folder recursively
-3. **Kustomization applies** - Finds top-level `kustomization.yaml` per directory
-4. **HelmReleases deploy** - Helm charts managed via Flux
-5. **Renovate updates** - PRs for dependency/container image updates
-
-### Namespace Structure
-- Each namespace in `kubernetes/apps/{namespace}/` contains:
-  - `kustomization.yaml` - Namespace resource + Flux Kustomizations
-  - `ks.yaml` - HelmRelease or other workload resources
-  - Optional `namespace/` subdirectory with additional resources
-
-### Reusable Components
-Located in `kubernetes/components/`:
-- **namespace** - Template for namespace setup with common components (SOPS, alerts, etc.)
-- **postgres** - PostgreSQL database component
-- **sops** - SOPS-based secret encryption setup
-- **dragonfly** - Redis cache component
-- **gpu** - GPU device plugin
-- **zeroscaler** - Zero-scaler for pod scaling
-- **volsync** - Volume backup/restore
-
-### Secrets Management
-- Uses **SOPS + age encryption** (see `.sops.yaml` and `age.key`)
-- Secrets stored as `*.sops.yaml` files
-- Renovate ignores `*.sops.*` files (configured in `.renovaterc.json5`)
-
-### Dependency Management
-- **Renovate** monitors entire repo for updates
-- Configuration: `.renovaterc.json5` with modular configs in `.renovate/` directory
-- Flux monitoring: automatically applies merged updates to cluster
-- Auto-merge enabled for certain dependency types
-
-## Development Environment
-
-### Prerequisites (via `mise`)
-- Python 3.14.5
-- Kubernetes tooling: `kubectl`, `kubeconform`, `kustomize`
-- Flux: `flux2` 2.8.8
-- Talos: `talosctl`, `talhelper` 3.1.10
-- Secrets: `sops`, `age`, `jq`, `yq`
-- Other: `helmfile`, `just`, `gum`, `gh`, `sd`, `cue`
-
-Install all tools:
 ```bash
-mise install
-```
+just -l                          # list all available commands
 
-### Environment Variables (from `.mise.toml`)
-- `KUBECONFIG` - Points to local kubeconfig
-- `SOPS_CONFIG` - SOPS encryption configuration
-- `SOPS_AGE_KEY_FILE` - Age encryption key for SOPS
-- `TALOSCONFIG` - Talos cluster config
-- `JUST_UNSTABLE` - Enable unstable just features
-
-### Available Commands
-Run `just -l` to list all available commands (organized by groups):
-- `bootstrap:*` - Cluster bootstrap commands
-- `kubernetes:*` - Kubernetes operations
-- `talos:*` - Talos OS operations
-
-## Common Tasks
-
-### Adding a New Application
-1. Create namespace directory: `kubernetes/apps/{namespace}/{app}/`
-2. Create `app/kustomization.yaml` with HelmRelease or Kubernetes resources
-3. Add to namespace's top-level `kustomization.yaml` via `ks.yaml`
-4. Commit and push - Flux automatically detects and applies
-
-### Managing Secrets
-1. Encrypt with SOPS: `sops kubernetes/apps/namespace/secret.sops.yaml`
-2. Renovate will skip `*.sops.*` files
-3. Flux handles decryption via external-secrets-operator
-
-### Updating Dependencies
-- Renovate automatically creates PRs for:
-  - Docker image updates
-  - Helm chart versions
-  - Kubernetes API versions
-  - GitHub Actions
-- Check `.renovate/` configs for rules and auto-merge policies
-
-### Validating Manifests
-```bash
+# Validate manifests
+kustomize build kubernetes/apps/<namespace>/ | kubeconform -summary
 kubeconform -summary -output json kubernetes/
-kustomize build kubernetes/apps/{namespace}/ | kubeconform -summary
-```
 
-## Key Components in Cluster
-
-### Core
-- **Flux** - GitOps controller
-- **Talos Linux** - Immutable OS
-- **Cilium** - eBPF-based networking
-- **Cert-manager** - SSL certificate automation
-
-### Storage & Databases
-- **Longhorn** - Persistent block storage
-- **Volsync** - Backup/restore (uses Longhorn)
-- **PostgreSQL** - DBMS (via component)
-- **Dragonfly** - Redis cache alternative
-
-### External Connectivity
-- **External-DNS** - Dual instance for private (UniFi) + public (Cloudflare) DNS
-- **Cloudflared** - Cloudflare tunnel for secure ingress
-- **Envoy Gateway** - HTTPRoute/Gateway API management
-
-### Observability & Security
-- **Kube-prometheus-stack** - Monitoring (Prometheus, Grafana, Alertmanager)
-- **External-secrets** - Secret management via Akeyless
-- **Security systems** - TBD per deployment
-
-### Multi-tenancy & Scaling
-- **Multus** - Multi-homed pod networking
-- **Actions-runner-controller** - Self-hosted GitHub runners
-- **Zeroscaler** - Pod scaling optimization
-- **GPU device plugin** - GPU workload support
-
-## Important Files
-
-- `.renovaterc.json5` - Main Renovate config (extends modular configs)
-- `.renovate/` - Modular Renovate configs (autoMerge, groups, overrides, etc.)
-- `.sops.yaml` - SOPS configuration for secret encryption
-- `.mise.toml` - Development environment setup (Python, tools versions)
-- `justfile` - Task automation commands
-- `bootstrap/` - Initial cluster setup procedures
-
-## Troubleshooting
-
-### Flux not applying changes
-```bash
-flux check
+# Flux operations
 flux get kustomizations -A
 flux logs -f --all-namespaces
+flux reconcile kustomization cluster-apps --with-source
+
+# Secret management (SOPS + age)
+sops kubernetes/apps/<namespace>/secret.sops.yaml     # edit
+sops -d kubernetes/apps/<namespace>/secret.sops.yaml  # decrypt/view
 ```
 
-### Secret decryption issues
-```bash
-sops -d kubernetes/apps/{namespace}/secret.sops.yaml
-# Check age.key and .sops.yaml configuration
+## Architecture
+
+### GitOps Flow
+
+Flux's `cluster-apps` Kustomization points at `./kubernetes/apps`. It recursively finds the top-level `kustomization.yaml` in each namespace directory and applies it. That file typically:
+1. Declares `components: [../../components/sops, ../../components/namespace]`
+2. Lists `resources:` referencing one or more `ks.yaml` files
+
+Each `ks.yaml` is a **Flux Kustomization** that points at an `./app` subdirectory containing the actual `HelmRelease` and related manifests.
+
+### Namespace/App Layout
+
+```
+kubernetes/apps/<namespace>/
+├── kustomization.yaml       # Namespace-level: sops + namespace components + ks.yaml refs
+└── <app>/
+    ├── ks.yaml              # Flux Kustomization → ./app; lists components + dependsOn
+    └── app/
+        ├── kustomization.yaml   # Kustomize resources list
+        ├── helmrelease.yaml     # HelmRelease (main deployment unit)
+        ├── externalsecret.yaml  # ExternalSecret for secrets from Akeyless
+        └── [pvc, configmap, etc.]
 ```
 
-### Kustomize validation
-```bash
-kustomize build kubernetes/apps/{namespace}/ --enable-helm
+### Reusable Components (`kubernetes/components/`)
+
+Components are attached to a Flux Kustomization via the `components:` field in `ks.yaml` (not in the namespace-level `kustomization.yaml`). Available components:
+
+- `namespace` — creates the Namespace + Flux alerts
+- `sops` — enables SOPS decryption for the Kustomization
+- `postgres` — provisions a CloudNativePG cluster
+- `dragonfly` — provisions a Dragonfly (Redis-compatible) instance
+- `volsync` — adds PVC backup/restore via VolSync
+- `gpu` — adds Intel GPU resource requests
+- `zeroscaler` — enables zero-scaling for the workload
+
+### Variable Substitution
+
+Flux injects cluster-wide variables (e.g. `${SECRET_DOMAIN}`) into manifests via:
+```yaml
+postBuild:
+  substituteFrom:
+    - name: cluster-secrets
+      kind: Secret
 ```
+Use `${VAR_NAME}` syntax in HelmRelease `values:` for cluster-scoped variables.
 
-### Check Renovate
-- Dashboard: GitHub PR comments with update summaries
-- Configuration errors: Check `.renovaterc.json5` syntax
-- Logs: `.renovate/` directory for rule matching
+### Secret Management
 
-## Standards & Conventions
+- Secrets at rest: `*.sops.yaml` files encrypted with SOPS + age key (`age.key`)
+- Runtime secrets: ExternalSecret resources pull from Akeyless via `external-secrets` operator
+- Renovate ignores `*.sops.*` files
 
-- **Namespaces**: One per logical component/service area
-- **Naming**: Lowercase, hyphenated (Kubernetes convention)
-- **Labels**: Applied via namespace component (standard across deployments)
-- **Resources**: HelmRelease preferred over raw manifests for maintainability
-- **Secrets**: Always encrypted with SOPS, never committed in plaintext
+### DNS / Ingress
 
-## Related Documentation
+Two ExternalDNS instances handle DNS:
+- **internal** gateway → UniFi private DNS
+- **external** gateway → Cloudflare public DNS
 
-- [Cluster Template Guide](docs/cluster-template.md) - Reference implementation
-- [PostgreSQL Component](kubernetes/components/postgres/README.md) - Database setup
-- [Longhorn Documentation](kubernetes/apps/longhorn-system/longhorn/README.md) - Storage
-- [Talos Patches](talos/patches/README.md) - OS-level customizations
+Ingress is managed via Envoy Gateway (HTTPRoute/Gateway API). Cloudflared provides the secure external tunnel.
+
+### Bootstrap
+
+Initial cluster setup (before Flux takes over) uses `helmfile` in `bootstrap/helmfile/`. The bootstrap order is: Cilium → CoreDNS → Spegel → cert-manager → external-secrets → flux-operator → flux-instance.
+
+### Talos Configuration
+
+Node OS config lives in `talos/`. Patches in `talos/patches/` are applied per scope: `global/`, `controller/`, `worker/`, or `<node-hostname>/`.
+
+## CI (GitHub Actions)
+
+- **flate** — on PRs touching `kubernetes/**`, diffs HelmRelease and Kustomization changes and posts them as PR comments
+- **renovate** — runs Renovate on schedule to create dependency update PRs
+- **labeler** — auto-labels PRs based on changed paths
+
+## Adding a New Application
+
+1. Create `kubernetes/apps/<namespace>/<app>/app/` with `helmrelease.yaml` and `kustomization.yaml`
+2. Create `kubernetes/apps/<namespace>/<app>/ks.yaml` as a Flux Kustomization referencing `./app`, with `dependsOn`, `components`, and `postBuild.substituteFrom` as needed
+3. Add `- ./<app>/ks.yaml` to the namespace's top-level `kustomization.yaml` resources
+4. If a new namespace, create `kubernetes/apps/<namespace>/kustomization.yaml` with sops + namespace components
+5. Commit and push — Flux reconciles automatically
