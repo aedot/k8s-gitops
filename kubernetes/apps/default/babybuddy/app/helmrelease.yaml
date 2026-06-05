@@ -57,6 +57,11 @@ spec:
             envFrom:
               - secretRef:
                   name: babybuddy-secret
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
     service:
       app:
         ports:
