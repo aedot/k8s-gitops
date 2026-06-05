@@ -15,20 +15,7 @@
       description: "Flux Operator Group",
       groupName: "Flux Operator",
       matchDatasources: ["docker"],
-      matchPackageNames: ["/flux-operator/", "/flux-instance/", "/flux-operator-manifests/"],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
-      minimumGroupSize: 3, // https://github.com/renovatebot/renovate/discussions/35005
-    },
-    {
-      description: "Intel Device Plugins Group",
-      groupName: "Intel-Device-Plugins",
-      matchDatasources: ["docker"],
-      matchPackageNames: [
-        "/intel-device-plugins-operator/",
-        "/intel-device-plugins-gpu/",
-      ],
+      matchPackageNames: ["/flux-operator/", "/flux-instance/"],
       group: {
         commitMessageTopic: "{{{groupName}}} group",
       },
@@ -49,16 +36,6 @@
         commitMessageTopic: "{{{groupName}}} group",
       },
       minimumGroupSize: 5,
-    },
-    {
-      description: "Talos Group",
-      groupName: "talos",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["/installer/"],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
-      minimumGroupSize: 2,
     },
   ],
 }
