@@ -23,6 +23,9 @@ spec:
               TZ: America/Los_Angeles
               QBT_WEBUI_PORT: &port 80
               QBT_TORRENTING_PORT: 50469
+              # bind qBittorrent to the Multus macvlan interface
+              QBT_Preferences__Connection__Interface: "net1"
+              QBT_Preferences__Connection__InterfaceName: "net1"
             probes:
               liveness: &probes
                 enabled: true
@@ -81,21 +84,9 @@ spec:
           - backendRefs:
               - identifier: app
                 port: *port
-    # configMaps:
-    #   config:
-    #     data:
-    #       .qbt.toml: |-
-    #         [qbittorrent]
-    #         addr = "http://localhost:80"
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-      # config-file:
-      #   type: configMap
-      #   identifier: config
-      #   globalMounts:
-      #     - path: /config/.qbt.toml
-      #       subPath: .qbt.toml
       tmp:
         type: emptyDir
         advancedMounts:
