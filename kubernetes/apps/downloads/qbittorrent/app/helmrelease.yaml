@@ -23,9 +23,6 @@ spec:
               TZ: America/Los_Angeles
               QBT_WEBUI_PORT: &port 80
               QBT_TORRENTING_PORT: 50469
-              # bind qBittorrent to the Multus macvlan interface
-              QBT_BitTorrent__Session__Interface: "net1"
-              QBT_BitTorrent__Session__InterfaceName: "net1"
             probes:
               liveness: &probes
                 enabled: true
@@ -51,6 +48,7 @@ spec:
             resources:
               requests:
                 cpu: 100m
+                memory: 256Mi
               limits:
                 memory: 2Gi
     defaultPodOptions:
