@@ -11,5 +11,5 @@ resources:
   - ./actual/ks.yaml
   - ./babybuddy/ks.yaml
   - ./bambuddy/ks.yaml
-  # - ./lubelog/ks.yaml
+  - ./lubelog/ks.yaml
   - ./teslamate/ks.yaml
