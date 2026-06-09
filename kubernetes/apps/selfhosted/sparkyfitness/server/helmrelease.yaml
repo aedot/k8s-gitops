@@ -112,7 +112,6 @@ spec:
                 port: 3001
     persistence:
       uploads:
-        type: persistentVolumeClaim
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /app/SparkyFitnessServer/uploads
