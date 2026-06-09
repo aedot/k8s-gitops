@@ -118,12 +118,12 @@ spec:
         globalMounts:
           - path: /app/SparkyFitnessServer/uploads
 
-      backup:
-        accessMode: ReadWriteOnce
-        size: 15Gi
-        storageClass: longhorn
-        globalMounts:
-          - path: /app/SparkyFitnessServer/backup
+      # backup:
+      #   accessMode: ReadWriteOnce
+      #   size: 15Gi
+      #   storageClass: longhorn
+      #   globalMounts:
+      #     - path: /app/SparkyFitnessServer/backup
       tmp:
         type: emptyDir
         globalMounts:
