@@ -6,7 +6,7 @@ metadata:
   name: teslamate
 spec:
   interval: 30m
-  path: ./kubernetes/apps/default/teslamate/app
+  path: ./kubernetes/apps/selfhosted/teslamate/app
   components:
     - ../../../../components/postgres
   healthCheckExprs:
@@ -22,7 +22,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: default
+  targetNamespace: selfhosted
   wait: false
   postBuild:
     substitute:

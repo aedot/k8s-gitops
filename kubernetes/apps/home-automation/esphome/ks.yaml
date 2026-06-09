@@ -6,7 +6,7 @@ metadata:
   name: esphome
 spec:
   interval: 30m
-  path: ./kubernetes/apps/default/esphome/app
+  path: ./kubernetes/apps/home-automation/esphome/app
   components:
     - ../../../../components/volsync
   dependsOn:
@@ -19,7 +19,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: default
+  targetNamespace: home-automation
   wait: false
   postBuild:
     substituteFrom:
@@ -36,7 +36,7 @@ spec:
 #   name: esphome-fleet-server
 # spec:
 #   interval: 30m
-#   path: ./kubernetes/apps/default/esphome/fleet-server
+#   path: ./kubernetes/apps/home-automation/esphome/fleet-server
 #   components:
 #     - ../../../../components/volsync
 #   dependsOn:
@@ -49,7 +49,7 @@ spec:
 #     kind: GitRepository
 #     name: flux-system
 #     namespace: flux-system
-#   targetNamespace: default
+#   targetNamespace: home-automation
 #   wait: false
 #   postBuild:
 #     substituteFrom:

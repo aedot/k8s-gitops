@@ -1,20 +1,20 @@
----
 # yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: go2rtc
+  name: echo
 spec:
-  interval: 30m
-  path: ./kubernetes/apps/default/go2rtc/app
+  interval: 1h
+  path: ./kubernetes/apps/network/echo/app
+  postBuild:
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: default
+  targetNamespace: network
   wait: false
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret

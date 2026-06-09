@@ -6,7 +6,7 @@ metadata:
   name: bambuddy
 spec:
   interval: 30m
-  path: ./kubernetes/apps/default/bambuddy/app
+  path: ./kubernetes/apps/selfhosted/bambuddy/app
   components:
     - ../../../../components/volsync
   dependsOn:
@@ -19,7 +19,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: default
+  targetNamespace: selfhosted
   wait: false
   postBuild:
     substituteFrom:
