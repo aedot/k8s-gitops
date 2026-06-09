@@ -22,7 +22,6 @@ spec:
         forceRename: sparkyfitness
         annotations:
           reloader.stakater.com/auto: "true"
-
         containers:
           app:
             image:
@@ -52,7 +51,7 @@ spec:
               SERVER_UPLOADS_PATH: /uploads
             envFrom:
               - secretRef:
-                  name: sparkyfitness-secrets
+                  name: sparkyfitness-secret
             resources:
               requests:
                 cpu: 20m
@@ -85,7 +84,7 @@ spec:
               TZ: "America/Los_Angeles"
             envFrom:
               - secretRef:
-                  name: sparkyfitness-secrets
+                  name: sparkyfitness-secret
             resources:
               requests:
                 cpu: 10m
