@@ -43,4 +43,9 @@
       "/\\.yaml(?:\\.j2)?$/"
     ]
   },
+  helmfile: {
+    managerFilePatterns: [
+      "/helmfile\\.yaml$/"
+    ]
+  },
 }

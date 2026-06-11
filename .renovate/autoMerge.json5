@@ -41,6 +41,16 @@
       ignoreTests: true,
     },
     {
+      description: "Auto-merge CRD updates from GitHub releases",
+      matchDatasources: ["github-releases"],
+      matchPackageNames: ["kubernetes-csi/external-snapshotter"],
+      automerge: true,
+      automergeType: "pr",
+      matchUpdateTypes: ["minor", "patch"],
+      minimumReleaseAge: "3 days",
+      ignoreTests: true,
+    },
+    {
       description: "Auto-merge Renovate Presets",
       matchManagers: [
         "renovate-config"

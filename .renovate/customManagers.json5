@@ -29,6 +29,18 @@
     },
     {
       customType: "regex",
+      description: "Process raw GitHub CRD URLs with refs/tags versioning",
+      managerFilePatterns: [
+        "/\\.yaml(?:\\.j2)?$/"
+      ],
+      matchStrings: [
+        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)[^\\n]*\\n\\s+-\\s+https://raw\\.githubusercontent\\.com/[^/]+/[^/]+/refs/tags/(?<currentValue>[^/\\s]+)",
+      ],
+      datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
+      versioningTemplate: "semver",
+    },
+    {
+      customType: "regex",
       description: "Talos machineconfig images",
       managerFilePatterns: [
         "/talos/.+\\.yaml(?:\\.j2)?$/"
