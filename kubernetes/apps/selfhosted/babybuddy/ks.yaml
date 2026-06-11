@@ -18,6 +18,12 @@ spec:
   dependsOn:
     - name: akeyless-stores
       namespace: external-secrets
+    - name: multus-networks
+      namespace: kube-system
+    - name: longhorn
+      namespace: longhorn-system
+    - name: volsync
+      namespace: volsync-system
   prune: true
   sourceRef:
     kind: GitRepository
