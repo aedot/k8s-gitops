@@ -132,10 +132,14 @@ spec:
                 subPath: cache
               - path: /tmp
                 subPath: esphome-tmp
-            esp-fleet:
-              - path: /data
             code-server:
               - path: /tmp
                 subPath: code-server-tmp
               - path: /nonexistent
                 subPath: nonexistent
+      fleet-data:
+        existingClaim: esphome-fleet-data
+        advancedMounts:
+          esphome:
+            esp-fleet:
+              - path: /data
