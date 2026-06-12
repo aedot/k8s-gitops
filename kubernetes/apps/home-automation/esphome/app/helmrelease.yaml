@@ -122,7 +122,7 @@ spec:
             code-server:
               - path: /config
             esp-fleet:
-              - path: /config
+              - path:
       tmpfs:
         type: emptyDir
         advancedMounts:
