@@ -28,7 +28,7 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: baby-tracker-psql-app
-                    key: url
+                    key: uri
             resources:
               requests:
                 cpu: 10m
