@@ -22,18 +22,41 @@ spec:
             env:
               TZ: America/Los_Angeles
               GENERIC_TIMEZONE: America/Los_Angeles
-              DB_TYPE: postgresdb
-              EXECUTIONS_DATA_PRUNE: "true"
+              EXECUTIONS_DATA_PRUNE: true
               EXECUTIONS_DATA_MAX_AGE: 7
               EXECUTIONS_DATA_PRUNE_MAX_COUNT: 50000
-              N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "false"
+              N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: false
               N8N_PROTOCOL: https
               N8N_PORT: &port 8080
               N8N_HOST: "{{ .Release.Name }}.${SECRET_DOMAIN}"
               N8N_LOG_LEVEL: debug
-              N8N_TRUST_PROXY: "true"
-              DB_POSTGRESDB_HOST: "{{ .Release.Name }}-psql"
-              DB_POSTGRESDB_PORT: 5432
+              N8N_TRUST_PROXY: true
+              DB_TYPE: postgresdb
+              DB_POSTGRESDB_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ .Release.Name }}-psql-app"
+                    key: host
+              DB_POSTGRESDB_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ .Release.Name }}-psql-app"
+                    key: port
+              DB_POSTGRESDB_DATABASE:
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ .Release.Name }}-psql-app"
+                    key: dbname
+              DB_POSTGRESDB_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ .Release.Name }}-psql-app"
+                    key: username
+              DB_POSTGRESDB_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ .Release.Name }}-psql-app"
+                    key: password
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
