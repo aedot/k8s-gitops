@@ -22,7 +22,7 @@ spec:
             env:
               TZ: America/Los_Angeles
               PUMP_HOURS: "2"
-              MQTT_HOST: mqtt.dbms.svc.cluster.local
+              MQTT_HOST: mosquitto.dbms.svc.cluster.local
               MQTT_PORT: "1883"
               DATABASE_URL:
                 valueFrom:
