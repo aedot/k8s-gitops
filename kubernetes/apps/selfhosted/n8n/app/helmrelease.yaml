@@ -30,7 +30,7 @@ spec:
               N8N_PROTOCOL: https
               N8N_PORT: &port 8080
               N8N_HOST: "{{ .Release.Name }}.${SECRET_DOMAIN}"
-              N8N_LOG_LEVEL: info
+              N8N_LOG_LEVEL: debug
               N8N_TRUST_PROXY: "true"
               DB_POSTGRESDB_HOST: "{{ .Release.Name }}-psql"
               DB_POSTGRESDB_PORT: 5432
