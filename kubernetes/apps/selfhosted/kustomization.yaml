@@ -9,7 +9,7 @@ components:
 
 resources:
   - ./actual/ks.yaml
-  - ./babytracker/ks.yaml
+  - ./baby-tracker/ks.yaml
   - ./bambuddy/ks.yaml
   - ./lubelog/ks.yaml
   # - ./sparkyfitness/ks.yaml
