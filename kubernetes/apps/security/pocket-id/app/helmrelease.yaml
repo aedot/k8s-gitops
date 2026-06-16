@@ -30,6 +30,7 @@ spec:
             env:
               TZ: America/Los_Angeles
               ANALYTICS_DISABLED: "true"
+              ALLOW_DOWNGRADE: true
               APP_URL: https://sso.${SECRET_DOMAIN}
               TRUST_PROXY: "true"
               DB_PROVIDER: postgres
