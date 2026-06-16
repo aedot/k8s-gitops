@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: ghcr.io/pocket-id/pocket-id
-              tag: v2.9.0@sha256:0ed43f6afad267101bd8d4790f6ce305b116324c04ed51c5cf65aabb5ae6a818
+              tag: v2.9.0
             env:
               TZ: America/Los_Angeles
               ANALYTICS_DISABLED: "true"
