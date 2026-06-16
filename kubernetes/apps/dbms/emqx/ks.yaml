@@ -9,7 +9,7 @@ spec:
   path: ./kubernetes/apps/dbms/emqx/app
   prune: true
   dependsOn:
-    - name: akeyless-store
+    - name: akeyless-stores
       namespace: external-secrets
   sourceRef:
     kind: GitRepository
