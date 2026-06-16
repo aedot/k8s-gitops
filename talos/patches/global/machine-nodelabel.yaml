@@ -4,4 +4,5 @@ machine:
   nodeLabels:
     node.longhorn.io/create-default-disk: "config"
     node.kubernetes.io/gpu: "true"
-    topology.kubernetes.io/region: main
+    topology.kubernetes.io/region: k8s
+    topology.kubernetes.io/zone: m
