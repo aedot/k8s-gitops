@@ -125,6 +125,27 @@ kubectl create job -n <ns> --from=cronjob/<app>-postgres-restore <app>-restore-$
 
 To restore a specific file, set `POSTGRES_RESTORE_FILE` in the restore CronJob before triggering.
 
+## S3 Backup
+
+Daily full backups via the `ScheduledBackup` resource (03:00, see `scheduledbackup.yaml`). Continuous WAL archiving to the same `s3://postgresql/${APP}/` prefix. `retentionPolicy: 7d`.
+
+## Connecting from an app
+
+CNPG generates a `${APP}-app` Secret with these keys: `uri`, `jdbc-uri`, `username`, `password`, `host`, `port`, `dbname`, `pgpass`.
+
+Standard app-template pattern:
+
+```yaml
+DATABASE_URL:
+    valueFrom:
+        secretKeyRef:
+            name: "{{ .Release.Name }}-app"
+            key: uri
+```
+
+The `uri` points at the cluster's read-write primary service `${APP}-rw`. There is no `Pooler` / PgBouncer in this component — apps connect directly. If transaction-mode pooling is ever needed (e.g. authentik at scale), add a `Pooler` CRD per cluster as a follow-up.
+
+
 ## Variables
 
 | Variable | Required | Default | Description |
