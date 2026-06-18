@@ -9,7 +9,7 @@ spec:
     - name: akeyless-stores
       namespace: external-secrets
   interval: 1h
-  path: ./kubernetes/apps/observability/grafana/app
+  path: ./kubernetes/apps/observability/grafana-operator/app
   postBuild:
     substituteFrom:
       - name: cluster-secrets
@@ -35,7 +35,7 @@ spec:
     - name: longhorn
       namespace: longhorn-system
   interval: 1h
-  path: ./kubernetes/apps/observability/grafana/instance
+  path: ./kubernetes/apps/observability/grafana-operator/instance
   postBuild:
     substituteFrom:
       - name: cluster-secrets
