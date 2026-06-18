@@ -29,6 +29,11 @@ releases:
     inherit:
       - template: default
 
+  - name: grafana-operator
+    namespace: observability
+    inherit:
+      - template: default
+
   - name: kube-prometheus-stack
     namespace: observability
     inherit:
