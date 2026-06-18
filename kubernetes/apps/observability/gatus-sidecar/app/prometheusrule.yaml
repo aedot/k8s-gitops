@@ -3,14 +3,14 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: gatus-rules
+  name: gatus-sidecar-rules
 spec:
   groups:
     - name: gatus.rules
       rules:
         - alert: GatusEndpointDown
-          expr: |
-            gatus_results_endpoint_success{group="external"} == 0
+          expr: |-
+            gatus_results_endpoint_success{group=~"external|services"} == 0
           for: 5m
           annotations:
             summary: >-
@@ -19,7 +19,7 @@ spec:
             severity: critical
 
         - alert: GatusEndpointExposed
-          expr: |
+          expr: |-
             gatus_results_endpoint_success{group="internal"} == 0
           for: 5m
           annotations:

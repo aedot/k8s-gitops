@@ -7,10 +7,11 @@ resources:
   - ./ocirepository.yaml
   - ./prometheusrule.yaml
 configMapGenerator:
-  - name: gatus-configmap
+  - name: gatus-sidecar-configmap
     files:
-      - ./resources/config.yaml
+      - buddy.yaml=./resources/buddy.yaml
+      - config.yaml=./resources/config.yaml
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
-      kustomize.toolkit.fluxcd.io/substitute: disabled
+    kustomize.toolkit.fluxcd.io/substitute: disabled
