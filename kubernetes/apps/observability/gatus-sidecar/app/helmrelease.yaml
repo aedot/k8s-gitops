@@ -16,9 +16,6 @@ spec:
       delayStartSeconds: "5"
       env:
         TZ: America/Los_Angeles
-      envFrom:
-        - secretRef:
-            name: "{{ .Release.Name }}-secret"
     sidecar:
       kinds:
         httproute:
@@ -53,4 +50,4 @@ spec:
       requests:
         cpu: 100m
       limits:
-        memory: 512Mi
+        memory: 256Mi
