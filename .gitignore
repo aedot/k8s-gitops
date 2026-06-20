@@ -1,6 +1,7 @@
 # Secrets
 *.pub
 *.key
+*.pem
 *.decrypted~*.yaml
 *.dump
 /age.key
