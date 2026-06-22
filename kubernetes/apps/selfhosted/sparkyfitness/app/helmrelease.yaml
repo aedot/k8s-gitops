@@ -40,6 +40,26 @@ spec:
                   secretKeyRef:
                     name: "{{ .Release.Name }}-psql-app"
                     key: dbname
+              SPARKY_FITNESS_DB_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ .Release.Name }}-psql-superuser"
+                    key: user
+              SPARKY_FITNESS_DB_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ .Release.Name }}-psql-superuser"
+                    key: password
+              SPARKY_FITNESS_APP_DB_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ .Release.Name }}-psql-app"
+                    key: user
+              SPARKY_FITNESS_APP_DB_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ .Release.Name }}-psql-app"
+                    key: password
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
