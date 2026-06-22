@@ -22,8 +22,8 @@ spec:
             env:
               TZ: "America/Los_Angeles"
               SPARKY_FITNESS_EMAIL_SECURE: true
-              SPARKY_FITNESS_FORCE_EMAIL_LOGIN: true
-              SPARKY_FITNESS_DISABLE_SIGNUP: false
+              # SPARKY_FITNESS_FORCE_EMAIL_LOGIN: true
+              # SPARKY_FITNESS_DISABLE_SIGNUP: false
               NODE_ENV: "production"
               SERVER_UPLOADS_PATH: /uploads
               SPARKY_FITNESS_FRONTEND_URL: fitness.${SECRET_DOMAIN}
@@ -82,7 +82,6 @@ spec:
               tag: v0.16.9@sha256:1778edf3cc5dd5f3c259d078791179f25b3cbf071cc78dfe9626d1ac953a8575
             env:
               PROMETHEUS_ENABLED: "true"
-              SPARKY_FITNESS_LOG_LEVEL: debug
               SPARKY_FITNESS_SERVER_HOST: sparkyfitness.selfhosted
               SPARKY_FITNESS_SERVER_PORT: 3010
               SPARKY_FITNESS_FRONTEND_URL: fitness.${SECRET_DOMAIN}
