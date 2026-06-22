@@ -21,6 +21,8 @@ spec:
               tag: v0.16.9@sha256:55bfd4779ebede21a7b4f2d390ecd2ef5c0b194da1cbaec179ffd3aa9c33f49c
             env:
               TZ: "America/Los_Angeles"
+              SPARKY_FITNESS_EMAIL_SECURE: true
+              SPARKY_FITNESS_FORCE_EMAIL_LOGIN: true
               SPARKY_FITNESS_DISABLE_SIGNUP: false
               NODE_ENV: "production"
               SERVER_UPLOADS_PATH: /uploads
