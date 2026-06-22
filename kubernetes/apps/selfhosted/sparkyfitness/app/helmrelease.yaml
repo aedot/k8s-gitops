@@ -28,12 +28,12 @@ spec:
               SPARKY_FITNESS_DB_HOST:
                 valueFrom:
                   secretKeyRef:
-                    name: "{{ .Release.name }}-psql-app"
+                    name: "{{ .Release.Name }}-psql-app"
                     key: host
               SPARKY_FITNESS_DB_PORT:
                 valueFrom:
                   secretKeyRef:
-                    name: "{{ .Release.name }}-psql-app"
+                    name: "{{ .Release.Name }}-psql-app"
                     key: port
               SPARKY_FITNESS_DB_NAME:
                 valueFrom:
