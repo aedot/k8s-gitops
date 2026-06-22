@@ -23,7 +23,7 @@ spec:
               TZ: "America/Los_Angeles"
               SPARKY_FITNESS_EMAIL_SECURE: true
               SPARKY_FITNESS_FORCE_EMAIL_LOGIN: true
-              SPARKY_FITNESS_DISABLE_SIGNUP: false
+              SPARKY_FITNESS_DISABLE_SIGNUP: true
               ALLOW_PRIVATE_NETWORK_CORS: true
               NODE_ENV: "production"
               SERVER_UPLOADS_PATH: /uploads
