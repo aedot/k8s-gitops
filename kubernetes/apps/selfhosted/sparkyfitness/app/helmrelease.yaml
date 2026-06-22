@@ -3,41 +3,76 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: sparkyfitness-frontend
+  name: sparkyfitness
 spec:
   chartRef:
     kind: OCIRepository
-    name: sparkyfitness-frontend
+    name: sparkyfitness
   interval: 30m
   values:
     controllers:
-      main:
+      sparkyfitness:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
-              # renovate: datasource=docker depName=ghcr.io/codewithcj/sparkyfitness-frontend
+              repository: ghcr.io/codewithcj/sparkyfitness-server
+              tag: v0.16.9@sha256:55bfd4779ebede21a7b4f2d390ecd2ef5c0b194da1cbaec179ffd3aa9c33f49c
+            env:
+              TZ: "America/Los_Angeles"
+              SPARKY_FITNESS_DISABLE_SIGNUP: false
+              NODE_ENV: "production"
+              SERVER_UPLOADS_PATH: /uploads
+              SPARKY_FITNESS_FRONTEND_URL: fitness.${SECRET_DOMAIN}
+              SPARKY_FITNESS_DB_HOST:
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ .Release.name }}-psql-app"
+                    key: host
+              SPARKY_FITNESS_DB_PORT:
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ .Release.name }}-psql-app"
+                    key: port
+              SPARKY_FITNESS_DB_NAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ .Release.Name }}-psql-app"
+                    key: dbname
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+            resources:
+              requests:
+                cpu: 25m
+                memory: 256Mi
+              limits:
+                memory: 512Mi
+          frontend:
+            image:
               repository: ghcr.io/codewithcj/sparkyfitness-frontend
-              tag: v0.16.6.3@sha256:554feb804a1c1a2fe2f1b0a5870ad9b43864a4c34a1be4b74d66797147659187
+              tag: v0.16.9@sha256:1778edf3cc5dd5f3c259d078791179f25b3cbf071cc78dfe9626d1ac953a8575
             env:
               PROMETHEUS_ENABLED: "true"
               SPARKY_FITNESS_LOG_LEVEL: debug
               SPARKY_FITNESS_SERVER_HOST: sparkyfitness.selfhosted
               SPARKY_FITNESS_SERVER_PORT: 3010
+              SPARKY_FITNESS_FRONTEND_URL: fitness.${SECRET_DOMAIN}
             resources:
               requests:
-                cpu: 15m
-                memory: 64M
+                cpu: 10m
+                memory: 32Mi
               limits:
-                memory: 64M
+                memory: 128Mi
     service:
       app:
-        controller: main
+        controller: sparkyfitness
         ports:
           http:
             port: 80
-
     route:
       app:
         hostnames:
@@ -45,3 +80,10 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
+    persistence:
+      uploads:
+        existingClaim: "{{ .Release.Name }}"
+        advancedMounts:
+          sparkyfitness:
+            app:
+              - path: /app/SparkyFitnessServer/uploads
