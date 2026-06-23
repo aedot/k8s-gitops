@@ -25,18 +25,22 @@ spec:
               PLEX_PREFERENCE_LAN: "LanNetworksBandwidth=172.24.0.0/16"
               TZ: America/Los_Angeles
             probes:
-              liveness: &probes
+              liveness:
+                enabled: true
+                spec:
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /identity
                     port: &port 32400
-                  initialDelaySeconds: 0
                   periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
+                  timeoutSeconds: 5
+                  failureThreshold: 5
               startup:
                 enabled: true
                 spec:
@@ -63,14 +67,13 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [65537]
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-      config-cache:
-        existingClaim: "{{ .Release.Name }}-cache"
-        globalMounts:
-          - path: /config/Library/Application Support/Plex Media Server/Cache
+      # config-cache:
+      #   existingClaim: "{{ .Release.Name }}-cache"
+      #   globalMounts:
+      #     - path: /config/Library/Application Support/Plex Media Server/Cache
       media:
         type: nfs
         server: yemoja.internal
@@ -78,17 +81,19 @@ spec:
         globalMounts:
           - path: /media
             readOnly: true
-      tmpfs:
+      tmp:
         type: emptyDir
-        advancedMounts:
-          plex:
-            app:
-              - path: /config/Library/Application Support/Plex Media Server/Logs
-                subPath: logs
-              - path: /transcode
-                subPath: transcode
-              - path: /tmp
-                subPath: tmp
+      # tmpfs:
+      #   type: emptyDir
+      #   advancedMounts:
+      #     plex:
+      #       app:
+      #         - path: /config/Library/Application Support/Plex Media Server/Logs
+      #           subPath: logs
+      #         - path: /transcode
+      #           subPath: transcode
+      #         - path: /tmp
+      #           subPath: tmp
     route:
       app:
         annotations:
