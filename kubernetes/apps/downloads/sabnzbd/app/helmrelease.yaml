@@ -72,7 +72,7 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-      media:
+      data:
         type: nfs
         server: yemoja.internal
         path: /mnt/alaafin/data
