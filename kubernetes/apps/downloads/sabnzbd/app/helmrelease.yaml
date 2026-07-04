@@ -22,42 +22,33 @@ spec:
             env:
               SABNZBD__PORT: &port 80
               SABNZBD__HOST_WHITELIST_ENTRIES: >-
-                sabnzbd,
-                sabnzbd.downloads,
-                sabnzbd.downloads.svc,
-                sabnzbd.downloads.svc.cluster,
-                sabnzbd.downloads.svc.cluster.local,
-                {{ .Release.Name }}.${SECRET_DOMAIN},
+                {{ .Release.Name }},
+                {{ .Release.Name }}.downloads,
+                {{ .Release.Name }}.downloads.svc,
+                {{ .Release.Name }}.downloads.svc.cluster,
+                {{ .Release.Name }}.downloads.svc.cluster.local,
                 sab.${SECRET_DOMAIN}
               TZ: America/Los_Angeles
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
             probes:
-              liveness:
-                enabled: true
-                spec:
-                  periodSeconds: 30
-                  timeoutSeconds: 5
-                  failureThreshold: 5
-              readiness:
+              liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /api?mode=version
                     port: *port
+                  initialDelaySeconds: 0
                   periodSeconds: 10
-                  timeoutSeconds: 5
-                  failureThreshold: 5
-              startup:
-                enabled: true
-                spec:
-                  failureThreshold: 30
-                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
             resources:
               requests:
-                cpu: 100m
+                cpu: 10m
+                memory: 256Mi
               limits:
                 memory: 4Gi
             securityContext:
@@ -65,6 +56,13 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
     defaultPodOptions:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [{
+            "name": "vpn",
+            "namespace": "kube-system",
+            "ips": ["172.24.50.22/24"]
+          }]
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -82,9 +80,7 @@ spec:
         type: emptyDir
     route:
       app:
-        hostnames:
-          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
-          - sab.${SECRET_DOMAIN}
+        hostnames: ["sab.${SECRET_DOMAIN}"]
         parentRefs:
           - name: envoy-internal
             namespace: network

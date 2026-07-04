@@ -9,7 +9,10 @@ spec:
   path: ./kubernetes/apps/downloads/sabnzbd/app
   components:
     - ../../../../components/zeroscaler
+    - ../../../../components/volsync
   dependsOn:
+    - name: multus-networks
+      namespace: kube-system
     - name: longhorn
       namespace: longhorn-system
   prune: true
@@ -25,3 +28,5 @@ spec:
         kind: Secret
     substitute:
       APP: sabnzbd
+      VOLSYNC_CAPACITY: 3Gi
+      GATUS_SUBDOMAIN: sab
