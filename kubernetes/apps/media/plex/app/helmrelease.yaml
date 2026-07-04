@@ -76,7 +76,7 @@ spec:
         path: /mnt/alaafin/data
         globalMounts:
           - path: /data
-            subpath: media
+            subPath: media
             readOnly: true
       tmp:
         type: emptyDir
