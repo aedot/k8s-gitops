@@ -72,9 +72,7 @@ spec:
             port: *port
     route:
       app:
-        hostnames:
-          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
-          - qb.${SECRET_DOMAIN}
+        hostnames: ["qb.${SECRET_DOMAIN}"]
         parentRefs:
           - name: envoy-internal
             namespace: network
