@@ -119,7 +119,6 @@ spec:
         path: /mnt/alaafin/data/torrents
         globalMounts:
           - path: /torrents
-            subPath: audiobooks
             readOnly: false
       media:
         type: nfs
