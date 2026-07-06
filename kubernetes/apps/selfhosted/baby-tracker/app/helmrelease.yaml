@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/hms-homelab/baby-tracker
-              tag: 2026.4.6@sha256:803eadcd49969e4820c062c9cf27d945a6d0bcf1a1e173cb39516fd1c640531b
+              tag: 2026.4.7@sha256:f292f6208006116885423222ead7376a7cf23c14696627ee918b352483e9aecc
             env:
               TZ: America/Los_Angeles
               PUMP_HOURS: "2"
