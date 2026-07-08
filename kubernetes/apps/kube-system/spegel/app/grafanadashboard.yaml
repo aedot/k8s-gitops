@@ -12,6 +12,3 @@ spec:
   datasources:
     - datasourceName: prometheus
       inputName: DS_PROMETHEUS
-  configMapRef:
-    name: spegel-dashboard
-    key: spegel.json
