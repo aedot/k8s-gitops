@@ -24,54 +24,56 @@ jobs:
         with:
           patterns: kubernetes/**/*
 
-  flate:
+  extract:
     if: ${{ needs.filter.outputs.changed-files != '[]' }}
     needs: filter
-    name: Image Pull - Flate
+    name: Image Pull - Extract Images
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     outputs:
-      images: ${{ steps.flate.outputs.images }}
+      images: ${{ steps.extract.outputs.images }}
     steps:
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           fetch-depth: 0
+          persist-credentials: false
 
-      - name: Setup Flate
-        uses: home-operations/flate/action@0fc37fae10cf3c265294f6adebc6d6c100c74ea5 # v0.4.10 
-
-      - name: Run Flate
-        id: flate
-        env:
-          FLATE_OUTPUT: json
-          FLATE_PATH: ./kubernetes/flux/cluster
-        run: |
-          echo 'images<<EOF' >> $GITHUB_OUTPUT
-          flate diff images >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
-
-  pull:
-    if: ${{ needs.flate.outputs.images != '[]' }}
-    needs: flate
-    name: Image Pull - Pull Images
-    runs-on: k8s-gitops-runner
-    strategy:
-      matrix:
-        image: ${{ fromJSON(needs.flate.outputs.images) }}
-      max-parallel: 4
-      fail-fast: false
-    steps:
-      - name: Install talosctl
+      - name: Setup Mise
         uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
         with:
           cache: false
           tool_versions: |
-            aqua:siderolabs/talos latest
+            github:home-operations/flate 0.2.12
+
+      - name: Extract Images
+        id: extract
+        run: |
+          echo 'images<<EOF' >> $GITHUB_OUTPUT
+          flate diff images -p ./kubernetes/flux/cluster -o json >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+
+  pull:
+    if: ${{ needs.extract.outputs.images != '[]' }}
+    needs: extract
+    name: Image Pull - Pull Images
+    runs-on: ${{ github.event.repository.name }}-runner
+    strategy:
+      matrix:
+        image: ${{ fromJSON(needs.extract.outputs.images) }}
+      max-parallel: 4
+      fail-fast: false
+    steps:
+      - name: Setup Mise
+        uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
+        with:
+          cache: false
+          tool_versions: |
+            talosctl latest
 
       - name: Pull Image
-        run: talosctl --nodes $NODE image pull ${{ matrix.image }}
+        env:
+          IMAGE: ${{ matrix.image }}
+        run: talosctl --nodes "$NODE" image pull "$IMAGE"
 
   success:
     if: ${{ !cancelled() }}
@@ -85,4 +87,6 @@ jobs:
 
       - name: All jobs passed or skipped?
         if: ${{ !(contains(needs.*.result, 'failure')) }}
-        run: echo "All jobs passed or skipped" && echo "${{ toJSON(needs.*.result) }}"
+        env:
+          RESULTS: ${{ toJSON(needs.*.result) }}
+        run: echo "All jobs passed or skipped" && echo "$RESULTS"
