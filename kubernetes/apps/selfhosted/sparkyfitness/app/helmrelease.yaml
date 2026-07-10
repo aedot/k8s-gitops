@@ -11,7 +11,7 @@ spec:
   interval: 30m
   values:
     controllers:
-      sparkyfitness:
+      server:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -77,14 +77,18 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 512Mi
-          frontend:
+      frontend:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
             image:
               repository: ghcr.io/codewithcj/sparkyfitness-frontend
               tag: v0.17.3@sha256:46d90e46bd87312fcbbbb05036d99e4cb1c821e928b0516ee727de4c3c90752b
             env:
               PROMETHEUS_ENABLED: "true"
-              SPARKY_FITNESS_LOG_LEVEL: error
-              SPARKY_FITNESS_SERVER_HOST: sparkyfitness.selfhosted
+              SPARKY_FITNESS_LOG_LEVEL: debug
+              SPARKY_FITNESS_SERVER_HOST: sparkyfitness
               SPARKY_FITNESS_SERVER_PORT: 3010
               SPARKY_FITNESS_FRONTEND_URL: fitness.${SECRET_DOMAIN}
             resources:
@@ -94,8 +98,13 @@ spec:
               limits:
                 memory: 128Mi
     service:
-      app:
-        controller: sparkyfitness
+      server:
+        controller: server
+        ports:
+          http:
+            port: 3010
+      frontend:
+        controller: frontend
         ports:
           http:
             port: 80
@@ -106,6 +115,10 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
+        rules:
+          - backendRefs:
+              - identifier: frontend
+                port: http
     persistence:
       uploads:
         existingClaim: "{{ .Release.Name }}"
