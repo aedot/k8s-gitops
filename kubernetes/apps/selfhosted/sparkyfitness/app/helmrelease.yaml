@@ -123,6 +123,6 @@ spec:
       uploads:
         existingClaim: "{{ .Release.Name }}"
         advancedMounts:
-          sparkyfitness:
+          server:
             app:
               - path: /app/SparkyFitnessServer/uploads
