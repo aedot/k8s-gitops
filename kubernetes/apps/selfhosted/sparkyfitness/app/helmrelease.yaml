@@ -84,7 +84,7 @@ spec:
             env:
               PROMETHEUS_ENABLED: "true"
               SPARKY_FITNESS_LOG_LEVEL: error
-              SPARKY_FITNESS_SERVER_HOST: localhost
+              SPARKY_FITNESS_SERVER_HOST: sparkyfitness.selfhosted
               SPARKY_FITNESS_SERVER_PORT: 3010
               SPARKY_FITNESS_FRONTEND_URL: fitness.${SECRET_DOMAIN}
             resources:
