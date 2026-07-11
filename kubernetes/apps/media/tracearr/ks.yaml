@@ -5,7 +5,7 @@ kind: Kustomization
 metadata:
   name: tracearr
   labels:
-    components.postgres/cnpg:init
+    components.postgres/cnpg: init 
 spec:
   interval: 30m
   path: ./kubernetes/apps/media/tracearr/app
