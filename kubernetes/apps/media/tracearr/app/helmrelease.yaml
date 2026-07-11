@@ -1,0 +1,79 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: tracearr
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: tracearr
+  values:
+    controllers:
+      tracearr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/connorgallopo/tracearr
+              tag: 1.4.31@sha256:61ee18f815139edb7de682f36c755d8e1517361988756fdf8ccb73865eb7def4
+            env:
+              TZ: America/Los_Angeles
+              CORS_ORIGIN: https://tracearr.${SECRET_DOMAIN}
+              PORT: &port 3000
+              TRUST_PROXY: true
+              REDIS_URL: "redis://{{ .Release.Name }}-dragonfly:6379"
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: "{{ .Release.Name }}-psql-app"
+                    key: fqdn-uri
+
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    persistence:
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          tracearr:
+            app:
+              - path: /app/data/image-cache
+                subPath: cache
+              - path: /tmp
+                subPath: tmp
