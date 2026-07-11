@@ -29,6 +29,9 @@ spec:
                   secretKeyRef:
                     name: "{{ .Release.Name }}-psql-app"
                     key: fqdn-uri
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
 
             securityContext:
               allowPrivilegeEscalation: false
