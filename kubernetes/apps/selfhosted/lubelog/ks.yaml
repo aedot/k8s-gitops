@@ -29,4 +29,3 @@ spec:
     substitute:
       APP: lubelog
       VOLSYNC_CAPACITY: 1Gi
-      TARGET_TIME: 2026-07-08T11:00:00+00:00
