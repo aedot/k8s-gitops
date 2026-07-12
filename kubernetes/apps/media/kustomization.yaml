@@ -14,4 +14,4 @@ resources:
   # - ./readmeabook/ks.yaml
   - ./seerr/ks.yaml
   - ./tautulli/ks.yaml
-  # - ./tracearr/ks.yaml
+  - ./tracearr/ks.yaml
