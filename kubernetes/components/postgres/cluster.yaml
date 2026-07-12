@@ -37,6 +37,8 @@ spec:
       source: &archive ${APP}-backup-archive
       database: ${APP}
       owner: ${APP}
+      recoveryTarget:
+        targetTime: ${TARGET_TIME:=2099-01-01 00:00:00.000000+00}
   # # Note: externalClusters is needed when recovering from an existing cnpg cluster
   externalClusters:
     - name: *archive
