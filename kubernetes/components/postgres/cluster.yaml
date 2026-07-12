@@ -37,8 +37,6 @@ spec:
       source: &archive ${APP}-backup-archive
       database: ${APP}
       owner: ${APP}
-      recoveryTarget:
-        targetTimeline: "11"
   # # Note: externalClusters is needed when recovering from an existing cnpg cluster
   externalClusters:
     - name: *archive
