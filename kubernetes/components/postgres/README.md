@@ -6,9 +6,9 @@ Reusable Kustomize component that provisions a dedicated per-app CloudNativePG (
 
 | Resource | Name | Description |
 |---|---|---|
-| `Cluster` | `${APP}-psql` | 3-instance CNPG cluster (PG 18) |
+| `Cluster` | `${APP}-db` | 3-instance CNPG cluster (PG 18) |
 | `ExternalSecret` | `${APP}-postgres` | R2 credentials for WAL archiving |
-| `ScheduledBackup` | `${APP}-psql-daily` | Daily base backup at 03:00 PST |
+| `ScheduledBackup` | `${APP}-db-daily` | Daily base backup at 03:00 PST |
 | `CronJob` | `${APP}-postgres-backup` | Local dump to NFS every 12h |
 | `CronJob` | `${APP}-postgres-restore` | Suspended restore job (manual trigger only) |
 
@@ -54,7 +54,7 @@ env:
         key: fqdn-uri          # full FQDN URI: postgresql://user:pass@<app>-psql-rw.<ns>.svc.cluster.local:5432/<db>
 ```
 
-Other available keys from `<app>-psql-app`: `host`, `port`, `username`, `password`, `dbname`, `uri`, `pgpass`.
+Other available keys from `<app>-db-app`: `host`, `port`, `username`, `password`, `dbname`, `uri`, `pgpass`.
 
 > **DNS note** — add `ndots: 1` to your pod's `dnsConfig` to avoid `.NET` / musl DNS resolution issues with `fqdn-uri`:
 > ```yaml

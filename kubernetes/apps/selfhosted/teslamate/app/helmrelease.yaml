@@ -45,12 +45,12 @@ spec:
               - name: DATABASE_HOST
                 valueFrom:
                   secretKeyRef:
-                    name: teslamate-psql-app
+                    name: "{{ .Release.Name }}-db-app"
                     key: host
               - name: DATABASE_PASS
                 valueFrom:
                   secretKeyRef:
-                    name: teslamate-psql-app
+                    name: "{{ .Release.Name }}-db-app"
                     key: password
             resources:
               requests:

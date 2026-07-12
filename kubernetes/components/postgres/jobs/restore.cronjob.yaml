@@ -28,21 +28,21 @@ spec:
                 - /restore.sh
               env:
                 - name: POSTGRES_HOST
-                  value: ${APP}-psql-rw
+                  value: ${APP}-db-rw
                 - name: POSTGRES_DB
                   valueFrom:
                     secretKeyRef:
-                      name: ${APP}-psql-app
+                      name: ${APP}-db-app
                       key: dbname
                 - name: POSTGRES_USER
                   valueFrom:
                     secretKeyRef:
-                      name: ${APP}-psql-app
+                      name: ${APP}-db-app
                       key: username
                 - name: POSTGRES_PASSWORD
                   valueFrom:
                     secretKeyRef:
-                      name: ${APP}-psql-app
+                      name: ${APP}-db-app
                       key: password
                 # Omit to restore latest, or pin a specific file:
                 # - name: POSTGRES_RESTORE_FILE

@@ -35,27 +35,27 @@ spec:
               DB_POSTGRESDB_HOST:
                 valueFrom:
                   secretKeyRef:
-                    name: "{{ .Release.Name }}-psql-app"
+                    name: "{{ .Release.Name }}-db-app"
                     key: host
               DB_POSTGRESDB_PORT:
                 valueFrom:
                   secretKeyRef:
-                    name: "{{ .Release.Name }}-psql-app"
+                    name: "{{ .Release.Name }}-db-app"
                     key: port
               DB_POSTGRESDB_DATABASE:
                 valueFrom:
                   secretKeyRef:
-                    name: "{{ .Release.Name }}-psql-app"
+                    name: "{{ .Release.Name }}-db-app"
                     key: dbname
               DB_POSTGRESDB_USER:
                 valueFrom:
                   secretKeyRef:
-                    name: "{{ .Release.Name }}-psql-app"
+                    name: "{{ .Release.Name }}-db-app"
                     key: username
               DB_POSTGRESDB_PASSWORD:
                 valueFrom:
                   secretKeyRef:
-                    name: "{{ .Release.Name }}-psql-app"
+                    name: "{{ .Release.Name }}-db-app"
                     key: password
             envFrom:
               - secretRef:

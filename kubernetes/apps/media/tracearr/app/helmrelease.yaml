@@ -27,7 +27,7 @@ spec:
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
-                    name: "{{ .Release.Name }}-psql-app"
+                    name: "{{ .Release.Name }}-db-app"
                     key: fqdn-uri
             envFrom:
               - secretRef:

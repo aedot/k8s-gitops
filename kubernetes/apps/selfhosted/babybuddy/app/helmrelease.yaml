@@ -32,31 +32,31 @@ spec:
               DB_HOST:
                 valueFrom:
                   secretKeyRef:
-                    name: babybuddy-psql-app
+                    name: "{{ .Release.Name }}-db-app"
                     key: host
               DB_PORT:
                 valueFrom:
                   secretKeyRef:
-                    name: babybuddy-psql-app
+                    name: "{{ .Release.Name }}-db-app"
                     key: port
               DB_NAME:
                 valueFrom:
                   secretKeyRef:
-                    name: babybuddy-psql-app
+                    name: "{{ .Release.Name }}-db-app"
                     key: dbname
               DB_USER:
                 valueFrom:
                   secretKeyRef:
-                    name: babybuddy-psql-app
+                    name: "{{ .Release.Name }}-db-app"
                     key: username
               DB_PASSWORD:
                 valueFrom:
                   secretKeyRef:
-                    name: babybuddy-psql-app
+                    name: "{{ .Release.Name }}-db-app"
                     key: password
             envFrom:
               - secretRef:
-                  name: babybuddy-secret
+                  name: "{{ .Release.Name }}-secret"
             resources:
               requests:
                 cpu: 10m

@@ -27,7 +27,7 @@ spec:
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
-                    name: baby-tracker-psql-app
+                    name: "{{ .Release.Name }}-db-app"
                     key: uri
             resources:
               requests:

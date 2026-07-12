@@ -28,32 +28,32 @@ spec:
               DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
-                    name: readmeabook-psql-app
+                    name: "{{ .Release.Name }}-db-app"
                     key: fqdn-uri
               DB_HOSTNAME:
                 valueFrom:
                   secretKeyRef:
-                    name: readmeabook-psql-app
+                    name: "{{ .Release.Name }}-db-app"
                     key: host
               DB_PORT:
                 valueFrom:
                   secretKeyRef:
-                    name: readmeabook-psql-app
+                    name: "{{ .Release.Name }}-db-app"
                     key: port
               POSTGRES_USER:
                 valueFrom:
                   secretKeyRef:
-                    name: readmeabook-psql-app
+                    name: "{{ .Release.Name }}-db-app"
                     key: username
               POSTGRES_PASSWORD:
                 valueFrom:
                   secretKeyRef:
-                    name: readmeabook-psql-app
+                    name: "{{ .Release.Name }}-db-app"
                     key: password
               POSTGRES_DB:
                 valueFrom:
                   secretKeyRef:
-                    name: readmeabook-psql-app
+                    name: "{{ .Release.Name }}-db-app"
                     key: dbname
             envFrom:
               - secretRef:

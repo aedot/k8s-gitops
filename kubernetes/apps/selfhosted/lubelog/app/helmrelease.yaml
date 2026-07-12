@@ -27,7 +27,7 @@ spec:
               POSTGRES_CONNECTION:
                 valueFrom:
                   secretKeyRef:
-                    name: lubelog-psql-app
+                    name: "{{ .Release.Name }}-db-app"
                     key: uri
             envFrom:
               - secretRef:
