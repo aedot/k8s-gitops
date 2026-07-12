@@ -4,6 +4,8 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: lubelog
+  labels:
+    components.postgres/cnpg: init 
 spec:
   interval: 30m
   path: ./kubernetes/apps/selfhosted/lubelog/app
