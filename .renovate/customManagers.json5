@@ -12,7 +12,7 @@
         // foobar_version: v1.0.0
         // # renovate: datasource=docker depName=ghcr.io/foo/bar
         // FOOBAR_VERSION=v1.0.0
-        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\n.+(:\\s|=)(&\\S+\\s)?(?<currentValue>\\S+)",
+        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\n.+(:\\s|=)(&\\S+\\s)?[\"']?(?<currentValue>[^\"'\\s]+)[\"']?",
       ],
       datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
     },
@@ -29,21 +29,9 @@
     },
     {
       customType: "regex",
-      description: "Process raw GitHub CRD URLs with refs/tags versioning",
-      managerFilePatterns: [
-        "/\\.yaml(?:\\.j2)?$/"
-      ],
-      matchStrings: [
-        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)[^\\n]*\\n\\s+-\\s+https://raw\\.githubusercontent\\.com/[^/]+/[^/]+/refs/tags/(?<currentValue>[^/\\s]+)",
-      ],
-      datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
-      versioningTemplate: "semver",
-    },
-    {
-      customType: "regex",
       description: "Talos machineconfig images",
       managerFilePatterns: [
-        "/talos/.+\\.yaml(?:\\.j2)?$/"
+        "/talos/.+\\.yaml\\.j2$/"
       ], // only Talos files
       matchStrings: [
         "# renovate: datasource=docker depName=(?<depName>\\S+)\\nimage:\\s*(?<currentValue>.+)",
