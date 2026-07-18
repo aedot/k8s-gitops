@@ -27,4 +27,3 @@ spec:
         kind: Secret
     substitute:
       APP: recyclarr
-      VOLSYNC_CAPACITY: 1Gi
