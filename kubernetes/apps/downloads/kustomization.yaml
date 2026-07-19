@@ -7,9 +7,9 @@ components:
   - ../../components/sops
   - ../../components/namespace
 
-resources: 
+resources:
   - ./flaresolverr/ks.yaml
-  - ./prowlarr/ks.yaml
+  # - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./qui/ks.yaml
   - ./radarr/ks.yaml
