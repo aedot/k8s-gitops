@@ -18,6 +18,8 @@ spec:
       region: us-west-1
       tls:
         disableTls: true
+  credentialProjection:
+    allowed: true
   encryption:
     passwordSecretRef:
       name: kopiur-repository-secret
