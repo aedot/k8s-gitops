@@ -7,5 +7,4 @@ resources:
   # - ./restore.yaml
   - ./snapshotpolicy.yaml
   - ./snapshotschedule.yaml
-  - ./snapshot.yaml
 
