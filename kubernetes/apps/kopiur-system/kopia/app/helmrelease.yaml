@@ -27,8 +27,9 @@ spec:
               - secretRef:
                   name: kopia-secret
             args:
-               - --refresh-interval=5m
                - --without-password
+               - --disable-csrf-token-checks
+               - --log-level=debug
             probes:
               liveness: &probes
                 enabled: false
@@ -70,10 +71,26 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
-    persistence:
+    configMaps:
       config:
+        data:
+          repository.config: |-
+            {
+              "storage": {
+                "type": "filesystem",
+                "config": {
+                  "path": "/repository"
+                }
+              },
+              "hostname": "kopiur.{{ .Release.Namespace }}.svc.cluster.local",
+              "username": "kopiur",
+              "description": "kopiur",
+              "enableActions": false
+            }
+    persistence:
+      config-file:
         type: configMap
-        name: "{{ .Release.Name }}-configmap"
+        identifier: config
         globalMounts:
           - path: /config/repository.config
             subPath: repository.config
@@ -81,6 +98,8 @@ spec:
         type: nfs
         server: yemoja.internal
         path: /mnt/alaafin/k8s/kopiur
+        globalMounts:
+          - path: /repository
       tmpfs:
         type: emptyDir
         advancedMounts:
