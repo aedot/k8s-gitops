@@ -8,9 +8,9 @@ components:
   - ../../components/namespace
 
 resources:
-  - ./actual/ks.yaml
-  - ./baby-tracker/ks.yaml
-  - ./bambuddy/ks.yaml
-  - ./lubelog/ks.yaml
-  - ./sparkyfitness/ks.yaml
+  # - ./actual/ks.yaml
+  # - ./baby-tracker/ks.yaml
+  # - ./bambuddy/ks.yaml
+  # - ./lubelog/ks.yaml
+  # - ./sparkyfitness/ks.yaml
   - ./teslamate/ks.yaml
