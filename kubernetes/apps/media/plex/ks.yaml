@@ -11,7 +11,7 @@ spec:
     - ../../../../components/gpu
     - ../../../../components/zeroscaler
     - ../../../../components/volsync
-    - ../../../components/kopiur
+    - ../../../../components/kopiur
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
