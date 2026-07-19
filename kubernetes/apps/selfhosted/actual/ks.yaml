@@ -9,11 +9,10 @@ spec:
   path: ./kubernetes/apps/selfhosted/actual/app
   components:
     - ../../../../components/volsync
+    - ../../../components/kopiur
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
-    - name: volsync
-      namespace: volsync-system
   prune: true
   sourceRef:
     kind: GitRepository

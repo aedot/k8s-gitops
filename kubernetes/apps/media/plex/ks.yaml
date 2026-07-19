@@ -11,13 +11,12 @@ spec:
     - ../../../../components/gpu
     - ../../../../components/zeroscaler
     - ../../../../components/volsync
+    - ../../../components/kopiur
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
     - name: intel-gpu-resource-driver
       namespace: kube-system
-    - name: volsync
-      namespace: volsync-system
   prune: true
   sourceRef:
     kind: GitRepository
@@ -32,4 +31,5 @@ spec:
     substitute:
       APP: plex
       VOLSYNC_CAPACITY: 50Gi
+      KOPIUR_CAPACITY: 50Gi
 

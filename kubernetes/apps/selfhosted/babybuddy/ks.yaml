@@ -10,6 +10,7 @@ spec:
   components:
     - ../../../../components/postgres
     - ../../../../components/volsync
+    - ../../../components/kopiur
   healthCheckExprs:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
@@ -22,8 +23,6 @@ spec:
       namespace: kube-system
     - name: longhorn
       namespace: longhorn-system
-    - name: volsync
-      namespace: volsync-system
   prune: true
   sourceRef:
     kind: GitRepository

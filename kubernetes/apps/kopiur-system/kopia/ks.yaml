@@ -3,27 +3,22 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: chaski
+  name: kopia
 spec:
-  interval: 30m
-  path: ./kubernetes/apps/downloads/chaski/app
   components:
     - ../../../../components/zeroscaler
-    - ../../../../components/volsync
-    - ../../../components/kopiur
-  dependsOn:
-    - name: longhorn
-      namespace: longhorn-system
+  interval: 1h
+  path: ./kubernetes/apps/kopiur-system/kopia/app
+  postBuild:
+    substitute:
+      APP: kopia
+    substituteFrom:
+      - name: cluster-secrets
+        kind: Secret
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: downloads
+  targetNamespace: kopiur-system
   wait: false
-  postBuild:
-    substituteFrom:
-      - name: cluster-secrets
-        kind: Secret
-    substitute:
-      APP: chaski

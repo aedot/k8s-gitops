@@ -10,6 +10,7 @@ spec:
   components:
     - ../../../../components/zeroscaler
     - ../../../../components/volsync
+    - ../../../components/kopiur
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
@@ -27,3 +28,4 @@ spec:
     substitute:
       APP: qui
       VOLSYNC_CAPACITY: 5Gi
+      KOPIUR_CAPACITY: 5Gi

@@ -10,6 +10,7 @@ spec:
   components:
     - ../../../../components/postgres
     - ../../../../components/volsync
+    - ../../../components/kopiur
   healthCheckExprs:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
@@ -35,6 +36,7 @@ spec:
     substitute:
       APP: n8n
       VOLSYNC_CAPACITY: 1Gi
+      KOPIUR_CAPACITY: 1Gi
     substituteFrom:
       - name: cluster-secrets
         kind: Secret

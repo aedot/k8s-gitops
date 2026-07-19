@@ -10,6 +10,7 @@ spec:
   components:
     - ../../../../components/gpu
     - ../../../../components/volsync
+    - ../../../components/kopiur
   dependsOn:
     - name: multus-networks
       namespace: kube-system
@@ -31,3 +32,4 @@ spec:
     substitute:
       APP: scrypted
       VOLSYNC_CAPACITY: 5Gi
+      KOPIUR_CAPACITY: 5Gi
