@@ -6,7 +6,7 @@ metadata:
   name: prowlarr
 spec:
   components:
-    - ../../../../components/volsync
+    # - ../../../../components/volsync
     - ../../../../components/kopiur
   interval: 1h
   path: ./kubernetes/apps/downloads/prowlarr/app
