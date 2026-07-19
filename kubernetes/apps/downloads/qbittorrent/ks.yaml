@@ -9,7 +9,6 @@ spec:
   path: ./kubernetes/apps/downloads/qbittorrent/app
   components:
     - ../../../../components/zeroscaler
-    # - ../../../../components/volsync
     - ../../../../components/kopiur
   dependsOn:
     - name: multus-networks
@@ -29,6 +28,5 @@ spec:
         kind: Secret
     substitute:
       APP: qbittorrent
-      VOLSYNC_CAPACITY: 2Gi
       KOPIUR_CAPACITY: 2Gi
       GATUS_SUBDOMAIN: qb

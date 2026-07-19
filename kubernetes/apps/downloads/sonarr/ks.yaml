@@ -9,7 +9,6 @@ spec:
   path: ./kubernetes/apps/downloads/sonarr/app
   components:
     - ../../../../components/zeroscaler
-    # - ../../../../components/volsync
     - ../../../../components/kopiur
   dependsOn:
     - name: longhorn

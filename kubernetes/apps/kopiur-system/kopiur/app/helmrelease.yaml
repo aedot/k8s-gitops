@@ -10,17 +10,6 @@ spec:
     name: kopiur
   interval: 1h
   values:
-    # extraVolumes:
-    #   - name: repo
-    #     nfs:
-    #       server: yemoja.internal
-    #       path: /mnt/alaafin/k8s/kopiur
-    # extraVolumeMounts:
-    #   - name: repo
-    #     mountPath: /repo
-    # features:
-    #   credentialProjection:
-    #     enabled: true
     monitoring:
       dashboards:
         enabled: true

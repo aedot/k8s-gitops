@@ -9,7 +9,6 @@ spec:
   path: ./kubernetes/apps/downloads/sabnzbd/app
   components:
     - ../../../../components/zeroscaler
-    # - ../../../../components/volsync
     - ../../../../components/kopiur
   dependsOn:
     - name: multus-networks
@@ -29,6 +28,5 @@ spec:
         kind: Secret
     substitute:
       APP: sabnzbd
-      VOLSYNC_CAPACITY: 3Gi
       KOPIUR_CAPACITY: 3Gi
       GATUS_SUBDOMAIN: sab

@@ -8,7 +8,6 @@ spec:
   interval: 30m
   path: ./kubernetes/apps/selfhosted/lubelog/app
   components:
-    # - ../../../../components/volsync
     - ../../../../components/kopiur
     - ../../../../components/postgres
   healthCheckExprs:
@@ -29,7 +28,4 @@ spec:
         kind: Secret
     substitute:
       APP: lubelog
-      VOLSYNC_CAPACITY: 1Gi
       KOPIUR_CAPACITY: 1Gi
-      # KOPIUR_PUID: "568"
-      # KOPIUR_PGID: "568"

@@ -8,7 +8,6 @@ spec:
   interval: 30m
   path: ./kubernetes/apps/media/tracearr/app
   components:
-    # - ../../../../components/volsync
     - ../../../../components/kopiur
     - ../../../../components/postgres
     - ../../../../components/dragonfly
@@ -35,4 +34,3 @@ spec:
         kind: Secret
     substitute:
       APP: tracearr
-      VOLSYNC_CAPACITY: 5Gi

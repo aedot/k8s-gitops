@@ -7,7 +7,6 @@ metadata:
 spec:
   components:
     - ../../../../components/zeroscaler
-    # - ../../../../components/volsync
     - ../../../../components/kopiur
   dependsOn:
     - name: longhorn
@@ -27,5 +26,3 @@ spec:
         kind: Secret
     substitute:
       APP: radarr
-      VOLSYNC_CAPACITY: 5Gi
-      KOPIUR_CAPACITY: 5Gi

@@ -9,7 +9,6 @@ spec:
   path: ./kubernetes/apps/media/readmeabook/app
   components:
     - ../../../../components/zeroscaler
-    # - ../../../../components/volsync
     - ../../../../components/kopiur
     - ../../../../components/postgres
     - ../../../../components/dragonfly
@@ -35,4 +34,3 @@ spec:
         kind: Secret
     substitute:
       APP: readmeabook
-      VOLSYNC_CAPACITY: 5Gi

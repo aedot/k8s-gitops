@@ -9,7 +9,6 @@ spec:
   path: ./kubernetes/apps/selfhosted/baby-tracker/app
   components:
     - ../../../../components/postgres
-    # - ../../../../components/volsync
     - ../../../../components/kopiur
   healthCheckExprs:
     - apiVersion: postgresql.cnpg.io/v1
@@ -19,8 +18,6 @@ spec:
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
-    - name: volsync
-      namespace: volsync-system
   prune: true
   sourceRef:
     kind: GitRepository
@@ -31,7 +28,6 @@ spec:
   postBuild:
     substitute:
       APP: baby-tracker
-      VOLSYNC_CAPACITY: 5Gi
     substituteFrom:
       - name: cluster-secrets
         kind: Secret

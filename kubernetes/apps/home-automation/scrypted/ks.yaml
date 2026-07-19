@@ -9,15 +9,12 @@ spec:
   path: ./kubernetes/apps/home-automation/scrypted/app
   components:
     - ../../../../components/gpu
-    # - ../../../../components/volsync
     - ../../../../components/kopiur
   dependsOn:
     - name: multus-networks
       namespace: kube-system
     - name: longhorn
       namespace: longhorn-system
-    - name: volsync
-      namespace: volsync-system
   prune: true
   sourceRef:
     kind: GitRepository
@@ -31,5 +28,3 @@ spec:
         kind: Secret
     substitute:
       APP: scrypted
-      VOLSYNC_CAPACITY: 5Gi
-      KOPIUR_CAPACITY: 5Gi

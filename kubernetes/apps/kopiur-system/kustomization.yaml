@@ -7,5 +7,4 @@ components:
   - ../../components/sops
   - ../../components/namespace
 resources:
-  # - ./kopia/ks.yaml
   - ./kopiur/ks.yaml

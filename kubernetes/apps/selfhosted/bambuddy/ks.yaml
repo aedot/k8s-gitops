@@ -8,13 +8,10 @@ spec:
   interval: 30m
   path: ./kubernetes/apps/selfhosted/bambuddy/app
   components:
-    # - ../../../../components/volsync
     - ../../../../components/kopiur
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
-    - name: volsync
-      namespace: volsync-system
   prune: true
   sourceRef:
     kind: GitRepository
@@ -28,4 +25,3 @@ spec:
         kind: Secret
     substitute:
       APP: bambuddy
-      VOLSYNC_CAPACITY: 5Gi
