@@ -5,11 +5,11 @@ kind: Kustomization
 metadata:
   name: kopiur
 spec:
-  dependsOn:
-    - name: longhorn
-      namespace: longhorn-system
-    - name: snapshot-controller
-      namespace: kube-system
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: kopiur
+      namespace: kopiur-system
   interval: 1h
   path: ./kubernetes/apps/kopiur-system/kopiur/app
   prune: true
@@ -26,7 +26,6 @@ metadata:
 spec:
   dependsOn:
     - name: kopiur
-      namespace: kopiur-system
   interval: 1h
   path: ./kubernetes/apps/kopiur-system/kopiur/repository
   postBuild:
