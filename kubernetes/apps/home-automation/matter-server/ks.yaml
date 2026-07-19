@@ -10,9 +10,6 @@ spec:
     - ../../../../components/kopiur
   interval: 1h
   path: ./kubernetes/apps/home-automation/matter-server/app
-  dependsOn:
-    - name: volsync
-      namespace: volsync-system
   postBuild:
     substitute:
       APP: matter-server
