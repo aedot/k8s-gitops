@@ -8,10 +8,10 @@ components:
   - ../../components/namespace
 
 resources:
-  - ./agregarr/ks.yaml
+  # - ./agregarr/ks.yaml
   - ./imagemaid/ks.yaml
   - ./plex/ks.yaml
   - ./readmeabook/ks.yaml
   - ./seerr/ks.yaml
   - ./tautulli/ks.yaml
-  # - ./tracearr/ks.yaml
+  - ./tracearr/ks.yaml

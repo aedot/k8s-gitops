@@ -6,8 +6,8 @@ metadata:
   name: agregarr
 spec:
   components:
-    - ../../../../components/volsync
-    # - ../../../../components/kopiur
+    # - ../../../../components/volsync
+    - ../../../../components/kopiur
     - ../../../../components/zeroscaler
   targetNamespace: media
   path: ./kubernetes/apps/media/agregarr/app
