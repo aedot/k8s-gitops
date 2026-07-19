@@ -6,7 +6,7 @@ metadata:
   name: agregarr
 spec:
   components:
-    - ../../../../components/volsync
+    # - ../../../../components/volsync
     - ../../../../components/kopiur
     - ../../../../components/zeroscaler
   targetNamespace: media

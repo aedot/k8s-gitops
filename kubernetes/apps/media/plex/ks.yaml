@@ -10,7 +10,7 @@ spec:
   components:
     - ../../../../components/gpu
     - ../../../../components/zeroscaler
-    - ../../../../components/volsync
+    # - ../../../../components/volsync
     - ../../../../components/kopiur
   dependsOn:
     - name: longhorn
