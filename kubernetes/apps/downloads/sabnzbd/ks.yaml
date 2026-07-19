@@ -9,8 +9,8 @@ spec:
   path: ./kubernetes/apps/downloads/sabnzbd/app
   components:
     - ../../../../components/zeroscaler
-    # - ../../../../components/volsync
-    - ../../../../components/kopiur
+    - ../../../../components/volsync
+    # - ../../../../components/kopiur
   dependsOn:
     - name: multus-networks
       namespace: kube-system
