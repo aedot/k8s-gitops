@@ -13,5 +13,5 @@ resources:
   - ./bambuddy/ks.yaml
   - ./lubelog/ks.yaml
   # - ./n8n/ks.yaml
-  # - ./sparkyfitness/ks.yaml
+  - ./sparkyfitness/ks.yaml
   - ./teslamate/ks.yaml
