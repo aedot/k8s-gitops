@@ -13,6 +13,11 @@ spec:
   sources:
     - pvc:
         name: ${APP}
+  # mover:
+  #   podSecurityContext:
+  #     runAsUser: ${KOPIUR_PUID:=1000}
+  #     runAsGroup: ${KOPIUR_PGID:=1000}
+  #     fsGroup: ${KOPIUR_PGID:=1000}
   copyMethod: Snapshot
   volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=longhorn-snapclass}
   retention:
