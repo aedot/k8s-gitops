@@ -1,0 +1,11 @@
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: Snapshot
+metadata:
+  name: ${APP}-manual
+spec:
+  policyRef:
+    name: ${APP}
+  tags:
+    reason: pre-kopiur
+  deletionPolicy: Retain

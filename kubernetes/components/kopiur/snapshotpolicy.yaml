@@ -4,29 +4,17 @@ apiVersion: kopiur.home-operations.com/v1alpha1
 kind: SnapshotPolicy
 metadata:
   name: ${APP}
-  annotations:
-    kopiur.home-operations.com/allow-identity-change: "true"
 spec:
-  compression:
-    compressor: zstd
-  credentialProjection:
-    enabled: true
   repository:
     kind: ClusterRepository
     name: nas
-  retention:
-    keepLatest: 3
-    keepHourly: 24
-    keepDaily: 7
-    keepWeekly: 4
+  credentialProjection:
+    enabled: true
   sources:
     - pvc:
         name: ${APP}
-  verification:
-    deep:
-      schedule:
-        cron: H 5 1 * * # First of the month at 5am
-    quick:
-      schedule:
-        cron: H 3 * * * # Every day at 3am
+  copyMethod: Snapshot
   volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=longhorn-snapclass}
+  retention:
+    keepDaily: 7
+    keepWeekly: 4
