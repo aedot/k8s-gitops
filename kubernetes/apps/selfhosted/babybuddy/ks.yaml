@@ -10,7 +10,7 @@ spec:
   components:
     - ../../../../components/postgres
     - ../../../../components/volsync
-    - ../../../../components/kopiur
+    # - ../../../../components/kopiur
   healthCheckExprs:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster

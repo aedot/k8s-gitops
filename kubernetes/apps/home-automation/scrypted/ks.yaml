@@ -10,7 +10,7 @@ spec:
   components:
     - ../../../../components/gpu
     - ../../../../components/volsync
-    - ../../../../components/kopiur
+    # - ../../../../components/kopiur
   dependsOn:
     - name: multus-networks
       namespace: kube-system

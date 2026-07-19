@@ -8,7 +8,6 @@ components:
   - ../../components/namespace
 
 resources:
-  - ./chaski/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
