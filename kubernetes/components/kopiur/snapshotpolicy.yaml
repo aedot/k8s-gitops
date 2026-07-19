@@ -27,4 +27,4 @@ spec:
     quick:
       schedule:
         cron: H 3 * * * # Every day at 3am
-  volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=longhorn-snapshot}
+  volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=longhorn-snapclass}
