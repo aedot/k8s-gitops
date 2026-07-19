@@ -6,6 +6,6 @@ namespace: kopiur-system
 components:
   - ../../components/sops
   - ../../components/namespace
-resources: []
-  # - ./kopia/ks.yaml
-  # - ./kopiur/ks.yaml
+resources:
+  - ./kopia/ks.yaml
+  - ./kopiur/ks.yaml
