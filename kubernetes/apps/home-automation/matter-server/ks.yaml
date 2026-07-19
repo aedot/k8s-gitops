@@ -6,7 +6,7 @@ metadata:
   name: matter-server
 spec:
   components:
-    - ../../../../components/volsync
+    # - ../../../../components/volsync
     - ../../../../components/kopiur
   interval: 1h
   path: ./kubernetes/apps/home-automation/matter-server/app
