@@ -12,6 +12,7 @@ spec:
   postBuild:
     substitute:
       APP: matter-server
+      GATUS_SUBDOMAIN: matter
     substituteFrom:
       - name: cluster-secrets
         kind: Secret

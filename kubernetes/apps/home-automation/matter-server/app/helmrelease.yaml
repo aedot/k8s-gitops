@@ -17,25 +17,34 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/home-assistant-libs/python-matter-server
-              tag: 8.1.0@sha256:170aa093ce91c76cde4cc390918307590f0f5558fcec93f913af3cb019e6562a
+              repository: ghcr.io/matter-js/matterjs-server
+              tag: 1.2.7@sha256:3f2b19c26fa21f9a855fd1e31cc8e1b174e8fcece881ab4ac7f56b5d828446a6
             env:
               TZ: America/Los_Angeles
-              MATTER_SERVER__INSTANCE_NAME: "{{ .Release.Name }}"
-              MATTER_SERVER__PORT: &port 5580
-              MATTER_SERVER__APPLICATION_URL: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
-              MATTER_SERVER__LOG_LEVEL: info
             args:
               - --storage-path=/data
+              - --ota-provider-dir=/data/ota
+              - --production-mode
               - --primary-interface=net1
-              - --log-level=debug
-              - --log-level-sdk=info
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
             resources:
               requests:
-                cpu: 100m
-                memory: 128Mi
+                cpu: 10m
               limits:
-                memory: 256Mi
+                memory: 1Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: [ALL]}
     defaultPodOptions:
       annotations:
         k8s.v1.cni.cncf.io/networks: |
@@ -44,31 +53,31 @@ spec:
             "namespace": "kube-system",
             "ips": ["172.24.40.23/24"]
           }]
-      hostUsers: false
       securityContext:
-        runAsNonRoot: false # Must be run as root user
-        runAsUser: 0        # Must be run as root user
-        runAsGroup: 0
-        fsGroup: 0
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [34]
+        sysctls:
+          - name: net.ipv6.conf.net1.accept_ra_rt_info_max_plen
+            value: "64"
+    route:
+      app:
+        hostnames:
+          - matter.${SECRET_DOMAIN}
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
     service:
       app:
         ports:
           http:
-            port: *port
-    route:
-      app:
-        hostnames: [*host]
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-        rules:
-          - backendRefs:
-              - name: "{{ .Release.Name }}"
-                port: *port
+            port: 5580
     persistence:
       data:
         existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /data
       tmp:
         type: emptyDir
