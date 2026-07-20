@@ -11,7 +11,6 @@ spec:
     - ../../../../components/gpu
     - ../../../../components/zeroscaler
     - ../../../../components/kopiur
-    - ../../../../components/volsync
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
@@ -31,5 +30,4 @@ spec:
     substitute:
       APP: plex
       KOPIUR_CAPACITY: 50Gi
-      VOLSYNC_CAPACITY: 50Gi
 

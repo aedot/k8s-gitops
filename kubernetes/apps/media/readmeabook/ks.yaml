@@ -10,7 +10,6 @@ spec:
   components:
     - ../../../../components/zeroscaler
     - ../../../../components/kopiur
-    - ../../../../components/volsync
     - ../../../../components/postgres
     - ../../../../components/dragonfly
   healthCheckExprs:
