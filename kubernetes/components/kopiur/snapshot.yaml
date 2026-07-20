@@ -2,7 +2,7 @@
 apiVersion: kopiur.home-operations.com/v1alpha1
 kind: Snapshot
 metadata:
-  name: ${APP}-manual-3
+  name: ${APP}-manual-4
 spec:
   policyRef:
     name: ${APP}

@@ -8,8 +8,8 @@ spec:
   interval: 30m
   path: ./kubernetes/apps/selfhosted/sparkyfitness/app
   components:
-    - ../../../../../components/volsync
-    - ../../../../../components/kopiur
+    - ../../../../components/kopiur
+    - ../../../../components/volsync
     - ../../../../components/postgres
   healthCheckExprs:
     - apiVersion: postgresql.cnpg.io/v1
