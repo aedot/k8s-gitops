@@ -6,7 +6,8 @@ metadata:
   name: matter-server
 spec:
   components:
-    - ../../../../components/kopiur
+    - ../../../../components/volsync
+    # - ../../../../components/kopiur
   interval: 1h
   path: ./kubernetes/apps/home-automation/matter-server/app
   postBuild:
