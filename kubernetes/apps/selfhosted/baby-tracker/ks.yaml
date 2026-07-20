@@ -9,8 +9,7 @@ spec:
   path: ./kubernetes/apps/selfhosted/baby-tracker/app
   components:
     - ../../../../components/postgres
-    - ../../../../components/kopiur
-    - ../../../../components/volsync
+    # - ../../../../components/kopiur
   healthCheckExprs:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster

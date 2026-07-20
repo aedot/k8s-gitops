@@ -9,7 +9,6 @@ spec:
   path: ./kubernetes/apps/selfhosted/sparkyfitness/app
   components:
     - ../../../../components/kopiur
-    - ../../../../components/volsync
     - ../../../../components/postgres
   healthCheckExprs:
     - apiVersion: postgresql.cnpg.io/v1

@@ -9,7 +9,6 @@ spec:
   path: ./kubernetes/apps/selfhosted/lubelog/app
   components:
     - ../../../../components/kopiur
-    - ../../../../components/volsync
     - ../../../../components/postgres
   healthCheckExprs:
     - apiVersion: postgresql.cnpg.io/v1
@@ -30,4 +29,3 @@ spec:
     substitute:
       APP: lubelog
       KOPIUR_CAPACITY: 1Gi
-      VOLSYNC_CAPACITY: 1Gi

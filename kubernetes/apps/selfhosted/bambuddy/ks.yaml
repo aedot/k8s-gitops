@@ -9,7 +9,6 @@ spec:
   path: ./kubernetes/apps/selfhosted/bambuddy/app
   components:
     - ../../../../components/kopiur
-    - ../../../../components/volsync
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
