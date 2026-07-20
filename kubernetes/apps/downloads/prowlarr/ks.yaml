@@ -7,7 +7,6 @@ metadata:
 spec:
   components:
     - ../../../../components/kopiur
-    - ../../../../components/volsync
   interval: 1h
   path: ./kubernetes/apps/downloads/prowlarr/app
   dependsOn:
@@ -27,4 +26,3 @@ spec:
     substitute:
       APP: prowlarr
       KOPIUR_CAPACITY: 1Gi
-      VOLSYNC_CAPACITY: 1Gi
