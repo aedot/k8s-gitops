@@ -9,7 +9,7 @@ spec:
   path: ./kubernetes/apps/home-automation/esphome/app
   components:
     - ../../../../components/kopiur
-    - ../../../../components/volsync
+    # - ../../../../components/volsync
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
