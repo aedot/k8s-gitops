@@ -12,6 +12,6 @@ spec:
   target:
     populator: {}
   policy:
-    onMissingSnapshot: Fail # Continue # default for fromPolicy — empty volume if none
+    onMissingSnapshot: Continue # default for fromPolicy — empty volume if none
   credentialProjection:
     enabled: true

@@ -9,7 +9,6 @@ spec:
   path: ./kubernetes/apps/home-automation/esphome/app
   components:
     - ../../../../components/kopiur
-    # - ../../../../components/volsync
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
@@ -27,4 +26,3 @@ spec:
     substitute:
       APP: esphome
       KOPIUR_CAPACITY: 3Gi
-      VOLSYNC_CAPACITY: 3Gi
