@@ -8,8 +8,8 @@ spec:
   interval: 30m
   path: ./kubernetes/apps/home-automation/home-assistant/app
   components:
-    - ../../../../components/kopiur
-    # - ../../../../components/volsync
+    # - ../../../../components/kopiur
+    - ../../../../components/volsync
   dependsOn:
     - name: multus-networks
       namespace: kube-system
