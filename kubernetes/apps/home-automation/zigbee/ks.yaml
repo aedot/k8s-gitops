@@ -9,7 +9,6 @@ spec:
   path: ./kubernetes/apps/home-automation/zigbee/app
   components:
     - ../../../../components/kopiur
-    - ../../../../components/volsync
     - ../../../../components/zeroscaler
   dependsOn:
     - name: longhorn
@@ -27,5 +26,4 @@ spec:
         kind: Secret
     substitute:
       KOPIUR_CAPACITY: 1Gi
-      VOLSYNC_CAPACITY: 1Gi
       APP: zigbee
