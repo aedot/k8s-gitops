@@ -23,7 +23,6 @@ spec:
               TZ: America/Los_Angeles
             args:
               - --storage-path=/data
-              - --ota-provider-dir=/data/ota
               - --production-mode
               - --primary-interface=net1
             probes:
@@ -59,9 +58,6 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        # sysctls:
-        #   - name: net.ipv6.conf.net1.accept_ra_rt_info_max_plen
-        #     value: "64"
     route:
       app:
         hostnames:
