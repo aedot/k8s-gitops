@@ -8,6 +8,7 @@ spec:
   components:
     - ../../../../components/zeroscaler
     - ../../../../components/kopiur
+    - ../../../../components/volsync
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
