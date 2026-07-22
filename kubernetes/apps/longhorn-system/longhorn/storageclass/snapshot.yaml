@@ -4,7 +4,7 @@ kind: StorageClass
 reclaimPolicy: Delete
 provisioner: driver.longhorn.io
 parameters:
-  # used for volsync to copy from.
+  # used for kopiur to copy from.
   # we set this to 1 replica for faster restores from the snapclass
   dataEngine: v1
   dataLocality: disabled
