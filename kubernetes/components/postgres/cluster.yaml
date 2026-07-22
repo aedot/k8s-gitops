@@ -12,12 +12,12 @@ metadata:
     # system_identifier and writes new WAL on a new timeline (no name collisions).
     cnpg.io/skipEmptyWalArchiveCheck: enabled
 spec:
-  instances: 1
+  instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:18.4-system-trixie
   primaryUpdateStrategy: unsupervised
   enableSuperuserAccess: true
-  # minSyncReplicas: 1
-  # maxSyncReplicas: 1
+  minSyncReplicas: 1
+  maxSyncReplicas: 1
   storage:
     storageClass: longhorn
     size: 5Gi
@@ -25,6 +25,7 @@ spec:
     parameters:
       max_connections: "200"
       max_wal_size: "256MB"
+      synchronous_commit: "on"
   resources:
     requests:
       cpu: 100m
