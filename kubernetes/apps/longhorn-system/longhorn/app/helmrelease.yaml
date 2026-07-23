@@ -22,7 +22,6 @@ spec:
       v2DataEngine: true
       defaultDataPath: "/var/mnt/longhorn"
       replicaDiskSoftAntiAffinity: false
-      replicaSoftAntiAffinity: "true"
       createDefaultDiskLabeledNodes: true
       defaultDataLocality: best-effort
       defaultLonghornStaticStorageClass: longhorn
@@ -34,10 +33,6 @@ spec:
       replicaAutoBalance: best-effort
       storageMinimalAvailablePercentage: "1"
       storageReservedPercentageForDefaultDisk: "10"
-      nodeDrainPolicy: allow-if-replica-is-stopped
-      replicaReplenishmentWaitInterval: "3600"
-      removeSnapshotsDuringFilesystemTrim: "true"
-      fastReplicaRebuildEnabled: "true"
     ingress:
       enabled: false
     httproute:
