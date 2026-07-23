@@ -16,25 +16,9 @@ spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:18.4-standard-trixie@sha256:4e4ac3fb2c914cfb44f80f0b8be8aa550e83b80bf5220df49c3a8780c1f79bc8
   primaryUpdateStrategy: unsupervised
   enableSuperuserAccess: true
-  minSyncReplicas: 0
-  maxSyncReplicas: 0
   storage:
     storageClass: longhorn
     size: 5Gi
-  affinity:
-    podAntiAffinityType: preferred
-    topologyKey: kubernetes.io/hostname
-  postgresql:
-    parameters:
-      max_connections: "200"
-      max_wal_size: "256MB"
-      synchronous_commit: "off"
-      shared_buffers: "128MB"
-  resources:
-    requests:
-      cpu: 100m
-    limits:
-      memory: 500Mi
   monitoring:
     enablePodMonitor: true
   bootstrap:
@@ -55,3 +39,22 @@ spec:
         parameters:
           barmanObjectName: ${APP}-backup-store
           serverName: ${APP}
+  postgresql:
+    parameters:
+      archive_timeout: 5min
+    shared_preload_libraries:
+      - pg_stat_statements
+    synchronous:
+      method: any
+      number: 1
+      failoverQuorum: true
+      dataDurability: required
+  affinity:
+    enablePodAntiAffinity: true
+    podAntiAffinityType: required
+  resources:
+    requests:
+      cpu: ${PG_CPU_REQ:=50m}
+      memory: ${PG_MEM_REQ:=256Mi}
+    limits:
+      memory: ${PG_MEM_LIMIT:=1Gi}
