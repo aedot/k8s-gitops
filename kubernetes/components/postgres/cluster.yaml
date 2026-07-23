@@ -13,19 +13,23 @@ metadata:
     cnpg.io/skipEmptyWalArchiveCheck: enabled
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:18.4-system-trixie
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.4-standard-trixie@sha256:4e4ac3fb2c914cfb44f80f0b8be8aa550e83b80bf5220df49c3a8780c1f79bc8
   primaryUpdateStrategy: unsupervised
   enableSuperuserAccess: true
-  minSyncReplicas: 1
-  maxSyncReplicas: 1
+  minSyncReplicas: 0
+  maxSyncReplicas: 0
   storage:
     storageClass: longhorn
     size: 5Gi
+  affinity:
+    podAntiAffinityType: preferred
+    topologyKey: kubernetes.io/hostname
   postgresql:
     parameters:
       max_connections: "200"
       max_wal_size: "256MB"
-      synchronous_commit: "on"
+      synchronous_commit: "off"
+      shared_buffers: "128MB"
   resources:
     requests:
       cpu: 100m
@@ -39,24 +43,15 @@ spec:
       database: ${APP}
       owner: ${APP}
   # # Note: externalClusters is needed when recovering from an existing cnpg cluster
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectStore: *archive
   externalClusters:
     - name: *archive
-      barmanObjectStore: &barman
-        destinationPath: s3://postgresql
-        serverName: ${APP}
-        endpointURL: https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-        s3Credentials:
-          accessKeyId:
-            name: ${APP}-postgres-secret
-            key: AWS_ACCESS_KEY_ID
-          secretAccessKey:
-            name: ${APP}-postgres-secret
-            key: AWS_SECRET_ACCESS_KEY
-        wal:
-          compression: bzip2
-        data:
-          compression: bzip2
-  backup:
-    barmanObjectStore: *barman
-    retentionPolicy: 7d
-
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: ${APP}-backup-store
+          serverName: ${APP}

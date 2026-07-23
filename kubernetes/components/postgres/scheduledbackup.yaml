@@ -7,5 +7,8 @@ metadata:
 spec:
   cluster:
     name: ${APP}-db
-  schedule: "0 0 11 * * *" # Every day at 0300 PST / 0200 PDT
+  schedule: "0 0 11 * * *" # Every day at 0300 PST / 0400 PDT
   backupOwnerReference: self
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io
