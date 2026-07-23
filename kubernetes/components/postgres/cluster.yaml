@@ -13,12 +13,22 @@ metadata:
     cnpg.io/skipEmptyWalArchiveCheck: enabled
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:18.4-standard-trixie@sha256:4e4ac3fb2c914cfb44f80f0b8be8aa550e83b80bf5220df49c3a8780c1f79bc8
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.4-system-trixie
   primaryUpdateStrategy: unsupervised
   enableSuperuserAccess: true
   storage:
     storageClass: longhorn
     size: 5Gi
+  postgresql:
+    parameters:
+      max_connections: "200"
+      max_wal_size: "256MB"
+      shared_buffers: "128MB"
+  resources:
+    requests:
+      cpu: 100m
+    limits:
+      memory: 500Mi
   monitoring:
     enablePodMonitor: true
   bootstrap:
@@ -27,34 +37,23 @@ spec:
       database: ${APP}
       owner: ${APP}
   # # Note: externalClusters is needed when recovering from an existing cnpg cluster
-  plugins:
-    - name: barman-cloud.cloudnative-pg.io
-      isWALArchiver: true
-      parameters:
-        barmanObjectStore: *archive
   externalClusters:
     - name: *archive
-      plugin:
-        name: barman-cloud.cloudnative-pg.io
-        parameters:
-          barmanObjectName: ${APP}-backup-store
-          serverName: ${APP}
-  postgresql:
-    parameters:
-      archive_timeout: 5min
-    shared_preload_libraries:
-      - pg_stat_statements
-    synchronous:
-      method: any
-      number: 1
-      failoverQuorum: true
-      dataDurability: required
-  affinity:
-    enablePodAntiAffinity: true
-    podAntiAffinityType: required
-  resources:
-    requests:
-      cpu: ${PG_CPU_REQ:=50m}
-      memory: ${PG_MEM_REQ:=256Mi}
-    limits:
-      memory: ${PG_MEM_LIMIT:=1Gi}
+      barmanObjectStore: &barman
+        destinationPath: s3://postgresql
+        serverName: ${APP}
+        endpointURL: https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
+        s3Credentials:
+          accessKeyId:
+            name: ${APP}-postgres-secret
+            key: AWS_ACCESS_KEY_ID
+          secretAccessKey:
+            name: ${APP}-postgres-secret
+            key: AWS_SECRET_ACCESS_KEY
+        wal:
+          compression: bzip2
+        data:
+          compression: bzip2
+  backup:
+    barmanObjectStore: *barman
+    retentionPolicy: 7d
