@@ -21,7 +21,7 @@ kind: StorageClass
 reclaimPolicy: Delete
 provisioner: driver.longhorn.io
 parameters:
-  # we set this to 2 replica for less copies of the cache, which can be blown away safely.
+  # we set this to 1 replica for less copies of the cache, which can be blown away safely.
   dataEngine: v2
   dataLocality: disabled
   numberOfReplicas: "1"

@@ -12,6 +12,5 @@ resources:
   - ./baby-tracker/ks.yaml
   - ./bambuddy/ks.yaml
   - ./lubelog/ks.yaml
-  - ./redlib/ks.yaml
   - ./sparkyfitness/ks.yaml
   - ./teslamate/ks.yaml

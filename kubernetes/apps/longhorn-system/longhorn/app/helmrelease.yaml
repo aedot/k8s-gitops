@@ -19,6 +19,7 @@ spec:
         enable: true
         jobList: '[{"name":"recurring-fs-trim", "isGroup":false}]'
     defaultSettings:
+      v2DataEngine: true
       defaultDataPath: "/var/mnt/longhorn"
       replicaDiskSoftAntiAffinity: false
       replicaSoftAntiAffinity: "true"
