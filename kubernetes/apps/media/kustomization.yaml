@@ -5,9 +5,10 @@ namespace: media
 components:
   - ../../components/sops
   - ../../components/namespace
-resources: 
+resources:
   - ./agregarr/ks.yaml
   # - ./imagemaid/ks.yaml
+  - ./listenarr/ks.yaml
   - ./plex/ks.yaml
   - ./readmeabook/ks.yaml
   - ./seerr/ks.yaml
