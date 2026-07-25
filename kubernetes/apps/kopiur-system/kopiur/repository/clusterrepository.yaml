@@ -3,7 +3,7 @@
 apiVersion: kopiur.home-operations.com/v1alpha1
 kind: ClusterRepository
 metadata:
-  name: yemoja
+  name: cloudflare-r2
 spec:
   allowedNamespaces:
     all: true
@@ -14,7 +14,7 @@ spec:
           name: kopiur-repository-secret
           namespace: kopiur-system
       bucket: kopiur
-      endpoint: yemoja.internal:9000
+      endpoint: https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
       region: us-west-1
       tls:
         disableTls: true

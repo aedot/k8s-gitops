@@ -16,7 +16,7 @@ spec:
       fsGroup: ${KOPIUR_PGID:=1000}
   repository:
     kind: ClusterRepository
-    name: yemoja
+    name: cloudflare-r2
   retention:
     keepLatest: 3
     keepDaily: 7
