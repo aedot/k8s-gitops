@@ -7,6 +7,10 @@ metadata:
 spec:
   allowedNamespaces:
     all: true
+  catalog:
+    periodicRefresh: true
+    retain:
+      perIdentity: 0
   backend:
     s3:
       auth:
@@ -14,10 +18,10 @@ spec:
           name: kopiur-repository-secret
           namespace: kopiur-system
       bucket: kopiur
-      endpoint: https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-      region: us-west-1
-      tls:
-        disableTls: true
+      endpoint: ${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
+      prefix: ""
+  create:
+    enabled: true
   credentialProjection:
     allowed: true
   encryption:
