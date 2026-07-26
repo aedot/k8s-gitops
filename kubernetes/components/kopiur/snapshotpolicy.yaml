@@ -16,7 +16,7 @@ spec:
       fsGroup: ${KOPIUR_PGID:=1000}
   repository:
     kind: ClusterRepository
-    name: cloudflare-r2
+    name: yemoja
   retention:
     keepLatest: 3
     keepDaily: 7
@@ -24,11 +24,4 @@ spec:
   sources:
     - pvc:
         name: ${APP}
-  verification:
-    deep:
-      schedule:
-        cron: H 5 1 * *
-    quick:
-      schedule:
-        cron: H 3 * * *
   volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=longhorn-snapclass}
