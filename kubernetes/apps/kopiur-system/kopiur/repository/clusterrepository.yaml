@@ -3,31 +3,17 @@
 apiVersion: kopiur.home-operations.com/v1alpha1
 kind: ClusterRepository
 metadata:
-  name: yemoja
+  name: nas
 spec:
   allowedNamespaces:
     all: true
-  catalog:
-    periodicRefresh: true
-    retain:
-      perIdentity: 0
   backend:
     filesystem:
       path: /repo
       volume:
         nfs:
-          path: /mnt/alaafin/k8s/kopiur
           server: yemoja.internal
-    # s3:
-    #   auth:
-    #     secretRef:
-    #       name: kopiur-repository-secret
-    #       namespace: kopiur-system
-    #   bucket: kopiur
-    #   endpoint: ${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-    #   prefix: ""
-  create:
-    enabled: true
+          path: /mnt/alaafin/k8s/kopiur
   credentialProjection:
     allowed: true
   encryption:
@@ -36,11 +22,11 @@ spec:
       namespace: kopiur-system
       key: KOPIA_PASSWORD
   moverDefaults:
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
     podSecurityContext:
       fsGroup: 1000
-    securityContext:
-      runAsGroup: 1000
-      runAsUser: 1000
   parameters:
     epoch:
       minDuration: 6h

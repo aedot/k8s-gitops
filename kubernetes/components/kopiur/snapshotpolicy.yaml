@@ -13,12 +13,12 @@ spec:
     podSecurityContext:
       runAsUser: ${KOPIUR_PUID:=1000}
       runAsGroup: ${KOPIUR_PGID:=1000}
-      fsGroup: ${KOPIUR_PGID:=1000}
   repository:
     kind: ClusterRepository
-    name: yemoja
+    name: nas
   retention:
     keepLatest: 3
+    keepHourly: 24
     keepDaily: 7
     keepWeekly: 4
   sources:
