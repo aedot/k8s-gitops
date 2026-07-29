@@ -22,7 +22,7 @@ spec:
     allowed: true
   encryption:
     passwordSecretRef:
-      name: kopiur-repository-secret
+      name: kopiur-s3-secret
       namespace: kopiur-system
       key: KOPIA_PASSWORD
   scheduleDefaults:
