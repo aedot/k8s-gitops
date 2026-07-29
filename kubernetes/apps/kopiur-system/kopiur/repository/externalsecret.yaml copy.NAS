@@ -3,18 +3,17 @@
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: kopiur-repository
+  name: kopiur-nas
 spec:
   secretStoreRef:
     kind: ClusterSecretStore
     name: akeyless
   target:
-    name: kopiur-repository-secret
+    name: kopiur-nas-secret
     template:
       data:
+        # Filesystem/NFS backend needs only the repository encryption password.
         KOPIA_PASSWORD: "{{ .KOPIA_PASSWORD }}"
-        AWS_ACCESS_KEY_ID: "{{ .AWS_ACCESS_KEY_ID }}"
-        AWS_SECRET_ACCESS_KEY: "{{ .AWS_SECRET_ACCESS_KEY }}"
   dataFrom:
     - extract:
         key: kopiur

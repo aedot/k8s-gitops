@@ -3,25 +3,32 @@
 apiVersion: kopiur.home-operations.com/v1alpha1
 kind: ClusterRepository
 metadata:
-  name: kopiur-s3
+  name: nas
 spec:
   allowedNamespaces:
     all: true
   backend:
-    s3:
-      auth:
-        secretRef:
-          name: kopiur-repository-secret
-          namespace: kopiur-system
-      bucket: kopiur
-      endpoint: yemoja.internal:9000
-      region: us-west-1
-      tls:
-        disableTls: true
+    filesystem:
+      path: /repo
+      volume:
+        nfs:
+          server: yemoja.internal
+          path: /mnt/alaafin/k8s/kopiur
+  credentialProjection:
+    allowed: true
   encryption:
     passwordSecretRef:
-      name: kopiur-repository-secret
+      name: kopiur-nas-secret
       namespace: kopiur-system
       key: KOPIA_PASSWORD
+  moverDefaults:
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+    podSecurityContext:
+      fsGroup: 1000
+  parameters:
+    epoch:
+      minDuration: 6h
   scheduleDefaults:
     timezone: America/Los_Angeles
