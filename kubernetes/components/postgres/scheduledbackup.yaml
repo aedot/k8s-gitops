@@ -8,7 +8,12 @@ spec:
   cluster:
     name: ${APP}-db
   schedule: "0 0 11 * * *" # Every day at 0300 PST / 0400 PDT
+  immediate: true
   backupOwnerReference: self
   method: plugin
   pluginConfiguration:
     name: barman-cloud.cloudnative-pg.io
+    parameters:
+      immediateCheckpoint: "true"
+      waitForArchive: "true"
+      compression: "zstd"

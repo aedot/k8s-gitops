@@ -13,7 +13,7 @@ metadata:
     cnpg.io/skipEmptyWalArchiveCheck: enabled
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:18.4-system-trixie
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.4-system-trixie@sha256:c94c6b0db7bc90c4d89cc0950fbb22907aa55df0e948cbc112adb87846660974
   primaryUpdateStrategy: unsupervised
   enableSuperuserAccess: true
   # minSyncReplicas: 1
@@ -33,29 +33,35 @@ spec:
       memory: 500Mi
   monitoring:
     enablePodMonitor: true
-  bootstrap:
-    recovery:
-      source: &archive ${APP}-backup-archive
-      database: ${APP}
-      owner: ${APP}
-  # # Note: externalClusters is needed when recovering from an existing cnpg cluster
-  externalClusters:
-    - name: *archive
-      barmanObjectStore: &barman
-        destinationPath: s3://postgresql
+  plugins:
+    - name: &plugin barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters: &barman
+        barmanObjectName: cloudflare-r2
         serverName: ${APP}
-        endpointURL: https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-        s3Credentials:
-          accessKeyId:
-            name: ${APP}-postgres-secret
-            key: AWS_ACCESS_KEY_ID
-          secretAccessKey:
-            name: ${APP}-postgres-secret
-            key: AWS_SECRET_ACCESS_KEY
-        wal:
-          compression: bzip2
-        data:
-          compression: bzip2
-  backup:
-    barmanObjectStore: *barman
-    retentionPolicy: 7d
+  # bootstrap:
+  #   recovery:
+  #     source: &archive ${APP}-backup-archive
+  #     database: ${APP}
+  #     owner: ${APP}
+  # # # Note: externalClusters is needed when recovering from an existing cnpg cluster
+  # externalClusters:
+  #   - name: *archive
+  #     barmanObjectStore: &barman
+  #       destinationPath: s3://postgresql
+  #       serverName: ${APP}
+  #       endpointURL: https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
+  #       s3Credentials:
+  #         accessKeyId:
+  #           name: ${APP}-postgres-secret
+  #           key: AWS_ACCESS_KEY_ID
+  #         secretAccessKey:
+  #           name: ${APP}-postgres-secret
+  #           key: AWS_SECRET_ACCESS_KEY
+  #       wal:
+  #         compression: bzip2
+  #       data:
+  #         compression: bzip2
+  # backup:
+  #   barmanObjectStore: *barman
+  #   retentionPolicy: 7d
