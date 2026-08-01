@@ -32,9 +32,9 @@ spec:
     substituteFrom:
       - name: cluster-secrets
         kind: Secret
-    substitute:
-      # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/plugin-barman-cloud-sidecar
-      SIDECAR_IMAGE_VERSION: v0.14.0
+    # substitute:
+    #   # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/plugin-barman-cloud-sidecar
+    #   SIDECAR_IMAGE_VERSION: v0.14.0
   prune: true
   retryInterval: 2m
   sourceRef:

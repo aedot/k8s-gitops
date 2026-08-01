@@ -10,19 +10,19 @@ spec:
     kind: OCIRepository
     name: cnpg
   values:
-    fullnameOverride: cnpg-operator
-    podLabels:
-      app.kubernetes.io/component: operator
+    # fullnameOverride: cnpg-operator
+    # podLabels:
+    #   app.kubernetes.io/component: operator
     crds:
       create: true
     monitoring:
       podMonitorEnabled: true
       grafanaDashboard:
         create: true
-    topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        whenUnsatisfiable: ScheduleAnyway
-        labelSelector:
-          matchLabels:
-            app.kubernetes.io/component: operator
+    # topologySpreadConstraints:
+    #   - maxSkew: 1
+    #     topologyKey: kubernetes.io/hostname
+    #     whenUnsatisfiable: ScheduleAnyway
+    #     labelSelector:
+    #       matchLabels:
+    #         app.kubernetes.io/component: operator

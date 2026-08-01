@@ -12,7 +12,7 @@ metadata:
     # system_identifier and writes new WAL on a new timeline (no name collisions).
     cnpg.io/skipEmptyWalArchiveCheck: enabled
 spec:
-  instances: 1
+  instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:18.4-system-trixie
   primaryUpdateStrategy: unsupervised
   enableSuperuserAccess: true
