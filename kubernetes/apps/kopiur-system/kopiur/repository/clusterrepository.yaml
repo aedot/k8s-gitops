@@ -13,7 +13,7 @@ spec:
         secretRef:
           name: kopiur-s3-secret
           namespace: kopiur-system
-      bucket: kopiur
+      bucket: kopkopiur-5g7s
       endpoint: yemoja.internal:9000
       region: us-west-1
       tls:
