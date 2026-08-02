@@ -31,7 +31,7 @@ spec:
               - --primary-interface=net1
               - --log-level=debug
             probes:
-              iveness:
+              liveness:
                 enabled: true
                 custom: true
                 spec:

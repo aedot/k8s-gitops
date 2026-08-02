@@ -39,14 +39,6 @@ spec:
               fallthrough in-addr.arpa ip6.arpa
           - name: autopath
             parameters: "@kubernetes"
-          # Single-stack IPv4 cluster: nodes have no IPv6 default route, but
-          # upstream resolvers return AAAA records. Answer AAAA with NODATA so
-          # clients never attempt an unreachable IPv6 connection (which breaks
-          # e.g. kustomize-controller remote fetches over IPv6).
-          - name: template
-            parameters: IN AAAA
-            configBlock: |-
-              rcode NODATA
           - name: forward
             parameters: . /etc/resolv.conf
           - name: cache
