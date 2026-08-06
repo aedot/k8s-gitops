@@ -44,24 +44,13 @@ spec:
       source: &archive ${APP}-backup-archive
       database: ${APP}
       owner: ${APP}
-  # # # Note: externalClusters is needed when recovering from an existing cnpg cluster
-  # externalClusters:
-  #   - name: *archive
-  #     barmanObjectStore: &barman
-  #       destinationPath: s3://postgresql
-  #       serverName: ${APP}
-  #       endpointURL: https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
-  #       s3Credentials:
-  #         accessKeyId:
-  #           name: ${APP}-postgres-secret
-  #           key: AWS_ACCESS_KEY_ID
-  #         secretAccessKey:
-  #           name: ${APP}-postgres-secret
-  #           key: AWS_SECRET_ACCESS_KEY
-  #       wal:
-  #         compression: bzip2
-  #       data:
-  #         compression: bzip2
-  # backup:
-  #   barmanObjectStore: *barman
-  #   retentionPolicy: 7d
+  # Recovery source for bootstrap.recovery: resolve ${APP}-backup-archive via the
+  # barman-cloud CNPG-i plugin against the cloudflare-r2 ObjectStore. serverName
+  # must match the name the source archived under (same-name rebuild => ${APP}).
+  externalClusters:
+    - name: *archive
+      plugin:
+        name: *plugin
+        parameters:
+          barmanObjectName: cloudflare-r2
+          serverName: ${APP}
