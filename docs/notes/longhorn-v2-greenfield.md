@@ -36,12 +36,16 @@ Under V1 that data disk was a Talos `userVolume` formatted and mounted at
 | `kubernetes/.../longhorn/app/helmrelease.yaml` | `defaultDataEngine: v2`, `v1DataEngine: false`, `persistence.dataEngine: v2`; removed `defaultDataPath` |
 | `kubernetes/.../longhorn/storageclass/snapshot.yaml` | `longhorn-snapshot` / `longhorn-cache` / snapclass → `dataEngine: v2` |
 
-> ⚠️ **Verify the disk `by-id` paths before bootstrap.** The annotations use
-> `wwn-0x<serial>` derived from each data disk's serial. Confirm on real hardware:
+> ⚠️ **Disk `by-id` paths are per-node.** These are **NVMe** disks (not SATA, so
+> no `wwn-0x…`). The annotations use the stable **EUI id** form
+> `/dev/disk/by-id/nvme-eui.<WWID>`. Get each node's WWID with:
 > ```sh
-> talosctl -n <node-ip> ls -l /dev/disk/by-id/
+> talosctl get disks --insecure -n <node-ip>
 > ```
-> Fix the `path` in `talconfig.yaml` if the actual symlink differs.
+> The data disk is the 1 TB **KINGSTON** (`nvme0n1`); take its `WWID` (e.g.
+> `eui.00000000000000000026b7383951a375`) and set the path to
+> `/dev/disk/by-id/nvme-<WWID>`. The **SPCC** disk is the OS/install disk — leave
+> it alone.
 
 ---
 
@@ -53,12 +57,28 @@ Under V1 that data disk was a Talos `userVolume` formatted and mounted at
 - Record the Longhorn backup target and any volsync config that isn't in git.
 
 ### 2. Wipe & reinstall Talos
-Use your existing reset flow (`talos/mod.just` wipes `STATE` + `EPHEMERAL`).
-The data disk is no longer a `userVolume`, so Talos leaves it untouched (raw).
+The plain `just talos reset` only wipes `STATE` + `EPHEMERAL` (system partitions
+on the **install** disk) — it leaves the KINGSTON data disk `nvme0n1` with its
+old `u-longhorn` xfs partition. Use the data-wiping variant so the disk comes up
+raw for V2:
 
 ```sh
-cd talos
-task talos:generate-config      # or: talhelper genconfig  (match your justfile/taskfile)
+just talos reset-wipe-data        # resets all nodes AND wipes /dev/nvme0n1
+```
+
+Already reset without wiping? The nodes are in maintenance mode, so the data disk
+is no longer held as a volume — wipe it directly (per node):
+
+```sh
+talosctl -n <node-ip> wipe disk nvme0n1 --insecure --drop-partition
+# verify: talosctl -n <node-ip> get discoveredvolumes --insecure | grep nvme0n1
+# want only "nvme0n1 disk" — no p1 / u-longhorn / xfs
+```
+
+Then generate config and bootstrap:
+
+```sh
+just talos generate-config        # talhelper genconfig
 # apply config + bootstrap per your normal flow, ONE node at a time
 ```
 
