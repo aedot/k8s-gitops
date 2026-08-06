@@ -36,7 +36,7 @@ spec:
   plugins:
     - name: &plugin barman-cloud.cloudnative-pg.io
       isWALArchiver: true
-      parameters: &barman
+      parameters:
         barmanObjectName: cloudflare-r2
         serverName: ${APP}
   bootstrap:
