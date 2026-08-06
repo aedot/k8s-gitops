@@ -71,6 +71,54 @@ spec:
                   "UseSSHTunnel": 0,
                   "TunnelPort": "22",
                   "TunnelAuthentication": 0
+                },
+                "2": {
+                  "Name": "postgres - lubelog",
+                  "Group": "Servers",
+                  "Host": "lubelog-db-rw.selfhosted",
+                  "Port": 5432,
+                  "MaintenanceDB": "postgres",
+                  "Username": "postgres",
+                  "ConnectionParameters": {
+                    "sslmode": "prefer",
+                    "connect_timeout": 10
+                  },
+                  "Timeout": 10,
+                  "UseSSHTunnel": 0,
+                  "TunnelPort": "22",
+                  "TunnelAuthentication": 0
+                },
+                "3": {
+                  "Name": "postgres - teslamate",
+                  "Group": "Servers",
+                  "Host": "teslamate-db-rw.selfhosted",
+                  "Port": 5432,
+                  "MaintenanceDB": "postgres",
+                  "Username": "postgres",
+                  "ConnectionParameters": {
+                    "sslmode": "prefer",
+                    "connect_timeout": 10
+                  },
+                  "Timeout": 10,
+                  "UseSSHTunnel": 0,
+                  "TunnelPort": "22",
+                  "TunnelAuthentication": 0
+                },
+                "4": {
+                  "Name": "postgres - sparkyfitness",
+                  "Group": "Servers",
+                  "Host": "sparkyfitness-db-rw.selfhosted",
+                  "Port": 5432,
+                  "MaintenanceDB": "postgres",
+                  "Username": "postgres",
+                  "ConnectionParameters": {
+                    "sslmode": "prefer",
+                    "connect_timeout": 10
+                  },
+                  "Timeout": 10,
+                  "UseSSHTunnel": 0,
+                  "TunnelPort": "22",
+                  "TunnelAuthentication": 0
                 }
               }
             }
