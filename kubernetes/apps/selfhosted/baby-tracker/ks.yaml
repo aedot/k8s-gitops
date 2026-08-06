@@ -18,6 +18,8 @@ spec:
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
+    - name: cnpg-barman-cloud
+      namespace: dbms
   prune: true
   sourceRef:
     kind: GitRepository

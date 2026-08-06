@@ -39,11 +39,11 @@ spec:
       parameters: &barman
         barmanObjectName: cloudflare-r2
         serverName: ${APP}
-  # bootstrap:
-  #   recovery:
-  #     source: &archive ${APP}-backup-archive
-  #     database: ${APP}
-  #     owner: ${APP}
+  bootstrap:
+    recovery:
+      source: &archive ${APP}-backup-archive
+      database: ${APP}
+      owner: ${APP}
   # # # Note: externalClusters is needed when recovering from an existing cnpg cluster
   # externalClusters:
   #   - name: *archive
