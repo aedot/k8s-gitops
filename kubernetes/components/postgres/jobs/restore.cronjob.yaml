@@ -24,8 +24,32 @@ spec:
             - name: *name
               image: docker.io/prodrigestivill/postgres-backup-local:${PG_VER:=18}
               imagePullPolicy: IfNotPresent
+              # This image ships /backup.sh but not /restore.sh, so restore is
+              # done explicitly. /backups is the NFS "last/" dir (see volume);
+              # restores <dbname>-latest.sql.gz (a plain pg_dump gzip) into the
+              # already-created empty database, atomically.
               command:
-                - /restore.sh
+                - /bin/sh
+                - -c
+                - |
+                  set -eu
+                  # $$ escapes the $ so Flux postBuild substitution leaves these
+                  # for the shell at runtime (only ${APP}/${PG_VER} are Flux vars).
+                  export PGPASSWORD="$$POSTGRES_PASSWORD"
+                  FILE="$${POSTGRES_RESTORE_FILE:-}"
+                  if [ -z "$$FILE" ] && [ -e "/backups/$${POSTGRES_DB}-latest.sql.gz" ]; then
+                    FILE="/backups/$${POSTGRES_DB}-latest.sql.gz"
+                  fi
+                  if [ -z "$$FILE" ]; then
+                    FILE="$$(ls -1t /backups/$${POSTGRES_DB}-*.sql.gz 2>/dev/null | head -n1 || true)"
+                  fi
+                  if [ -z "$$FILE" ]; then
+                    echo "ERROR: no backup found for '$${POSTGRES_DB}' under /backups"; ls -la /backups || true; exit 1
+                  fi
+                  echo "Restoring '$${POSTGRES_DB}' on $${POSTGRES_HOST} from $${FILE}"
+                  gunzip -c "$$FILE" | psql --single-transaction -v ON_ERROR_STOP=1 \
+                    --host="$$POSTGRES_HOST" --username="$$POSTGRES_USER" --dbname="$${POSTGRES_DB}"
+                  echo "Restore of '$${POSTGRES_DB}' complete."
               env:
                 - name: POSTGRES_HOST
                   value: ${APP}-db-rw
@@ -44,7 +68,7 @@ spec:
                     secretKeyRef:
                       name: ${APP}-db-app
                       key: password
-                # Omit to restore latest, or pin a specific file:
+                # Omit to restore latest, or pin a specific file under /backups (= NFS last/):
                 # - name: POSTGRES_RESTORE_FILE
                 #   value: /backups/${APP}-20260601-120000.sql.gz
               volumeMounts:
@@ -55,4 +79,4 @@ spec:
             - name: backups
               nfs:
                 server: yemoja.internal
-                path: /mnt/alaafin/k8s/postgres
+                path: /mnt/alaafin/k8s/postgres/last
