@@ -76,11 +76,10 @@ spec:
             }
     persistence:
       data:
-        enabled: true
         existingClaim: "{{ .Release.Name }}"
         advancedMounts:
-          app:
-            pgadmin:
+          pgadmin:
+            app:
               - path: /var/lib/pgadmin
       server-json:
         enabled: true
