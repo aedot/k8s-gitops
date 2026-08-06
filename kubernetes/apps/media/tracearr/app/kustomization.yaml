@@ -6,3 +6,20 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
+# Bootstrap an EMPTY cluster (initdb) instead of R2 barman recovery, since the
+# cnpg-6u9f bucket has no base backups yet. NOTE: no tracearr NFS dump was found
+# on the share, so this cluster comes up empty with no seed — the app must
+# initialize its own schema on first start.
+patches:
+  - target:
+      group: postgresql.cnpg.io
+      kind: Cluster
+    patch: |-
+      - op: replace
+        path: /spec/bootstrap
+        value:
+          initdb:
+            database: ${APP}
+            owner: ${APP}
+      - op: remove
+        path: /spec/externalClusters

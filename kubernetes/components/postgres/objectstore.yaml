@@ -6,7 +6,7 @@ metadata:
   name: cloudflare-r2
 spec:
   configuration:
-    destinationPath: s3://postgresql
+    destinationPath: s3://cnpg-6u9f
     endpointURL: https://${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
     s3Credentials:
       accessKeyId:
