@@ -26,13 +26,12 @@ nodes:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/8af8cf71310e5eeddc32fa523441d6a0f181e0fb859e66bf7dbed7affb2e73c9
     controlPlane: true
-    userVolumes:
-      - name: longhorn
-        provisioning:
-          diskSelector:
-            match: disk.serial == "50026B73839504FD"
-          minSize: "300GiB"
-          grow: true
+    # Longhorn V2 data disk: left RAW (no userVolume/filesystem) so SPDK uses the block device directly.
+    # Registered as a V2 "block" disk via the annotation below.
+    # VERIFY the by-id path on the node before bootstrap (ls -l /dev/disk/by-id/) —
+    # wwn derived from data-disk serial 50026B73839504FD.
+    nodeAnnotations:
+      node.longhorn.io/default-disks-config: '[{"path":"/dev/disk/by-id/wwn-0x50026b73839504fd","allowScheduling":true,"diskType":"block"}]'
     networkInterfaces:
       - interface: bond0
         bond:
@@ -56,13 +55,12 @@ nodes:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/8af8cf71310e5eeddc32fa523441d6a0f181e0fb859e66bf7dbed7affb2e73c9
     controlPlane: true
-    userVolumes:
-      - name: longhorn
-        provisioning:
-          diskSelector:
-            match: disk.serial == "50026B7383950E6D"
-          minSize: "300GiB"
-          grow: true
+    # Longhorn V2 data disk: left RAW (no userVolume/filesystem) so SPDK uses the block device directly.
+    # Registered as a V2 "block" disk via the annotation below.
+    # VERIFY the by-id path on the node before bootstrap (ls -l /dev/disk/by-id/) —
+    # wwn derived from data-disk serial 50026B7383950E6D.
+    nodeAnnotations:
+      node.longhorn.io/default-disks-config: '[{"path":"/dev/disk/by-id/wwn-0x50026b7383950e6d","allowScheduling":true,"diskType":"block"}]'
     networkInterfaces:
       - interface: bond0
         bond:
@@ -82,13 +80,12 @@ nodes:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/8af8cf71310e5eeddc32fa523441d6a0f181e0fb859e66bf7dbed7affb2e73c9
     controlPlane: true
-    userVolumes:
-      - name: longhorn
-        provisioning:
-          diskSelector:
-            match: disk.serial == "50026B7383951A37"
-          minSize: "300GiB"
-          grow: true
+    # Longhorn V2 data disk: left RAW (no userVolume/filesystem) so SPDK uses the block device directly.
+    # Registered as a V2 "block" disk via the annotation below.
+    # VERIFY the by-id path on the node before bootstrap (ls -l /dev/disk/by-id/) —
+    # wwn derived from data-disk serial 50026B7383951A37.
+    nodeAnnotations:
+      node.longhorn.io/default-disks-config: '[{"path":"/dev/disk/by-id/wwn-0x50026b7383951a37","allowScheduling":true,"diskType":"block"}]'
     networkInterfaces:
       - interface: bond0
         bond:

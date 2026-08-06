@@ -15,12 +15,18 @@ spec:
       upgradeVersionCheck: false
     persistence:
       defaultDataLocality: best-effort
+      dataEngine: v2
       recurringJobSelector:
         enable: true
         jobList: '[{"name":"recurring-fs-trim", "isGroup":false}]'
     defaultSettings:
+      # Pure V2 (SPDK/NVMe-TCP) build. V1 is disabled so the host open-iscsi stack
+      # is never used — see docs/notes/longhorn-iscsi-attaching.md for why.
       v2DataEngine: true
-      defaultDataPath: "/var/mnt/longhorn"
+      v1DataEngine: false
+      defaultDataEngine: v2
+      # No defaultDataPath: V2 disks are raw block devices, registered per node via
+      # the node.longhorn.io/default-disks-config annotation (talconfig.yaml).
       replicaDiskSoftAntiAffinity: false
       createDefaultDiskLabeledNodes: true
       defaultDataLocality: best-effort
