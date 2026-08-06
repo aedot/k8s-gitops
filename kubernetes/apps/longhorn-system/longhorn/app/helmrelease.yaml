@@ -36,7 +36,14 @@ spec:
       guaranteedReplicaManagerCPU: "20"
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
       orphanAutoDeletion: replica-data;instance
-      replicaAutoBalance: best-effort
+      # replicaAutoBalance disabled + rebuild concurrency pinned to 1 to avoid a v2
+      # NVMe-TCP device-number-reuse race in Longhorn v1.12.0: concurrent replica
+      # attach/detach churn made one volume's frontend validate another's freed
+      # /dev/nvmeXn1 ("no subsystem found for NVMe device"), erroring the frontend and
+      # flipping the app's ext4 read-only. On a 3-node/3-replica cluster replicas are
+      # already fully spread, so auto-balance was pure churn. See docs/notes below.
+      replicaAutoBalance: disabled
+      concurrentReplicaRebuildPerNodeLimit: "1"
       storageMinimalAvailablePercentage: "1"
       storageReservedPercentageForDefaultDisk: "10"
     ingress:
