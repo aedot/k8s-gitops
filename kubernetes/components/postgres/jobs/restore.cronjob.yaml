@@ -33,8 +33,8 @@ spec:
                 - -c
                 - |
                   set -eu
-                  # $$ escapes the $ so Flux postBuild substitution leaves these
-                  # for the shell at runtime (only ${APP}/${PG_VER} are Flux vars).
+                  # Note: the $$ prefix escapes $ so Flux postBuild substitution
+                  # leaves these variables for the shell to expand at runtime.
                   export PGPASSWORD="$$POSTGRES_PASSWORD"
                   FILE="$${POSTGRES_RESTORE_FILE:-}"
                   if [ -z "$$FILE" ] && [ -e "/backups/$${POSTGRES_DB}-latest.sql.gz" ]; then
