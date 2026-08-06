@@ -3,14 +3,7 @@ machine:
     extraConfig:
       serializeImagePulls: false
       imageMaximumGCAge: 24h
-    extraMounts:
-      - destination: /var/mnt/longhorn
-        type: bind
-        source: /var/mnt/longhorn
-        options:
-          - "bind"
-          - "rshared"
-          - "rw"
+    # No Longhorn bind-mount: V2 uses a raw block device, not a /var/mnt filesystem path.
     defaultRuntimeSeccompProfileEnabled: true
     nodeIP:
       validSubnets:
