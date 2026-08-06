@@ -46,7 +46,9 @@ declare -A HAS_DUMP=(
   [readmeabook]=yes
 )
 
-FLUX_NS="${FLUX_NS:-flux-system}"   # namespace the Flux Kustomization CRs live in
+FLUX_NS="${FLUX_NS:-}"   # override the Flux Kustomization namespace; empty = use
+                         # each app's own namespace (these CRs are stamped into
+                         # apps/<ns>/kustomization.yaml -> namespace: <ns>)
 CLUSTER_READY_TIMEOUT="${CLUSTER_READY_TIMEOUT:-600}"   # seconds
 RESTORE_TIMEOUT="${RESTORE_TIMEOUT:-3600}"              # seconds (teslamate is big)
 
@@ -109,8 +111,10 @@ do_app() {
   echo " ${app}  (ns/${ns}, nfs-dump: ${dump})"
   echo "=============================================================="
 
+  local fns="${FLUX_NS:-$ns}"   # Flux Kustomization lives in the app's namespace
+
   # 1. reconcile the merged config
-  run flux -n "$FLUX_NS" reconcile kustomization "$app" --with-source || \
+  run flux -n "$fns" reconcile kustomization "$app" --with-source || \
     echo "  WARN: reconcile failed/absent for ${app} (continuing)"
 
   # 2. recreate the cluster empty
@@ -126,7 +130,7 @@ do_app() {
   fi
 
   # let Flux recreate the empty cluster, then wait for readiness
-  run flux -n "$FLUX_NS" reconcile kustomization "$app" || true
+  run flux -n "$fns" reconcile kustomization "$app" || true
   wait_cluster_ready "$ns" "$app" || { echo "  ABORT ${app}: cluster not ready"; return 1; }
 
   # 3. restore from NFS
@@ -156,7 +160,7 @@ do_app() {
 }
 
 echo "Apps: $APPS"
-echo "Flux Kustomization namespace: $FLUX_NS   dry-run: $DRY_RUN   assume-yes: $ASSUME_YES"
+echo "Flux Kustomization namespace: ${FLUX_NS:-<per-app>}   dry-run: $DRY_RUN   assume-yes: $ASSUME_YES"
 for app in $APPS; do
   [[ -z "${NS[$app]:-}" ]] && { echo "unknown app: $app" >&2; continue; }
   do_app "$app"
