@@ -11,8 +11,8 @@ resources:
 # Restore from the NFS logical dump instead of R2 barman recovery: bootstrap an
 # EMPTY cluster (initdb) so bootstrap.recovery is skipped, then re-seed via the
 # teslamate-postgres-restore Job (cnpg-6u9f bucket has no base backups yet).
-# NOTE: teslamate dump is ~277MB compressed; the shared 5Gi cluster volume may
-# need bumping before/after restore.
+# Storage is bumped from the shared 5Gi default to 20Gi: teslamate's dump is
+# ~277MB compressed (multi-GB restored) and the DB keeps growing.
 patches:
   - target:
       group: postgresql.cnpg.io
@@ -26,3 +26,6 @@ patches:
             owner: ${APP}
       - op: remove
         path: /spec/externalClusters
+      - op: replace
+        path: /spec/storage/size
+        value: 20Gi
