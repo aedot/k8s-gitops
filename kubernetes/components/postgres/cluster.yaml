@@ -18,6 +18,10 @@ spec:
   enableSuperuserAccess: true
   # minSyncReplicas: 1
   # maxSyncReplicas: 1
+  bootstrap:
+    initdb:
+      database: ${APP}
+      owner: ${APP}
   storage:
     storageClass: longhorn
     size: 5Gi

@@ -21,6 +21,8 @@ spec:
       namespace: dbms
     - name: akeyless-stores
       namespace: external-secrets
+    - name: cnpg-barman-cloud
+      namespace: dbms
   prune: true
   sourceRef:
     kind: GitRepository
