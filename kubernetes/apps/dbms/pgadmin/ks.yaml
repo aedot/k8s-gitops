@@ -27,6 +27,5 @@ spec:
     substitute:
       APP: pgadmin
       KOPIUR_CLAIM: pgadmin-config
-      KOPIUR_CAPACITY: 1Gi
       KOPIUR_PUID: "5050"
       KOPIUR_PGID: "5050"
