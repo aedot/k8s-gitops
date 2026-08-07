@@ -26,10 +26,13 @@ nodes:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/8af8cf71310e5eeddc32fa523441d6a0f181e0fb859e66bf7dbed7affb2e73c9
     controlPlane: true
-    # Longhorn V2 data disk (nvme0n1, KINGSTON OM8PGP41024N-A0, serial 50026B73839504FD): left RAW so SPDK uses it directly.
-    # Registered as a V2 "block" disk by its NVMe EUI id (WWID confirmed via `talosctl get disks`).
-    nodeAnnotations:
-      node.longhorn.io/default-disks-config: '[{"path":"/dev/disk/by-id/nvme-eui.00000000000000000026b73839504fd5","allowScheduling":true,"diskType":"block"}]'
+    userVolumes:
+      - name: longhorn
+        provisioning:
+          diskSelector:
+            match: disk.serial == "50026B73839504FD"
+          minSize: "300GiB"
+          grow: true
     networkInterfaces:
       - interface: bond0
         bond:
@@ -53,10 +56,13 @@ nodes:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/8af8cf71310e5eeddc32fa523441d6a0f181e0fb859e66bf7dbed7affb2e73c9
     controlPlane: true
-    # Longhorn V2 data disk (nvme0n1, KINGSTON OM8PGP41024N-A0, serial 50026B7383950E6D): left RAW so SPDK uses it directly.
-    # Registered as a V2 "block" disk by its NVMe EUI id (WWID confirmed via `talosctl get disks`).
-    nodeAnnotations:
-      node.longhorn.io/default-disks-config: '[{"path":"/dev/disk/by-id/nvme-eui.00000000000000000026b7383950e6d5","allowScheduling":true,"diskType":"block"}]'
+    userVolumes:
+      - name: longhorn
+        provisioning:
+          diskSelector:
+            match: disk.serial == "50026B7383950E6D"
+          minSize: "300GiB"
+          grow: true
     networkInterfaces:
       - interface: bond0
         bond:
@@ -76,10 +82,13 @@ nodes:
       secureboot: false
     talosImageURL: factory.talos.dev/installer/8af8cf71310e5eeddc32fa523441d6a0f181e0fb859e66bf7dbed7affb2e73c9
     controlPlane: true
-    # Longhorn V2 data disk (nvme0n1, KINGSTON OM8PGP41024N-A0, serial 50026B7383951A37): left RAW so SPDK uses it directly.
-    # Registered as a V2 "block" disk by its NVMe EUI id (WWID confirmed via `talosctl get disks`).
-    nodeAnnotations:
-      node.longhorn.io/default-disks-config: '[{"path":"/dev/disk/by-id/nvme-eui.00000000000000000026b7383951a375","allowScheduling":true,"diskType":"block"}]'
+    userVolumes:
+      - name: longhorn
+        provisioning:
+          diskSelector:
+            match: disk.serial == "50026B7383951A37"
+          minSize: "300GiB"
+          grow: true
     networkInterfaces:
       - interface: bond0
         bond:

@@ -15,18 +15,17 @@ spec:
       upgradeVersionCheck: false
     persistence:
       defaultDataLocality: best-effort
-      dataEngine: v2
       recurringJobSelector:
         enable: true
         jobList: '[{"name":"recurring-fs-trim", "isGroup":false}]'
     defaultSettings:
-      # Pure V2 (SPDK/NVMe-TCP) build. V1 is disabled so the host open-iscsi stack
-      # is never used — see docs/notes/longhorn-iscsi-attaching.md for why.
-      v2DataEngine: true
-      v1DataEngine: false
-      defaultDataEngine: v2
-      # No defaultDataPath: V2 disks are raw block devices, registered per node via
-      # the node.longhorn.io/default-disks-config annotation (talconfig.yaml).
+      # V1 (iSCSI) data engine. Reverted from the V2/SPDK build, which hit a
+      # v2 NVMe-TCP device-number-reuse race in Longhorn v1.12.0 (frontend flips
+      # app ext4 read-only). Data disk is a filesystem userVolume at
+      # /var/mnt/longhorn (talconfig.yaml + machine-nodelabel.yaml).
+      v2DataEngine: false
+      defaultDataEngine: v1
+      defaultDataPath: "/var/mnt/longhorn"
       replicaDiskSoftAntiAffinity: false
       createDefaultDiskLabeledNodes: true
       defaultDataLocality: best-effort
@@ -36,12 +35,9 @@ spec:
       guaranteedReplicaManagerCPU: "20"
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
       orphanAutoDeletion: replica-data;instance
-      # replicaAutoBalance disabled + rebuild concurrency pinned to 1 to avoid a v2
-      # NVMe-TCP device-number-reuse race in Longhorn v1.12.0: concurrent replica
-      # attach/detach churn made one volume's frontend validate another's freed
-      # /dev/nvmeXn1 ("no subsystem found for NVMe device"), erroring the frontend and
-      # flipping the app's ext4 read-only. On a 3-node/3-replica cluster replicas are
-      # already fully spread, so auto-balance was pure churn. See docs/notes below.
+      # Conservative rebuild behavior: on a 3-node/3-replica cluster replicas are
+      # already fully spread, so auto-balance is pure churn; serialize rebuilds to
+      # limit disk/network pressure during recovery.
       replicaAutoBalance: disabled
       concurrentReplicaRebuildPerNodeLimit: "1"
       storageMinimalAvailablePercentage: "1"

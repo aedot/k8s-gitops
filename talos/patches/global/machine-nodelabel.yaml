@@ -1,6 +1,6 @@
 machine:
-  # Longhorn V2: the per-node "default-disks-config" annotation (block disk, by-id path)
-  # is defined per node in talconfig.yaml, since the device path differs per host.
+  nodeAnnotations:
+    node.longhorn.io/default-disks-config: '[{"path":"/var/mnt/longhorn","allowScheduling":true}]'
   nodeLabels:
     node.longhorn.io/create-default-disk: "config"
     node.kubernetes.io/gpu: "true"
