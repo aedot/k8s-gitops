@@ -2,7 +2,4 @@ machine:
   kernel:
     modules:
       - name: nbd
-      - name: nvme_tcp          # V2 frontend transport (replaces iSCSI)
-      - name: uio_pci_generic   # SPDK device binding
-      # - name: vfio_pci        # alternative to uio_pci_generic if needed
       # - name: thunderbolt
