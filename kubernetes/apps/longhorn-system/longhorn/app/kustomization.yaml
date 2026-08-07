@@ -6,4 +6,4 @@ resources:
   - ./ocirepository.yaml
   - ./grafanadashboard.yaml
   - ./prometheusrule.yaml
-  - ./trim-recurringjob.yaml
+  # - ./trim-recurringjob.yaml
