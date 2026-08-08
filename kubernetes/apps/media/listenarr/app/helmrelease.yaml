@@ -21,11 +21,9 @@ spec:
               tag: canary@sha256:7aa44d67b649cd401507b763733f93e90ea4f12e2001e2bc67e31199366bb3a9
             env:
               TZ: America/Los_Angeles
-              PUID: "1000"
-              PGID: "1000"
-              UMASK: "022"
               LISTENARR_PUBLIC_URL: https://listenarr.${SECRET_DOMAIN}
-              LISTENARR_LOG_LEVEL: Information
+              LISTENARR_LOG_LEVEL: info
+              ASPNETCORE_FORWARDHEADERS_ENABLED: "true"
             probes:
               liveness: &probes
                 enabled: true
@@ -34,7 +32,7 @@ spec:
                   httpGet:
                     path: /
                     port: &port 4545
-                  initialDelaySeconds: 30
+                  initialDelaySeconds: 10
                   periodSeconds: 10
                   timeoutSeconds: 5
                   failureThreshold: 3
@@ -77,5 +75,5 @@ spec:
         type: nfs
         server: yemoja.internal
         path: /mnt/alaafin/data
-      tmp:
-        type: emptyDir
+        globalMounts:
+          - path: /data
