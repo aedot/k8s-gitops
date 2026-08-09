@@ -36,5 +36,3 @@ spec:
         kind: Secret
     substitute:
       APP: tracearr
-      # renovate: datasource=docker depName=timescale/timescaledb-ha
-      PSQL_IMAGE: timescale/timescaledb-ha:pg18.3-ts2.25.2@sha256:416fe955f5d9aa42a5a1c273e63d6f6c3480faa9ca98171924ef09fa6315da5e
