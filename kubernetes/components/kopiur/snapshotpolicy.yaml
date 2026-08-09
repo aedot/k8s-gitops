@@ -15,7 +15,7 @@ spec:
       runAsGroup: ${KOPIUR_PGID:=1000}
   repository:
     kind: ClusterRepository
-    name: kopiur-s3
+    name: nas
   retention:
     keepLatest: 3
     keepHourly: 24

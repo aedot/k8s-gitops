@@ -3,39 +3,38 @@
 apiVersion: kopiur.home-operations.com/v1alpha1
 kind: ClusterRepository
 metadata:
-  name: kopiur-s3
+  name: nas
 spec:
   allowedNamespaces:
     all: true
   backend:
-    s3:
-      auth:
-        secretRef:
-          name: kopiur-s3-secret
-          namespace: kopiur-system
-      bucket: kopiur-5g7s
-      endpoint: yemoja.internal:9000
-      region: us-west-1
-      tls:
-        disableTls: true
+    filesystem:
+      path: /repo
+      volume:
+        nfs:
+          server: yemoja.internal
+          path: /mnt/alaafin/k8s/kopiur
   credentialProjection:
     allowed: true
   encryption:
     passwordSecretRef:
-      name: kopiur-s3-secret
+      name: kopiur-nas-secret
       namespace: kopiur-system
       key: KOPIA_PASSWORD
+  moverDefaults:
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+    podSecurityContext:
+      fsGroup: 1000
   parameters:
     epoch:
       minDuration: 6h
-  bootstrap:
-    failurePolicy:
-      activeDeadlineSeconds: 600 # default 120s is too short to open a bloated (4123 index-blob) repo
   maintenance:
     enabled: true
     schedule:
       quick:
-        cron: 0 6 * * * # daily: compacts indexes, avoids full blob LIST
+        cron: 0 6 * * * # daily: compacts indexes (filesystem readdir, no S3 LIST)
       full:
         cron: 0 3 * * 1 # weekly: GC + unreferenced blob reclaim
   scheduleDefaults:
@@ -45,7 +44,7 @@ spec:
 # apiVersion: kopiur.home-operations.com/v1alpha1
 # kind: ClusterRepository
 # metadata:
-#   name: cloudflare-r2
+#   name: kopiur-s3
 # spec:
 #   allowedNamespaces:
 #     all: true
@@ -53,30 +52,32 @@ spec:
 #     s3:
 #       auth:
 #         secretRef:
-#           name: kopiur-r2-secret
+#           name: kopiur-s3-secret
 #           namespace: kopiur-system
-#       bucket: kopiur-q49c
-#       endpoint: ${CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
+#       bucket: kopiur-5g7s
+#       endpoint: yemoja.internal:9000
+#       region: us-west-1
+#       tls:
+#         disableTls: true
 #   credentialProjection:
 #     allowed: true
 #   encryption:
 #     passwordSecretRef:
-#       name: kopiur-r2-secret
+#       name: kopiur-s3-secret
 #       namespace: kopiur-system
 #       key: KOPIA_PASSWORD
-#   catalog:
-#     adoption: Ignore
+#   parameters:
+#     epoch:
+#       minDuration: 6h
+#   bootstrap:
+#     failurePolicy:
+#       activeDeadlineSeconds: 600
 #   maintenance:
 #     enabled: true
 #     schedule:
-#       full:
-#         cron: 0 3 * * 1
 #       quick:
 #         cron: 0 6 * * *
+#       full:
+#         cron: 0 3 * * 1
 #   scheduleDefaults:
 #     timezone: America/Los_Angeles
-#   server:
-#     auth:
-#       insecure:
-#         acknowledgeInsecure: true
-#     namespace: kopiur-system
