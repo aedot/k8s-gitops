@@ -25,6 +25,16 @@ spec:
       name: kopiur-s3-secret
       namespace: kopiur-system
       key: KOPIA_PASSWORD
+  parameters:
+    epoch:
+      minDuration: 6h
+  maintenance:
+    enabled: true
+    schedule:
+      quick:
+        cron: 0 6 * * * # daily: compacts indexes, avoids full blob LIST
+      full:
+        cron: 0 3 * * 1 # weekly: GC + unreferenced blob reclaim
   scheduleDefaults:
     timezone: America/Los_Angeles
 # ---
