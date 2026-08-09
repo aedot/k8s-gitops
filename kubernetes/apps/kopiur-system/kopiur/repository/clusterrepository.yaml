@@ -28,6 +28,9 @@ spec:
   parameters:
     epoch:
       minDuration: 6h
+  bootstrap:
+    failurePolicy:
+      activeDeadlineSeconds: 600 # default 120s is too short to open a bloated (4123 index-blob) repo
   maintenance:
     enabled: true
     schedule:
