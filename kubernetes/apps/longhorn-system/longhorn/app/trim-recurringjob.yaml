@@ -6,5 +6,6 @@ metadata:
 spec:
   task: filesystem-trim
   cron: "0 3 * * 0"
+  timeZone: America/Los_Angeles
   concurrency: 2
   retain: 0
