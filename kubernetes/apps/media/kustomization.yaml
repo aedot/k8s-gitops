@@ -8,8 +8,8 @@ components:
 resources:
   - ./agregarr/ks.yaml
   - ./imagemaid/ks.yaml
-  - ./listenarr/ks.yaml
   - ./plex/ks.yaml
+  - ./readmeabook/ks.yaml
   - ./seerr/ks.yaml
   - ./tautulli/ks.yaml
   - ./tracearr/ks.yaml
