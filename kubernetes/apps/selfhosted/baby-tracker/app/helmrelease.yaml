@@ -26,7 +26,7 @@ spec:
               HIDDEN_MODULES: "['tab.get_ready', 'tab.contractions', 'pump.left', 'pump.right', 'feed.breast', 'feed.solid']"
               SUMMARY_ENABLED: "true"
               SUMMARY_PROVIDER: ollama
-              SUMMARY_OLLAMA_URL: https://yemoja.internal:11434
+              SUMMARY_OLLAMA_URL: yemoja.internal:11434
               SUMMARY_DAILY_CAP: "3"
               SUMMARY_HOUR: "8"
               MQTT_HOST: mosquitto.dbms.svc.cluster.local
