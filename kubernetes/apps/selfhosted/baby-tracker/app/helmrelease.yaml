@@ -23,7 +23,7 @@ spec:
               TZ: America/Los_Angeles
               FEED_HOURS: "3"
               MEASUREMENT_SYSTEM: metrics
-              HIDDEN_MODULES: ["tab.get_ready", "tab.contractions"]
+              HIDDEN_MODULES: '["tab.get_ready", "tab.contractions"]'
               SUMMARY_ENABLED: "true"
               SUMMARY_PROVIDER: ollama
               SUMMARY_OLLAMA_URL: http://yemoja.internal:11434
