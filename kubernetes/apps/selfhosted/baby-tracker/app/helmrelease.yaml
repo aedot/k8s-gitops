@@ -21,17 +21,17 @@ spec:
               tag: 2026.4.13@sha256:c357062132d599028b4f372a23e64b55a8b4a591fbf3e7b8e68e37154e78cdbd
             env:
               TZ: America/Los_Angeles
-              feed_hours: "3"
-              measurement_system: metrics
-              hidden_modules: "['tab.get_ready', 'tab.contractions', 'pump.left', 'pump.right', 'feed.breast', 'feed.solid']"
-              summary_enabled: "true"
-              summary_provider: ollama
-              summary_ollama_url: http://yemoja.internal:11434
-              summary_daily_cap: "3"
-              summary_hour: "8"
-              mqtt_host: mosquitto.dbms.svc.cluster.local
-              mqtt_port: "1883"
-              database_url:
+              FEED_HOURS: "3"
+              MEASUREMENT_SYSTEM: metrics
+              HIDDEN_MODULES: "['tab.get_ready', 'tab.contractions', 'pump.left', 'pump.right', 'feed.breast', 'feed.solid']"
+              SUMMARY_ENABLED: "true"
+              SUMMARY_PROVIDER: ollama
+              SUMMARY_OLLAMA_URL: http://yemoja.internal:11434
+              SUMMARY_DAILY_CAP: "3"
+              SUMMARY_HOUR: "8"
+              MQTT_HOST: mosquitto.dbms.svc.cluster.local
+              MQTT_PORT: "1883"
+              DATABASE_URL:
                 valueFrom:
                   secretKeyRef:
                     name: "{{ .Release.Name }}-db-app"
