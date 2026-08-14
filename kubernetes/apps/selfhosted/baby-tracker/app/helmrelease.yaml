@@ -22,6 +22,13 @@ spec:
             env:
               TZ: America/Los_Angeles
               FEED_HOURS: "3"
+              FEVER_THRESHOLD_C: "38.0"
+              FEVER_THRESHOLD_F: "100.4"
+              SUMMARY_ENABLED: "true"
+              SUMMARY_PROVIDER: ollama
+              SUMMARY_OLLAMA_URL: http://yemoja.internal:11434
+              SUMMARY_DAILY_CAP: "3"
+              SUMMARY_HOUR: "8"
               MQTT_HOST: mosquitto.dbms.svc.cluster.local
               MQTT_PORT: "1883"
               DATABASE_URL:
