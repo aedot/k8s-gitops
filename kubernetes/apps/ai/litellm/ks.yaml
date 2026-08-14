@@ -26,6 +26,8 @@ spec:
       namespace: dbms
     - name: intel-gpu-resource-driver
       namespace: kube-system
+    - name: cnpg-barman-cloud
+      namespace: dbms
   prune: true
   sourceRef:
     kind: GitRepository
