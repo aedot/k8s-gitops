@@ -8,4 +8,4 @@ components:
   - ../../components/namespace
 resources:
   - ./litellm/ks.yaml
-  - ./llmkube/ks.yaml
+  # - ./llmkube/ks.yaml
