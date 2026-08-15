@@ -47,7 +47,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /health/liveliness
+                    path: /
                     port: 4000
                   initialDelaySeconds: 5
                   periodSeconds: 10
@@ -57,7 +57,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /health/readiness
+                    path: /
                     port: 4000
                   initialDelaySeconds: 5
                   periodSeconds: 10
@@ -67,7 +67,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /health/readiness
+                    path: /
                     port: 4000
                   initialDelaySeconds: 5
                   periodSeconds: 10
