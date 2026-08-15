@@ -22,6 +22,7 @@ spec:
             args:
               - --config=/app/config.yaml
             env:
+              HOME: /app/cache
               LITELLM_LOG: INFO
               LITELLM_MODE: PRODUCTION
               STORE_MODEL_IN_DB: true
