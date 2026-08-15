@@ -40,21 +40,40 @@ spec:
             resources:
               requests:
                 cpu: 100m
-                memory: 512Mi
+                memory: 256Mi
               limits:
-                memory: 4Gi
+                memory: 2Gi
             probes:
-              liveness: &probes
+              liveness:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /
-                    port: &port 4000
+                    port: 4000
                   initialDelaySeconds: 5
                   periodSeconds: 10
                   failureThreshold: 3
-              readiness: *probes
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 4000
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+                  failureThreshold: 3
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 4000
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+                  failureThreshold: 30
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
