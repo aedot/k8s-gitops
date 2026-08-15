@@ -12,24 +12,30 @@ data:
           model: ollama/phi4-mini:latest
           api_base: http://sys-mini-1.internal:11434
         model_info:
-          mode: embedding
+          mode: chat
+
       - model_name: qwen3.5:9b
         litellm_params:
           model: ollama/qwen-3.5:9b
           api_base: http://sys-mini-1.internal:11434
+        model_info:
+          mode: chat
+
       - model_name: gemma4:e4b
         litellm_params:
           model: ollama/gemma4:e4b
           api_base: http://sys-mini-1.internal:11434
+        model_info:
+          mode: chat
 
     general_settings:
+      health_check_endpoint: /v1/health
       store_model_in_db: false
-      proxy_batch_write_at: 60
-      database_connection_pool_limit: 10
-      use_redis_transaction_buffer: true
 
     router_settings:
-      routing_strategy: usage-based-routing-v2
+      routing_strategy: simple-shuffle
+      cooldown_time: 30
+      enable_pre_call_checks: true
       redis_host: os.environ/REDIS_HOST
       redis_port: os.environ/REDIS_PORT
 

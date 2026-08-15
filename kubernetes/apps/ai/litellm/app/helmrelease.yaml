@@ -44,27 +44,18 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 2Gi
-            probes:
+            probes: &probes
               liveness:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /
-                    port: 4000
+                    port: &port 4000
                   initialDelaySeconds: 5
                   periodSeconds: 10
                   failureThreshold: 3
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: 4000
-                  initialDelaySeconds: 5
-                  periodSeconds: 10
-                  failureThreshold: 3
+              readiness: *probes
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -91,7 +82,7 @@ spec:
       app:
         ports:
           http:
-            port: 4000
+            port: *port
     route:
       app:
         hostnames: ["litellm.${SECRET_DOMAIN}"]
