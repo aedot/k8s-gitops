@@ -19,7 +19,8 @@ spec:
             image:
               repository: ghcr.io/berriai/litellm
               tag: v1.83.14-stable@sha256:d6401c001f90f3bab4bb23c5fd6d9302a7df58999ec6fa9e3f175e1f5f26544b
-            args: ["--config", "/config/config.yaml", "--port", "4000"]
+            args:
+              - --config=/app/config.yaml
             env:
               LITELLM_LOG: INFO
               LITELLM_MODE: PRODUCTION
