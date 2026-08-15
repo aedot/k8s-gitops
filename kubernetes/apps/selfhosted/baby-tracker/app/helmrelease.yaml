@@ -27,6 +27,11 @@ spec:
               SUMMARY_ENABLED: "true"
               SUMMARY_PROVIDER: ollama
               SUMMARY_OLLAMA_URL: http://sys-mini-1.internal:11434
+              # Default is gpt-oss:120b-cloud (Ollama cloud) which sys-mini-1
+              # rejects with 403 (cloud disabled). Pin a locally-installed model
+              # that answers within llm.py's hard-coded 60s TIMEOUT (qwen3.5 is
+              # too slow on sys-mini-1; phi4-mini responds in ~4s).
+              SUMMARY_MODEL: phi4-mini
               SUMMARY_DAILY_CAP: "3"
               SUMMARY_HOUR: "8"
               MQTT_HOST: mosquitto.dbms.svc.cluster.local
