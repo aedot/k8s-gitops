@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/aedot/baby-tracker
-              tag: 2026.4.14@sha256:cf88f1641b558a48beade6751872efa0bfb39544d4d20998b1011cc7d57651ac
+              tag: 2026.4.14@sha256:661111fb1b1171bf01a7d3070939bdca676e95f4c131027796cf1fed07d23174
             env:
               TZ: America/Los_Angeles
               FEVER_THRESHOLD_C: "38.0"
