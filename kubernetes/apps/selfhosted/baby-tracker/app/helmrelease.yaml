@@ -17,8 +17,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/hms-homelab/baby-tracker
-              tag: 2026.4.13@sha256:c357062132d599028b4f372a23e64b55a8b4a591fbf3e7b8e68e37154e78cdbd
+              repository: ghcr.io/aedot/baby-tracker
+              tag: 2026.4.13@sha256:918611d578e0085267ae69a7e406a7b1f13261e0549d6b1c408a87014f0c1460
             env:
               TZ: America/Los_Angeles
               FEED_HOURS: "3"
