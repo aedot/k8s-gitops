@@ -9,21 +9,21 @@ data:
       # Ollama
       - model_name: phi4-mini
         litellm_params:
-          model: ollama/phi4-mini:latest
+          model: ollama/phi4-mini
           api_base: http://sys-mini-1.internal:11434
         model_info:
           mode: chat
 
       - model_name: qwen3.5:9b
         litellm_params:
-          model: ollama/qwen-3.5:9b
+          model: ollama/qwen-3.5
           api_base: http://sys-mini-1.internal:11434
         model_info:
           mode: chat
 
       - model_name: gemma4:e4b
         litellm_params:
-          model: ollama/gemma4:e4b
+          model: ollama/gemma4
           api_base: http://sys-mini-1.internal:11434
         model_info:
           mode: chat
