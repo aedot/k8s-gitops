@@ -23,8 +23,11 @@ spec:
             args:
               - --config=/app/config.yaml
             env:
+              TZ: America/Los_Angeles
               LITELLM_LOG: INFO
               LITELLM_MODE: PRODUCTION
+              STORE_MODEL_IN_DB: true
+              LITELLM_DONT_SHOW_FEEDBACK_BOX: "True"
               REDIS_HOST: "{{ .Release.Name }}-dragonfly"
               REDIS_PORT: "6379"
               DATABASE_URL:
@@ -62,6 +65,13 @@ spec:
                   initialDelaySeconds: 5
                   periodSeconds: 10
                   failureThreshold: 3
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     persistence:
       config:
         type: configMap
@@ -70,6 +80,13 @@ spec:
           - path: /app/config.yaml
             subPath: config.yaml
             readOnly: true
+      tmpfs:
+        type: emptyDir
+        globalMounts:
+          - path: /cache
+            subPath: cache
+          - path: /tmp
+            subPath: tmp
     service:
       app:
         ports:
@@ -79,15 +96,5 @@ spec:
       app:
         hostnames: ["litellm.${SECRET_DOMAIN}"]
         parentRefs:
-          - name: envoy-external
+          - name: envoy-internal
             namespace: network
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: 4000
-            filters:
-              - type: RequestHeaderModifier
-                requestHeaderModifier:
-                  set:
-                    - name: x-litellm-session-id
-                      value: "%REQ(x-session-id)%"

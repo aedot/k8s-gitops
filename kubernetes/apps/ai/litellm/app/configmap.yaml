@@ -6,17 +6,30 @@ metadata:
 data:
   config.yaml: |
     model_list:
-      - model_name: gemma4_e4b
+      # Ollama
+      - model_name: phi4-mini
         litellm_params:
-          model: openai/gemma4_e4b
-          api_base: http://llama-gemma4-e4b.ai.svc.cluster.local:8080/v1
-          api_key: llama-gemma4-e4b
+          model: ollama/phi4-mini:latest
+          api_base: http://sys-mini-1.internal:11434
+        model_info:
+          mode: embedding
+      - model_name: qwen3.5:9b
+        litellm_params:
+          model: ollama/qwen-3.5:9b
+          api_base: http://sys-mini-1.internal:11434
+      - model_name: gemma4:e4b
+        litellm_params:
+          model: ollama/gemma4:e4b
+          api_base: http://sys-mini-1.internal:11434
 
     general_settings:
-      health_check_endpoint: /v1/health
+      store_model_in_db: false
+      proxy_batch_write_at: 60
+      database_connection_pool_limit: 10
+      use_redis_transaction_buffer: true
 
     router_settings:
-      routing_strategy: simple-shuffle
+      routing_strategy: usage-based-routing-v2
       redis_host: os.environ/REDIS_HOST
       redis_port: os.environ/REDIS_PORT
 
@@ -28,9 +41,10 @@ data:
         type: redis
         host: os.environ/REDIS_HOST
         port: os.environ/REDIS_PORT
-        namespace: litellm
-        db: 6
-      drop_params: true
+      drop_params: false
+      request_timeout: 600
+      num_retries: 2
+      retry_after: 5
       set_verbose: false
 
     environment:
