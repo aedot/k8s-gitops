@@ -9,6 +9,8 @@ metadata:
 spec:
   components:
     - ../../../../components/postgres
+    - ../../../../components/kopiur
+    - ../../../../components/dragonfly
   healthCheckExprs:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
