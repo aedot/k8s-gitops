@@ -39,10 +39,10 @@ spec:
                   name: litellm-secret
             resources:
               requests:
-                cpu: 10m
+                cpu: 50m
                 memory: 256Mi
               limits:
-                memory: 4Gi
+                memory: 2Gi
             probes:
               liveness:
                 enabled: true
