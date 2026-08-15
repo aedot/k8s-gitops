@@ -34,6 +34,9 @@ spec:
               SUMMARY_MODEL: phi4-mini
               SUMMARY_DAILY_CAP: "3"
               SUMMARY_HOUR: "8"
+              # Hide unused modules. Ids must be fully-qualified (see
+              # HIDEABLE_MODULES in config.py); unknown ids are silently dropped.
+              HIDDEN_MODULES: tab.get_ready,tab.contractions,group.pump,feed.breast
               MQTT_HOST: mosquitto.dbms.svc.cluster.local
               MQTT_PORT: "1883"
               DATABASE_URL:
