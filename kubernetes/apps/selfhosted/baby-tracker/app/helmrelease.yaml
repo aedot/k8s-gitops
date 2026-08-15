@@ -21,10 +21,13 @@ spec:
               tag: 2026.4.14@sha256:cf88f1641b558a48beade6751872efa0bfb39544d4d20998b1011cc7d57651ac
             env:
               TZ: America/Los_Angeles
-              FEED_HOURS: "3"
               FEVER_THRESHOLD_C: "38.0"
               FEVER_THRESHOLD_F: "100.4"
+              MEASUREMENT_SYSTEM: "metric"
               SUMMARY_ENABLED: "true"
+              SUMMARY_WEEKLY_ENABLED: "true"
+              SUMMARY_MONTHLY_ENABLED: "true"
+              SUMMARY_HOUR: "2300"
               SUMMARY_PROVIDER: ollama
               SUMMARY_OLLAMA_URL: http://sys-mini-1.internal:11434
               # Default is gpt-oss:120b-cloud (Ollama cloud) which sys-mini-1
@@ -33,7 +36,6 @@ spec:
               # too slow on sys-mini-1; phi4-mini responds in ~4s).
               SUMMARY_MODEL: phi4-mini
               SUMMARY_DAILY_CAP: "3"
-              SUMMARY_HOUR: "8"
               # Hide unused modules. Ids must be fully-qualified (see
               # HIDEABLE_MODULES in config.py); unknown ids are silently dropped.
               HIDDEN_MODULES: tab.get_ready,tab.contractions,group.pump,feed.breast
