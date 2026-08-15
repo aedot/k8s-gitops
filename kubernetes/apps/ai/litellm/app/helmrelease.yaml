@@ -17,8 +17,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/berriai/litellm
-              tag: v1.83.14-stable@sha256:d6401c001f90f3bab4bb23c5fd6d9302a7df58999ec6fa9e3f175e1f5f26544b
+              repository: ghcr.io/berriai/litellm-database
+              tag: v1.96.2@sha256:80e5e92bdcca246cd4153d451e5f75b65e19c7e39c46cc88a38bed4b65cc5836
             args:
               - --config=/app/config.yaml
             env:
@@ -42,7 +42,7 @@ spec:
                 cpu: 10m
                 memory: 256Mi
               limits:
-                memory: 2Gi
+                memory: 4Gi
             probes:
               liveness:
                 enabled: true
