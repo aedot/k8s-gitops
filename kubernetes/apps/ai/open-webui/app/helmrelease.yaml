@@ -20,12 +20,14 @@ spec:
               repository: ghcr.io/open-webui/open-webui
               tag: v0.11.0@sha256:72c0ba641ba75e7aa52655cb242570906ececd09b1140fb736483038a22b3228
             env:
+              TZ: America/Los_Angeles
               # Open-webui settings
               WEBUI_URL: https://chat.${SECRET_DOMAIN}
               CORS_ALLOW_ORIGIN: https://chat.${SECRET_DOMAIN}
               DEFAULT_LOCALE: en
               ENABLE_OPENAI_AI: true
-              OPENAI_API_BASE_URL: http://litellm:8080/v1
+              OPENAI_API_BASE_URL: http://litellm:4000/v1
+              ENABLE_OLLAMA_AI: true
               OLLAMA_BASE_URL: http://sys-mini-1.internal:11434
               ENABLE_WEBSOCKET_SUPPORT: "true"
               ENABLE_SIGNUP: false
