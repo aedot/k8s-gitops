@@ -22,3 +22,10 @@ spec:
       path: /metrics
       interval: 30s
       scrapeTimeout: 10s
+      # LiteLLM v1.97.0 requires auth on /metrics (anonymous scrapes 401 ->
+      # TargetDown). Present the master key as a Bearer token.
+      authorization:
+        type: Bearer
+        credentials:
+          name: litellm-secret
+          key: LITELLM_MASTER_KEY

@@ -54,3 +54,10 @@ spec:
     metrics:
       serviceMonitor:
         enabled: true
+    # Longhorn 1.12.1 flipped the chart default to ship NetworkPolicies that only
+    # allow ingress to longhorn-manager:9500 from other Longhorn pods, which drops
+    # Prometheus scrapes from the observability namespace (TargetDown on
+    # longhorn-backend). This cluster does not otherwise use netpols for isolation,
+    # so pin the pre-1.12.1 behavior explicitly.
+    networkPolicies:
+      enabled: false

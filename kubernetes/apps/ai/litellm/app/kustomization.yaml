@@ -8,5 +8,6 @@ resources:
   - ./grafanadashboard.yaml
   - ./ocirepository.yaml
   - ./helmrelease.yaml
+  - ./rbac.yaml
   - ./servicemonitor.yaml
   - ./dashboard
