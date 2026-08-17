@@ -29,7 +29,7 @@ spec:
               SUMMARY_MONTHLY_ENABLED: "true"
               SUMMARY_HOUR: "0"
               SUMMARY_WEEKLY_DAY: "mon"
-              SUMMARY_MONTHLY_DAY: "1"
+              SUMMARY_MONTHLY_DAY: "28"
               SUMMARY_PROVIDER: ollama
               SUMMARY_OLLAMA_URL: http://sys-mini-1.internal:11434
               # Default is gpt-oss:120b-cloud (Ollama cloud) which sys-mini-1
