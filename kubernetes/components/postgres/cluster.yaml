@@ -26,11 +26,6 @@ spec:
       max_connections: "200"
       max_wal_size: "256MB"
       shared_buffers: "128MB"
-  resources:
-    requests:
-      cpu: 100m
-    limits:
-      memory: 500Mi
   monitoring:
     enablePodMonitor: true
   plugins:
