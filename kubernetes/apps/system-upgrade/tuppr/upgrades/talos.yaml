@@ -9,7 +9,3 @@ spec:
     version: v1.13.9
   policy:
     rebootMode: powercycle
-  healthChecks:
-    - apiVersion: volsync.backube/v1alpha1
-      kind: ReplicationSource
-      expr: status.conditions.filter(c, c.type == "Synchronizing").all(c, c.status == "False")
