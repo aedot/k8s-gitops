@@ -35,11 +35,14 @@ spec:
       guaranteedReplicaManagerCPU: "20"
       nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
       orphanAutoDeletion: replica-data;instance
-      # Conservative rebuild behavior: on a 3-node/3-replica cluster replicas are
-      # already fully spread, so auto-balance is pure churn; serialize rebuilds to
-      # limit disk/network pressure during recovery.
+      # Auto-balance disabled: on a 3-node/3-replica cluster replicas are already
+      # fully spread, so rebalancing is pure churn.
       replicaAutoBalance: disabled
-      concurrentReplicaRebuildPerNodeLimit: "1"
+      # Parallel rebuilds so recovery after a node reboot isn't serialized to a
+      # crawl. Talos upgrades take every replica on a node offline at once; at "1"
+      # a rolling upgrade left volumes degraded/at-risk far longer than necessary.
+      # "3" trades some disk/network pressure for much faster heal-back.
+      concurrentReplicaRebuildPerNodeLimit: "3"
       storageMinimalAvailablePercentage: "1"
       storageReservedPercentageForDefaultDisk: "10"
     ingress:
