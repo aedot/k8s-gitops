@@ -8,3 +8,18 @@ spec:
   kubernetes:
     # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
     version: v1.36.3
+  healthChecks:
+    - apiVersion: kopiur.home-operations.com/v1alpha1
+      kind: Snapshot
+      expr: |-
+        !has(status.phase) || status.phase != 'Running'
+    - apiVersion: kopiur.home-operations.com/v1alpha1
+      kind: Restore
+      expr: |-
+        !has(status.phase) || !(status.phase in ['Resolving', 'Restoring'])
+    - apiVersion: longhorn.io/v1beta2
+      kind: Volume
+      namespace: longhorn-system
+      timeout: 2h
+      expr: |-
+        status.state != "attached" || status.robustness == "healthy"
