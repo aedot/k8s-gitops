@@ -1,0 +1,30 @@
+---
+# Longhorn 1.12.x defaults networkPolicies.restrictInternalTraffic=true, whose
+# chart-managed netpol on app=longhorn-manager allows ingress only from other
+# Longhorn pods. That blocks Prometheus (in the observability namespace) from
+# scraping longhorn-manager:9500 -> TargetDown on longhorn-backend. NetworkPolicies
+# are additive, so this allow-rule unions with the chart netpol to let the
+# Prometheus pod through while keeping Longhorn's internal isolation intact.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-prometheus-to-longhorn-manager
+spec:
+  podSelector:
+    matchLabels:
+      app: longhorn-manager
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        # namespaceSelector + podSelector in one 'from' item are ANDed: only the
+        # Prometheus pod in the observability namespace.
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: observability
+          podSelector:
+            matchLabels:
+              app.kubernetes.io/name: prometheus
+      ports:
+        - protocol: TCP
+          port: 9500
