@@ -1,4 +1,4 @@
-# k8s-gitops Architecture
+# home-ops Architecture
 
 ## System Overview
 
@@ -91,7 +91,7 @@ Organized by namespace in `kubernetes/apps/`:
 
 ### Deployment Flow
 ```
-1. User commits code to github.com/aedot/k8s-gitops
+1. User commits code to github.com/aedot/home-ops
    └─> Git branch/tag created
 
 2. Flux Source Controller detects change

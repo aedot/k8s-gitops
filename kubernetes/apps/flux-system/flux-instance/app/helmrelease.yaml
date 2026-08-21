@@ -22,7 +22,7 @@ spec:
         - notification-controller
       sync:
         kind: GitRepository
-        url: "https://github.com/aedot/k8s-gitops.git"
+        url: "https://github.com/aedot/home-ops.git"
         ref: "refs/heads/main"
         path: kubernetes/flux/cluster
       commonMetadata:

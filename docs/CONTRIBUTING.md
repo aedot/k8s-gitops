@@ -1,6 +1,6 @@
 # Contributing Guide
 
-This guide explains how to contribute to the k8s-gitops repository, whether adding applications, fixing bugs, or improving documentation.
+This guide explains how to contribute to the home-ops repository, whether adding applications, fixing bugs, or improving documentation.
 
 ## Prerequisites
 

@@ -5,7 +5,7 @@ This document provides a detailed breakdown of the repository structure and expl
 ## Root Level
 
 ```
-k8s-gitops/
+home-ops/
 ├── kubernetes/          # Kubernetes manifests (main GitOps source)
 ├── bootstrap/           # Cluster bootstrap scripts and initial setup
 ├── talos/              # Talos OS configuration and customization
@@ -282,8 +282,8 @@ docs/
 **Main Config**: `.renovaterc.json5` extends these files:
 ```json5
 extends: [
-  'github>aedot/k8s-gitops//.renovate/autoMerge.json5',
-  'github>aedot/k8s-gitops//.renovate/groups.json5',
+  'github>aedot/home-ops//.renovate/autoMerge.json5',
+  'github>aedot/home-ops//.renovate/groups.json5',
   // ... other extensions
 ]
 ```

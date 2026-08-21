@@ -11,7 +11,7 @@ spec:
   interval: 1h
   values:
     config:
-      repo: github://aedot/k8s-gitops
+      repo: github://aedot/home-ops
       statusChecks: true
       prComments: true
       publicUrl: https://{{ .Release.Name }}.${SECRET_DOMAIN}
