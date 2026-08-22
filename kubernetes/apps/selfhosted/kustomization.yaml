@@ -9,6 +9,7 @@ components:
 
 resources:
   - ./actual/ks.yaml
+  - ./atuin/ks.yaml
   # - ./baby-tracker/ks.yaml
   - ./bambuddy/ks.yaml
   - ./lubelog/ks.yaml
