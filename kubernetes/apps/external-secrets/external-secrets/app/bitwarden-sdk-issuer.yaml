@@ -1,8 +1,0 @@
-# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/cert-manager.io/issuer_v1.json
----
-apiVersion: cert-manager.io/v1
-kind: Issuer
-metadata:
-  name: bitwarden-sdk-server-selfsigned
-spec:
-  selfSigned: {}

@@ -10,30 +10,10 @@ spec:
     kind: OCIRepository
     name: external-secrets
   values:
-    installCRDs: true
-    replicaCount: 2
     leaderElect: true
-    image:
-      repository: ghcr.io/external-secrets/external-secrets
-    webhook:
-      # 2 replicas so the minAvailable:1 PDB is satisfiable during node drains
-      # (single-replica webhook + PDB permanently blocked Talos upgrade drains)
-      replicaCount: 2
-      image:
-        repository: ghcr.io/external-secrets/external-secrets
-      serviceMonitor:
-        enabled: true
-        interval: 1m
-    certController:
-      image:
-        repository: ghcr.io/external-secrets/external-secrets
-      serviceMonitor:
-        enabled: true
-        interval: 1m
     serviceMonitor:
       enabled: true
-      interval: 1m
     grafanaDashboard:
       enabled: true
-    bitwarden-sdk-server:
-      enabled: true
+    webhook:
+      replicaCount: 2
