@@ -8,7 +8,7 @@ spec:
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
-    - name: akeyless-stores
+    - name: bitwarden-stores
       namespace: external-secrets
   path: ./kubernetes/apps/observability/kube-prometheus-stack/app
   prune: true

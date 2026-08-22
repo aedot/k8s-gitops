@@ -19,7 +19,7 @@ spec:
   dependsOn:
     - name: dragonfly
       namespace: dbms
-    - name: akeyless-stores
+    - name: bitwarden-stores
       namespace: external-secrets
     - name: cnpg-barman-cloud
       namespace: dbms

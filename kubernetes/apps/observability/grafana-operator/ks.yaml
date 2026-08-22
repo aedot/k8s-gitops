@@ -6,7 +6,7 @@ metadata:
   name: grafana
 spec:
   dependsOn:
-    - name: akeyless-stores
+    - name: bitwarden-stores
       namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/observability/grafana-operator/app
@@ -30,7 +30,7 @@ metadata:
 spec:
   dependsOn:
     - name: grafana
-    - name: akeyless-stores
+    - name: bitwarden-stores
       namespace: external-secrets
     - name: longhorn
       namespace: longhorn-system

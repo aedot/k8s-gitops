@@ -6,7 +6,7 @@ metadata:
   name: unpoller
 spec:
   dependsOn:
-    - name: akeyless-stores
+    - name: bitwarden-stores
       namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/observability/unpoller/app

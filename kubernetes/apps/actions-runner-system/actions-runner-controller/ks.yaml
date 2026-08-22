@@ -22,7 +22,7 @@ metadata:
 spec:
   dependsOn:
     - name: actions-runner-controller
-    - name: akeyless-stores
+    - name: bitwarden-stores
       namespace: external-secrets
     - name: longhorn
       namespace: longhorn-system

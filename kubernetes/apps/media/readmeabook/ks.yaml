@@ -20,7 +20,7 @@ spec:
   dependsOn:
     - name: dragonfly
       namespace: dbms
-    - name: akeyless-stores
+    - name: bitwarden-stores
       namespace: external-secrets
   prune: true
   sourceRef:

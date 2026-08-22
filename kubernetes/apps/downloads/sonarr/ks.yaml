@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: longhorn
       namespace: longhorn-system
-    - name: akeyless-stores
+    - name: bitwarden-stores
       namespace: external-secrets
   prune: true
   sourceRef:

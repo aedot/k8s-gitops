@@ -9,5 +9,4 @@ components:
 
 resources:
   - ./external-secrets/ks.yaml
-  - ./akeyless/ks.yaml
   - ./bitwarden/ks.yaml
