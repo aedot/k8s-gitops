@@ -17,3 +17,5 @@ spec:
       enabled: true
     webhook:
       replicaCount: 2
+    bitwarden-sdk-server:
+      enabled: true
